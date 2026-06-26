@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BOQ - Limasan + Trapesium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            color: #333;
+            font-size: 13px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c3e50 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .header p {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+        .print-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .print-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .content {
+            padding: 24px;
+        }
+        
+        /* 2 Kolom untuk data perhitungan */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .card {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 13px;
+            color: white;
+        }
+        .card-header.blue {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        }
+        .card-header.green {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+        }
+        .card-body {
+            padding: 12px 0;
+        }
+        
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        .list-label {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .list-value {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e3a5f;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3b82f6;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-top: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        th {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid #e9ecef;
+        }
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .text-right {
+            text-align: right;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-green { background: #dcfce7; color: #166534; }
+        .badge-orange { background: #ffedd5; color: #9a3412; }
+        .badge-purple { background: #f3e8ff; color: #6b21a5; }
+        .badge-yellow { background: #fef9c3; color: #854d0e; }
+        .badge-cyan { background: #cffafe; color: #155e75; }
+        .badge-pink { background: #fce7f3; color: #9d174d; }
+        .badge-gray { background: #f1f3f5; color: #475569; }
+        
+        .sub-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin: 16px 0 12px;
+            padding-left: 10px;
+            border-left: 3px solid;
+        }
+        .sub-section-title.blue { border-left-color: #2563eb; color: #1e40af; }
+        .sub-section-title.green { border-left-color: #16a34a; color: #166534; }
+        
+        .grand-total-box {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 12px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 16px;
+            color: white;
+        }
+        
+        .footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #e9ecef;
+            text-align: right;
+            font-size: 10px;
+            color: #94a3b8;
+        }
+        
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            body {
+                background: white;
+                padding: 0;
+            }
+            .print-btn {
+                display: none;
+            }
+            .grand-total-box {
+                background: #1e293b !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>BILL OF QUANTITY (BOQ)</h1>
+        <p>BOQ - Limasan + Trapesium | IKO - ATAP</p>
+        <button class="print-btn" onclick="window.print()">🖨️ Save PDF</button>
+    </div>
+    
+    <div class="content">
+        <!-- 2 Kolom Data Perhitungan -->
+        <div class="two-columns">
+            <!-- Bagian 1: Limasan -->
+            <div class="card">
+                <div class="card-header blue">🏠 Limasan (Bagian Atas)</div>
+                <div class="card-body">
+                    <div class="list-item">
+                        <span class="list-label">Luas Permukaan Atap</span>
+                        <span class="list-value">0.00 m²</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-label">Sudut Kemiringan</span>
+                        <span class="list-value">0.00°</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-label">Starter</span>
+                        <span class="list-value">0.00 m</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-label">Nok & Jurai</span>
+                        <span class="list-value">0.00 m</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-label">Flashing</span>
+                        <span class="list-value">0.00 m</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bagian 2: Trapesium -->
+            <div class="card">
+                <div class="card-header green">📐 Trapesium (Bagian Bawah)</div>
+                <div class="card-body">
+                    <div class="list-item">
+                        <span class="list-label">Luas Permukaan Atap</span>
+                        <span class="list-value">0.00 m²</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-label">Sudut Kemiringan</span>
+                        <span class="list-value">0.00°</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-label">Starter</span>
+                        <span class="list-value">0.00 m</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-label">Nok & Jurai</span>
+                        <span class="list-value">0.00 m</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-label">Flashing</span>
+                        <span class="list-value">0.00 m</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Rincian Material Limasan -->
+        <div class="sub-section-title blue">📋 RINCIAN MATERIAL - LIMASAN</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Produk</th>
+                        <th>Area</th>
+                        <th class="text-right">Qty</th>
+                        <th class="text-right">Satuan</th>
+                        <th class="text-right">Harga Satuan</th>
+                        <th class="text-right">Total Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                                        </tbody>
+            </table>
+        </div>
+        <div class="grand-total-box" style="background: #eef2ff; color: #1e40af; margin-top: 12px;">
+            SUB TOTAL LIMASAN: <strong>Rp 0</strong>
+        </div>
+        
+        <!-- Rincian Material Trapesium -->
+        <div class="sub-section-title green" style="margin-top: 24px;">📋 RINCIAN MATERIAL - TRAPESIUM</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Produk</th>
+                        <th>Area</th>
+                        <th class="text-right">Qty</th>
+                        <th class="text-right">Satuan</th>
+                        <th class="text-right">Harga Satuan</th>
+                        <th class="text-right">Total Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                    </tbody>
+            </table>
+        </div>
+        <div class="grand-total-box" style="background: #dcfce7; color: #166534; margin-top: 12px;">
+            SUB TOTAL TRAPESIUM: <strong>Rp 0</strong>
+        </div>
+        
+        <!-- GRAND TOTAL -->
+        <div class="grand-total-box">
+            🏆 GRAND TOTAL (Limasan + Trapesium): <strong>Rp 62,597,500</strong>
+        </div>
+        
+        <div class="footer">
+            <p>Dokumen dibuat oleh sistem BOQ | 5/6/2026 17.56.46</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

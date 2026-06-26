@@ -1,0 +1,2950 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.9
+-- Dumped by pg_dump version 17.1
+
+-- Started on 2026-06-26 10:26:39
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 242 (class 1259 OID 35346)
+-- Name: boq; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.boq (
+    id bigint NOT NULL,
+    nomor_boq character varying(255) NOT NULL,
+    tanggal_boq date NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.boq OWNER TO postgres;
+
+--
+-- TOC entry 241 (class 1259 OID 35345)
+-- Name: boq_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.boq_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.boq_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4977 (class 0 OID 0)
+-- Dependencies: 241
+-- Name: boq_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.boq_id_seq OWNED BY public.boq.id;
+
+
+--
+-- TOC entry 223 (class 1259 OID 35183)
+-- Name: cache; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cache (
+    key character varying(255) NOT NULL,
+    value text NOT NULL,
+    expiration bigint NOT NULL
+);
+
+
+ALTER TABLE public.cache OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 35191)
+-- Name: cache_locks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cache_locks (
+    key character varying(255) NOT NULL,
+    owner character varying(255) NOT NULL,
+    expiration bigint NOT NULL
+);
+
+
+ALTER TABLE public.cache_locks OWNER TO postgres;
+
+--
+-- TOC entry 244 (class 1259 OID 35357)
+-- Name: detail_boq; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.detail_boq (
+    id bigint NOT NULL,
+    boq_id bigint NOT NULL,
+    produk_id integer,
+    kode_produk character varying(255),
+    qty numeric(15,2) DEFAULT 0,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.detail_boq OWNER TO postgres;
+
+--
+-- TOC entry 243 (class 1259 OID 35356)
+-- Name: detail_boq_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.detail_boq_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.detail_boq_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4978 (class 0 OID 0)
+-- Dependencies: 243
+-- Name: detail_boq_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.detail_boq_id_seq OWNED BY public.detail_boq.id;
+
+
+--
+-- TOC entry 229 (class 1259 OID 35217)
+-- Name: failed_jobs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.failed_jobs (
+    id bigint NOT NULL,
+    uuid character varying(255) NOT NULL,
+    connection character varying(255) NOT NULL,
+    queue character varying(255) NOT NULL,
+    payload text NOT NULL,
+    exception text NOT NULL,
+    failed_at timestamp(0) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.failed_jobs OWNER TO postgres;
+
+--
+-- TOC entry 228 (class 1259 OID 35216)
+-- Name: failed_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.failed_jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.failed_jobs_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4979 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: failed_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.failed_jobs_id_seq OWNED BY public.failed_jobs.id;
+
+
+--
+-- TOC entry 227 (class 1259 OID 35209)
+-- Name: job_batches; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.job_batches (
+    id character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    total_jobs integer NOT NULL,
+    pending_jobs integer NOT NULL,
+    failed_jobs integer NOT NULL,
+    failed_job_ids text NOT NULL,
+    options text,
+    cancelled_at integer,
+    created_at integer NOT NULL,
+    finished_at integer
+);
+
+
+ALTER TABLE public.job_batches OWNER TO postgres;
+
+--
+-- TOC entry 226 (class 1259 OID 35200)
+-- Name: jobs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.jobs (
+    id bigint NOT NULL,
+    queue character varying(255) NOT NULL,
+    payload text NOT NULL,
+    attempts smallint NOT NULL,
+    reserved_at integer,
+    available_at integer NOT NULL,
+    created_at integer NOT NULL
+);
+
+
+ALTER TABLE public.jobs OWNER TO postgres;
+
+--
+-- TOC entry 225 (class 1259 OID 35199)
+-- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.jobs_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4980 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
+
+
+--
+-- TOC entry 218 (class 1259 OID 35150)
+-- Name: migrations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.migrations (
+    id integer NOT NULL,
+    migration character varying(255) NOT NULL,
+    batch integer NOT NULL
+);
+
+
+ALTER TABLE public.migrations OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 35149)
+-- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.migrations_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4981 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
+
+
+--
+-- TOC entry 221 (class 1259 OID 35167)
+-- Name: password_reset_tokens; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.password_reset_tokens (
+    email character varying(255) NOT NULL,
+    token character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.password_reset_tokens OWNER TO postgres;
+
+--
+-- TOC entry 240 (class 1259 OID 35318)
+-- Name: product_accessories; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.product_accessories (
+    id bigint NOT NULL,
+    parent_product_id bigint,
+    accessory_id bigint
+);
+
+
+ALTER TABLE public.product_accessories OWNER TO postgres;
+
+--
+-- TOC entry 237 (class 1259 OID 35262)
+-- Name: product_areas; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.product_areas (
+    id bigint NOT NULL,
+    nama_area character varying(255) NOT NULL,
+    slug character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.product_areas OWNER TO postgres;
+
+--
+-- TOC entry 236 (class 1259 OID 35261)
+-- Name: product_areas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.product_areas_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.product_areas_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4982 (class 0 OID 0)
+-- Dependencies: 236
+-- Name: product_areas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.product_areas_id_seq OWNED BY public.product_areas.id;
+
+
+--
+-- TOC entry 235 (class 1259 OID 35251)
+-- Name: product_brands; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.product_brands (
+    id bigint NOT NULL,
+    nama_brand character varying(255) NOT NULL,
+    slug character varying(255) NOT NULL,
+    logo character varying(255),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.product_brands OWNER TO postgres;
+
+--
+-- TOC entry 234 (class 1259 OID 35250)
+-- Name: product_brands_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.product_brands_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.product_brands_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4983 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: product_brands_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.product_brands_id_seq OWNED BY public.product_brands.id;
+
+
+--
+-- TOC entry 231 (class 1259 OID 35230)
+-- Name: product_categories; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.product_categories (
+    id bigint NOT NULL,
+    category_name character varying(255) NOT NULL,
+    slug character varying(255) NOT NULL,
+    description text,
+    is_active boolean DEFAULT true NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.product_categories OWNER TO postgres;
+
+--
+-- TOC entry 230 (class 1259 OID 35229)
+-- Name: product_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.product_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.product_categories_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4984 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: product_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.product_categories_id_seq OWNED BY public.product_categories.id;
+
+
+--
+-- TOC entry 233 (class 1259 OID 35242)
+-- Name: product_units; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.product_units (
+    id bigint NOT NULL,
+    unit_name character varying(255) NOT NULL,
+    symbol character varying(255),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.product_units OWNER TO postgres;
+
+--
+-- TOC entry 232 (class 1259 OID 35241)
+-- Name: product_units_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.product_units_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.product_units_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4985 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: product_units_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.product_units_id_seq OWNED BY public.product_units.id;
+
+
+--
+-- TOC entry 239 (class 1259 OID 35273)
+-- Name: products; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.products (
+    id bigint NOT NULL,
+    kode_produk character varying(255) NOT NULL,
+    nama_produk character varying(255) NOT NULL,
+    slug character varying(255),
+    kategori_id bigint NOT NULL,
+    unit_id bigint NOT NULL,
+    tipe_produk character varying(255) DEFAULT 'material'::character varying NOT NULL,
+    hpp_produk numeric(15,2) DEFAULT '0'::numeric,
+    harga_price_list numeric(15,2) DEFAULT '0'::numeric NOT NULL,
+    area_id bigint,
+    satuan_terkecil numeric(10,2) DEFAULT '1'::numeric,
+    brand_id bigint NOT NULL,
+    description text,
+    image character varying(255),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.products OWNER TO postgres;
+
+--
+-- TOC entry 238 (class 1259 OID 35272)
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.products_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4986 (class 0 OID 0)
+-- Dependencies: 238
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
+
+
+--
+-- TOC entry 222 (class 1259 OID 35174)
+-- Name: sessions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sessions (
+    id character varying(255) NOT NULL,
+    user_id bigint,
+    ip_address character varying(45),
+    user_agent text,
+    payload text NOT NULL,
+    last_activity integer NOT NULL
+);
+
+
+ALTER TABLE public.sessions OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 35157)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    email_verified_at timestamp(0) without time zone,
+    password character varying(255) NOT NULL,
+    remember_token character varying(100),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 35156)
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4987 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- TOC entry 4730 (class 2604 OID 35349)
+-- Name: boq id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.boq ALTER COLUMN id SET DEFAULT nextval('public.boq_id_seq'::regclass);
+
+
+--
+-- TOC entry 4733 (class 2604 OID 35360)
+-- Name: detail_boq id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.detail_boq ALTER COLUMN id SET DEFAULT nextval('public.detail_boq_id_seq'::regclass);
+
+
+--
+-- TOC entry 4718 (class 2604 OID 35220)
+-- Name: failed_jobs id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.failed_jobs ALTER COLUMN id SET DEFAULT nextval('public.failed_jobs_id_seq'::regclass);
+
+
+--
+-- TOC entry 4717 (class 2604 OID 35203)
+-- Name: jobs id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id_seq'::regclass);
+
+
+--
+-- TOC entry 4715 (class 2604 OID 35153)
+-- Name: migrations id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.migrations_id_seq'::regclass);
+
+
+--
+-- TOC entry 4724 (class 2604 OID 35265)
+-- Name: product_areas id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_areas ALTER COLUMN id SET DEFAULT nextval('public.product_areas_id_seq'::regclass);
+
+
+--
+-- TOC entry 4723 (class 2604 OID 35254)
+-- Name: product_brands id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_brands ALTER COLUMN id SET DEFAULT nextval('public.product_brands_id_seq'::regclass);
+
+
+--
+-- TOC entry 4720 (class 2604 OID 35233)
+-- Name: product_categories id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_categories ALTER COLUMN id SET DEFAULT nextval('public.product_categories_id_seq'::regclass);
+
+
+--
+-- TOC entry 4722 (class 2604 OID 35245)
+-- Name: product_units id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_units ALTER COLUMN id SET DEFAULT nextval('public.product_units_id_seq'::regclass);
+
+
+--
+-- TOC entry 4725 (class 2604 OID 35276)
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
+
+--
+-- TOC entry 4716 (class 2604 OID 35160)
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- TOC entry 4969 (class 0 OID 35346)
+-- Dependencies: 242
+-- Data for Name: boq; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.boq (id, nomor_boq, tanggal_boq, created_at, updated_at) FROM stdin;
+2	BOQ-202606-0001	2026-06-22	2026-06-22 07:55:24	2026-06-22 07:55:24
+3	ATL/BOQ/VI/2026/0002	2026-06-22	2026-06-22 08:10:29	2026-06-22 08:10:29
+4	ATL/BOQ/VI/2026/0003	2026-06-22	2026-06-22 08:15:13	2026-06-22 08:15:13
+5	ATL/BOQ/VI/2026/0004	2026-06-22	2026-06-22 08:15:33	2026-06-22 08:15:33
+6	ATL/BOQ/VI/2026/0005	2026-06-22	2026-06-22 08:16:05	2026-06-22 08:16:05
+7	ATL/BOQ/VI/2026/0006	2026-06-22	2026-06-22 08:16:16	2026-06-22 08:16:16
+8	ATL/BOQ/VI/2026/0007	2026-06-22	2026-06-22 08:16:26	2026-06-22 08:16:26
+9	ATL/BOQ/VI/2026/0008	2026-06-22	2026-06-22 08:16:35	2026-06-22 08:16:35
+10	ATL/BOQ/VI/2026/0009	2026-06-22	2026-06-22 08:17:22	2026-06-22 08:17:22
+11	ATL/BOQ/VI/2026/0010	2026-06-22	2026-06-22 08:20:12	2026-06-22 08:20:12
+12	ATL/BOQ/VI/2026/0011	2026-06-22	2026-06-22 08:20:51	2026-06-22 08:20:51
+13	ATL/BOQ/VI/2026/0012	2026-06-22	2026-06-22 08:23:43	2026-06-22 08:23:43
+14	ATL/BOQ/VI/2026/0013	2026-06-22	2026-06-22 08:25:27	2026-06-22 08:25:27
+15	ATL/BOQ/VI/2026/0014	2026-06-22	2026-06-22 08:29:37	2026-06-22 08:29:37
+16	ATL/BOQ/VI/2026/0015	2026-06-22	2026-06-22 08:32:25	2026-06-22 08:32:25
+17	ATL/BOQ/VI/2026/0016	2026-06-22	2026-06-22 08:34:38	2026-06-22 08:34:38
+18	ATL/BOQ/VI/2026/0017	2026-06-22	2026-06-22 08:36:48	2026-06-22 08:36:48
+19	ATL/BOQ/VI/2026/0018	2026-06-22	2026-06-22 08:38:25	2026-06-22 08:38:25
+20	ATL/BOQ/VI/2026/0019	2026-06-22	2026-06-22 08:40:04	2026-06-22 08:40:04
+21	ATL/BOQ/VI/2026/0020	2026-06-22	2026-06-22 08:41:55	2026-06-22 08:41:55
+22	ATL/BOQ/VI/2026/0021	2026-06-22	2026-06-22 08:43:37	2026-06-22 08:43:37
+23	ATL/BOQ/VI/2026/0022	2026-06-22	2026-06-22 08:46:03	2026-06-22 08:46:03
+24	ATL/BOQ/VI/2026/0023	2026-06-22	2026-06-22 08:52:24	2026-06-22 08:52:24
+25	ATL/BOQ/VI/2026/0024	2026-06-22	2026-06-22 08:53:53	2026-06-22 08:53:53
+26	ATL/BOQ/VI/2026/0025	2026-06-22	2026-06-22 08:56:38	2026-06-22 08:56:38
+27	ATL/BOQ/VI/2026/0026	2026-06-22	2026-06-22 08:58:09	2026-06-22 08:58:09
+28	ATL/BOQ/VI/2026/0027	2026-06-22	2026-06-22 08:59:37	2026-06-22 08:59:37
+29	ATL/BOQ/VI/2026/0028	2026-06-22	2026-06-22 09:01:44	2026-06-22 09:01:44
+30	ATL/BOQ/VI/2026/0029	2026-06-23	2026-06-23 07:22:26	2026-06-23 07:22:26
+31	ATL/BOQ/VI/2026/0030	2026-06-23	2026-06-23 07:33:05	2026-06-23 07:33:05
+32	ATL/BOQ/VI/2026/0031	2026-06-23	2026-06-23 07:39:05	2026-06-23 07:39:05
+33	ATL/BOQ/VI/2026/0032	2026-06-23	2026-06-23 07:41:36	2026-06-23 07:41:36
+34	ATL/BOQ/VI/2026/0033	2026-06-23	2026-06-23 07:48:55	2026-06-23 07:48:55
+35	ATL/BOQ/VI/2026/0034	2026-06-23	2026-06-23 07:51:58	2026-06-23 07:51:58
+36	ATL/BOQ/VI/2026/0035	2026-06-23	2026-06-23 07:52:44	2026-06-23 07:52:44
+37	ATL/BOQ/VI/2026/0036	2026-06-23	2026-06-23 07:55:48	2026-06-23 07:55:48
+38	ATL/BOQ/VI/2026/0037	2026-06-23	2026-06-23 07:58:00	2026-06-23 07:58:00
+39	ATL/BOQ/VI/2026/0038	2026-06-23	2026-06-23 08:00:34	2026-06-23 08:00:34
+40	ATL/BOQ/VI/2026/0039	2026-06-23	2026-06-23 08:02:50	2026-06-23 08:02:50
+41	ATL/BOQ/VI/2026/0040	2026-06-23	2026-06-23 08:06:55	2026-06-23 08:06:55
+42	ATL/BOQ/VI/2026/0041	2026-06-23	2026-06-23 08:08:44	2026-06-23 08:08:44
+43	ATL/BOQ/VI/2026/0042	2026-06-23	2026-06-23 08:09:11	2026-06-23 08:09:11
+44	ATL/BOQ/VI/2026/0043	2026-06-23	2026-06-23 08:11:23	2026-06-23 08:11:23
+45	ATL/BOQ/VI/2026/0044	2026-06-23	2026-06-23 08:13:08	2026-06-23 08:13:08
+46	ATL/BOQ/VI/2026/0045	2026-06-23	2026-06-23 08:19:14	2026-06-23 08:19:14
+47	ATL/BOQ/VI/2026/0046	2026-06-23	2026-06-23 08:22:43	2026-06-23 08:22:43
+48	ATL/BOQ/VI/2026/0047	2026-06-23	2026-06-23 08:23:00	2026-06-23 08:23:00
+49	ATL/BOQ/VI/2026/0048	2026-06-23	2026-06-23 08:24:44	2026-06-23 08:24:44
+50	ATL/BOQ/VI/2026/0049	2026-06-23	2026-06-23 08:25:43	2026-06-23 08:25:43
+51	ATL/BOQ/VI/2026/0050	2026-06-23	2026-06-23 08:26:35	2026-06-23 08:26:35
+52	ATL/BOQ/VI/2026/0051	2026-06-23	2026-06-23 08:27:24	2026-06-23 08:27:24
+53	ATL/BOQ/VI/2026/0052	2026-06-23	2026-06-23 08:28:24	2026-06-23 08:28:24
+54	ATL/BOQ/VI/2026/0053	2026-06-23	2026-06-23 08:28:46	2026-06-23 08:28:46
+55	ATL/BOQ/VI/2026/0054	2026-06-23	2026-06-23 08:29:01	2026-06-23 08:29:01
+56	ATL/BOQ/VI/2026/0055	2026-06-23	2026-06-23 08:29:25	2026-06-23 08:29:25
+57	ATL/BOQ/VI/2026/0056	2026-06-23	2026-06-23 08:29:53	2026-06-23 08:29:53
+58	ATL/BOQ/VI/2026/0057	2026-06-23	2026-06-23 08:30:17	2026-06-23 08:30:17
+59	ATL/BOQ/VI/2026/0058	2026-06-23	2026-06-23 08:31:53	2026-06-23 08:31:53
+60	ATL/BOQ/VI/2026/0059	2026-06-23	2026-06-23 08:32:33	2026-06-23 08:32:33
+61	ATL/BOQ/VI/2026/0060	2026-06-23	2026-06-23 08:35:46	2026-06-23 08:35:46
+62	ATL/BOQ/VI/2026/0061	2026-06-23	2026-06-23 08:37:13	2026-06-23 08:37:13
+63	ATL/BOQ/VI/2026/0062	2026-06-23	2026-06-23 08:39:41	2026-06-23 08:39:41
+64	ATL/BOQ/VI/2026/0063	2026-06-23	2026-06-23 08:40:52	2026-06-23 08:40:52
+65	ATL/BOQ/VI/2026/0064	2026-06-23	2026-06-23 08:41:40	2026-06-23 08:41:40
+66	ATL/BOQ/VI/2026/0065	2026-06-23	2026-06-23 08:44:01	2026-06-23 08:44:01
+67	ATL/BOQ/VI/2026/0066	2026-06-23	2026-06-23 09:28:13	2026-06-23 09:28:13
+68	ATL/BOQ/VI/2026/0067	2026-06-24	2026-06-24 02:21:05	2026-06-24 02:21:05
+69	ATL/BOQ/VI/2026/0068	2026-06-24	2026-06-24 05:08:32	2026-06-24 05:08:32
+70	ATL/BOQ/VI/2026/0069	2026-06-24	2026-06-24 05:08:47	2026-06-24 05:08:47
+71	ATL/BOQ/VI/2026/0070	2026-06-24	2026-06-24 08:37:44	2026-06-24 08:37:44
+72	ATL/BOQ/VI/2026/0071	2026-06-24	2026-06-24 08:37:49	2026-06-24 08:37:49
+73	ATL/BOQ/VI/2026/0072	2026-06-24	2026-06-24 08:38:15	2026-06-24 08:38:15
+74	ATL/BOQ/VI/2026/0073	2026-06-24	2026-06-24 08:40:50	2026-06-24 08:40:50
+75	ATL/BOQ/VI/2026/0074	2026-06-24	2026-06-24 08:43:40	2026-06-24 08:43:40
+76	ATL/BOQ/VI/2026/0075	2026-06-24	2026-06-24 08:45:42	2026-06-24 08:45:42
+77	ATL/BOQ/VI/2026/0076	2026-06-24	2026-06-24 08:46:31	2026-06-24 08:46:31
+78	ATL/BOQ/VI/2026/0077	2026-06-24	2026-06-24 08:49:13	2026-06-24 08:49:13
+79	ATL/BOQ/VI/2026/0078	2026-06-24	2026-06-24 08:49:19	2026-06-24 08:49:19
+80	ATL/BOQ/VI/2026/0079	2026-06-24	2026-06-24 08:50:40	2026-06-24 08:50:40
+81	ATL/BOQ/VI/2026/0080	2026-06-24	2026-06-24 08:50:42	2026-06-24 08:50:42
+82	ATL/BOQ/VI/2026/0081	2026-06-24	2026-06-24 08:52:51	2026-06-24 08:52:51
+83	ATL/BOQ/VI/2026/0082	2026-06-24	2026-06-24 08:57:23	2026-06-24 08:57:23
+84	ATL/BOQ/VI/2026/0083	2026-06-24	2026-06-24 09:00:26	2026-06-24 09:00:26
+85	ATL/BOQ/VI/2026/0084	2026-06-24	2026-06-24 09:01:53	2026-06-24 09:01:53
+86	ATL/BOQ/VI/2026/0085	2026-06-24	2026-06-24 09:05:50	2026-06-24 09:05:50
+87	ATL/BOQ/VI/2026/0086	2026-06-24	2026-06-24 09:07:42	2026-06-24 09:07:42
+88	ATL/BOQ/VI/2026/0087	2026-06-24	2026-06-24 09:10:19	2026-06-24 09:10:19
+89	ATL/BOQ/VI/2026/0088	2026-06-24	2026-06-24 09:10:24	2026-06-24 09:10:24
+90	ATL/BOQ/VI/2026/0089	2026-06-24	2026-06-24 09:10:58	2026-06-24 09:10:58
+91	ATL/BOQ/VI/2026/0090	2026-06-24	2026-06-24 09:12:42	2026-06-24 09:12:42
+92	ATL/BOQ/VI/2026/0091	2026-06-24	2026-06-24 09:12:44	2026-06-24 09:12:44
+93	ATL/BOQ/VI/2026/0092	2026-06-24	2026-06-24 09:12:45	2026-06-24 09:12:45
+94	ATL/BOQ/VI/2026/0093	2026-06-24	2026-06-24 09:16:05	2026-06-24 09:16:05
+95	ATL/BOQ/VI/2026/0094	2026-06-24	2026-06-24 09:17:18	2026-06-24 09:17:18
+96	ATL/BOQ/VI/2026/0095	2026-06-24	2026-06-24 09:17:24	2026-06-24 09:17:24
+97	ATL/BOQ/VI/2026/0096	2026-06-24	2026-06-24 09:17:28	2026-06-24 09:17:28
+98	ATL/BOQ/VI/2026/0097	2026-06-24	2026-06-24 09:17:32	2026-06-24 09:17:32
+99	ATL/BOQ/VI/2026/0098	2026-06-24	2026-06-24 09:17:56	2026-06-24 09:17:56
+100	ATL/BOQ/VI/2026/0099	2026-06-24	2026-06-24 09:21:34	2026-06-24 09:21:34
+101	ATL/BOQ/VI/2026/0100	2026-06-24	2026-06-24 09:26:27	2026-06-24 09:26:27
+102	ATL/BOQ/VI/2026/0101	2026-06-24	2026-06-24 09:29:34	2026-06-24 09:29:34
+103	ATL/BOQ/VI/2026/0102	2026-06-24	2026-06-24 09:33:57	2026-06-24 09:33:57
+104	ATL/BOQ/VI/2026/0103	2026-06-24	2026-06-24 09:35:23	2026-06-24 09:35:23
+105	ATL/BOQ/VI/2026/0104	2026-06-24	2026-06-24 09:37:24	2026-06-24 09:37:24
+106	ATL/BOQ/VI/2026/0105	2026-06-24	2026-06-24 09:38:59	2026-06-24 09:38:59
+107	ATL/BOQ/VI/2026/0106	2026-06-24	2026-06-24 09:40:59	2026-06-24 09:40:59
+108	ATL/BOQ/VI/2026/0107	2026-06-24	2026-06-24 09:48:08	2026-06-24 09:48:08
+109	ATL/BOQ/VI/2026/0108	2026-06-24	2026-06-24 10:10:37	2026-06-24 10:10:37
+110	ATL/BOQ/VI/2026/0109	2026-06-24	2026-06-24 10:13:49	2026-06-24 10:13:49
+111	ATL/BOQ/VI/2026/0110	2026-06-24	2026-06-24 10:14:35	2026-06-24 10:14:35
+112	ATL/BOQ/VI/2026/0111	2026-06-24	2026-06-24 10:15:48	2026-06-24 10:15:48
+113	ATL/BOQ/VI/2026/0112	2026-06-24	2026-06-24 10:16:31	2026-06-24 10:16:31
+114	ATL/BOQ/VI/2026/0113	2026-06-24	2026-06-24 10:16:38	2026-06-24 10:16:38
+115	ATL/BOQ/VI/2026/0114	2026-06-24	2026-06-24 10:16:50	2026-06-24 10:16:50
+116	ATL/BOQ/VI/2026/0115	2026-06-24	2026-06-24 10:17:44	2026-06-24 10:17:44
+117	ATL/BOQ/VI/2026/0116	2026-06-24	2026-06-24 10:18:36	2026-06-24 10:18:36
+118	ATL/BOQ/VI/2026/0117	2026-06-24	2026-06-24 10:19:25	2026-06-24 10:19:25
+119	ATL/BOQ/VI/2026/0118	2026-06-24	2026-06-24 10:21:36	2026-06-24 10:21:36
+120	ATL/BOQ/VI/2026/0119	2026-06-24	2026-06-24 10:25:49	2026-06-24 10:25:49
+121	ATL/BOQ/VI/2026/0120	2026-06-24	2026-06-24 10:27:01	2026-06-24 10:27:01
+122	ATL/BOQ/VI/2026/0121	2026-06-24	2026-06-24 10:27:03	2026-06-24 10:27:03
+123	ATL/BOQ/VI/2026/0122	2026-06-24	2026-06-24 10:28:09	2026-06-24 10:28:09
+124	ATL/BOQ/VI/2026/0123	2026-06-24	2026-06-24 10:29:43	2026-06-24 10:29:43
+125	ATL/BOQ/VI/2026/0124	2026-06-24	2026-06-24 10:33:12	2026-06-24 10:33:12
+126	ATL/BOQ/VI/2026/0125	2026-06-25	2026-06-25 02:47:00	2026-06-25 02:47:00
+127	ATL/BOQ/VI/2026/0126	2026-06-25	2026-06-25 02:47:05	2026-06-25 02:47:05
+128	ATL/BOQ/VI/2026/0127	2026-06-25	2026-06-25 02:52:48	2026-06-25 02:52:48
+129	ATL/BOQ/VI/2026/0128	2026-06-25	2026-06-25 03:23:34	2026-06-25 03:23:34
+130	ATL/BOQ/VI/2026/0129	2026-06-25	2026-06-25 03:27:05	2026-06-25 03:27:05
+131	ATL/BOQ/VI/2026/0130	2026-06-25	2026-06-25 03:35:25	2026-06-25 03:35:25
+132	ATL/BOQ/VI/2026/0131	2026-06-25	2026-06-25 03:37:52	2026-06-25 03:37:52
+133	ATL/BOQ/VI/2026/0132	2026-06-25	2026-06-25 03:40:37	2026-06-25 03:40:37
+134	ATL/BOQ/VI/2026/0133	2026-06-25	2026-06-25 03:42:30	2026-06-25 03:42:30
+135	ATL/BOQ/VI/2026/0134	2026-06-25	2026-06-25 03:45:20	2026-06-25 03:45:20
+136	ATL/BOQ/VI/2026/0135	2026-06-25	2026-06-25 03:51:40	2026-06-25 03:51:40
+137	ATL/BOQ/VI/2026/0136	2026-06-25	2026-06-25 03:54:35	2026-06-25 03:54:35
+138	ATL/BOQ/VI/2026/0137	2026-06-25	2026-06-25 03:55:47	2026-06-25 03:55:47
+139	ATL/BOQ/VI/2026/0138	2026-06-25	2026-06-25 04:00:16	2026-06-25 04:00:16
+140	ATL/BOQ/VI/2026/0139	2026-06-25	2026-06-25 04:02:20	2026-06-25 04:02:20
+141	ATL/BOQ/VI/2026/0140	2026-06-25	2026-06-25 04:08:08	2026-06-25 04:08:08
+142	ATL/BOQ/VI/2026/0141	2026-06-25	2026-06-25 04:10:23	2026-06-25 04:10:23
+143	ATL/BOQ/VI/2026/0142	2026-06-25	2026-06-25 04:13:09	2026-06-25 04:13:09
+144	ATL/BOQ/VI/2026/0143	2026-06-25	2026-06-25 04:17:04	2026-06-25 04:17:04
+145	ATL/BOQ/VI/2026/0144	2026-06-25	2026-06-25 04:20:06	2026-06-25 04:20:06
+146	ATL/BOQ/VI/2026/0145	2026-06-25	2026-06-25 04:21:51	2026-06-25 04:21:51
+147	ATL/BOQ/VI/2026/0146	2026-06-25	2026-06-25 04:23:32	2026-06-25 04:23:32
+148	ATL/BOQ/VI/2026/0147	2026-06-25	2026-06-25 04:23:47	2026-06-25 04:23:47
+149	ATL/BOQ/VI/2026/0148	2026-06-25	2026-06-25 04:25:21	2026-06-25 04:25:21
+150	ATL/BOQ/VI/2026/0149	2026-06-25	2026-06-25 04:27:30	2026-06-25 04:27:30
+151	ATL/BOQ/VI/2026/0150	2026-06-25	2026-06-25 04:30:12	2026-06-25 04:30:12
+152	ATL/BOQ/VI/2026/0151	2026-06-25	2026-06-25 04:32:31	2026-06-25 04:32:31
+153	ATL/BOQ/VI/2026/0152	2026-06-25	2026-06-25 04:34:02	2026-06-25 04:34:02
+156	ATL/BOQ/VI/2026/0153	2026-06-25	2026-06-25 04:39:45	2026-06-25 04:39:45
+157	ATL/BOQ/VI/2026/0154	2026-06-25	2026-06-25 04:43:12	2026-06-25 04:43:12
+158	ATL/BOQ/VI/2026/0155	2026-06-25	2026-06-25 04:43:39	2026-06-25 04:43:39
+159	ATL/BOQ/VI/2026/0156	2026-06-25	2026-06-25 04:44:05	2026-06-25 04:44:05
+160	ATL/BOQ/VI/2026/0157	2026-06-25	2026-06-25 04:45:51	2026-06-25 04:45:51
+161	ATL/BOQ/VI/2026/0158	2026-06-25	2026-06-25 04:48:03	2026-06-25 04:48:03
+162	ATL/BOQ/VI/2026/0159	2026-06-25	2026-06-25 04:49:10	2026-06-25 04:49:10
+163	ATL/BOQ/VI/2026/0160	2026-06-25	2026-06-25 04:50:18	2026-06-25 04:50:18
+164	ATL/BOQ/VI/2026/0161	2026-06-25	2026-06-25 04:54:00	2026-06-25 04:54:00
+165	ATL/BOQ/VI/2026/0162	2026-06-25	2026-06-25 04:55:31	2026-06-25 04:55:31
+166	ATL/BOQ/VI/2026/0163	2026-06-25	2026-06-25 04:58:14	2026-06-25 04:58:14
+167	ATL/BOQ/VI/2026/0164	2026-06-25	2026-06-25 05:01:08	2026-06-25 05:01:08
+168	ATL/BOQ/VI/2026/0165	2026-06-25	2026-06-25 05:03:52	2026-06-25 05:03:52
+169	ATL/BOQ/VI/2026/0166	2026-06-25	2026-06-25 05:06:32	2026-06-25 05:06:32
+170	ATL/BOQ/VI/2026/0167	2026-06-25	2026-06-25 05:11:32	2026-06-25 05:11:32
+171	ATL/BOQ/VI/2026/0168	2026-06-25	2026-06-25 05:12:56	2026-06-25 05:12:56
+172	ATL/BOQ/VI/2026/0169	2026-06-25	2026-06-25 05:14:17	2026-06-25 05:14:17
+173	ATL/BOQ/VI/2026/0170	2026-06-25	2026-06-25 09:03:56	2026-06-25 09:03:56
+174	ATL/BOQ/VI/2026/0171	2026-06-25	2026-06-25 09:04:06	2026-06-25 09:04:06
+175	ATL/BOQ/VI/2026/0172	2026-06-25	2026-06-25 09:20:51	2026-06-25 09:20:51
+176	ATL/BOQ/VI/2026/0173	2026-06-25	2026-06-25 09:21:17	2026-06-25 09:21:17
+177	ATL/BOQ/VI/2026/0174	2026-06-25	2026-06-25 09:21:37	2026-06-25 09:21:37
+178	ATL/BOQ/VI/2026/0175	2026-06-25	2026-06-25 09:21:46	2026-06-25 09:21:46
+179	ATL/BOQ/VI/2026/0176	2026-06-25	2026-06-25 09:22:06	2026-06-25 09:22:06
+180	ATL/BOQ/VI/2026/0177	2026-06-25	2026-06-25 09:23:50	2026-06-25 09:23:50
+181	ATL/BOQ/VI/2026/0178	2026-06-25	2026-06-25 10:38:03	2026-06-25 10:38:03
+182	ATL/BOQ/VI/2026/0179	2026-06-26	2026-06-26 02:56:37	2026-06-26 02:56:37
+183	ATL/BOQ/VI/2026/0180	2026-06-26	2026-06-26 02:56:48	2026-06-26 02:56:48
+\.
+
+
+--
+-- TOC entry 4950 (class 0 OID 35183)
+-- Dependencies: 223
+-- Data for Name: cache; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cache (key, value, expiration) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4951 (class 0 OID 35191)
+-- Dependencies: 224
+-- Data for Name: cache_locks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cache_locks (key, owner, expiration) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4971 (class 0 OID 35357)
+-- Dependencies: 244
+-- Data for Name: detail_boq; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.detail_boq (id, boq_id, produk_id, kode_produk, qty, created_at, updated_at) FROM stdin;
+1	2	1	HO.ATL.PRD-0119	63.00	2026-06-22 07:55:24	2026-06-22 07:55:24
+2	2	2	HO.ATL.PRD-0119	6.00	2026-06-22 07:55:24	2026-06-22 07:55:24
+3	2	7	HO.ATL.PRD-0125	12.00	2026-06-22 07:55:24	2026-06-22 07:55:24
+4	2	8	HO.ATL.PRD-0126	12.00	2026-06-22 07:55:24	2026-06-22 07:55:24
+5	2	9	HO.ATL.PRD-0127	12.00	2026-06-22 07:55:24	2026-06-22 07:55:24
+6	2	10	HO.ATL.PRD-0128	93.00	2026-06-22 07:55:24	2026-06-22 07:55:24
+7	2	12	HO.ATL.PRD-0130	6.00	2026-06-22 07:55:24	2026-06-22 07:55:24
+8	2	13	HO.ATL.PRD-0131	3.00	2026-06-22 07:55:24	2026-06-22 07:55:24
+9	2	22	HO.ATL.PRD-0140	21.00	2026-06-22 07:55:24	2026-06-22 07:55:24
+10	3	16	HO.ATL.PRD-0120	42.00	2026-06-22 08:10:29	2026-06-22 08:10:29
+11	3	17	HO.ATL.PRD-0120	4.00	2026-06-22 08:10:29	2026-06-22 08:10:29
+12	3	7	HO.ATL.PRD-0125	8.00	2026-06-22 08:10:29	2026-06-22 08:10:29
+13	3	8	HO.ATL.PRD-0126	8.00	2026-06-22 08:10:29	2026-06-22 08:10:29
+14	3	10	HO.ATL.PRD-0128	62.00	2026-06-22 08:10:29	2026-06-22 08:10:29
+15	3	12	HO.ATL.PRD-0130	4.00	2026-06-22 08:10:29	2026-06-22 08:10:29
+16	3	13	HO.ATL.PRD-0131	2.00	2026-06-22 08:10:29	2026-06-22 08:10:29
+17	3	22	HO.ATL.PRD-0140	14.00	2026-06-22 08:10:29	2026-06-22 08:10:29
+18	4	16	HO.ATL.PRD-0120	42.00	2026-06-22 08:15:13	2026-06-22 08:15:13
+19	4	17	HO.ATL.PRD-0120	4.00	2026-06-22 08:15:13	2026-06-22 08:15:13
+20	4	7	HO.ATL.PRD-0125	8.00	2026-06-22 08:15:13	2026-06-22 08:15:13
+21	4	8	HO.ATL.PRD-0126	8.00	2026-06-22 08:15:13	2026-06-22 08:15:13
+22	4	10	HO.ATL.PRD-0128	62.00	2026-06-22 08:15:13	2026-06-22 08:15:13
+23	4	12	HO.ATL.PRD-0130	4.00	2026-06-22 08:15:13	2026-06-22 08:15:13
+24	4	13	HO.ATL.PRD-0131	2.00	2026-06-22 08:15:13	2026-06-22 08:15:13
+25	4	22	HO.ATL.PRD-0140	14.00	2026-06-22 08:15:13	2026-06-22 08:15:13
+26	5	1	HO.ATL.PRD-0119	63.00	2026-06-22 08:15:33	2026-06-22 08:15:33
+27	5	2	HO.ATL.PRD-0119	6.00	2026-06-22 08:15:33	2026-06-22 08:15:33
+28	5	7	HO.ATL.PRD-0125	12.00	2026-06-22 08:15:33	2026-06-22 08:15:33
+29	5	8	HO.ATL.PRD-0126	12.00	2026-06-22 08:15:33	2026-06-22 08:15:33
+30	5	9	HO.ATL.PRD-0127	12.00	2026-06-22 08:15:33	2026-06-22 08:15:33
+31	5	10	HO.ATL.PRD-0128	93.00	2026-06-22 08:15:33	2026-06-22 08:15:33
+32	5	12	HO.ATL.PRD-0130	6.00	2026-06-22 08:15:33	2026-06-22 08:15:33
+33	5	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:15:33	2026-06-22 08:15:33
+34	5	22	HO.ATL.PRD-0140	21.00	2026-06-22 08:15:33	2026-06-22 08:15:33
+35	6	1	HO.ATL.PRD-0119	63.00	2026-06-22 08:16:05	2026-06-22 08:16:05
+36	6	2	HO.ATL.PRD-0119	6.00	2026-06-22 08:16:05	2026-06-22 08:16:05
+37	6	7	HO.ATL.PRD-0125	12.00	2026-06-22 08:16:05	2026-06-22 08:16:05
+38	6	8	HO.ATL.PRD-0126	12.00	2026-06-22 08:16:05	2026-06-22 08:16:05
+39	6	9	HO.ATL.PRD-0127	12.00	2026-06-22 08:16:05	2026-06-22 08:16:05
+40	6	10	HO.ATL.PRD-0128	93.00	2026-06-22 08:16:05	2026-06-22 08:16:05
+41	6	12	HO.ATL.PRD-0130	6.00	2026-06-22 08:16:05	2026-06-22 08:16:05
+42	6	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:16:05	2026-06-22 08:16:05
+43	6	22	HO.ATL.PRD-0140	21.00	2026-06-22 08:16:05	2026-06-22 08:16:05
+44	7	1	HO.ATL.PRD-0119	63.00	2026-06-22 08:16:16	2026-06-22 08:16:16
+45	7	2	HO.ATL.PRD-0119	6.00	2026-06-22 08:16:16	2026-06-22 08:16:16
+46	7	7	HO.ATL.PRD-0125	12.00	2026-06-22 08:16:16	2026-06-22 08:16:16
+47	7	8	HO.ATL.PRD-0126	12.00	2026-06-22 08:16:16	2026-06-22 08:16:16
+48	7	9	HO.ATL.PRD-0127	12.00	2026-06-22 08:16:16	2026-06-22 08:16:16
+49	7	10	HO.ATL.PRD-0128	93.00	2026-06-22 08:16:16	2026-06-22 08:16:16
+50	7	12	HO.ATL.PRD-0130	6.00	2026-06-22 08:16:16	2026-06-22 08:16:16
+51	7	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:16:16	2026-06-22 08:16:16
+52	7	22	HO.ATL.PRD-0140	21.00	2026-06-22 08:16:16	2026-06-22 08:16:16
+53	8	1	HO.ATL.PRD-0119	63.00	2026-06-22 08:16:26	2026-06-22 08:16:26
+54	8	2	HO.ATL.PRD-0119	6.00	2026-06-22 08:16:26	2026-06-22 08:16:26
+55	8	7	HO.ATL.PRD-0125	12.00	2026-06-22 08:16:26	2026-06-22 08:16:26
+56	8	8	HO.ATL.PRD-0126	12.00	2026-06-22 08:16:26	2026-06-22 08:16:26
+57	8	9	HO.ATL.PRD-0127	12.00	2026-06-22 08:16:26	2026-06-22 08:16:26
+58	8	10	HO.ATL.PRD-0128	93.00	2026-06-22 08:16:26	2026-06-22 08:16:26
+59	8	12	HO.ATL.PRD-0130	6.00	2026-06-22 08:16:26	2026-06-22 08:16:26
+60	8	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:16:26	2026-06-22 08:16:26
+61	8	22	HO.ATL.PRD-0140	21.00	2026-06-22 08:16:26	2026-06-22 08:16:26
+62	9	1	HO.ATL.PRD-0119	63.00	2026-06-22 08:16:35	2026-06-22 08:16:35
+63	9	2	HO.ATL.PRD-0119	6.00	2026-06-22 08:16:35	2026-06-22 08:16:35
+64	9	7	HO.ATL.PRD-0125	12.00	2026-06-22 08:16:35	2026-06-22 08:16:35
+65	9	8	HO.ATL.PRD-0126	12.00	2026-06-22 08:16:35	2026-06-22 08:16:35
+66	9	9	HO.ATL.PRD-0127	12.00	2026-06-22 08:16:35	2026-06-22 08:16:35
+67	9	10	HO.ATL.PRD-0128	93.00	2026-06-22 08:16:35	2026-06-22 08:16:35
+68	9	12	HO.ATL.PRD-0130	6.00	2026-06-22 08:16:35	2026-06-22 08:16:35
+69	9	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:16:35	2026-06-22 08:16:35
+70	9	22	HO.ATL.PRD-0140	21.00	2026-06-22 08:16:35	2026-06-22 08:16:35
+71	10	1	HO.ATL.PRD-0119	63.00	2026-06-22 08:17:22	2026-06-22 08:17:22
+72	10	2	HO.ATL.PRD-0119	6.00	2026-06-22 08:17:22	2026-06-22 08:17:22
+73	10	7	HO.ATL.PRD-0125	12.00	2026-06-22 08:17:22	2026-06-22 08:17:22
+74	10	8	HO.ATL.PRD-0126	12.00	2026-06-22 08:17:22	2026-06-22 08:17:22
+75	10	9	HO.ATL.PRD-0127	12.00	2026-06-22 08:17:22	2026-06-22 08:17:22
+76	10	10	HO.ATL.PRD-0128	93.00	2026-06-22 08:17:22	2026-06-22 08:17:22
+77	10	12	HO.ATL.PRD-0130	6.00	2026-06-22 08:17:22	2026-06-22 08:17:22
+78	10	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:17:22	2026-06-22 08:17:22
+79	10	22	HO.ATL.PRD-0140	21.00	2026-06-22 08:17:22	2026-06-22 08:17:22
+80	11	1	HO.ATL.PRD-0119	63.00	2026-06-22 08:20:12	2026-06-22 08:20:12
+81	11	2	HO.ATL.PRD-0119	6.00	2026-06-22 08:20:12	2026-06-22 08:20:12
+82	11	7	HO.ATL.PRD-0125	12.00	2026-06-22 08:20:12	2026-06-22 08:20:12
+83	11	8	HO.ATL.PRD-0126	12.00	2026-06-22 08:20:12	2026-06-22 08:20:12
+84	11	9	HO.ATL.PRD-0127	12.00	2026-06-22 08:20:12	2026-06-22 08:20:12
+85	11	10	HO.ATL.PRD-0128	93.00	2026-06-22 08:20:12	2026-06-22 08:20:12
+86	11	12	HO.ATL.PRD-0130	6.00	2026-06-22 08:20:12	2026-06-22 08:20:12
+87	11	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:20:12	2026-06-22 08:20:12
+88	11	22	HO.ATL.PRD-0140	21.00	2026-06-22 08:20:12	2026-06-22 08:20:12
+89	12	1	HO.ATL.PRD-0119	63.00	2026-06-22 08:20:51	2026-06-22 08:20:51
+90	12	2	HO.ATL.PRD-0119	6.00	2026-06-22 08:20:51	2026-06-22 08:20:51
+91	12	7	HO.ATL.PRD-0125	12.00	2026-06-22 08:20:51	2026-06-22 08:20:51
+92	12	8	HO.ATL.PRD-0126	12.00	2026-06-22 08:20:51	2026-06-22 08:20:51
+93	12	9	HO.ATL.PRD-0127	12.00	2026-06-22 08:20:51	2026-06-22 08:20:51
+94	12	10	HO.ATL.PRD-0128	93.00	2026-06-22 08:20:51	2026-06-22 08:20:51
+95	12	12	HO.ATL.PRD-0130	6.00	2026-06-22 08:20:51	2026-06-22 08:20:51
+96	12	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:20:51	2026-06-22 08:20:51
+97	12	22	HO.ATL.PRD-0140	21.00	2026-06-22 08:20:51	2026-06-22 08:20:51
+98	13	1	HO.ATL.PRD-0119	17.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+99	13	2	HO.ATL.PRD-0119	2.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+100	13	7	HO.ATL.PRD-0125	3.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+101	13	8	HO.ATL.PRD-0126	3.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+102	13	9	HO.ATL.PRD-0127	3.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+103	13	10	HO.ATL.PRD-0128	28.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+104	13	12	HO.ATL.PRD-0130	2.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+105	13	13	HO.ATL.PRD-0131	1.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+106	13	22	HO.ATL.PRD-0140	4.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+107	13	11	HO.ATL.PRD-0129	6.00	2026-06-22 08:23:43	2026-06-22 08:23:43
+108	14	1	HO.ATL.PRD-0119	17.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+109	14	2	HO.ATL.PRD-0119	2.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+110	14	7	HO.ATL.PRD-0125	3.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+111	14	8	HO.ATL.PRD-0126	3.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+112	14	9	HO.ATL.PRD-0127	3.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+113	14	10	HO.ATL.PRD-0128	28.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+114	14	12	HO.ATL.PRD-0130	2.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+115	14	13	HO.ATL.PRD-0131	1.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+116	14	22	HO.ATL.PRD-0140	4.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+117	14	11	HO.ATL.PRD-0129	6.00	2026-06-22 08:25:27	2026-06-22 08:25:27
+118	15	1	HO.ATL.PRD-0119	28.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+119	15	2	HO.ATL.PRD-0119	2.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+120	15	7	HO.ATL.PRD-0125	6.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+121	15	8	HO.ATL.PRD-0126	6.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+122	15	9	HO.ATL.PRD-0127	8.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+123	15	10	HO.ATL.PRD-0128	84.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+124	15	12	HO.ATL.PRD-0130	4.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+125	15	13	HO.ATL.PRD-0131	4.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+126	15	22	HO.ATL.PRD-0140	11.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+127	15	14	HO.ATL.PRD-0132	2.00	2026-06-22 08:29:37	2026-06-22 08:29:37
+128	16	1	HO.ATL.PRD-0119	23.00	2026-06-22 08:32:25	2026-06-22 08:32:25
+129	16	7	HO.ATL.PRD-0125	4.00	2026-06-22 08:32:25	2026-06-22 08:32:25
+130	16	8	HO.ATL.PRD-0126	4.00	2026-06-22 08:32:25	2026-06-22 08:32:25
+131	16	9	HO.ATL.PRD-0127	7.00	2026-06-22 08:32:25	2026-06-22 08:32:25
+132	16	10	HO.ATL.PRD-0128	48.00	2026-06-22 08:32:25	2026-06-22 08:32:25
+133	16	12	HO.ATL.PRD-0130	3.00	2026-06-22 08:32:25	2026-06-22 08:32:25
+134	16	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:32:25	2026-06-22 08:32:25
+135	16	22	HO.ATL.PRD-0140	4.00	2026-06-22 08:32:25	2026-06-22 08:32:25
+136	16	4	HO.ATL.PRD-0122	2.00	2026-06-22 08:32:25	2026-06-22 08:32:25
+137	17	1	HO.ATL.PRD-0119	18.00	2026-06-22 08:34:38	2026-06-22 08:34:38
+138	17	2	HO.ATL.PRD-0119	2.00	2026-06-22 08:34:38	2026-06-22 08:34:38
+139	17	7	HO.ATL.PRD-0125	4.00	2026-06-22 08:34:38	2026-06-22 08:34:38
+140	17	8	HO.ATL.PRD-0126	4.00	2026-06-22 08:34:38	2026-06-22 08:34:38
+141	17	9	HO.ATL.PRD-0127	9.00	2026-06-22 08:34:38	2026-06-22 08:34:38
+142	17	10	HO.ATL.PRD-0128	72.00	2026-06-22 08:34:38	2026-06-22 08:34:38
+143	17	12	HO.ATL.PRD-0130	3.00	2026-06-22 08:34:38	2026-06-22 08:34:38
+144	17	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:34:38	2026-06-22 08:34:38
+145	17	22	HO.ATL.PRD-0140	7.00	2026-06-22 08:34:38	2026-06-22 08:34:38
+146	18	1	HO.ATL.PRD-0119	28.00	2026-06-22 08:36:48	2026-06-22 08:36:48
+147	18	2	HO.ATL.PRD-0119	5.00	2026-06-22 08:36:48	2026-06-22 08:36:48
+148	18	7	HO.ATL.PRD-0125	5.00	2026-06-22 08:36:48	2026-06-22 08:36:48
+149	18	8	HO.ATL.PRD-0126	5.00	2026-06-22 08:36:48	2026-06-22 08:36:48
+150	18	9	HO.ATL.PRD-0127	4.00	2026-06-22 08:36:48	2026-06-22 08:36:48
+151	18	10	HO.ATL.PRD-0128	35.00	2026-06-22 08:36:48	2026-06-22 08:36:48
+152	18	12	HO.ATL.PRD-0130	1.00	2026-06-22 08:36:48	2026-06-22 08:36:48
+153	18	13	HO.ATL.PRD-0131	1.00	2026-06-22 08:36:48	2026-06-22 08:36:48
+154	18	22	HO.ATL.PRD-0140	20.00	2026-06-22 08:36:48	2026-06-22 08:36:48
+155	19	14	HO.ATL.PRD-0132	13.00	2026-06-22 08:38:25	2026-06-22 08:38:25
+156	19	2	HO.ATL.PRD-0119	5.00	2026-06-22 08:38:25	2026-06-22 08:38:25
+157	19	7	HO.ATL.PRD-0125	3.00	2026-06-22 08:38:25	2026-06-22 08:38:25
+158	19	8	HO.ATL.PRD-0126	3.00	2026-06-22 08:38:25	2026-06-22 08:38:25
+159	19	10	HO.ATL.PRD-0128	65.00	2026-06-22 08:38:25	2026-06-22 08:38:25
+160	19	12	HO.ATL.PRD-0130	1.00	2026-06-22 08:38:25	2026-06-22 08:38:25
+161	19	13	HO.ATL.PRD-0131	2.00	2026-06-22 08:38:25	2026-06-22 08:38:25
+162	19	22	HO.ATL.PRD-0140	10.00	2026-06-22 08:38:25	2026-06-22 08:38:25
+163	20	1	HO.ATL.PRD-0119	14.00	2026-06-22 08:40:04	2026-06-22 08:40:04
+164	20	2	HO.ATL.PRD-0119	4.00	2026-06-22 08:40:04	2026-06-22 08:40:04
+165	20	7	HO.ATL.PRD-0125	3.00	2026-06-22 08:40:04	2026-06-22 08:40:04
+166	20	8	HO.ATL.PRD-0126	3.00	2026-06-22 08:40:04	2026-06-22 08:40:04
+167	20	9	HO.ATL.PRD-0127	7.00	2026-06-22 08:40:04	2026-06-22 08:40:04
+168	20	10	HO.ATL.PRD-0128	66.00	2026-06-22 08:40:04	2026-06-22 08:40:04
+169	20	12	HO.ATL.PRD-0130	1.00	2026-06-22 08:40:04	2026-06-22 08:40:04
+170	20	13	HO.ATL.PRD-0131	2.00	2026-06-22 08:40:04	2026-06-22 08:40:04
+171	20	22	HO.ATL.PRD-0140	10.00	2026-06-22 08:40:04	2026-06-22 08:40:04
+172	21	1	HO.ATL.PRD-0119	10.00	2026-06-22 08:41:55	2026-06-22 08:41:55
+173	21	2	HO.ATL.PRD-0119	4.00	2026-06-22 08:41:55	2026-06-22 08:41:55
+174	21	7	HO.ATL.PRD-0125	2.00	2026-06-22 08:41:55	2026-06-22 08:41:55
+175	21	8	HO.ATL.PRD-0126	2.00	2026-06-22 08:41:55	2026-06-22 08:41:55
+176	21	9	HO.ATL.PRD-0127	6.00	2026-06-22 08:41:55	2026-06-22 08:41:55
+177	21	10	HO.ATL.PRD-0128	46.00	2026-06-22 08:41:55	2026-06-22 08:41:55
+178	21	12	HO.ATL.PRD-0130	2.00	2026-06-22 08:41:55	2026-06-22 08:41:55
+179	21	13	HO.ATL.PRD-0131	2.00	2026-06-22 08:41:55	2026-06-22 08:41:55
+180	21	22	HO.ATL.PRD-0140	4.00	2026-06-22 08:41:55	2026-06-22 08:41:55
+181	22	1	HO.ATL.PRD-0119	15.00	2026-06-22 08:43:37	2026-06-22 08:43:37
+182	22	2	HO.ATL.PRD-0119	4.00	2026-06-22 08:43:37	2026-06-22 08:43:37
+183	22	7	HO.ATL.PRD-0125	3.00	2026-06-22 08:43:37	2026-06-22 08:43:37
+184	22	8	HO.ATL.PRD-0126	3.00	2026-06-22 08:43:37	2026-06-22 08:43:37
+185	22	9	HO.ATL.PRD-0127	3.00	2026-06-22 08:43:37	2026-06-22 08:43:37
+186	22	10	HO.ATL.PRD-0128	7.00	2026-06-22 08:43:37	2026-06-22 08:43:37
+187	22	12	HO.ATL.PRD-0130	3.00	2026-06-22 08:43:37	2026-06-22 08:43:37
+188	22	13	HO.ATL.PRD-0131	3.00	2026-06-22 08:43:37	2026-06-22 08:43:37
+189	22	22	HO.ATL.PRD-0140	6.00	2026-06-22 08:43:37	2026-06-22 08:43:37
+190	23	1	HO.ATL.PRD-0119	10.00	2026-06-22 08:46:03	2026-06-22 08:46:03
+191	23	2	HO.ATL.PRD-0119	4.00	2026-06-22 08:46:03	2026-06-22 08:46:03
+192	23	7	HO.ATL.PRD-0125	2.00	2026-06-22 08:46:03	2026-06-22 08:46:03
+193	23	8	HO.ATL.PRD-0126	2.00	2026-06-22 08:46:03	2026-06-22 08:46:03
+194	23	9	HO.ATL.PRD-0127	6.00	2026-06-22 08:46:03	2026-06-22 08:46:03
+195	23	10	HO.ATL.PRD-0128	45.00	2026-06-22 08:46:03	2026-06-22 08:46:03
+196	23	12	HO.ATL.PRD-0130	2.00	2026-06-22 08:46:03	2026-06-22 08:46:03
+197	23	13	HO.ATL.PRD-0131	2.00	2026-06-22 08:46:03	2026-06-22 08:46:03
+198	23	22	HO.ATL.PRD-0140	4.00	2026-06-22 08:46:03	2026-06-22 08:46:03
+199	24	1	HO.ATL.PRD-0119	121.00	2026-06-22 08:52:24	2026-06-22 08:52:24
+200	24	2	HO.ATL.PRD-0119	5.00	2026-06-22 08:52:24	2026-06-22 08:52:24
+201	24	7	HO.ATL.PRD-0125	19.00	2026-06-22 08:52:24	2026-06-22 08:52:24
+202	24	8	HO.ATL.PRD-0126	19.00	2026-06-22 08:52:24	2026-06-22 08:52:24
+203	24	12	HO.ATL.PRD-0130	9.00	2026-06-22 08:52:24	2026-06-22 08:52:24
+204	24	22	HO.ATL.PRD-0140	35.00	2026-06-22 08:52:24	2026-06-22 08:52:24
+205	24	9	HO.ATL.PRD-0127	5.00	2026-06-22 08:52:24	2026-06-22 08:52:24
+206	24	10	HO.ATL.PRD-0128	42.00	2026-06-22 08:52:24	2026-06-22 08:52:24
+207	24	13	HO.ATL.PRD-0131	4.00	2026-06-22 08:52:24	2026-06-22 08:52:24
+208	25	1	HO.ATL.PRD-0119	121.00	2026-06-22 08:53:53	2026-06-22 08:53:53
+209	25	2	HO.ATL.PRD-0119	5.00	2026-06-22 08:53:53	2026-06-22 08:53:53
+210	25	7	HO.ATL.PRD-0125	19.00	2026-06-22 08:53:53	2026-06-22 08:53:53
+211	25	8	HO.ATL.PRD-0126	19.00	2026-06-22 08:53:53	2026-06-22 08:53:53
+212	25	12	HO.ATL.PRD-0130	9.00	2026-06-22 08:53:53	2026-06-22 08:53:53
+213	25	22	HO.ATL.PRD-0140	35.00	2026-06-22 08:53:53	2026-06-22 08:53:53
+214	25	9	HO.ATL.PRD-0127	5.00	2026-06-22 08:53:53	2026-06-22 08:53:53
+215	25	10	HO.ATL.PRD-0128	42.00	2026-06-22 08:53:53	2026-06-22 08:53:53
+216	25	13	HO.ATL.PRD-0131	4.00	2026-06-22 08:53:53	2026-06-22 08:53:53
+217	26	1	HO.ATL.PRD-0119	121.00	2026-06-22 08:56:38	2026-06-22 08:56:38
+218	26	2	HO.ATL.PRD-0119	5.00	2026-06-22 08:56:38	2026-06-22 08:56:38
+219	26	7	HO.ATL.PRD-0125	19.00	2026-06-22 08:56:38	2026-06-22 08:56:38
+220	26	8	HO.ATL.PRD-0126	19.00	2026-06-22 08:56:38	2026-06-22 08:56:38
+221	26	12	HO.ATL.PRD-0130	9.00	2026-06-22 08:56:38	2026-06-22 08:56:38
+222	26	22	HO.ATL.PRD-0140	35.00	2026-06-22 08:56:38	2026-06-22 08:56:38
+223	26	9	HO.ATL.PRD-0127	5.00	2026-06-22 08:56:38	2026-06-22 08:56:38
+224	26	10	HO.ATL.PRD-0128	42.00	2026-06-22 08:56:38	2026-06-22 08:56:38
+225	26	13	HO.ATL.PRD-0131	4.00	2026-06-22 08:56:38	2026-06-22 08:56:38
+226	27	1	HO.ATL.PRD-0119	121.00	2026-06-22 08:58:09	2026-06-22 08:58:09
+227	27	2	HO.ATL.PRD-0119	5.00	2026-06-22 08:58:09	2026-06-22 08:58:09
+228	27	7	HO.ATL.PRD-0125	19.00	2026-06-22 08:58:09	2026-06-22 08:58:09
+229	27	8	HO.ATL.PRD-0126	19.00	2026-06-22 08:58:09	2026-06-22 08:58:09
+230	27	12	HO.ATL.PRD-0130	9.00	2026-06-22 08:58:09	2026-06-22 08:58:09
+231	27	22	HO.ATL.PRD-0140	35.00	2026-06-22 08:58:09	2026-06-22 08:58:09
+232	27	9	HO.ATL.PRD-0127	5.00	2026-06-22 08:58:09	2026-06-22 08:58:09
+233	27	10	HO.ATL.PRD-0128	42.00	2026-06-22 08:58:09	2026-06-22 08:58:09
+234	27	13	HO.ATL.PRD-0131	4.00	2026-06-22 08:58:09	2026-06-22 08:58:09
+235	28	1	HO.ATL.PRD-0119	121.00	2026-06-22 08:59:37	2026-06-22 08:59:37
+236	28	2	HO.ATL.PRD-0119	5.00	2026-06-22 08:59:37	2026-06-22 08:59:37
+237	28	7	HO.ATL.PRD-0125	19.00	2026-06-22 08:59:37	2026-06-22 08:59:37
+238	28	8	HO.ATL.PRD-0126	19.00	2026-06-22 08:59:37	2026-06-22 08:59:37
+239	28	12	HO.ATL.PRD-0130	9.00	2026-06-22 08:59:37	2026-06-22 08:59:37
+240	28	22	HO.ATL.PRD-0140	35.00	2026-06-22 08:59:37	2026-06-22 08:59:37
+241	28	9	HO.ATL.PRD-0127	5.00	2026-06-22 08:59:37	2026-06-22 08:59:37
+242	28	10	HO.ATL.PRD-0128	42.00	2026-06-22 08:59:37	2026-06-22 08:59:37
+243	28	13	HO.ATL.PRD-0131	4.00	2026-06-22 08:59:37	2026-06-22 08:59:37
+244	29	1	HO.ATL.PRD-0119	121.00	2026-06-22 09:01:44	2026-06-22 09:01:44
+245	29	2	HO.ATL.PRD-0119	5.00	2026-06-22 09:01:44	2026-06-22 09:01:44
+246	29	7	HO.ATL.PRD-0125	19.00	2026-06-22 09:01:44	2026-06-22 09:01:44
+247	29	8	HO.ATL.PRD-0126	19.00	2026-06-22 09:01:44	2026-06-22 09:01:44
+248	29	12	HO.ATL.PRD-0130	9.00	2026-06-22 09:01:44	2026-06-22 09:01:44
+249	29	22	HO.ATL.PRD-0140	35.00	2026-06-22 09:01:44	2026-06-22 09:01:44
+250	29	9	HO.ATL.PRD-0127	5.00	2026-06-22 09:01:44	2026-06-22 09:01:44
+251	29	10	HO.ATL.PRD-0128	42.00	2026-06-22 09:01:44	2026-06-22 09:01:44
+252	29	13	HO.ATL.PRD-0131	4.00	2026-06-22 09:01:44	2026-06-22 09:01:44
+253	30	1	HO.ATL.PRD-0119	69.00	2026-06-23 07:22:27	2026-06-23 07:22:27
+254	30	2	HO.ATL.PRD-0119	5.00	2026-06-23 07:22:27	2026-06-23 07:22:27
+255	30	7	HO.ATL.PRD-0125	11.00	2026-06-23 07:22:27	2026-06-23 07:22:27
+256	30	8	HO.ATL.PRD-0126	11.00	2026-06-23 07:22:27	2026-06-23 07:22:27
+257	30	12	HO.ATL.PRD-0130	5.00	2026-06-23 07:22:27	2026-06-23 07:22:27
+258	30	22	HO.ATL.PRD-0140	11.00	2026-06-23 07:22:27	2026-06-23 07:22:27
+259	30	9	HO.ATL.PRD-0127	2.00	2026-06-23 07:22:27	2026-06-23 07:22:27
+260	30	10	HO.ATL.PRD-0128	20.00	2026-06-23 07:22:27	2026-06-23 07:22:27
+261	30	13	HO.ATL.PRD-0131	2.00	2026-06-23 07:22:27	2026-06-23 07:22:27
+262	31	14	HO.ATL.PRD-0132	5.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+263	31	2	HO.ATL.PRD-0119	4.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+264	31	7	HO.ATL.PRD-0125	3.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+265	31	8	HO.ATL.PRD-0126	3.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+266	31	10	HO.ATL.PRD-0128	7.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+267	31	12	HO.ATL.PRD-0130	3.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+268	31	13	HO.ATL.PRD-0131	3.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+269	31	22	HO.ATL.PRD-0140	6.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+270	31	1	HO.ATL.PRD-0119	10.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+271	31	9	HO.ATL.PRD-0127	2.00	2026-06-23 07:33:05	2026-06-23 07:33:05
+272	32	1	HO.ATL.PRD-0119	56.00	2026-06-23 07:39:05	2026-06-23 07:39:05
+273	32	2	HO.ATL.PRD-0119	4.00	2026-06-23 07:39:05	2026-06-23 07:39:05
+274	32	7	HO.ATL.PRD-0125	9.00	2026-06-23 07:39:05	2026-06-23 07:39:05
+275	32	8	HO.ATL.PRD-0126	9.00	2026-06-23 07:39:05	2026-06-23 07:39:05
+276	32	9	HO.ATL.PRD-0127	4.00	2026-06-23 07:39:05	2026-06-23 07:39:05
+277	32	10	HO.ATL.PRD-0128	32.00	2026-06-23 07:39:05	2026-06-23 07:39:05
+278	32	12	HO.ATL.PRD-0130	2.00	2026-06-23 07:39:05	2026-06-23 07:39:05
+279	32	13	HO.ATL.PRD-0131	1.00	2026-06-23 07:39:05	2026-06-23 07:39:05
+280	32	22	HO.ATL.PRD-0140	38.00	2026-06-23 07:39:05	2026-06-23 07:39:05
+281	33	1	HO.ATL.PRD-0119	14.00	2026-06-23 07:41:36	2026-06-23 07:41:36
+282	33	2	HO.ATL.PRD-0119	2.00	2026-06-23 07:41:36	2026-06-23 07:41:36
+283	33	7	HO.ATL.PRD-0125	3.00	2026-06-23 07:41:36	2026-06-23 07:41:36
+284	33	8	HO.ATL.PRD-0126	3.00	2026-06-23 07:41:36	2026-06-23 07:41:36
+285	33	9	HO.ATL.PRD-0127	9.00	2026-06-23 07:41:36	2026-06-23 07:41:36
+286	33	10	HO.ATL.PRD-0128	70.00	2026-06-23 07:41:36	2026-06-23 07:41:36
+287	33	12	HO.ATL.PRD-0130	3.00	2026-06-23 07:41:36	2026-06-23 07:41:36
+288	33	13	HO.ATL.PRD-0131	3.00	2026-06-23 07:41:36	2026-06-23 07:41:36
+289	33	22	HO.ATL.PRD-0140	6.00	2026-06-23 07:41:36	2026-06-23 07:41:36
+290	34	1	HO.ATL.PRD-0119	13.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+291	34	2	HO.ATL.PRD-0119	2.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+292	34	7	HO.ATL.PRD-0125	3.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+293	34	8	HO.ATL.PRD-0126	3.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+294	34	9	HO.ATL.PRD-0127	3.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+295	34	10	HO.ATL.PRD-0128	24.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+296	34	12	HO.ATL.PRD-0130	2.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+297	34	13	HO.ATL.PRD-0131	1.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+298	34	22	HO.ATL.PRD-0140	2.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+299	34	11	HO.ATL.PRD-0129	21.00	2026-06-23 07:48:55	2026-06-23 07:48:55
+300	35	1	HO.ATL.PRD-0119	15.00	2026-06-23 07:51:58	2026-06-23 07:51:58
+301	35	2	HO.ATL.PRD-0119	6.00	2026-06-23 07:51:58	2026-06-23 07:51:58
+302	35	7	HO.ATL.PRD-0125	3.00	2026-06-23 07:51:58	2026-06-23 07:51:58
+303	35	8	HO.ATL.PRD-0126	3.00	2026-06-23 07:51:58	2026-06-23 07:51:58
+304	35	9	HO.ATL.PRD-0127	9.00	2026-06-23 07:51:58	2026-06-23 07:51:58
+305	35	10	HO.ATL.PRD-0128	72.00	2026-06-23 07:51:58	2026-06-23 07:51:58
+306	35	12	HO.ATL.PRD-0130	3.00	2026-06-23 07:51:58	2026-06-23 07:51:58
+307	35	13	HO.ATL.PRD-0131	3.00	2026-06-23 07:51:58	2026-06-23 07:51:58
+308	35	22	HO.ATL.PRD-0140	6.00	2026-06-23 07:51:58	2026-06-23 07:51:58
+309	36	1	HO.ATL.PRD-0119	12.00	2026-06-23 07:52:44	2026-06-23 07:52:44
+310	36	2	HO.ATL.PRD-0119	3.00	2026-06-23 07:52:44	2026-06-23 07:52:44
+311	36	7	HO.ATL.PRD-0125	3.00	2026-06-23 07:52:44	2026-06-23 07:52:44
+312	36	8	HO.ATL.PRD-0126	3.00	2026-06-23 07:52:44	2026-06-23 07:52:44
+313	36	12	HO.ATL.PRD-0130	2.00	2026-06-23 07:52:44	2026-06-23 07:52:44
+314	36	22	HO.ATL.PRD-0140	1.00	2026-06-23 07:52:44	2026-06-23 07:52:44
+315	36	9	HO.ATL.PRD-0127	1.00	2026-06-23 07:52:44	2026-06-23 07:52:44
+316	36	10	HO.ATL.PRD-0128	4.00	2026-06-23 07:52:44	2026-06-23 07:52:44
+317	36	13	HO.ATL.PRD-0131	2.00	2026-06-23 07:52:44	2026-06-23 07:52:44
+318	37	1	HO.ATL.PRD-0119	12.00	2026-06-23 07:55:48	2026-06-23 07:55:48
+319	37	2	HO.ATL.PRD-0119	3.00	2026-06-23 07:55:48	2026-06-23 07:55:48
+320	37	7	HO.ATL.PRD-0125	3.00	2026-06-23 07:55:48	2026-06-23 07:55:48
+321	37	8	HO.ATL.PRD-0126	3.00	2026-06-23 07:55:48	2026-06-23 07:55:48
+322	37	12	HO.ATL.PRD-0130	2.00	2026-06-23 07:55:48	2026-06-23 07:55:48
+323	37	22	HO.ATL.PRD-0140	1.00	2026-06-23 07:55:48	2026-06-23 07:55:48
+324	37	9	HO.ATL.PRD-0127	1.00	2026-06-23 07:55:48	2026-06-23 07:55:48
+325	37	10	HO.ATL.PRD-0128	4.00	2026-06-23 07:55:48	2026-06-23 07:55:48
+326	37	13	HO.ATL.PRD-0131	2.00	2026-06-23 07:55:48	2026-06-23 07:55:48
+327	38	1	HO.ATL.PRD-0119	12.00	2026-06-23 07:58:00	2026-06-23 07:58:00
+328	38	2	HO.ATL.PRD-0119	3.00	2026-06-23 07:58:00	2026-06-23 07:58:00
+329	38	7	HO.ATL.PRD-0125	3.00	2026-06-23 07:58:00	2026-06-23 07:58:00
+330	38	8	HO.ATL.PRD-0126	3.00	2026-06-23 07:58:00	2026-06-23 07:58:00
+331	38	12	HO.ATL.PRD-0130	2.00	2026-06-23 07:58:00	2026-06-23 07:58:00
+332	38	22	HO.ATL.PRD-0140	1.00	2026-06-23 07:58:00	2026-06-23 07:58:00
+333	38	9	HO.ATL.PRD-0127	1.00	2026-06-23 07:58:00	2026-06-23 07:58:00
+334	38	10	HO.ATL.PRD-0128	4.00	2026-06-23 07:58:00	2026-06-23 07:58:00
+335	38	13	HO.ATL.PRD-0131	2.00	2026-06-23 07:58:00	2026-06-23 07:58:00
+336	39	1	HO.ATL.PRD-0119	12.00	2026-06-23 08:00:34	2026-06-23 08:00:34
+337	39	2	HO.ATL.PRD-0119	3.00	2026-06-23 08:00:34	2026-06-23 08:00:34
+338	39	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:00:34	2026-06-23 08:00:34
+339	39	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:00:34	2026-06-23 08:00:34
+340	39	12	HO.ATL.PRD-0130	2.00	2026-06-23 08:00:34	2026-06-23 08:00:34
+341	39	22	HO.ATL.PRD-0140	1.00	2026-06-23 08:00:34	2026-06-23 08:00:34
+342	39	9	HO.ATL.PRD-0127	1.00	2026-06-23 08:00:34	2026-06-23 08:00:34
+343	39	10	HO.ATL.PRD-0128	4.00	2026-06-23 08:00:34	2026-06-23 08:00:34
+344	39	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:00:34	2026-06-23 08:00:34
+345	40	1	HO.ATL.PRD-0119	12.00	2026-06-23 08:02:50	2026-06-23 08:02:50
+346	40	2	HO.ATL.PRD-0119	3.00	2026-06-23 08:02:50	2026-06-23 08:02:50
+347	40	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:02:50	2026-06-23 08:02:50
+348	40	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:02:50	2026-06-23 08:02:50
+349	40	12	HO.ATL.PRD-0130	2.00	2026-06-23 08:02:50	2026-06-23 08:02:50
+350	40	22	HO.ATL.PRD-0140	1.00	2026-06-23 08:02:50	2026-06-23 08:02:50
+351	40	9	HO.ATL.PRD-0127	1.00	2026-06-23 08:02:50	2026-06-23 08:02:50
+352	40	10	HO.ATL.PRD-0128	4.00	2026-06-23 08:02:50	2026-06-23 08:02:50
+353	40	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:02:50	2026-06-23 08:02:50
+354	41	1	HO.ATL.PRD-0119	12.00	2026-06-23 08:06:55	2026-06-23 08:06:55
+355	41	2	HO.ATL.PRD-0119	3.00	2026-06-23 08:06:55	2026-06-23 08:06:55
+356	41	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:06:55	2026-06-23 08:06:55
+357	41	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:06:55	2026-06-23 08:06:55
+358	41	12	HO.ATL.PRD-0130	2.00	2026-06-23 08:06:55	2026-06-23 08:06:55
+359	41	22	HO.ATL.PRD-0140	1.00	2026-06-23 08:06:55	2026-06-23 08:06:55
+360	41	9	HO.ATL.PRD-0127	1.00	2026-06-23 08:06:55	2026-06-23 08:06:55
+361	41	10	HO.ATL.PRD-0128	4.00	2026-06-23 08:06:55	2026-06-23 08:06:55
+362	41	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:06:55	2026-06-23 08:06:55
+363	42	1	HO.ATL.PRD-0119	10.00	2026-06-23 08:08:45	2026-06-23 08:08:45
+364	42	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:08:45	2026-06-23 08:08:45
+365	42	7	HO.ATL.PRD-0125	2.00	2026-06-23 08:08:45	2026-06-23 08:08:45
+366	42	8	HO.ATL.PRD-0126	2.00	2026-06-23 08:08:45	2026-06-23 08:08:45
+367	42	9	HO.ATL.PRD-0127	6.00	2026-06-23 08:08:45	2026-06-23 08:08:45
+368	42	10	HO.ATL.PRD-0128	45.00	2026-06-23 08:08:45	2026-06-23 08:08:45
+369	42	12	HO.ATL.PRD-0130	2.00	2026-06-23 08:08:45	2026-06-23 08:08:45
+370	42	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:08:45	2026-06-23 08:08:45
+371	42	22	HO.ATL.PRD-0140	4.00	2026-06-23 08:08:45	2026-06-23 08:08:45
+372	43	1	HO.ATL.PRD-0119	12.00	2026-06-23 08:09:11	2026-06-23 08:09:11
+373	43	2	HO.ATL.PRD-0119	3.00	2026-06-23 08:09:11	2026-06-23 08:09:11
+374	43	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:09:11	2026-06-23 08:09:11
+375	43	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:09:11	2026-06-23 08:09:11
+376	43	12	HO.ATL.PRD-0130	2.00	2026-06-23 08:09:11	2026-06-23 08:09:11
+377	43	22	HO.ATL.PRD-0140	1.00	2026-06-23 08:09:11	2026-06-23 08:09:11
+378	43	9	HO.ATL.PRD-0127	1.00	2026-06-23 08:09:11	2026-06-23 08:09:11
+379	43	10	HO.ATL.PRD-0128	4.00	2026-06-23 08:09:11	2026-06-23 08:09:11
+380	43	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:09:11	2026-06-23 08:09:11
+381	44	1	HO.ATL.PRD-0119	10.00	2026-06-23 08:11:23	2026-06-23 08:11:23
+382	44	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:11:23	2026-06-23 08:11:23
+383	44	7	HO.ATL.PRD-0125	2.00	2026-06-23 08:11:23	2026-06-23 08:11:23
+384	44	8	HO.ATL.PRD-0126	2.00	2026-06-23 08:11:24	2026-06-23 08:11:24
+385	44	9	HO.ATL.PRD-0127	6.00	2026-06-23 08:11:24	2026-06-23 08:11:24
+386	44	10	HO.ATL.PRD-0128	45.00	2026-06-23 08:11:24	2026-06-23 08:11:24
+387	44	12	HO.ATL.PRD-0130	2.00	2026-06-23 08:11:24	2026-06-23 08:11:24
+388	44	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:11:24	2026-06-23 08:11:24
+389	44	22	HO.ATL.PRD-0140	4.00	2026-06-23 08:11:24	2026-06-23 08:11:24
+390	45	1	HO.ATL.PRD-0119	15.00	2026-06-23 08:13:08	2026-06-23 08:13:08
+391	45	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:13:08	2026-06-23 08:13:08
+392	45	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:13:08	2026-06-23 08:13:08
+393	45	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:13:08	2026-06-23 08:13:08
+394	45	9	HO.ATL.PRD-0127	3.00	2026-06-23 08:13:08	2026-06-23 08:13:08
+395	45	10	HO.ATL.PRD-0128	7.00	2026-06-23 08:13:08	2026-06-23 08:13:08
+396	45	12	HO.ATL.PRD-0130	3.00	2026-06-23 08:13:08	2026-06-23 08:13:08
+397	45	13	HO.ATL.PRD-0131	3.00	2026-06-23 08:13:08	2026-06-23 08:13:08
+398	45	22	HO.ATL.PRD-0140	6.00	2026-06-23 08:13:08	2026-06-23 08:13:08
+399	46	1	HO.ATL.PRD-0119	15.00	2026-06-23 08:19:14	2026-06-23 08:19:14
+400	46	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:19:14	2026-06-23 08:19:14
+401	46	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:19:14	2026-06-23 08:19:14
+402	46	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:19:14	2026-06-23 08:19:14
+403	46	9	HO.ATL.PRD-0127	3.00	2026-06-23 08:19:14	2026-06-23 08:19:14
+404	46	10	HO.ATL.PRD-0128	7.00	2026-06-23 08:19:14	2026-06-23 08:19:14
+405	46	12	HO.ATL.PRD-0130	3.00	2026-06-23 08:19:14	2026-06-23 08:19:14
+406	46	13	HO.ATL.PRD-0131	3.00	2026-06-23 08:19:14	2026-06-23 08:19:14
+407	46	22	HO.ATL.PRD-0140	6.00	2026-06-23 08:19:14	2026-06-23 08:19:14
+408	47	1	HO.ATL.PRD-0119	10.00	2026-06-23 08:22:43	2026-06-23 08:22:43
+409	47	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:22:43	2026-06-23 08:22:43
+410	47	7	HO.ATL.PRD-0125	2.00	2026-06-23 08:22:43	2026-06-23 08:22:43
+411	47	8	HO.ATL.PRD-0126	2.00	2026-06-23 08:22:43	2026-06-23 08:22:43
+412	47	9	HO.ATL.PRD-0127	6.00	2026-06-23 08:22:43	2026-06-23 08:22:43
+413	47	10	HO.ATL.PRD-0128	46.00	2026-06-23 08:22:43	2026-06-23 08:22:43
+414	47	12	HO.ATL.PRD-0130	2.00	2026-06-23 08:22:43	2026-06-23 08:22:43
+415	47	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:22:43	2026-06-23 08:22:43
+416	47	22	HO.ATL.PRD-0140	4.00	2026-06-23 08:22:43	2026-06-23 08:22:43
+417	48	1	HO.ATL.PRD-0119	10.00	2026-06-23 08:23:00	2026-06-23 08:23:00
+418	48	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:23:00	2026-06-23 08:23:00
+419	48	7	HO.ATL.PRD-0125	2.00	2026-06-23 08:23:00	2026-06-23 08:23:00
+420	48	8	HO.ATL.PRD-0126	2.00	2026-06-23 08:23:00	2026-06-23 08:23:00
+421	48	9	HO.ATL.PRD-0127	6.00	2026-06-23 08:23:00	2026-06-23 08:23:00
+422	48	10	HO.ATL.PRD-0128	46.00	2026-06-23 08:23:00	2026-06-23 08:23:00
+423	48	12	HO.ATL.PRD-0130	2.00	2026-06-23 08:23:00	2026-06-23 08:23:00
+424	48	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:23:00	2026-06-23 08:23:00
+425	48	22	HO.ATL.PRD-0140	4.00	2026-06-23 08:23:00	2026-06-23 08:23:00
+426	49	1	HO.ATL.PRD-0119	14.00	2026-06-23 08:24:44	2026-06-23 08:24:44
+427	49	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:24:44	2026-06-23 08:24:44
+428	49	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:24:44	2026-06-23 08:24:44
+429	49	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:24:44	2026-06-23 08:24:44
+430	49	9	HO.ATL.PRD-0127	7.00	2026-06-23 08:24:44	2026-06-23 08:24:44
+431	49	10	HO.ATL.PRD-0128	66.00	2026-06-23 08:24:44	2026-06-23 08:24:44
+432	49	12	HO.ATL.PRD-0130	1.00	2026-06-23 08:24:44	2026-06-23 08:24:44
+433	49	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:24:44	2026-06-23 08:24:44
+434	49	22	HO.ATL.PRD-0140	10.00	2026-06-23 08:24:44	2026-06-23 08:24:44
+435	50	1	HO.ATL.PRD-0119	14.00	2026-06-23 08:25:43	2026-06-23 08:25:43
+436	50	2	HO.ATL.PRD-0119	5.00	2026-06-23 08:25:43	2026-06-23 08:25:43
+437	50	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:25:43	2026-06-23 08:25:43
+438	50	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:25:43	2026-06-23 08:25:43
+439	50	9	HO.ATL.PRD-0127	7.00	2026-06-23 08:25:43	2026-06-23 08:25:43
+440	50	10	HO.ATL.PRD-0128	65.00	2026-06-23 08:25:43	2026-06-23 08:25:43
+441	50	12	HO.ATL.PRD-0130	1.00	2026-06-23 08:25:43	2026-06-23 08:25:43
+442	50	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:25:43	2026-06-23 08:25:43
+443	50	22	HO.ATL.PRD-0140	10.00	2026-06-23 08:25:43	2026-06-23 08:25:43
+444	51	1	HO.ATL.PRD-0119	14.00	2026-06-23 08:26:35	2026-06-23 08:26:35
+445	51	2	HO.ATL.PRD-0119	5.00	2026-06-23 08:26:35	2026-06-23 08:26:35
+446	51	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:26:35	2026-06-23 08:26:35
+447	51	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:26:35	2026-06-23 08:26:35
+448	51	9	HO.ATL.PRD-0127	7.00	2026-06-23 08:26:35	2026-06-23 08:26:35
+449	51	10	HO.ATL.PRD-0128	65.00	2026-06-23 08:26:35	2026-06-23 08:26:35
+450	51	12	HO.ATL.PRD-0130	1.00	2026-06-23 08:26:35	2026-06-23 08:26:35
+451	51	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:26:35	2026-06-23 08:26:35
+452	51	22	HO.ATL.PRD-0140	10.00	2026-06-23 08:26:35	2026-06-23 08:26:35
+453	52	1	HO.ATL.PRD-0119	255.00	2026-06-23 08:27:24	2026-06-23 08:27:24
+454	52	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:27:24	2026-06-23 08:27:24
+455	52	7	HO.ATL.PRD-0125	39.00	2026-06-23 08:27:24	2026-06-23 08:27:24
+456	52	8	HO.ATL.PRD-0126	39.00	2026-06-23 08:27:24	2026-06-23 08:27:24
+457	52	9	HO.ATL.PRD-0127	4.00	2026-06-23 08:27:24	2026-06-23 08:27:24
+458	52	10	HO.ATL.PRD-0128	32.00	2026-06-23 08:27:24	2026-06-23 08:27:24
+459	52	12	HO.ATL.PRD-0130	8.00	2026-06-23 08:27:24	2026-06-23 08:27:24
+460	52	13	HO.ATL.PRD-0131	1.00	2026-06-23 08:27:24	2026-06-23 08:27:24
+461	52	22	HO.ATL.PRD-0140	172.00	2026-06-23 08:27:24	2026-06-23 08:27:24
+462	53	1	HO.ATL.PRD-0119	255.00	2026-06-23 08:28:24	2026-06-23 08:28:24
+463	53	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:28:24	2026-06-23 08:28:24
+464	53	7	HO.ATL.PRD-0125	39.00	2026-06-23 08:28:24	2026-06-23 08:28:24
+465	53	8	HO.ATL.PRD-0126	39.00	2026-06-23 08:28:24	2026-06-23 08:28:24
+466	53	9	HO.ATL.PRD-0127	4.00	2026-06-23 08:28:24	2026-06-23 08:28:24
+467	53	10	HO.ATL.PRD-0128	32.00	2026-06-23 08:28:24	2026-06-23 08:28:24
+468	53	12	HO.ATL.PRD-0130	8.00	2026-06-23 08:28:24	2026-06-23 08:28:24
+469	53	13	HO.ATL.PRD-0131	1.00	2026-06-23 08:28:24	2026-06-23 08:28:24
+470	53	22	HO.ATL.PRD-0140	172.00	2026-06-23 08:28:24	2026-06-23 08:28:24
+471	54	1	HO.ATL.PRD-0119	255.00	2026-06-23 08:28:46	2026-06-23 08:28:46
+472	54	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:28:46	2026-06-23 08:28:46
+473	54	7	HO.ATL.PRD-0125	39.00	2026-06-23 08:28:46	2026-06-23 08:28:46
+474	54	8	HO.ATL.PRD-0126	39.00	2026-06-23 08:28:46	2026-06-23 08:28:46
+475	54	9	HO.ATL.PRD-0127	4.00	2026-06-23 08:28:46	2026-06-23 08:28:46
+476	54	10	HO.ATL.PRD-0128	32.00	2026-06-23 08:28:46	2026-06-23 08:28:46
+477	54	12	HO.ATL.PRD-0130	8.00	2026-06-23 08:28:46	2026-06-23 08:28:46
+478	54	13	HO.ATL.PRD-0131	1.00	2026-06-23 08:28:46	2026-06-23 08:28:46
+479	54	22	HO.ATL.PRD-0140	172.00	2026-06-23 08:28:46	2026-06-23 08:28:46
+480	55	1	HO.ATL.PRD-0119	255.00	2026-06-23 08:29:01	2026-06-23 08:29:01
+481	55	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:29:01	2026-06-23 08:29:01
+482	55	7	HO.ATL.PRD-0125	39.00	2026-06-23 08:29:01	2026-06-23 08:29:01
+483	55	8	HO.ATL.PRD-0126	39.00	2026-06-23 08:29:01	2026-06-23 08:29:01
+484	55	9	HO.ATL.PRD-0127	4.00	2026-06-23 08:29:01	2026-06-23 08:29:01
+485	55	10	HO.ATL.PRD-0128	32.00	2026-06-23 08:29:01	2026-06-23 08:29:01
+486	55	12	HO.ATL.PRD-0130	8.00	2026-06-23 08:29:01	2026-06-23 08:29:01
+487	55	13	HO.ATL.PRD-0131	1.00	2026-06-23 08:29:01	2026-06-23 08:29:01
+488	55	22	HO.ATL.PRD-0140	172.00	2026-06-23 08:29:01	2026-06-23 08:29:01
+489	56	14	HO.ATL.PRD-0132	246.00	2026-06-23 08:29:25	2026-06-23 08:29:25
+490	56	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:29:25	2026-06-23 08:29:25
+491	56	7	HO.ATL.PRD-0125	39.00	2026-06-23 08:29:25	2026-06-23 08:29:25
+492	56	8	HO.ATL.PRD-0126	39.00	2026-06-23 08:29:25	2026-06-23 08:29:25
+493	56	10	HO.ATL.PRD-0128	32.00	2026-06-23 08:29:25	2026-06-23 08:29:25
+494	56	12	HO.ATL.PRD-0130	8.00	2026-06-23 08:29:25	2026-06-23 08:29:25
+495	56	13	HO.ATL.PRD-0131	1.00	2026-06-23 08:29:25	2026-06-23 08:29:25
+496	56	22	HO.ATL.PRD-0140	172.00	2026-06-23 08:29:25	2026-06-23 08:29:25
+497	57	1	HO.ATL.PRD-0119	255.00	2026-06-23 08:29:53	2026-06-23 08:29:53
+498	57	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:29:53	2026-06-23 08:29:53
+499	57	7	HO.ATL.PRD-0125	39.00	2026-06-23 08:29:53	2026-06-23 08:29:53
+500	57	8	HO.ATL.PRD-0126	39.00	2026-06-23 08:29:53	2026-06-23 08:29:53
+501	57	9	HO.ATL.PRD-0127	4.00	2026-06-23 08:29:53	2026-06-23 08:29:53
+502	57	10	HO.ATL.PRD-0128	32.00	2026-06-23 08:29:53	2026-06-23 08:29:53
+503	57	12	HO.ATL.PRD-0130	8.00	2026-06-23 08:29:53	2026-06-23 08:29:53
+504	57	13	HO.ATL.PRD-0131	1.00	2026-06-23 08:29:53	2026-06-23 08:29:53
+505	57	22	HO.ATL.PRD-0140	172.00	2026-06-23 08:29:53	2026-06-23 08:29:53
+506	58	1	HO.ATL.PRD-0119	255.00	2026-06-23 08:30:17	2026-06-23 08:30:17
+507	58	2	HO.ATL.PRD-0119	4.00	2026-06-23 08:30:17	2026-06-23 08:30:17
+508	58	7	HO.ATL.PRD-0125	39.00	2026-06-23 08:30:17	2026-06-23 08:30:17
+509	58	8	HO.ATL.PRD-0126	39.00	2026-06-23 08:30:17	2026-06-23 08:30:17
+510	58	9	HO.ATL.PRD-0127	4.00	2026-06-23 08:30:17	2026-06-23 08:30:17
+511	58	10	HO.ATL.PRD-0128	32.00	2026-06-23 08:30:17	2026-06-23 08:30:17
+512	58	12	HO.ATL.PRD-0130	8.00	2026-06-23 08:30:17	2026-06-23 08:30:17
+513	58	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:30:17	2026-06-23 08:30:17
+514	59	1	HO.ATL.PRD-0119	14.00	2026-06-23 08:31:53	2026-06-23 08:31:53
+515	59	2	HO.ATL.PRD-0119	2.00	2026-06-23 08:31:53	2026-06-23 08:31:53
+516	59	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:31:53	2026-06-23 08:31:53
+517	59	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:31:53	2026-06-23 08:31:53
+518	59	9	HO.ATL.PRD-0127	9.00	2026-06-23 08:31:53	2026-06-23 08:31:53
+519	59	10	HO.ATL.PRD-0128	70.00	2026-06-23 08:31:53	2026-06-23 08:31:53
+520	59	12	HO.ATL.PRD-0130	3.00	2026-06-23 08:31:53	2026-06-23 08:31:53
+521	59	13	HO.ATL.PRD-0131	3.00	2026-06-23 08:31:53	2026-06-23 08:31:53
+522	59	22	HO.ATL.PRD-0140	6.00	2026-06-23 08:31:53	2026-06-23 08:31:53
+523	60	1	HO.ATL.PRD-0119	14.00	2026-06-23 08:32:33	2026-06-23 08:32:33
+524	60	2	HO.ATL.PRD-0119	2.00	2026-06-23 08:32:33	2026-06-23 08:32:33
+525	60	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:32:33	2026-06-23 08:32:33
+526	60	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:32:33	2026-06-23 08:32:33
+527	60	9	HO.ATL.PRD-0127	9.00	2026-06-23 08:32:33	2026-06-23 08:32:33
+528	60	10	HO.ATL.PRD-0128	70.00	2026-06-23 08:32:33	2026-06-23 08:32:33
+529	60	12	HO.ATL.PRD-0130	3.00	2026-06-23 08:32:33	2026-06-23 08:32:33
+530	60	13	HO.ATL.PRD-0131	3.00	2026-06-23 08:32:33	2026-06-23 08:32:33
+531	60	22	HO.ATL.PRD-0140	6.00	2026-06-23 08:32:33	2026-06-23 08:32:33
+532	61	1	HO.ATL.PRD-0119	15.00	2026-06-23 08:35:46	2026-06-23 08:35:46
+533	61	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:35:46	2026-06-23 08:35:46
+534	61	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:35:46	2026-06-23 08:35:46
+535	61	9	HO.ATL.PRD-0127	7.00	2026-06-23 08:35:46	2026-06-23 08:35:46
+536	61	10	HO.ATL.PRD-0128	48.00	2026-06-23 08:35:46	2026-06-23 08:35:46
+537	61	12	HO.ATL.PRD-0130	3.00	2026-06-23 08:35:46	2026-06-23 08:35:46
+538	61	13	HO.ATL.PRD-0131	3.00	2026-06-23 08:35:46	2026-06-23 08:35:46
+539	61	22	HO.ATL.PRD-0140	4.00	2026-06-23 08:35:46	2026-06-23 08:35:46
+540	61	4	HO.ATL.PRD-0122	1.00	2026-06-23 08:35:46	2026-06-23 08:35:46
+541	62	1	HO.ATL.PRD-0119	15.00	2026-06-23 08:37:13	2026-06-23 08:37:13
+542	62	2	HO.ATL.PRD-0119	2.00	2026-06-23 08:37:13	2026-06-23 08:37:13
+543	62	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:37:13	2026-06-23 08:37:13
+544	62	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:37:13	2026-06-23 08:37:13
+545	62	9	HO.ATL.PRD-0127	9.00	2026-06-23 08:37:13	2026-06-23 08:37:13
+546	62	10	HO.ATL.PRD-0128	72.00	2026-06-23 08:37:13	2026-06-23 08:37:13
+547	62	12	HO.ATL.PRD-0130	3.00	2026-06-23 08:37:13	2026-06-23 08:37:13
+548	62	13	HO.ATL.PRD-0131	3.00	2026-06-23 08:37:13	2026-06-23 08:37:13
+549	62	22	HO.ATL.PRD-0140	6.00	2026-06-23 08:37:13	2026-06-23 08:37:13
+550	63	1	HO.ATL.PRD-0119	15.00	2026-06-23 08:39:41	2026-06-23 08:39:41
+551	63	2	HO.ATL.PRD-0119	2.00	2026-06-23 08:39:41	2026-06-23 08:39:41
+552	63	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:39:41	2026-06-23 08:39:41
+553	63	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:39:41	2026-06-23 08:39:41
+554	63	9	HO.ATL.PRD-0127	9.00	2026-06-23 08:39:41	2026-06-23 08:39:41
+555	63	10	HO.ATL.PRD-0128	72.00	2026-06-23 08:39:41	2026-06-23 08:39:41
+556	63	12	HO.ATL.PRD-0130	3.00	2026-06-23 08:39:41	2026-06-23 08:39:41
+557	63	13	HO.ATL.PRD-0131	3.00	2026-06-23 08:39:41	2026-06-23 08:39:41
+558	63	22	HO.ATL.PRD-0140	6.00	2026-06-23 08:39:41	2026-06-23 08:39:41
+559	64	1	HO.ATL.PRD-0119	57.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+560	64	2	HO.ATL.PRD-0119	2.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+561	64	7	HO.ATL.PRD-0125	10.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+562	64	8	HO.ATL.PRD-0126	10.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+563	64	9	HO.ATL.PRD-0127	5.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+564	64	10	HO.ATL.PRD-0128	46.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+565	64	12	HO.ATL.PRD-0130	4.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+566	64	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+567	64	22	HO.ATL.PRD-0140	17.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+568	64	11	HO.ATL.PRD-0129	21.00	2026-06-23 08:40:52	2026-06-23 08:40:52
+569	65	1	HO.ATL.PRD-0119	57.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+570	65	2	HO.ATL.PRD-0119	2.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+571	65	7	HO.ATL.PRD-0125	10.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+572	65	8	HO.ATL.PRD-0126	10.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+573	65	9	HO.ATL.PRD-0127	5.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+574	65	10	HO.ATL.PRD-0128	46.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+575	65	12	HO.ATL.PRD-0130	4.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+576	65	13	HO.ATL.PRD-0131	2.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+577	65	22	HO.ATL.PRD-0140	17.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+578	65	11	HO.ATL.PRD-0129	21.00	2026-06-23 08:41:40	2026-06-23 08:41:40
+579	66	1	HO.ATL.PRD-0119	15.00	2026-06-23 08:44:01	2026-06-23 08:44:01
+580	66	2	HO.ATL.PRD-0119	6.00	2026-06-23 08:44:01	2026-06-23 08:44:01
+581	66	7	HO.ATL.PRD-0125	3.00	2026-06-23 08:44:01	2026-06-23 08:44:01
+582	66	8	HO.ATL.PRD-0126	3.00	2026-06-23 08:44:01	2026-06-23 08:44:01
+583	66	9	HO.ATL.PRD-0127	9.00	2026-06-23 08:44:01	2026-06-23 08:44:01
+584	66	10	HO.ATL.PRD-0128	72.00	2026-06-23 08:44:01	2026-06-23 08:44:01
+585	66	12	HO.ATL.PRD-0130	3.00	2026-06-23 08:44:01	2026-06-23 08:44:01
+586	66	13	HO.ATL.PRD-0131	3.00	2026-06-23 08:44:01	2026-06-23 08:44:01
+587	66	22	HO.ATL.PRD-0140	6.00	2026-06-23 08:44:01	2026-06-23 08:44:01
+588	67	1	HO.ATL.PRD-0119	18.00	2026-06-23 09:28:13	2026-06-23 09:28:13
+589	67	2	HO.ATL.PRD-0119	2.00	2026-06-23 09:28:13	2026-06-23 09:28:13
+590	67	7	HO.ATL.PRD-0125	3.00	2026-06-23 09:28:13	2026-06-23 09:28:13
+591	67	8	HO.ATL.PRD-0126	3.00	2026-06-23 09:28:13	2026-06-23 09:28:13
+592	67	9	HO.ATL.PRD-0127	4.00	2026-06-23 09:28:13	2026-06-23 09:28:13
+593	67	10	HO.ATL.PRD-0128	30.00	2026-06-23 09:28:13	2026-06-23 09:28:13
+594	67	12	HO.ATL.PRD-0130	2.00	2026-06-23 09:28:13	2026-06-23 09:28:13
+595	67	13	HO.ATL.PRD-0131	2.00	2026-06-23 09:28:13	2026-06-23 09:28:13
+596	68	1	HO.ATL.PRD-0119	14.00	2026-06-24 02:21:06	2026-06-24 02:21:06
+597	68	2	HO.ATL.PRD-0119	5.00	2026-06-24 02:21:06	2026-06-24 02:21:06
+598	68	7	HO.ATL.PRD-0125	3.00	2026-06-24 02:21:06	2026-06-24 02:21:06
+599	68	8	HO.ATL.PRD-0126	3.00	2026-06-24 02:21:06	2026-06-24 02:21:06
+600	68	9	HO.ATL.PRD-0127	7.00	2026-06-24 02:21:06	2026-06-24 02:21:06
+601	68	10	HO.ATL.PRD-0128	65.00	2026-06-24 02:21:06	2026-06-24 02:21:06
+602	68	12	HO.ATL.PRD-0130	1.00	2026-06-24 02:21:06	2026-06-24 02:21:06
+603	68	13	HO.ATL.PRD-0131	2.00	2026-06-24 02:21:06	2026-06-24 02:21:06
+604	68	22	HO.ATL.PRD-0140	10.00	2026-06-24 02:21:06	2026-06-24 02:21:06
+605	69	1	HO.ATL.PRD-0119	99.00	2026-06-24 05:08:32	2026-06-24 05:08:32
+606	69	2	HO.ATL.PRD-0119	3.00	2026-06-24 05:08:32	2026-06-24 05:08:32
+607	69	7	HO.ATL.PRD-0125	22.00	2026-06-24 05:08:32	2026-06-24 05:08:32
+608	69	8	HO.ATL.PRD-0126	22.00	2026-06-24 05:08:32	2026-06-24 05:08:32
+609	69	9	HO.ATL.PRD-0127	6.00	2026-06-24 05:08:32	2026-06-24 05:08:32
+610	69	10	HO.ATL.PRD-0128	54.00	2026-06-24 05:08:32	2026-06-24 05:08:32
+611	69	12	HO.ATL.PRD-0130	3.00	2026-06-24 05:08:32	2026-06-24 05:08:32
+612	69	13	HO.ATL.PRD-0131	2.00	2026-06-24 05:08:32	2026-06-24 05:08:32
+613	69	5	HO.ATL.PRD-0123	4.00	2026-06-24 05:08:32	2026-06-24 05:08:32
+614	70	14	HO.ATL.PRD-0132	96.00	2026-06-24 05:08:47	2026-06-24 05:08:47
+615	70	2	HO.ATL.PRD-0119	3.00	2026-06-24 05:08:47	2026-06-24 05:08:47
+616	70	7	HO.ATL.PRD-0125	22.00	2026-06-24 05:08:47	2026-06-24 05:08:47
+617	70	8	HO.ATL.PRD-0126	22.00	2026-06-24 05:08:47	2026-06-24 05:08:47
+618	70	10	HO.ATL.PRD-0128	54.00	2026-06-24 05:08:47	2026-06-24 05:08:47
+619	70	12	HO.ATL.PRD-0130	3.00	2026-06-24 05:08:47	2026-06-24 05:08:47
+620	70	13	HO.ATL.PRD-0131	2.00	2026-06-24 05:08:47	2026-06-24 05:08:47
+621	70	5	HO.ATL.PRD-0123	4.00	2026-06-24 05:08:47	2026-06-24 05:08:47
+622	71	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:37:44	2026-06-24 08:37:44
+623	71	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:37:45	2026-06-24 08:37:45
+624	71	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:37:45	2026-06-24 08:37:45
+625	71	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:37:45	2026-06-24 08:37:45
+626	71	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:37:45	2026-06-24 08:37:45
+627	71	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:37:45	2026-06-24 08:37:45
+628	72	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:37:49	2026-06-24 08:37:49
+629	72	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:37:49	2026-06-24 08:37:49
+630	72	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:37:49	2026-06-24 08:37:49
+631	72	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:37:49	2026-06-24 08:37:49
+632	72	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:37:49	2026-06-24 08:37:49
+633	72	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:37:49	2026-06-24 08:37:49
+634	73	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:38:15	2026-06-24 08:38:15
+635	73	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:38:15	2026-06-24 08:38:15
+636	73	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:38:15	2026-06-24 08:38:15
+637	73	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:38:15	2026-06-24 08:38:15
+638	73	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:38:15	2026-06-24 08:38:15
+639	73	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:38:15	2026-06-24 08:38:15
+640	74	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:40:50	2026-06-24 08:40:50
+641	74	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:40:50	2026-06-24 08:40:50
+642	74	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:40:50	2026-06-24 08:40:50
+643	74	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:40:50	2026-06-24 08:40:50
+644	74	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:40:50	2026-06-24 08:40:50
+645	74	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:40:50	2026-06-24 08:40:50
+646	75	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:43:40	2026-06-24 08:43:40
+647	75	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:43:40	2026-06-24 08:43:40
+648	75	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:43:40	2026-06-24 08:43:40
+649	75	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:43:40	2026-06-24 08:43:40
+650	75	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:43:40	2026-06-24 08:43:40
+651	75	28	HO.ATL.PRD-0046	2.00	2026-06-24 08:43:40	2026-06-24 08:43:40
+652	76	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:45:42	2026-06-24 08:45:42
+653	76	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:45:42	2026-06-24 08:45:42
+654	76	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:45:42	2026-06-24 08:45:42
+655	76	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:45:42	2026-06-24 08:45:42
+656	76	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:45:42	2026-06-24 08:45:42
+657	76	28	HO.ATL.PRD-0046	2.00	2026-06-24 08:45:42	2026-06-24 08:45:42
+658	77	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:46:31	2026-06-24 08:46:31
+659	77	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:46:31	2026-06-24 08:46:31
+660	77	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:46:31	2026-06-24 08:46:31
+661	77	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:46:31	2026-06-24 08:46:31
+662	77	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:46:31	2026-06-24 08:46:31
+663	77	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:46:31	2026-06-24 08:46:31
+664	78	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:49:13	2026-06-24 08:49:13
+665	78	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:49:13	2026-06-24 08:49:13
+666	78	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:49:13	2026-06-24 08:49:13
+667	78	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:49:13	2026-06-24 08:49:13
+668	78	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:49:13	2026-06-24 08:49:13
+669	78	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:49:13	2026-06-24 08:49:13
+670	79	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:49:19	2026-06-24 08:49:19
+671	79	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:49:19	2026-06-24 08:49:19
+672	79	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:49:19	2026-06-24 08:49:19
+673	79	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:49:19	2026-06-24 08:49:19
+674	79	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:49:19	2026-06-24 08:49:19
+675	79	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:49:19	2026-06-24 08:49:19
+676	80	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:50:40	2026-06-24 08:50:40
+677	80	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:50:40	2026-06-24 08:50:40
+678	80	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:50:40	2026-06-24 08:50:40
+679	80	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:50:40	2026-06-24 08:50:40
+680	80	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:50:40	2026-06-24 08:50:40
+681	80	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:50:40	2026-06-24 08:50:40
+682	81	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:50:42	2026-06-24 08:50:42
+683	81	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:50:42	2026-06-24 08:50:42
+684	81	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:50:42	2026-06-24 08:50:42
+685	81	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:50:42	2026-06-24 08:50:42
+686	81	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:50:42	2026-06-24 08:50:42
+687	81	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:50:42	2026-06-24 08:50:42
+688	82	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:52:51	2026-06-24 08:52:51
+689	82	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:52:51	2026-06-24 08:52:51
+690	82	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:52:51	2026-06-24 08:52:51
+691	82	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:52:51	2026-06-24 08:52:51
+692	82	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:52:51	2026-06-24 08:52:51
+693	82	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:52:51	2026-06-24 08:52:51
+694	83	24	HO.ATL.PRD-0039	5.00	2026-06-24 08:57:23	2026-06-24 08:57:23
+695	83	25	HO.ATL.PRD-0039	2.00	2026-06-24 08:57:23	2026-06-24 08:57:23
+696	83	26	HO.ATL.PRD-0039	2.00	2026-06-24 08:57:23	2026-06-24 08:57:23
+697	83	29	HO.ATL.PRD-0117	1.00	2026-06-24 08:57:23	2026-06-24 08:57:23
+698	83	30	HO.ATL.PRD-0047	1.00	2026-06-24 08:57:23	2026-06-24 08:57:23
+699	83	31	HO.ATL.PRD-0048	48.00	2026-06-24 08:57:23	2026-06-24 08:57:23
+700	84	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:00:26	2026-06-24 09:00:26
+701	84	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:00:26	2026-06-24 09:00:26
+702	84	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:00:26	2026-06-24 09:00:26
+703	84	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:00:26	2026-06-24 09:00:26
+704	84	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:00:26	2026-06-24 09:00:26
+705	84	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:00:26	2026-06-24 09:00:26
+706	85	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:01:53	2026-06-24 09:01:53
+707	85	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:01:53	2026-06-24 09:01:53
+708	85	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:01:53	2026-06-24 09:01:53
+709	85	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:01:53	2026-06-24 09:01:53
+710	85	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:01:53	2026-06-24 09:01:53
+711	85	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:01:53	2026-06-24 09:01:53
+712	86	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:05:50	2026-06-24 09:05:50
+713	86	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:05:50	2026-06-24 09:05:50
+714	86	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:05:50	2026-06-24 09:05:50
+715	86	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:05:50	2026-06-24 09:05:50
+716	86	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:05:50	2026-06-24 09:05:50
+717	86	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:05:50	2026-06-24 09:05:50
+718	87	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:07:42	2026-06-24 09:07:42
+719	87	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:07:42	2026-06-24 09:07:42
+720	87	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:07:42	2026-06-24 09:07:42
+721	87	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:07:42	2026-06-24 09:07:42
+722	87	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:07:42	2026-06-24 09:07:42
+723	87	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:07:42	2026-06-24 09:07:42
+724	88	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:10:19	2026-06-24 09:10:19
+725	88	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:10:19	2026-06-24 09:10:19
+726	88	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:10:19	2026-06-24 09:10:19
+727	88	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:10:19	2026-06-24 09:10:19
+728	88	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:10:19	2026-06-24 09:10:19
+729	88	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:10:19	2026-06-24 09:10:19
+730	89	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:10:24	2026-06-24 09:10:24
+731	89	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:10:24	2026-06-24 09:10:24
+732	89	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:10:24	2026-06-24 09:10:24
+733	89	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:10:24	2026-06-24 09:10:24
+734	89	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:10:24	2026-06-24 09:10:24
+735	89	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:10:24	2026-06-24 09:10:24
+736	90	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:10:58	2026-06-24 09:10:58
+737	90	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:10:58	2026-06-24 09:10:58
+738	90	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:10:58	2026-06-24 09:10:58
+739	90	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:10:58	2026-06-24 09:10:58
+740	90	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:10:58	2026-06-24 09:10:58
+741	90	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:10:58	2026-06-24 09:10:58
+742	91	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:12:42	2026-06-24 09:12:42
+743	91	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:12:42	2026-06-24 09:12:42
+744	91	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:12:42	2026-06-24 09:12:42
+745	91	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:12:42	2026-06-24 09:12:42
+746	91	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:12:42	2026-06-24 09:12:42
+747	91	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:12:42	2026-06-24 09:12:42
+748	92	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:12:44	2026-06-24 09:12:44
+749	92	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:12:44	2026-06-24 09:12:44
+750	92	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:12:44	2026-06-24 09:12:44
+751	92	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:12:44	2026-06-24 09:12:44
+752	92	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:12:44	2026-06-24 09:12:44
+753	92	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:12:44	2026-06-24 09:12:44
+754	93	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:12:45	2026-06-24 09:12:45
+755	93	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:12:45	2026-06-24 09:12:45
+756	93	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:12:45	2026-06-24 09:12:45
+757	93	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:12:45	2026-06-24 09:12:45
+758	93	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:12:45	2026-06-24 09:12:45
+759	93	28	HO.ATL.PRD-0046	2.00	2026-06-24 09:12:45	2026-06-24 09:12:45
+760	94	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:16:05	2026-06-24 09:16:05
+761	94	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:16:05	2026-06-24 09:16:05
+762	94	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:16:05	2026-06-24 09:16:05
+763	94	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:16:05	2026-06-24 09:16:05
+764	94	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:16:05	2026-06-24 09:16:05
+765	94	31	HO.ATL.PRD-0048	48.00	2026-06-24 09:16:05	2026-06-24 09:16:05
+766	95	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:17:18	2026-06-24 09:17:18
+767	95	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:18	2026-06-24 09:17:18
+768	95	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:18	2026-06-24 09:17:18
+769	95	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:17:18	2026-06-24 09:17:18
+770	95	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:17:18	2026-06-24 09:17:18
+771	95	31	HO.ATL.PRD-0048	48.00	2026-06-24 09:17:18	2026-06-24 09:17:18
+772	96	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:17:24	2026-06-24 09:17:24
+773	96	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:24	2026-06-24 09:17:24
+774	96	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:24	2026-06-24 09:17:24
+775	96	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:17:24	2026-06-24 09:17:24
+776	96	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:17:24	2026-06-24 09:17:24
+777	96	31	HO.ATL.PRD-0048	48.00	2026-06-24 09:17:24	2026-06-24 09:17:24
+778	97	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:17:28	2026-06-24 09:17:28
+779	97	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:28	2026-06-24 09:17:28
+780	97	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:28	2026-06-24 09:17:28
+781	97	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:17:28	2026-06-24 09:17:28
+782	97	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:17:28	2026-06-24 09:17:28
+783	97	31	HO.ATL.PRD-0048	48.00	2026-06-24 09:17:28	2026-06-24 09:17:28
+784	98	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:17:32	2026-06-24 09:17:32
+785	98	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:32	2026-06-24 09:17:32
+786	98	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:32	2026-06-24 09:17:32
+787	98	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:17:32	2026-06-24 09:17:32
+788	98	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:17:32	2026-06-24 09:17:32
+789	98	31	HO.ATL.PRD-0048	48.00	2026-06-24 09:17:32	2026-06-24 09:17:32
+790	99	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:17:56	2026-06-24 09:17:56
+791	99	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:56	2026-06-24 09:17:56
+792	99	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:17:56	2026-06-24 09:17:56
+793	99	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:17:56	2026-06-24 09:17:56
+794	99	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:17:56	2026-06-24 09:17:56
+795	99	31	HO.ATL.PRD-0048	48.00	2026-06-24 09:17:56	2026-06-24 09:17:56
+796	100	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:21:34	2026-06-24 09:21:34
+797	100	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:21:34	2026-06-24 09:21:34
+798	100	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:21:34	2026-06-24 09:21:34
+799	100	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:21:34	2026-06-24 09:21:34
+800	100	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:21:34	2026-06-24 09:21:34
+801	100	31	HO.ATL.PRD-0048	48.00	2026-06-24 09:21:34	2026-06-24 09:21:34
+802	101	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:26:27	2026-06-24 09:26:27
+803	101	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:26:27	2026-06-24 09:26:27
+804	101	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:26:27	2026-06-24 09:26:27
+805	101	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:26:27	2026-06-24 09:26:27
+806	101	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:26:27	2026-06-24 09:26:27
+807	101	31	HO.ATL.PRD-0048	48.00	2026-06-24 09:26:27	2026-06-24 09:26:27
+808	104	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:35:23	2026-06-24 09:35:23
+809	104	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:35:23	2026-06-24 09:35:23
+810	104	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:35:23	2026-06-24 09:35:23
+811	104	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:35:23	2026-06-24 09:35:23
+812	104	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:35:23	2026-06-24 09:35:23
+813	104	31	HO.ATL.PRD-0048	48.00	2026-06-24 09:35:23	2026-06-24 09:35:23
+814	107	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:40:59	2026-06-24 09:40:59
+815	107	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:40:59	2026-06-24 09:40:59
+816	107	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:40:59	2026-06-24 09:40:59
+817	107	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:40:59	2026-06-24 09:40:59
+818	107	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:40:59	2026-06-24 09:40:59
+819	107	31	HO.ATL.PRD-0048	24.00	2026-06-24 09:40:59	2026-06-24 09:40:59
+820	108	24	HO.ATL.PRD-0039	5.00	2026-06-24 09:48:08	2026-06-24 09:48:08
+821	108	25	HO.ATL.PRD-0039	2.00	2026-06-24 09:48:08	2026-06-24 09:48:08
+822	108	26	HO.ATL.PRD-0039	2.00	2026-06-24 09:48:08	2026-06-24 09:48:08
+823	108	29	HO.ATL.PRD-0117	1.00	2026-06-24 09:48:08	2026-06-24 09:48:08
+824	108	30	HO.ATL.PRD-0047	1.00	2026-06-24 09:48:08	2026-06-24 09:48:08
+825	108	31	HO.ATL.PRD-0048	24.00	2026-06-24 09:48:08	2026-06-24 09:48:08
+826	109	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:10:38	2026-06-24 10:10:38
+827	109	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:10:38	2026-06-24 10:10:38
+828	109	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:10:38	2026-06-24 10:10:38
+829	109	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:10:38	2026-06-24 10:10:38
+830	109	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:10:38	2026-06-24 10:10:38
+831	109	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:10:38	2026-06-24 10:10:38
+832	111	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:14:35	2026-06-24 10:14:35
+833	111	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:14:35	2026-06-24 10:14:35
+834	111	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:14:35	2026-06-24 10:14:35
+835	111	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:14:35	2026-06-24 10:14:35
+836	111	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:14:35	2026-06-24 10:14:35
+837	111	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:14:35	2026-06-24 10:14:35
+838	111	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:14:35	2026-06-24 10:14:35
+839	113	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:16:31	2026-06-24 10:16:31
+840	113	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:16:31	2026-06-24 10:16:31
+841	113	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:16:31	2026-06-24 10:16:31
+842	113	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:16:31	2026-06-24 10:16:31
+843	113	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:16:31	2026-06-24 10:16:31
+844	114	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:16:38	2026-06-24 10:16:38
+845	114	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:16:38	2026-06-24 10:16:38
+846	114	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:16:38	2026-06-24 10:16:38
+847	114	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:16:38	2026-06-24 10:16:38
+848	114	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:16:38	2026-06-24 10:16:38
+849	115	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:16:50	2026-06-24 10:16:50
+850	115	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:16:50	2026-06-24 10:16:50
+851	115	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:16:50	2026-06-24 10:16:50
+852	115	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:16:50	2026-06-24 10:16:50
+853	115	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:16:50	2026-06-24 10:16:50
+854	115	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:16:50	2026-06-24 10:16:50
+855	116	1	HO.ATL.PRD-0119	494.00	2026-06-24 10:17:44	2026-06-24 10:17:44
+856	116	2	HO.ATL.PRD-0119	13.00	2026-06-24 10:17:44	2026-06-24 10:17:44
+857	116	7	HO.ATL.PRD-0125	75.00	2026-06-24 10:17:44	2026-06-24 10:17:44
+858	116	8	HO.ATL.PRD-0126	75.00	2026-06-24 10:17:44	2026-06-24 10:17:44
+859	116	9	HO.ATL.PRD-0127	25.00	2026-06-24 10:17:44	2026-06-24 10:17:44
+860	116	10	HO.ATL.PRD-0128	237.00	2026-06-24 10:17:44	2026-06-24 10:17:44
+861	116	12	HO.ATL.PRD-0130	30.00	2026-06-24 10:17:44	2026-06-24 10:17:44
+862	116	13	HO.ATL.PRD-0131	14.00	2026-06-24 10:17:44	2026-06-24 10:17:44
+863	117	1	HO.ATL.PRD-0119	10.00	2026-06-24 10:18:36	2026-06-24 10:18:36
+864	117	2	HO.ATL.PRD-0119	4.00	2026-06-24 10:18:36	2026-06-24 10:18:36
+865	117	7	HO.ATL.PRD-0125	2.00	2026-06-24 10:18:36	2026-06-24 10:18:36
+866	117	8	HO.ATL.PRD-0126	2.00	2026-06-24 10:18:36	2026-06-24 10:18:36
+867	117	9	HO.ATL.PRD-0127	6.00	2026-06-24 10:18:36	2026-06-24 10:18:36
+868	117	10	HO.ATL.PRD-0128	45.00	2026-06-24 10:18:36	2026-06-24 10:18:36
+869	117	12	HO.ATL.PRD-0130	2.00	2026-06-24 10:18:36	2026-06-24 10:18:36
+870	117	13	HO.ATL.PRD-0131	2.00	2026-06-24 10:18:36	2026-06-24 10:18:36
+871	117	22	HO.ATL.PRD-0140	4.00	2026-06-24 10:18:36	2026-06-24 10:18:36
+872	118	1	HO.ATL.PRD-0119	24.00	2026-06-24 10:19:25	2026-06-24 10:19:25
+873	118	2	HO.ATL.PRD-0119	4.00	2026-06-24 10:19:25	2026-06-24 10:19:25
+874	118	7	HO.ATL.PRD-0125	4.00	2026-06-24 10:19:25	2026-06-24 10:19:25
+875	118	8	HO.ATL.PRD-0126	4.00	2026-06-24 10:19:25	2026-06-24 10:19:25
+876	118	9	HO.ATL.PRD-0127	4.00	2026-06-24 10:19:25	2026-06-24 10:19:25
+877	118	10	HO.ATL.PRD-0128	32.00	2026-06-24 10:19:25	2026-06-24 10:19:25
+878	118	12	HO.ATL.PRD-0130	1.00	2026-06-24 10:19:25	2026-06-24 10:19:25
+879	118	13	HO.ATL.PRD-0131	1.00	2026-06-24 10:19:25	2026-06-24 10:19:25
+880	118	22	HO.ATL.PRD-0140	16.00	2026-06-24 10:19:25	2026-06-24 10:19:25
+881	119	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:21:36	2026-06-24 10:21:36
+882	119	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:21:36	2026-06-24 10:21:36
+883	119	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:21:36	2026-06-24 10:21:36
+884	119	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:21:36	2026-06-24 10:21:36
+885	119	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:21:36	2026-06-24 10:21:36
+886	119	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:21:36	2026-06-24 10:21:36
+887	120	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:25:49	2026-06-24 10:25:49
+888	120	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:25:49	2026-06-24 10:25:49
+889	120	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:25:49	2026-06-24 10:25:49
+890	120	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:25:49	2026-06-24 10:25:49
+891	120	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:25:49	2026-06-24 10:25:49
+892	120	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:25:49	2026-06-24 10:25:49
+893	121	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:27:02	2026-06-24 10:27:02
+894	121	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:27:02	2026-06-24 10:27:02
+895	121	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:27:02	2026-06-24 10:27:02
+896	121	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:27:02	2026-06-24 10:27:02
+897	121	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:27:02	2026-06-24 10:27:02
+898	121	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:27:02	2026-06-24 10:27:02
+899	122	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:27:03	2026-06-24 10:27:03
+900	122	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:27:03	2026-06-24 10:27:03
+901	122	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:27:03	2026-06-24 10:27:03
+902	122	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:27:03	2026-06-24 10:27:03
+903	122	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:27:03	2026-06-24 10:27:03
+904	122	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:27:03	2026-06-24 10:27:03
+905	123	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:28:09	2026-06-24 10:28:09
+906	123	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:28:09	2026-06-24 10:28:09
+907	123	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:28:09	2026-06-24 10:28:09
+908	123	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:28:09	2026-06-24 10:28:09
+909	123	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:28:09	2026-06-24 10:28:09
+910	123	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:28:09	2026-06-24 10:28:09
+911	124	24	HO.ATL.PRD-0039	5.00	2026-06-24 10:29:43	2026-06-24 10:29:43
+912	124	25	HO.ATL.PRD-0039	2.00	2026-06-24 10:29:43	2026-06-24 10:29:43
+913	124	26	HO.ATL.PRD-0039	2.00	2026-06-24 10:29:43	2026-06-24 10:29:43
+914	124	29	HO.ATL.PRD-0117	1.00	2026-06-24 10:29:43	2026-06-24 10:29:43
+915	124	30	HO.ATL.PRD-0047	1.00	2026-06-24 10:29:43	2026-06-24 10:29:43
+916	124	31	HO.ATL.PRD-0048	24.00	2026-06-24 10:29:43	2026-06-24 10:29:43
+917	124	28	HO.ATL.PRD-0046	1.00	2026-06-24 10:29:43	2026-06-24 10:29:43
+918	125	1	HO.ATL.PRD-0119	17.00	2026-06-24 10:33:12	2026-06-24 10:33:12
+919	125	2	HO.ATL.PRD-0119	2.00	2026-06-24 10:33:12	2026-06-24 10:33:12
+920	125	7	HO.ATL.PRD-0125	3.00	2026-06-24 10:33:12	2026-06-24 10:33:12
+921	125	8	HO.ATL.PRD-0126	3.00	2026-06-24 10:33:12	2026-06-24 10:33:12
+922	125	9	HO.ATL.PRD-0127	3.00	2026-06-24 10:33:12	2026-06-24 10:33:12
+923	125	10	HO.ATL.PRD-0128	28.00	2026-06-24 10:33:12	2026-06-24 10:33:12
+924	125	12	HO.ATL.PRD-0130	1.00	2026-06-24 10:33:12	2026-06-24 10:33:12
+925	125	13	HO.ATL.PRD-0131	1.00	2026-06-24 10:33:12	2026-06-24 10:33:12
+926	125	4	HO.ATL.PRD-0122	2.00	2026-06-24 10:33:12	2026-06-24 10:33:12
+927	126	24	HO.ATL.PRD-0039	5.00	2026-06-25 02:47:02	2026-06-25 02:47:02
+928	126	25	HO.ATL.PRD-0039	2.00	2026-06-25 02:47:02	2026-06-25 02:47:02
+929	126	26	HO.ATL.PRD-0039	2.00	2026-06-25 02:47:02	2026-06-25 02:47:02
+930	126	29	HO.ATL.PRD-0117	1.00	2026-06-25 02:47:02	2026-06-25 02:47:02
+931	126	30	HO.ATL.PRD-0047	1.00	2026-06-25 02:47:02	2026-06-25 02:47:02
+932	126	31	HO.ATL.PRD-0048	23.00	2026-06-25 02:47:02	2026-06-25 02:47:02
+933	126	28	HO.ATL.PRD-0046	1.00	2026-06-25 02:47:02	2026-06-25 02:47:02
+934	127	24	HO.ATL.PRD-0039	5.00	2026-06-25 02:47:05	2026-06-25 02:47:05
+935	127	25	HO.ATL.PRD-0039	2.00	2026-06-25 02:47:05	2026-06-25 02:47:05
+936	127	26	HO.ATL.PRD-0039	2.00	2026-06-25 02:47:05	2026-06-25 02:47:05
+937	127	29	HO.ATL.PRD-0117	1.00	2026-06-25 02:47:05	2026-06-25 02:47:05
+938	127	30	HO.ATL.PRD-0047	1.00	2026-06-25 02:47:05	2026-06-25 02:47:05
+939	127	31	HO.ATL.PRD-0048	23.00	2026-06-25 02:47:05	2026-06-25 02:47:05
+940	127	28	HO.ATL.PRD-0046	1.00	2026-06-25 02:47:05	2026-06-25 02:47:05
+941	128	24	HO.ATL.PRD-0039	1.00	2026-06-25 02:52:48	2026-06-25 02:52:48
+942	128	25	HO.ATL.PRD-0039	2.00	2026-06-25 02:52:48	2026-06-25 02:52:48
+943	128	26	HO.ATL.PRD-0039	1.00	2026-06-25 02:52:48	2026-06-25 02:52:48
+944	128	29	HO.ATL.PRD-0117	1.00	2026-06-25 02:52:48	2026-06-25 02:52:48
+945	128	30	HO.ATL.PRD-0047	1.00	2026-06-25 02:52:48	2026-06-25 02:52:48
+946	128	31	HO.ATL.PRD-0048	23.00	2026-06-25 02:52:48	2026-06-25 02:52:48
+947	128	28	HO.ATL.PRD-0046	1.00	2026-06-25 02:52:48	2026-06-25 02:52:48
+948	129	24	HO.ATL.PRD-0039	12.00	2026-06-25 03:23:34	2026-06-25 03:23:34
+949	129	26	HO.ATL.PRD-0039	3.00	2026-06-25 03:23:34	2026-06-25 03:23:34
+950	129	29	HO.ATL.PRD-0117	3.00	2026-06-25 03:23:34	2026-06-25 03:23:34
+951	129	30	HO.ATL.PRD-0047	3.00	2026-06-25 03:23:34	2026-06-25 03:23:34
+952	129	32	HO.ATL.PRD-0140	1.00	2026-06-25 03:23:34	2026-06-25 03:23:34
+953	129	25	HO.ATL.PRD-0039	1.00	2026-06-25 03:23:34	2026-06-25 03:23:34
+954	129	31	HO.ATL.PRD-0048	8.00	2026-06-25 03:23:34	2026-06-25 03:23:34
+955	130	24	HO.ATL.PRD-0039	20.00	2026-06-25 03:27:05	2026-06-25 03:27:05
+956	130	25	HO.ATL.PRD-0039	4.00	2026-06-25 03:27:05	2026-06-25 03:27:05
+957	130	26	HO.ATL.PRD-0039	4.00	2026-06-25 03:27:05	2026-06-25 03:27:05
+958	130	29	HO.ATL.PRD-0117	4.00	2026-06-25 03:27:05	2026-06-25 03:27:05
+959	130	30	HO.ATL.PRD-0047	4.00	2026-06-25 03:27:05	2026-06-25 03:27:05
+960	130	31	HO.ATL.PRD-0048	51.00	2026-06-25 03:27:05	2026-06-25 03:27:05
+961	130	32	HO.ATL.PRD-0140	8.00	2026-06-25 03:27:05	2026-06-25 03:27:05
+962	131	24	HO.ATL.PRD-0039	10.00	2026-06-25 03:35:25	2026-06-25 03:35:25
+963	131	25	HO.ATL.PRD-0039	4.00	2026-06-25 03:35:25	2026-06-25 03:35:25
+964	131	26	HO.ATL.PRD-0039	4.00	2026-06-25 03:35:25	2026-06-25 03:35:25
+965	131	29	HO.ATL.PRD-0117	2.00	2026-06-25 03:35:25	2026-06-25 03:35:25
+966	131	30	HO.ATL.PRD-0047	2.00	2026-06-25 03:35:25	2026-06-25 03:35:25
+967	131	31	HO.ATL.PRD-0048	46.00	2026-06-25 03:35:25	2026-06-25 03:35:25
+968	131	32	HO.ATL.PRD-0140	4.00	2026-06-25 03:35:25	2026-06-25 03:35:25
+969	132	24	HO.ATL.PRD-0039	16.00	2026-06-25 03:37:52	2026-06-25 03:37:52
+970	132	25	HO.ATL.PRD-0039	3.00	2026-06-25 03:37:52	2026-06-25 03:37:52
+971	132	26	HO.ATL.PRD-0039	4.00	2026-06-25 03:37:52	2026-06-25 03:37:52
+972	132	29	HO.ATL.PRD-0117	3.00	2026-06-25 03:37:52	2026-06-25 03:37:52
+973	132	30	HO.ATL.PRD-0047	3.00	2026-06-25 03:37:52	2026-06-25 03:37:52
+974	132	31	HO.ATL.PRD-0048	8.00	2026-06-25 03:37:52	2026-06-25 03:37:52
+975	132	32	HO.ATL.PRD-0140	6.00	2026-06-25 03:37:52	2026-06-25 03:37:52
+976	133	24	HO.ATL.PRD-0039	13.00	2026-06-25 03:40:37	2026-06-25 03:40:37
+977	133	25	HO.ATL.PRD-0039	4.00	2026-06-25 03:40:37	2026-06-25 03:40:37
+978	133	26	HO.ATL.PRD-0039	4.00	2026-06-25 03:40:37	2026-06-25 03:40:37
+979	133	29	HO.ATL.PRD-0117	3.00	2026-06-25 03:40:37	2026-06-25 03:40:37
+980	133	30	HO.ATL.PRD-0047	3.00	2026-06-25 03:40:37	2026-06-25 03:40:37
+981	133	31	HO.ATL.PRD-0048	66.00	2026-06-25 03:40:37	2026-06-25 03:40:37
+982	133	32	HO.ATL.PRD-0140	10.00	2026-06-25 03:40:37	2026-06-25 03:40:37
+983	134	24	HO.ATL.PRD-0039	54.00	2026-06-25 03:42:30	2026-06-25 03:42:30
+984	134	25	HO.ATL.PRD-0039	2.00	2026-06-25 03:42:30	2026-06-25 03:42:30
+985	134	26	HO.ATL.PRD-0039	4.00	2026-06-25 03:42:30	2026-06-25 03:42:30
+986	134	29	HO.ATL.PRD-0117	9.00	2026-06-25 03:42:30	2026-06-25 03:42:30
+987	134	30	HO.ATL.PRD-0047	9.00	2026-06-25 03:42:30	2026-06-25 03:42:30
+988	134	31	HO.ATL.PRD-0048	32.00	2026-06-25 03:42:30	2026-06-25 03:42:30
+989	134	28	HO.ATL.PRD-0046	10.00	2026-06-25 03:42:30	2026-06-25 03:42:30
+990	135	24	HO.ATL.PRD-0039	534.00	2026-06-25 03:45:20	2026-06-25 03:45:20
+991	135	25	HO.ATL.PRD-0039	17.00	2026-06-25 03:45:20	2026-06-25 03:45:20
+992	135	26	HO.ATL.PRD-0039	2.00	2026-06-25 03:45:20	2026-06-25 03:45:20
+993	135	29	HO.ATL.PRD-0117	84.00	2026-06-25 03:45:20	2026-06-25 03:45:20
+994	135	30	HO.ATL.PRD-0047	84.00	2026-06-25 03:45:20	2026-06-25 03:45:20
+995	135	31	HO.ATL.PRD-0048	303.00	2026-06-25 03:45:20	2026-06-25 03:45:20
+996	135	32	HO.ATL.PRD-0140	17.00	2026-06-25 03:45:20	2026-06-25 03:45:20
+997	135	28	HO.ATL.PRD-0046	43.00	2026-06-25 03:45:20	2026-06-25 03:45:20
+998	136	24	HO.ATL.PRD-0039	56.00	2026-06-25 03:51:40	2026-06-25 03:51:40
+999	136	25	HO.ATL.PRD-0039	6.00	2026-06-25 03:51:40	2026-06-25 03:51:40
+1000	136	29	HO.ATL.PRD-0117	10.00	2026-06-25 03:51:40	2026-06-25 03:51:40
+1001	136	30	HO.ATL.PRD-0047	10.00	2026-06-25 03:51:40	2026-06-25 03:51:40
+1002	136	31	HO.ATL.PRD-0048	50.00	2026-06-25 03:51:40	2026-06-25 03:51:40
+1003	136	32	HO.ATL.PRD-0140	5.00	2026-06-25 03:51:40	2026-06-25 03:51:40
+1004	136	28	HO.ATL.PRD-0046	4.00	2026-06-25 03:51:40	2026-06-25 03:51:40
+1005	137	24	HO.ATL.PRD-0039	15.00	2026-06-25 03:54:35	2026-06-25 03:54:35
+1006	137	25	HO.ATL.PRD-0039	6.00	2026-06-25 03:54:35	2026-06-25 03:54:35
+1007	137	26	HO.ATL.PRD-0039	2.00	2026-06-25 03:54:35	2026-06-25 03:54:35
+1008	137	29	HO.ATL.PRD-0117	3.00	2026-06-25 03:54:35	2026-06-25 03:54:35
+1009	137	30	HO.ATL.PRD-0047	3.00	2026-06-25 03:54:35	2026-06-25 03:54:35
+1010	137	31	HO.ATL.PRD-0048	72.00	2026-06-25 03:54:35	2026-06-25 03:54:35
+1011	137	32	HO.ATL.PRD-0140	6.00	2026-06-25 03:54:35	2026-06-25 03:54:35
+1012	138	24	HO.ATL.PRD-0039	6.00	2026-06-25 03:55:47	2026-06-25 03:55:47
+1013	138	25	HO.ATL.PRD-0039	2.00	2026-06-25 03:55:47	2026-06-25 03:55:47
+1014	138	26	HO.ATL.PRD-0039	2.00	2026-06-25 03:55:47	2026-06-25 03:55:47
+1015	138	29	HO.ATL.PRD-0117	2.00	2026-06-25 03:55:47	2026-06-25 03:55:47
+1016	138	30	HO.ATL.PRD-0047	2.00	2026-06-25 03:55:47	2026-06-25 03:55:47
+1017	138	31	HO.ATL.PRD-0048	24.00	2026-06-25 03:55:47	2026-06-25 03:55:47
+1018	138	32	HO.ATL.PRD-0140	2.00	2026-06-25 03:55:47	2026-06-25 03:55:47
+1019	138	11	HO.ATL.PRD-0129	2.00	2026-06-25 03:55:47	2026-06-25 03:55:47
+1020	139	24	HO.ATL.PRD-0039	15.00	2026-06-25 04:00:16	2026-06-25 04:00:16
+1021	139	25	HO.ATL.PRD-0039	6.00	2026-06-25 04:00:16	2026-06-25 04:00:16
+1022	139	26	HO.ATL.PRD-0039	6.00	2026-06-25 04:00:16	2026-06-25 04:00:16
+1023	139	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:00:16	2026-06-25 04:00:16
+1024	139	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:00:16	2026-06-25 04:00:16
+1025	139	31	HO.ATL.PRD-0048	72.00	2026-06-25 04:00:16	2026-06-25 04:00:16
+1026	139	32	HO.ATL.PRD-0140	6.00	2026-06-25 04:00:16	2026-06-25 04:00:16
+1027	140	24	HO.ATL.PRD-0039	26.00	2026-06-25 04:02:20	2026-06-25 04:02:20
+1028	140	25	HO.ATL.PRD-0039	2.00	2026-06-25 04:02:20	2026-06-25 04:02:20
+1029	140	26	HO.ATL.PRD-0039	2.00	2026-06-25 04:02:21	2026-06-25 04:02:21
+1030	140	29	HO.ATL.PRD-0117	4.00	2026-06-25 04:02:21	2026-06-25 04:02:21
+1031	140	30	HO.ATL.PRD-0047	4.00	2026-06-25 04:02:21	2026-06-25 04:02:21
+1032	140	31	HO.ATL.PRD-0048	23.00	2026-06-25 04:02:21	2026-06-25 04:02:21
+1033	140	32	HO.ATL.PRD-0140	9.00	2026-06-25 04:02:21	2026-06-25 04:02:21
+1034	141	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:08:08	2026-06-25 04:08:08
+1035	141	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:08:08	2026-06-25 04:08:08
+1036	141	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:08:08	2026-06-25 04:08:08
+1037	141	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:08:08	2026-06-25 04:08:08
+1038	141	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:08:08	2026-06-25 04:08:08
+1039	141	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:08:08	2026-06-25 04:08:08
+1040	141	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:08:08	2026-06-25 04:08:08
+1041	142	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:10:23	2026-06-25 04:10:23
+1042	142	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:10:23	2026-06-25 04:10:23
+1043	142	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:10:23	2026-06-25 04:10:23
+1044	142	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:10:23	2026-06-25 04:10:23
+1045	142	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:10:23	2026-06-25 04:10:23
+1046	142	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:10:23	2026-06-25 04:10:23
+1047	142	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:10:23	2026-06-25 04:10:23
+1048	143	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:13:09	2026-06-25 04:13:09
+1049	143	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:13:09	2026-06-25 04:13:09
+1050	143	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:13:09	2026-06-25 04:13:09
+1051	143	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:13:09	2026-06-25 04:13:09
+1052	143	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:13:09	2026-06-25 04:13:09
+1053	143	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:13:09	2026-06-25 04:13:09
+1054	143	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:13:09	2026-06-25 04:13:09
+1055	144	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:17:04	2026-06-25 04:17:04
+1056	144	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:17:04	2026-06-25 04:17:04
+1057	144	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:17:04	2026-06-25 04:17:04
+1058	144	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:17:04	2026-06-25 04:17:04
+1059	144	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:17:04	2026-06-25 04:17:04
+1060	144	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:17:04	2026-06-25 04:17:04
+1061	144	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:17:04	2026-06-25 04:17:04
+1062	145	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:20:06	2026-06-25 04:20:06
+1063	145	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:20:06	2026-06-25 04:20:06
+1064	145	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:20:06	2026-06-25 04:20:06
+1065	145	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:20:06	2026-06-25 04:20:06
+1066	145	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:20:06	2026-06-25 04:20:06
+1067	145	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:20:06	2026-06-25 04:20:06
+1068	145	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:20:06	2026-06-25 04:20:06
+1069	146	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:21:51	2026-06-25 04:21:51
+1070	146	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:21:51	2026-06-25 04:21:51
+1071	146	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:21:51	2026-06-25 04:21:51
+1072	146	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:21:51	2026-06-25 04:21:51
+1073	146	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:21:51	2026-06-25 04:21:51
+1074	146	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:21:51	2026-06-25 04:21:51
+1075	146	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:21:51	2026-06-25 04:21:51
+1076	147	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:23:32	2026-06-25 04:23:32
+1077	147	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:23:32	2026-06-25 04:23:32
+1078	147	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:23:32	2026-06-25 04:23:32
+1079	147	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:23:32	2026-06-25 04:23:32
+1080	147	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:23:32	2026-06-25 04:23:32
+1081	147	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:23:32	2026-06-25 04:23:32
+1082	147	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:23:32	2026-06-25 04:23:32
+1083	148	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:23:47	2026-06-25 04:23:47
+1084	148	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:23:47	2026-06-25 04:23:47
+1085	148	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:23:47	2026-06-25 04:23:47
+1086	148	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:23:47	2026-06-25 04:23:47
+1087	148	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:23:47	2026-06-25 04:23:47
+1088	148	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:23:47	2026-06-25 04:23:47
+1089	148	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:23:47	2026-06-25 04:23:47
+1090	149	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:25:21	2026-06-25 04:25:21
+1091	149	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:25:21	2026-06-25 04:25:21
+1092	149	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:25:21	2026-06-25 04:25:21
+1093	149	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:25:21	2026-06-25 04:25:21
+1094	149	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:25:21	2026-06-25 04:25:21
+1095	149	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:25:21	2026-06-25 04:25:21
+1096	149	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:25:21	2026-06-25 04:25:21
+1097	150	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:27:30	2026-06-25 04:27:30
+1098	150	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:27:30	2026-06-25 04:27:30
+1099	150	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:27:30	2026-06-25 04:27:30
+1100	150	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:27:30	2026-06-25 04:27:30
+1101	150	32	HO.ATL.PRD-0140	1.00	2026-06-25 04:27:30	2026-06-25 04:27:30
+1102	150	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:27:30	2026-06-25 04:27:30
+1103	150	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:27:30	2026-06-25 04:27:30
+1104	151	24	HO.ATL.PRD-0039	12.00	2026-06-25 04:30:12	2026-06-25 04:30:12
+1105	151	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:30:12	2026-06-25 04:30:12
+1106	151	29	HO.ATL.PRD-0117	3.00	2026-06-25 04:30:12	2026-06-25 04:30:12
+1107	151	30	HO.ATL.PRD-0047	3.00	2026-06-25 04:30:12	2026-06-25 04:30:12
+1108	151	32	HO.ATL.PRD-0140	5.00	2026-06-25 04:30:12	2026-06-25 04:30:12
+1109	151	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:30:12	2026-06-25 04:30:12
+1110	151	31	HO.ATL.PRD-0048	4.00	2026-06-25 04:30:12	2026-06-25 04:30:12
+1111	152	24	HO.ATL.PRD-0039	49.00	2026-06-25 04:32:31	2026-06-25 04:32:31
+1112	152	25	HO.ATL.PRD-0039	3.00	2026-06-25 04:32:31	2026-06-25 04:32:31
+1113	152	26	HO.ATL.PRD-0039	4.00	2026-06-25 04:32:31	2026-06-25 04:32:31
+1114	152	29	HO.ATL.PRD-0117	9.00	2026-06-25 04:32:31	2026-06-25 04:32:31
+1115	152	30	HO.ATL.PRD-0047	9.00	2026-06-25 04:32:31	2026-06-25 04:32:31
+1116	152	31	HO.ATL.PRD-0048	36.00	2026-06-25 04:32:31	2026-06-25 04:32:31
+1117	152	32	HO.ATL.PRD-0140	18.00	2026-06-25 04:32:31	2026-06-25 04:32:31
+1118	153	24	HO.ATL.PRD-0039	9.00	2026-06-25 04:34:02	2026-06-25 04:34:02
+1119	153	25	HO.ATL.PRD-0039	3.00	2026-06-25 04:34:02	2026-06-25 04:34:02
+1120	153	26	HO.ATL.PRD-0039	3.00	2026-06-25 04:34:02	2026-06-25 04:34:02
+1121	153	29	HO.ATL.PRD-0117	2.00	2026-06-25 04:34:02	2026-06-25 04:34:02
+1122	153	30	HO.ATL.PRD-0047	2.00	2026-06-25 04:34:02	2026-06-25 04:34:02
+1123	153	31	HO.ATL.PRD-0048	47.00	2026-06-25 04:34:02	2026-06-25 04:34:02
+1124	153	32	HO.ATL.PRD-0140	8.00	2026-06-25 04:34:02	2026-06-25 04:34:02
+1125	156	24	HO.ATL.PRD-0039	28.00	2026-06-25 04:39:45	2026-06-25 04:39:45
+1126	156	26	HO.ATL.PRD-0039	4.00	2026-06-25 04:39:45	2026-06-25 04:39:45
+1127	156	29	HO.ATL.PRD-0117	5.00	2026-06-25 04:39:45	2026-06-25 04:39:45
+1128	156	30	HO.ATL.PRD-0047	5.00	2026-06-25 04:39:45	2026-06-25 04:39:45
+1129	156	32	HO.ATL.PRD-0140	11.00	2026-06-25 04:39:45	2026-06-25 04:39:45
+1130	156	25	HO.ATL.PRD-0039	1.00	2026-06-25 04:39:45	2026-06-25 04:39:45
+1131	156	31	HO.ATL.PRD-0048	8.00	2026-06-25 04:39:45	2026-06-25 04:39:45
+1132	157	24	HO.ATL.PRD-0039	142.00	2026-06-25 04:43:12	2026-06-25 04:43:12
+1133	157	25	HO.ATL.PRD-0039	5.00	2026-06-25 04:43:12	2026-06-25 04:43:12
+1134	157	26	HO.ATL.PRD-0039	4.00	2026-06-25 04:43:12	2026-06-25 04:43:12
+1135	157	29	HO.ATL.PRD-0117	23.00	2026-06-25 04:43:12	2026-06-25 04:43:12
+1136	157	30	HO.ATL.PRD-0047	23.00	2026-06-25 04:43:12	2026-06-25 04:43:12
+1137	157	31	HO.ATL.PRD-0048	88.00	2026-06-25 04:43:12	2026-06-25 04:43:12
+1138	157	32	HO.ATL.PRD-0140	50.00	2026-06-25 04:43:12	2026-06-25 04:43:12
+1139	158	24	HO.ATL.PRD-0039	142.00	2026-06-25 04:43:39	2026-06-25 04:43:39
+1140	158	25	HO.ATL.PRD-0039	5.00	2026-06-25 04:43:39	2026-06-25 04:43:39
+1141	158	26	HO.ATL.PRD-0039	4.00	2026-06-25 04:43:39	2026-06-25 04:43:39
+1142	158	29	HO.ATL.PRD-0117	23.00	2026-06-25 04:43:39	2026-06-25 04:43:39
+1143	158	30	HO.ATL.PRD-0047	23.00	2026-06-25 04:43:39	2026-06-25 04:43:39
+1144	158	31	HO.ATL.PRD-0048	88.00	2026-06-25 04:43:39	2026-06-25 04:43:39
+1145	158	32	HO.ATL.PRD-0140	50.00	2026-06-25 04:43:39	2026-06-25 04:43:39
+1146	159	24	HO.ATL.PRD-0039	142.00	2026-06-25 04:44:05	2026-06-25 04:44:05
+1147	159	25	HO.ATL.PRD-0039	5.00	2026-06-25 04:44:05	2026-06-25 04:44:05
+1148	159	26	HO.ATL.PRD-0039	4.00	2026-06-25 04:44:05	2026-06-25 04:44:05
+1149	159	29	HO.ATL.PRD-0117	23.00	2026-06-25 04:44:05	2026-06-25 04:44:05
+1150	159	30	HO.ATL.PRD-0047	23.00	2026-06-25 04:44:05	2026-06-25 04:44:05
+1151	159	31	HO.ATL.PRD-0048	88.00	2026-06-25 04:44:05	2026-06-25 04:44:05
+1152	159	32	HO.ATL.PRD-0140	50.00	2026-06-25 04:44:05	2026-06-25 04:44:05
+1153	160	24	HO.ATL.PRD-0039	142.00	2026-06-25 04:45:51	2026-06-25 04:45:51
+1154	160	25	HO.ATL.PRD-0039	5.00	2026-06-25 04:45:51	2026-06-25 04:45:51
+1155	160	26	HO.ATL.PRD-0039	4.00	2026-06-25 04:45:52	2026-06-25 04:45:52
+1156	160	29	HO.ATL.PRD-0117	23.00	2026-06-25 04:45:52	2026-06-25 04:45:52
+1157	160	30	HO.ATL.PRD-0047	23.00	2026-06-25 04:45:52	2026-06-25 04:45:52
+1158	160	31	HO.ATL.PRD-0048	88.00	2026-06-25 04:45:52	2026-06-25 04:45:52
+1159	160	32	HO.ATL.PRD-0140	50.00	2026-06-25 04:45:52	2026-06-25 04:45:52
+1160	161	24	HO.ATL.PRD-0039	142.00	2026-06-25 04:48:03	2026-06-25 04:48:03
+1161	161	25	HO.ATL.PRD-0039	5.00	2026-06-25 04:48:03	2026-06-25 04:48:03
+1162	161	26	HO.ATL.PRD-0039	4.00	2026-06-25 04:48:03	2026-06-25 04:48:03
+1163	161	29	HO.ATL.PRD-0117	23.00	2026-06-25 04:48:03	2026-06-25 04:48:03
+1164	161	30	HO.ATL.PRD-0047	23.00	2026-06-25 04:48:03	2026-06-25 04:48:03
+1165	161	31	HO.ATL.PRD-0048	88.00	2026-06-25 04:48:03	2026-06-25 04:48:03
+1166	161	32	HO.ATL.PRD-0140	50.00	2026-06-25 04:48:03	2026-06-25 04:48:03
+1167	162	24	HO.ATL.PRD-0039	51.00	2026-06-25 04:49:10	2026-06-25 04:49:10
+1168	162	25	HO.ATL.PRD-0039	2.00	2026-06-25 04:49:10	2026-06-25 04:49:10
+1169	162	26	HO.ATL.PRD-0039	5.00	2026-06-25 04:49:10	2026-06-25 04:49:10
+1170	162	29	HO.ATL.PRD-0117	8.00	2026-06-25 04:49:10	2026-06-25 04:49:10
+1171	162	30	HO.ATL.PRD-0047	8.00	2026-06-25 04:49:10	2026-06-25 04:49:10
+1172	162	31	HO.ATL.PRD-0048	35.00	2026-06-25 04:49:10	2026-06-25 04:49:10
+1173	162	32	HO.ATL.PRD-0140	36.00	2026-06-25 04:49:10	2026-06-25 04:49:10
+1174	163	24	HO.ATL.PRD-0039	51.00	2026-06-25 04:50:18	2026-06-25 04:50:18
+1175	163	25	HO.ATL.PRD-0039	2.00	2026-06-25 04:50:19	2026-06-25 04:50:19
+1176	163	26	HO.ATL.PRD-0039	5.00	2026-06-25 04:50:19	2026-06-25 04:50:19
+1177	163	29	HO.ATL.PRD-0117	8.00	2026-06-25 04:50:19	2026-06-25 04:50:19
+1178	163	30	HO.ATL.PRD-0047	8.00	2026-06-25 04:50:19	2026-06-25 04:50:19
+1179	163	31	HO.ATL.PRD-0048	35.00	2026-06-25 04:50:19	2026-06-25 04:50:19
+1180	163	32	HO.ATL.PRD-0140	18.00	2026-06-25 04:50:19	2026-06-25 04:50:19
+1181	166	24	HO.ATL.PRD-0039	51.00	2026-06-25 04:58:14	2026-06-25 04:58:14
+1182	166	25	HO.ATL.PRD-0039	2.00	2026-06-25 04:58:14	2026-06-25 04:58:14
+1183	166	26	HO.ATL.PRD-0039	5.00	2026-06-25 04:58:14	2026-06-25 04:58:14
+1184	166	29	HO.ATL.PRD-0117	8.00	2026-06-25 04:58:14	2026-06-25 04:58:14
+1185	166	30	HO.ATL.PRD-0047	8.00	2026-06-25 04:58:14	2026-06-25 04:58:14
+1186	166	31	HO.ATL.PRD-0048	35.00	2026-06-25 04:58:14	2026-06-25 04:58:14
+1187	166	32	HO.ATL.PRD-0140	18.00	2026-06-25 04:58:14	2026-06-25 04:58:14
+1188	167	24	HO.ATL.PRD-0039	51.00	2026-06-25 05:01:08	2026-06-25 05:01:08
+1189	167	25	HO.ATL.PRD-0039	2.00	2026-06-25 05:01:09	2026-06-25 05:01:09
+1190	167	26	HO.ATL.PRD-0039	5.00	2026-06-25 05:01:09	2026-06-25 05:01:09
+1191	167	29	HO.ATL.PRD-0117	8.00	2026-06-25 05:01:09	2026-06-25 05:01:09
+1192	167	30	HO.ATL.PRD-0047	8.00	2026-06-25 05:01:09	2026-06-25 05:01:09
+1193	167	31	HO.ATL.PRD-0048	35.00	2026-06-25 05:01:09	2026-06-25 05:01:09
+1194	167	32	HO.ATL.PRD-0140	18.00	2026-06-25 05:01:09	2026-06-25 05:01:09
+1195	168	24	HO.ATL.PRD-0039	51.00	2026-06-25 05:03:52	2026-06-25 05:03:52
+1196	168	25	HO.ATL.PRD-0039	2.00	2026-06-25 05:03:52	2026-06-25 05:03:52
+1197	168	26	HO.ATL.PRD-0039	5.00	2026-06-25 05:03:52	2026-06-25 05:03:52
+1198	168	29	HO.ATL.PRD-0117	8.00	2026-06-25 05:03:52	2026-06-25 05:03:52
+1199	168	30	HO.ATL.PRD-0047	8.00	2026-06-25 05:03:52	2026-06-25 05:03:52
+1200	168	31	HO.ATL.PRD-0048	35.00	2026-06-25 05:03:52	2026-06-25 05:03:52
+1201	168	32	HO.ATL.PRD-0140	18.00	2026-06-25 05:03:52	2026-06-25 05:03:52
+1202	169	24	HO.ATL.PRD-0039	51.00	2026-06-25 05:06:32	2026-06-25 05:06:32
+1203	169	25	HO.ATL.PRD-0039	2.00	2026-06-25 05:06:32	2026-06-25 05:06:32
+1204	169	26	HO.ATL.PRD-0039	5.00	2026-06-25 05:06:32	2026-06-25 05:06:32
+1205	169	29	HO.ATL.PRD-0117	8.00	2026-06-25 05:06:32	2026-06-25 05:06:32
+1206	169	30	HO.ATL.PRD-0047	8.00	2026-06-25 05:06:32	2026-06-25 05:06:32
+1207	169	31	HO.ATL.PRD-0048	35.00	2026-06-25 05:06:32	2026-06-25 05:06:32
+1208	169	32	HO.ATL.PRD-0140	18.00	2026-06-25 05:06:32	2026-06-25 05:06:32
+1209	169	32	HO.ATL.PRD-0140	18.00	2026-06-25 05:06:32	2026-06-25 05:06:32
+1210	170	24	HO.ATL.PRD-0039	51.00	2026-06-25 05:11:32	2026-06-25 05:11:32
+1211	170	25	HO.ATL.PRD-0039	2.00	2026-06-25 05:11:32	2026-06-25 05:11:32
+1212	170	26	HO.ATL.PRD-0039	5.00	2026-06-25 05:11:32	2026-06-25 05:11:32
+1213	170	29	HO.ATL.PRD-0117	8.00	2026-06-25 05:11:32	2026-06-25 05:11:32
+1214	170	30	HO.ATL.PRD-0047	8.00	2026-06-25 05:11:32	2026-06-25 05:11:32
+1215	170	31	HO.ATL.PRD-0048	35.00	2026-06-25 05:11:32	2026-06-25 05:11:32
+1216	170	32	HO.ATL.PRD-0140	18.00	2026-06-25 05:11:32	2026-06-25 05:11:32
+1217	170	27	HO.ATL.PRD-0039	5.00	2026-06-25 05:11:32	2026-06-25 05:11:32
+1218	171	24	HO.ATL.PRD-0039	99.00	2026-06-25 05:12:56	2026-06-25 05:12:56
+1219	171	25	HO.ATL.PRD-0039	4.00	2026-06-25 05:12:56	2026-06-25 05:12:56
+1220	171	26	HO.ATL.PRD-0039	4.00	2026-06-25 05:12:56	2026-06-25 05:12:56
+1221	171	29	HO.ATL.PRD-0117	16.00	2026-06-25 05:12:56	2026-06-25 05:12:56
+1222	171	30	HO.ATL.PRD-0047	16.00	2026-06-25 05:12:56	2026-06-25 05:12:56
+1223	171	31	HO.ATL.PRD-0048	66.00	2026-06-25 05:12:56	2026-06-25 05:12:56
+1224	171	32	HO.ATL.PRD-0140	35.00	2026-06-25 05:12:56	2026-06-25 05:12:56
+1225	172	24	HO.ATL.PRD-0039	99.00	2026-06-25 05:14:17	2026-06-25 05:14:17
+1226	172	25	HO.ATL.PRD-0039	4.00	2026-06-25 05:14:17	2026-06-25 05:14:17
+1227	172	26	HO.ATL.PRD-0039	4.00	2026-06-25 05:14:17	2026-06-25 05:14:17
+1228	172	29	HO.ATL.PRD-0117	16.00	2026-06-25 05:14:17	2026-06-25 05:14:17
+1229	172	30	HO.ATL.PRD-0047	16.00	2026-06-25 05:14:17	2026-06-25 05:14:17
+1230	172	31	HO.ATL.PRD-0048	66.00	2026-06-25 05:14:17	2026-06-25 05:14:17
+1231	172	32	HO.ATL.PRD-0140	35.00	2026-06-25 05:14:17	2026-06-25 05:14:17
+1232	172	27	HO.ATL.PRD-0039	6.00	2026-06-25 05:14:17	2026-06-25 05:14:17
+1233	173	44	HO.ATL.PRD-0144	48.00	2026-06-25 09:03:56	2026-06-25 09:03:56
+1234	173	45	HO.ATL.PRD-0145	143.00	2026-06-25 09:03:56	2026-06-25 09:03:56
+1235	173	46	HO.ATL.PRD-0146	15.00	2026-06-25 09:03:56	2026-06-25 09:03:56
+1236	173	47	HO.ATL.PRD-0147	91.00	2026-06-25 09:03:56	2026-06-25 09:03:56
+1237	173	48	HO.ATL.PRD-0148	91.00	2026-06-25 09:03:56	2026-06-25 09:03:56
+1238	173	41	HO.ATL.PRD-0141	37.00	2026-06-25 09:03:56	2026-06-25 09:03:56
+1239	174	44	HO.ATL.PRD-0144	48.00	2026-06-25 09:04:06	2026-06-25 09:04:06
+1240	174	45	HO.ATL.PRD-0145	143.00	2026-06-25 09:04:06	2026-06-25 09:04:06
+1241	174	46	HO.ATL.PRD-0146	15.00	2026-06-25 09:04:06	2026-06-25 09:04:06
+1242	174	47	HO.ATL.PRD-0147	91.00	2026-06-25 09:04:06	2026-06-25 09:04:06
+1243	174	48	HO.ATL.PRD-0148	91.00	2026-06-25 09:04:06	2026-06-25 09:04:06
+1244	174	41	HO.ATL.PRD-0141	37.00	2026-06-25 09:04:06	2026-06-25 09:04:06
+1245	175	44	HO.ATL.PRD-0144	48.00	2026-06-25 09:20:51	2026-06-25 09:20:51
+1246	175	45	HO.ATL.PRD-0145	143.00	2026-06-25 09:20:51	2026-06-25 09:20:51
+1247	175	46	HO.ATL.PRD-0146	15.00	2026-06-25 09:20:51	2026-06-25 09:20:51
+1248	175	47	HO.ATL.PRD-0147	91.00	2026-06-25 09:20:51	2026-06-25 09:20:51
+1249	175	48	HO.ATL.PRD-0148	91.00	2026-06-25 09:20:51	2026-06-25 09:20:51
+1250	175	41	HO.ATL.PRD-0141	38.00	2026-06-25 09:20:51	2026-06-25 09:20:51
+1251	176	44	HO.ATL.PRD-0144	48.00	2026-06-25 09:21:17	2026-06-25 09:21:17
+1252	176	45	HO.ATL.PRD-0145	143.00	2026-06-25 09:21:17	2026-06-25 09:21:17
+1253	176	46	HO.ATL.PRD-0146	15.00	2026-06-25 09:21:17	2026-06-25 09:21:17
+1254	176	47	HO.ATL.PRD-0147	91.00	2026-06-25 09:21:17	2026-06-25 09:21:17
+1255	176	48	HO.ATL.PRD-0148	91.00	2026-06-25 09:21:17	2026-06-25 09:21:17
+1256	176	41	HO.ATL.PRD-0141	38.00	2026-06-25 09:21:17	2026-06-25 09:21:17
+1257	177	44	HO.ATL.PRD-0144	48.00	2026-06-25 09:21:37	2026-06-25 09:21:37
+1258	177	45	HO.ATL.PRD-0145	143.00	2026-06-25 09:21:37	2026-06-25 09:21:37
+1259	177	46	HO.ATL.PRD-0146	15.00	2026-06-25 09:21:37	2026-06-25 09:21:37
+1260	177	47	HO.ATL.PRD-0147	91.00	2026-06-25 09:21:37	2026-06-25 09:21:37
+1261	177	48	HO.ATL.PRD-0148	91.00	2026-06-25 09:21:37	2026-06-25 09:21:37
+1262	177	41	HO.ATL.PRD-0141	38.00	2026-06-25 09:21:37	2026-06-25 09:21:37
+1263	178	44	HO.ATL.PRD-0144	48.00	2026-06-25 09:21:46	2026-06-25 09:21:46
+1264	178	45	HO.ATL.PRD-0145	143.00	2026-06-25 09:21:46	2026-06-25 09:21:46
+1265	178	46	HO.ATL.PRD-0146	15.00	2026-06-25 09:21:46	2026-06-25 09:21:46
+1266	178	47	HO.ATL.PRD-0147	91.00	2026-06-25 09:21:46	2026-06-25 09:21:46
+1267	178	48	HO.ATL.PRD-0148	91.00	2026-06-25 09:21:46	2026-06-25 09:21:46
+1268	178	41	HO.ATL.PRD-0141	38.00	2026-06-25 09:21:46	2026-06-25 09:21:46
+1269	179	44	HO.ATL.PRD-0144	48.00	2026-06-25 09:22:06	2026-06-25 09:22:06
+1270	179	45	HO.ATL.PRD-0145	143.00	2026-06-25 09:22:06	2026-06-25 09:22:06
+1271	179	46	HO.ATL.PRD-0146	15.00	2026-06-25 09:22:06	2026-06-25 09:22:06
+1272	179	47	HO.ATL.PRD-0147	91.00	2026-06-25 09:22:06	2026-06-25 09:22:06
+1273	179	48	HO.ATL.PRD-0148	91.00	2026-06-25 09:22:06	2026-06-25 09:22:06
+1274	179	41	HO.ATL.PRD-0141	38.00	2026-06-25 09:22:06	2026-06-25 09:22:06
+1275	180	44	HO.ATL.PRD-0144	48.00	2026-06-25 09:23:50	2026-06-25 09:23:50
+1276	180	45	HO.ATL.PRD-0145	143.00	2026-06-25 09:23:50	2026-06-25 09:23:50
+1277	180	46	HO.ATL.PRD-0146	15.00	2026-06-25 09:23:50	2026-06-25 09:23:50
+1278	180	47	HO.ATL.PRD-0147	91.00	2026-06-25 09:23:50	2026-06-25 09:23:50
+1279	180	48	HO.ATL.PRD-0148	91.00	2026-06-25 09:23:50	2026-06-25 09:23:50
+1280	180	41	HO.ATL.PRD-0141	38.00	2026-06-25 09:23:50	2026-06-25 09:23:50
+1281	180	43	HO.ATL.PRD-0143	6.00	2026-06-25 09:23:50	2026-06-25 09:23:50
+1282	181	50	HO.ATL.PRD-0150	2.00	2026-06-25 10:38:03	2026-06-25 10:38:03
+1283	181	51	HO.ATL.PRD-0151	134.00	2026-06-25 10:38:03	2026-06-25 10:38:03
+1284	181	49	HO.ATL.PRD-0149	38.00	2026-06-25 10:38:03	2026-06-25 10:38:03
+1285	181	42	HO.ATL.PRD-0142	3.00	2026-06-25 10:38:03	2026-06-25 10:38:03
+1286	182	52	HO.ATL.PRD-0052	88.00	2026-06-26 02:56:37	2026-06-26 02:56:37
+1287	183	52	HO.ATL.PRD-0052	88.00	2026-06-26 02:56:48	2026-06-26 02:56:48
+\.
+
+
+--
+-- TOC entry 4956 (class 0 OID 35217)
+-- Dependencies: 229
+-- Data for Name: failed_jobs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.failed_jobs (id, uuid, connection, queue, payload, exception, failed_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4954 (class 0 OID 35209)
+-- Dependencies: 227
+-- Data for Name: job_batches; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.job_batches (id, name, total_jobs, pending_jobs, failed_jobs, failed_job_ids, options, cancelled_at, created_at, finished_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4953 (class 0 OID 35200)
+-- Dependencies: 226
+-- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.jobs (id, queue, payload, attempts, reserved_at, available_at, created_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4945 (class 0 OID 35150)
+-- Dependencies: 218
+-- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.migrations (id, migration, batch) FROM stdin;
+1	0001_01_01_000000_create_users_table	1
+2	0001_01_01_000001_create_cache_table	1
+3	0001_01_01_000002_create_jobs_table	1
+4	2026_06_04_034713_create_product_categories	2
+5	2026_06_04_034727_create_product_units	2
+6	2026_06_04_034736_create_product_brands	2
+7	2026_06_04_034744_create_product_areas	2
+8	2026_06_04_034752_create_product	2
+\.
+
+
+--
+-- TOC entry 4948 (class 0 OID 35167)
+-- Dependencies: 221
+-- Data for Name: password_reset_tokens; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.password_reset_tokens (email, token, created_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4967 (class 0 OID 35318)
+-- Dependencies: 240
+-- Data for Name: product_accessories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.product_accessories (id, parent_product_id, accessory_id) FROM stdin;
+1	1	2
+2	1	3
+3	1	4
+4	1	5
+5	1	6
+6	1	7
+7	1	8
+8	1	9
+9	1	10
+10	1	11
+11	1	12
+12	1	13
+13	14	15
+14	14	2
+15	14	4
+16	14	5
+17	14	6
+18	14	7
+19	14	8
+20	14	10
+21	14	11
+22	14	12
+23	14	13
+24	16	17
+27	16	4
+28	16	5
+29	16	6
+30	16	7
+31	16	8
+32	16	10
+33	16	11
+34	16	12
+35	16	13
+25	16	18
+36	19	4
+37	19	5
+38	19	6
+39	19	7
+40	19	8
+41	19	10
+42	19	11
+43	19	12
+44	19	13
+45	19	20
+46	19	21
+47	1	22
+48	14	22
+49	16	22
+50	19	22
+51	24	25
+52	24	22
+53	24	26
+54	24	27
+55	24	28
+56	24	29
+57	24	30
+58	24	31
+59	33	28
+60	33	29
+61	33	30
+62	33	31
+63	33	32
+64	33	34
+67	37	28
+68	37	29
+69	37	30
+70	37	31
+71	37	32
+74	37	40
+65	33	25
+66	33	26
+72	37	25
+73	37	26
+75	41	42
+76	41	43
+77	41	44
+78	41	45
+79	41	46
+80	41	47
+81	41	48
+82	49	42
+83	49	43
+84	49	50
+85	49	51
+\.
+
+
+--
+-- TOC entry 4964 (class 0 OID 35262)
+-- Dependencies: 237
+-- Data for Name: product_areas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.product_areas (id, nama_area, slug, created_at, updated_at) FROM stdin;
+1	Atap Utama	atap-utama	2026-06-04 03:57:20	2026-06-04 03:57:20
+2	Underlayer	underlayer	2026-06-04 03:57:20	2026-06-04 03:57:20
+3	Starter	starter	2026-06-04 03:57:20	2026-06-04 03:57:20
+4	Nok & Jurai	nok-jurai	2026-06-04 03:57:20	2026-06-04 03:57:20
+5	Flashing	flashing	2026-06-04 03:57:20	2026-06-04 03:57:20
+6	Talang Jurai	talang-jurai	\N	\N
+7	Paku & Screw	paku-screw	\N	\N
+8	Lem	lem	\N	\N
+9	Metal Flashing	metal-flashing	\N	\N
+10	Wall Flashing	wall-flashing	\N	\N
+11	Ridge Ventilator	ridge-ventilator	\N	\N
+12	Dinding	dinding	\N	\N
+13	Join Dinding	join-dinding	\N	\N
+14	Cat	cat	\N	\N
+16	Pelapis Dinding	pelapis-dinding	\N	\N
+15	Jaring Penguat	jaring-penguat	\N	\N
+\.
+
+
+--
+-- TOC entry 4962 (class 0 OID 35251)
+-- Dependencies: 235
+-- Data for Name: product_brands; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.product_brands (id, nama_brand, slug, logo, created_at, updated_at) FROM stdin;
+1	IKO - ATAP	iko-atap	\N	2026-06-04 03:57:20	2026-06-04 03:57:20
+6	IKO - INSULASI	iko-insulasi	\N	\N	\N
+7	SKYSHIELD	skyshield	\N	\N	\N
+9	AQUAPANEL - INDOOR	aquapanel-indoor	\N	\N	\N
+8	AQUAPANEL	aquapanel	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 4958 (class 0 OID 35230)
+-- Dependencies: 231
+-- Data for Name: product_categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.product_categories (id, category_name, slug, description, is_active, created_at, updated_at) FROM stdin;
+1	Atap	atap	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+2	Insulasi	insulasi	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+3	Dak Beton	dak-beton	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+4	Rangka	rangka	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+5	Jendela	jendela	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+6	Pintu	pintu	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+7	Kusen	kusen	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+8	Aksesoris Pintu & Pendela	aksesoris-pintu-pendela	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+9	Dinding	dinding	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+10	Plafon	plafon	\N	t	2026-06-04 03:57:19	2026-06-04 03:57:19
+11	Tangga	tangga	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+12	Pagar	pagar	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+13	Rumah Prefab	rumah-prefab	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+14	Solar Roof	solar-roof	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+15	Solar Panel	solar-panel	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+16	Cabel Tray	cabel-tray	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+17	Roofing	roofing	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+18	Profil	profil	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+19	Hardware	hardware	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+20	Walling	walling	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+21	Ceiling	ceiling	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+22	Reinforcement	reinforcement	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+23	Talang	talang	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+24	Waterprofing	waterprofing	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+25	Draincell	draincell	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+26	Membrane	membrane	\N	t	2026-06-04 03:57:20	2026-06-04 03:57:20
+\.
+
+
+--
+-- TOC entry 4960 (class 0 OID 35242)
+-- Dependencies: 233
+-- Data for Name: product_units; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.product_units (id, unit_name, symbol, created_at, updated_at) FROM stdin;
+1	Bundle	bdl	2026-06-04 03:57:20	2026-06-04 03:57:20
+2	Meter	m	2026-06-04 03:57:20	2026-06-04 03:57:20
+3	Pcs	pcs	2026-06-04 03:57:20	2026-06-04 03:57:20
+4	Box	box	2026-06-04 03:57:20	2026-06-04 03:57:20
+5	Roll	roll	2026-06-04 03:57:20	2026-06-04 03:57:20
+6	Tube	tube	2026-06-04 03:57:20	2026-06-04 03:57:20
+7	Meter Persegi	m²	2026-06-04 03:57:20	2026-06-04 03:57:20
+8	Liter	L	2026-06-04 03:57:20	2026-06-04 03:57:20
+9	Kg	kg	2026-06-04 03:57:20	2026-06-04 03:57:20
+10	Pack	pack	2026-06-04 03:57:20	2026-06-04 03:57:20
+11	Lembar	lbr	\N	\N
+12	Bag	bag	\N	\N
+13	Cartridge	ctr	\N	\N
+14	Pail	pail	\N	\N
+\.
+
+
+--
+-- TOC entry 4966 (class 0 OID 35273)
+-- Dependencies: 239
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.products (id, kode_produk, nama_produk, slug, kategori_id, unit_id, tipe_produk, hpp_produk, harga_price_list, area_id, satuan_terkecil, brand_id, description, image, created_at, updated_at) FROM stdin;
+1	HO.ATL.PRD-0119	IKO - Marathon Plus AR 25 YR	\N	1	1	main	788400.00	1080000.00	1	3.00	1	\N	\N	\N	\N
+4	HO.ATL.PRD-0122	IKO - Armourbase PRO Underlayment	\N	1	5	aksesoris	68575.00	105500.00	2	26.91	1	\N	\N	\N	\N
+5	HO.ATL.PRD-0123	IKO - Stormtite Synthetic Underlayment	\N	1	5	aksesoris	33735.00	51900.00	2	85.20	1	\N	\N	\N	\N
+6	HO.ATL.PRD-0124	IKO - StormShield Ice and Water Protector	\N	1	5	aksesoris	80665.00	124100.00	2	16.04	1	\N	\N	\N	\N
+7	HO.ATL.PRD-0125	IKO - Nail	\N	1	4	aksesoris	47450.00	73000.00	7	20.00	1	\N	\N	\N	\N
+8	HO.ATL.PRD-0126	IKO - Screw	\N	1	4	aksesoris	83200.00	128000.00	7	20.00	1	\N	\N	\N	\N
+9	HO.ATL.PRD-0127	IKO - Shingle Stick	\N	1	6	aksesoris	106600.00	164000.00	8	10.00	1	\N	\N	\N	\N
+10	HO.ATL.PRD-0128	IKO - U Flashing	\N	1	3	aksesoris	41600.00	64000.00	9	1.10	1	\N	\N	\N	\N
+12	HO.ATL.PRD-0130	IKO - Quarix Ridge Vent Roll 20	\N	1	5	aksesoris	1498250.00	2305000.00	11	6.00	1	\N	\N	\N	\N
+13	HO.ATL.PRD-0131	IKO - Leading Edge Plus	\N	1	1	aksesoris	880750.00	1355000.00	3	36.00	1	\N	\N	\N	\N
+11	HO.ATL.PRD-0129	IKO - Wall Flashing	\N	1	3	aksesoris	45500.00	70000.00	10	1.10	1	\N	\N	\N	\N
+14	HO.ATL.PRD-0132	IKO - Cambridge Plus AR	\N	1	1	main	857750.00	1175000.00	1	3.10	1	\N	\N	\N	\N
+22	HO.ATL.PRD-0140	Polygum AE Plain	\N	26	5	aksesoris	107602.00	147400.00	2	8.91	1	\N	\N	\N	\N
+23	HO.ATL.PRD-0141	IKO - ENERTHERM MG (60)	\N	2	11	main	381790.00	523000.00	\N	1.20	6	\N	\N	\N	\N
+2	HO.ATL.PRD-0119	IKO - Marathon Plus AR 25 YR	\N	1	1	aksesoris	788400.00	1080000.00	4	9.00	1	\N	\N	\N	\N
+3	HO.ATL.PRD-0119	IKO - Marathon Plus AR 25 YR	\N	1	1	aksesoris	788400.00	1080000.00	6	6.00	1	\N	\N	\N	\N
+15	HO.ATL.PRD-0118	IKO - Cambridge Plus AR	\N	1	1	aksesoris	857750.00	1175000.00	6	3.10	1	\N	\N	\N	\N
+16	HO.ATL.PRD-0120	IKO - Armourshield AR 20 YR	\N	1	1	main	872350.00	1195000.00	1	3.00	1	\N	\N	\N	\N
+17	HO.ATL.PRD-0120	IKO - Armourshield AR 20 YR	\N	1	1	aksesoris	872350.00	1195000.00	4	9.00	1	\N	\N	\N	\N
+18	HO.ATL.PRD-0120	IKO - Armourshield AR 20 YR	\N	1	1	aksesoris	872350.00	1195000.00	6	6.00	1	\N	\N	\N	\N
+19	HO.ATL.PRD-0121	IKO - SuperGlass-Biber AR 15 YR	\N	1	1	main	795700.00	1090000.00	1	3.00	1	\N	\N	\N	\N
+20	HO.ATL.PRD-0121	IKO - SuperGlass-Biber AR 15 YR	\N	1	1	aksesoris	795700.00	1090000.00	4	9.00	1	\N	\N	\N	\N
+21	HO.ATL.PRD-0121	IKO - SuperGlass-Biber AR 15 YR	\N	1	1	aksesoris	795700.00	1090000.00	6	6.00	1	\N	\N	\N	\N
+24	HO.ATL.PRD-0039	SkyShield - Spectrum 3 - Tab ( Plain Color )	\N	1	1	main	366606.00	502200.00	1	3.10	7	\N	\N	\N	\N
+27	HO.ATL.PRD-0039	SkyShield - Spectrum 3 - Tab ( Plain Color )	\N	1	1	aksesoris	366606.00	502200.00	6	6.00	7	\N	\N	\N	\N
+28	HO.ATL.PRD-0046	SkyShield - Asphalt Roofing Felt	\N	1	5	aksesoris	897306.00	1380472.00	2	35.65	7	\N	\N	\N	\N
+29	HO.ATL.PRD-0117	SkyShield - Paku Genteng	\N	1	4	aksesoris	47450.00	73000.00	7	25.00	7	\N	\N	\N	\N
+30	HO.ATL.PRD-0047	SkyShield - Screw Genteng	\N	1	4	aksesoris	47450.00	73000.00	7	25.00	7	\N	\N	\N	\N
+31	HO.ATL.PRD-0048	SkyShield - Flashing 9 mm	\N	1	3	aksesoris	41600.00	64000.00	9	1.10	7	\N	\N	\N	\N
+32	HO.ATL.PRD-0140	Polygum AE Plain	\N	26	5	aksesoris	107602.00	147400.00	2	8.91	7	\N	\N	\N	\N
+33	HO.ATL.PRD-0041	SkyShield - Starlite - Mosaic ( Plain Color )	\N	1	1	main	341640.00	468000.00	1	3.00	7	\N	\N	\N	\N
+34	HO.ATL.PRD-0041	SkyShield - Starlite - Mosaic ( Plain Color )	\N	1	1	aksesoris	341640.00	468000.00	6	6.00	7	\N	\N	\N	\N
+37	HO.ATL.PRD-0043	SkyShield - Supernova - Laminated ( Plain Color )	\N	1	1	main	384447.00	526640.00	1	2.32	7	\N	\N	\N	\N
+40	HO.ATL.PRD-0043	SkyShield - Supernova - Laminated ( Plain Color )	\N	1	1	aksesoris	384447.00	526640.00	6	6.00	7	\N	\N	\N	\N
+41	HO.ATL.PRD-0141	Aquapanel - Cement Board OUTDOOR	\N	9	11	main	296161.00	405700.00	12	2.80	8	\N	\N	\N	\N
+42	HO.ATL.PRD-0142	Maxi screws SN 39*	\N	9	4	aksesoris	254800.00	392000.00	7	500.00	8	\N	\N	\N	\N
+43	HO.ATL.PRD-0143	Maxi screws SB 39*	\N	9	4	aksesoris	294255.00	452700.00	7	250.00	8	\N	\N	\N	\N
+44	HO.ATL.PRD-0144	Tape (10cm)	\N	9	5	aksesoris	325975.00	501500.00	8	2.10	8	\N	\N	\N	\N
+45	HO.ATL.PRD-0145	Joint Filler - Grey	\N	9	12	aksesoris	556205.00	855700.00	13	0.70	8	\N	\N	\N	\N
+46	HO.ATL.PRD-0146	Exterior Basecoat - Grey	\N	9	12	aksesoris	443300.00	682000.00	14	7.00	8	\N	\N	\N	\N
+47	HO.ATL.PRD-0147	Reinforcing Mesh	\N	9	5	aksesoris	1842750.00	2835000.00	15	1.10	8	\N	\N	\N	\N
+48	HO.ATL.PRD-0148	Tyvek StuccoWrap	\N	9	5	aksesoris	4106700.00	6318000.00	16	1.10	8	\N	\N	\N	\N
+49	HO.ATL.PRD-0149	Aquapanel - Cement Board INDOOR	\N	9	11	main	296161.00	405700.00	12	2.80	9	\N	\N	\N	\N
+50	HO.ATL.PRD-0150	Joint Adhesive (PU)	\N	9	13	aksesoris	117975.00	181500.00	8	50.00	9	\N	\N	\N	\N
+51	HO.ATL.PRD-0151	Board Primer	\N	9	14	aksesoris	930150.00	1431000.00	14	15.00	9	\N	\N	\N	\N
+52	HO.ATL.PRD-0052	IKO - ENERTHERM MG (30)	\N	2	11	main	266450.00	365000.00	12	1.20	6	\N	\N	\N	\N
+53	HO.ATL.PRD-0053	IKO - ENERTHERM MG (40)	\N	2	11	main	297840.00	408000.00	12	1.20	6	\N	\N	\N	\N
+54	HO.ATL.PRD-0054	IKO - ENERTHERM MG (50)	\N	2	11	main	337260.00	462000.00	12	1.20	6	\N	\N	\N	\N
+55	HO.ATL.PRD-0055	IKO - ENERTHERM MG (60)	\N	2	11	main	381790.00	523000.00	12	1.20	6	\N	\N	\N	\N
+56	HO.ATL.PRD-0056	IKO - ENERTHERM ALU (30)	\N	2	11	main	273750.00	375000.00	12	1.20	6	\N	\N	\N	\N
+57	HO.ATL.PRD-0057	IKO - ENERTHERM ALU (40)	\N	2	11	main	305140.00	418000.00	12	1.20	6	\N	\N	\N	\N
+58	HO.ATL.PRD-0058	IKO - ENERTHERM ALU (50)	\N	2	11	main	344560.00	472000.00	12	1.20	6	\N	\N	\N	\N
+59	HO.ATL.PRD-0059	IKO - ENERTHERM ALU (60)	\N	2	11	main	392010.00	537000.00	12	1.20	6	\N	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 4949 (class 0 OID 35174)
+-- Dependencies: 222
+-- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sessions (id, user_id, ip_address, user_agent, payload, last_activity) FROM stdin;
+MGwJfM653HdlvlhBUBRlPIh4u9kED1O4NsSTbYe3	\N	192.168.1.5	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36	eyJfdG9rZW4iOiJmVzkxS3FhdDBNUWZDRUdCUkt0YVVsT01GdTJFY1pxTUd2WXpsSW4wIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzE5Mi4xNjguMS41OjgwMDBcL2F0YXAtc3RhbmRhciIsInJvdXRlIjoiYXRhcC1zdGFuZGFyLmluZGV4In0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=	1782443423
+\.
+
+
+--
+-- TOC entry 4947 (class 0 OID 35157)
+-- Dependencies: 220
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, name, email, email_verified_at, password, remember_token, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4988 (class 0 OID 0)
+-- Dependencies: 241
+-- Name: boq_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.boq_id_seq', 183, true);
+
+
+--
+-- TOC entry 4989 (class 0 OID 0)
+-- Dependencies: 243
+-- Name: detail_boq_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.detail_boq_id_seq', 1287, true);
+
+
+--
+-- TOC entry 4990 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: failed_jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.failed_jobs_id_seq', 1, false);
+
+
+--
+-- TOC entry 4991 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.jobs_id_seq', 1, false);
+
+
+--
+-- TOC entry 4992 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.migrations_id_seq', 8, true);
+
+
+--
+-- TOC entry 4993 (class 0 OID 0)
+-- Dependencies: 236
+-- Name: product_areas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.product_areas_id_seq', 6, true);
+
+
+--
+-- TOC entry 4994 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: product_brands_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.product_brands_id_seq', 5, true);
+
+
+--
+-- TOC entry 4995 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: product_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.product_categories_id_seq', 26, true);
+
+
+--
+-- TOC entry 4996 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: product_units_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.product_units_id_seq', 10, true);
+
+
+--
+-- TOC entry 4997 (class 0 OID 0)
+-- Dependencies: 238
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.products_id_seq', 1, false);
+
+
+--
+-- TOC entry 4998 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, false);
+
+
+--
+-- TOC entry 4790 (class 2606 OID 35355)
+-- Name: boq boq_nomor_boq_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.boq
+    ADD CONSTRAINT boq_nomor_boq_key UNIQUE (nomor_boq);
+
+
+--
+-- TOC entry 4792 (class 2606 OID 35353)
+-- Name: boq boq_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.boq
+    ADD CONSTRAINT boq_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4754 (class 2606 OID 35197)
+-- Name: cache_locks cache_locks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cache_locks
+    ADD CONSTRAINT cache_locks_pkey PRIMARY KEY (key);
+
+
+--
+-- TOC entry 4751 (class 2606 OID 35189)
+-- Name: cache cache_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cache
+    ADD CONSTRAINT cache_pkey PRIMARY KEY (key);
+
+
+--
+-- TOC entry 4794 (class 2606 OID 35365)
+-- Name: detail_boq detail_boq_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.detail_boq
+    ADD CONSTRAINT detail_boq_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4762 (class 2606 OID 35225)
+-- Name: failed_jobs failed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.failed_jobs
+    ADD CONSTRAINT failed_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4764 (class 2606 OID 35228)
+-- Name: failed_jobs failed_jobs_uuid_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.failed_jobs
+    ADD CONSTRAINT failed_jobs_uuid_unique UNIQUE (uuid);
+
+
+--
+-- TOC entry 4759 (class 2606 OID 35215)
+-- Name: job_batches job_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.job_batches
+    ADD CONSTRAINT job_batches_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4756 (class 2606 OID 35207)
+-- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.jobs
+    ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4738 (class 2606 OID 35155)
+-- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.migrations
+    ADD CONSTRAINT migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4744 (class 2606 OID 35173)
+-- Name: password_reset_tokens password_reset_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.password_reset_tokens
+    ADD CONSTRAINT password_reset_tokens_pkey PRIMARY KEY (email);
+
+
+--
+-- TOC entry 4788 (class 2606 OID 35322)
+-- Name: product_accessories product_accessories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_accessories
+    ADD CONSTRAINT product_accessories_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4776 (class 2606 OID 35269)
+-- Name: product_areas product_areas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_areas
+    ADD CONSTRAINT product_areas_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4778 (class 2606 OID 35271)
+-- Name: product_areas product_areas_slug_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_areas
+    ADD CONSTRAINT product_areas_slug_unique UNIQUE (slug);
+
+
+--
+-- TOC entry 4772 (class 2606 OID 35258)
+-- Name: product_brands product_brands_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_brands
+    ADD CONSTRAINT product_brands_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4774 (class 2606 OID 35260)
+-- Name: product_brands product_brands_slug_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_brands
+    ADD CONSTRAINT product_brands_slug_unique UNIQUE (slug);
+
+
+--
+-- TOC entry 4766 (class 2606 OID 35238)
+-- Name: product_categories product_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_categories
+    ADD CONSTRAINT product_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4768 (class 2606 OID 35240)
+-- Name: product_categories product_categories_slug_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_categories
+    ADD CONSTRAINT product_categories_slug_unique UNIQUE (slug);
+
+
+--
+-- TOC entry 4770 (class 2606 OID 35249)
+-- Name: product_units product_units_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_units
+    ADD CONSTRAINT product_units_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4784 (class 2606 OID 35288)
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4786 (class 2606 OID 35316)
+-- Name: products products_slug_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_slug_unique UNIQUE (slug);
+
+
+--
+-- TOC entry 4747 (class 2606 OID 35180)
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4740 (class 2606 OID 35166)
+-- Name: users users_email_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_unique UNIQUE (email);
+
+
+--
+-- TOC entry 4742 (class 2606 OID 35164)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4749 (class 1259 OID 35190)
+-- Name: cache_expiration_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX cache_expiration_index ON public.cache USING btree (expiration);
+
+
+--
+-- TOC entry 4752 (class 1259 OID 35198)
+-- Name: cache_locks_expiration_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX cache_locks_expiration_index ON public.cache_locks USING btree (expiration);
+
+
+--
+-- TOC entry 4760 (class 1259 OID 35226)
+-- Name: failed_jobs_connection_queue_failed_at_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX failed_jobs_connection_queue_failed_at_index ON public.failed_jobs USING btree (connection, queue, failed_at);
+
+
+--
+-- TOC entry 4757 (class 1259 OID 35208)
+-- Name: jobs_queue_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX jobs_queue_index ON public.jobs USING btree (queue);
+
+
+--
+-- TOC entry 4779 (class 1259 OID 35312)
+-- Name: products_brand_id_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX products_brand_id_index ON public.products USING btree (brand_id);
+
+
+--
+-- TOC entry 4780 (class 1259 OID 35311)
+-- Name: products_kategori_id_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX products_kategori_id_index ON public.products USING btree (kategori_id);
+
+
+--
+-- TOC entry 4781 (class 1259 OID 35309)
+-- Name: products_kode_produk_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX products_kode_produk_index ON public.products USING btree (kode_produk);
+
+
+--
+-- TOC entry 4782 (class 1259 OID 35310)
+-- Name: products_nama_produk_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX products_nama_produk_index ON public.products USING btree (nama_produk);
+
+
+--
+-- TOC entry 4745 (class 1259 OID 35182)
+-- Name: sessions_last_activity_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX sessions_last_activity_index ON public.sessions USING btree (last_activity);
+
+
+--
+-- TOC entry 4748 (class 1259 OID 35181)
+-- Name: sessions_user_id_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX sessions_user_id_index ON public.sessions USING btree (user_id);
+
+
+--
+-- TOC entry 4795 (class 2606 OID 35299)
+-- Name: products products_area_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_area_id_foreign FOREIGN KEY (area_id) REFERENCES public.product_areas(id) ON DELETE SET NULL;
+
+
+--
+-- TOC entry 4796 (class 2606 OID 35304)
+-- Name: products products_brand_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_brand_id_foreign FOREIGN KEY (brand_id) REFERENCES public.product_brands(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 4797 (class 2606 OID 35289)
+-- Name: products products_kategori_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_kategori_id_foreign FOREIGN KEY (kategori_id) REFERENCES public.product_categories(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 4798 (class 2606 OID 35294)
+-- Name: products products_unit_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_unit_id_foreign FOREIGN KEY (unit_id) REFERENCES public.product_units(id) ON DELETE RESTRICT;
+
+
+-- Completed on 2026-06-26 10:26:50
+
+--
+-- PostgreSQL database dump complete
+--
+
