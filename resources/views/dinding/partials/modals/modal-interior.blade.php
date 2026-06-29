@@ -6,7 +6,7 @@
             
             <div class="modal-grid">
                 <div class="modal-image">
-                    <img src="{{ asset('images/dinding-interior.png') }}" alt="Dinding Interior">
+                    <img src="{{ asset('images/aquapanel-indoor.png') }}" alt="Dinding Interior">
                 </div>
                 <div class="modal-form">
                     <h3 class="modal-form-title">Dinding Interior</h3>

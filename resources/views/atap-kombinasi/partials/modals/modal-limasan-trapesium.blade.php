@@ -62,7 +62,7 @@
                     <div class="space-y-4">
                         <!-- Notes -->
                         <div class="bg-gray-50 border-l-2 border-gray-400 rounded-lg p-3">
-                            <p class="text-xs text-gray-600 font-medium">Catatan:</p>
+                            <p class="text-xs text-gray-600 font-medium">Cara menghitung:</p>
                             <p class="text-xs text-gray-500 mt-1">
                                 Bagi bidang menjadi 2 bagian:<br>
                                 • <strong>Bagian Atas</strong> = Limasan<br>

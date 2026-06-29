@@ -10,12 +10,11 @@ class AtapStandarController extends Controller
     /**
      * Tampilkan halaman utama atap standar
      */
-    public function index()
-    {
-        $brands = ProductBrand::all();
-        return view('atap-standart.index', compact('brands'));
-    }
-
+   public function index()
+{
+    $brands = ProductBrand::where('mapping_id', 1)->get();
+    return view('atap-standart.index', compact('brands'));
+}
       public function hitung(Request $request)
     {
         $jenis_atap = $request->jenis_atap;

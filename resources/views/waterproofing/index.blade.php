@@ -287,9 +287,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 30px;
+        padding: 0;
         border-radius: 16px 0 0 16px;
         min-height: 260px;
+        overflow: hidden;
     }
     
     @media (max-width: 768px) {
@@ -297,13 +298,14 @@
             width: 100%;
             border-radius: 16px 16px 0 0;
             min-height: 200px;
+            height: 200px;
         }
     }
     
     .modal-image img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         opacity: 0.9;
     }
     
@@ -331,20 +333,6 @@
         font-size: 12px;
         color: #94a3b8;
         margin-bottom: 16px;
-    }
-    
-    .input-group {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-bottom: 12px;
-    }
-    
-    @media (max-width: 480px) {
-        .input-group {
-            grid-template-columns: 1fr;
-            gap: 8px;
-        }
     }
     
     .input-group-2 {
@@ -391,29 +379,6 @@
     
     .input-field::placeholder {
         color: #cbd5e1;
-    }
-    
-    .select-field {
-        width: 100%;
-        padding: 7px 10px;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        font-size: 13px;
-        color: #1a1a2e;
-        background: #ffffff;
-        transition: all 0.2s;
-        font-family: 'Poppins', sans-serif;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        padding-right: 32px;
-    }
-    
-    .select-field:focus {
-        outline: none;
-        border-color: #1a1a2e;
-        box-shadow: 0 0 0 3px rgba(26,26,46,0.06);
     }
     
     .btn-primary {
@@ -525,54 +490,26 @@
 
 <div class="max-w-7xl mx-auto px-4 py-6">
     <div>
-        <h1 class="page-title">Dinding</h1>
-        <p class="page-subtitle">Pilih jenis dinding untuk menghitung kebutuhan material</p>
+        <h1 class="page-title">Waterproofing</h1>
+        <p class="page-subtitle">Hitung kebutuhan material waterproofing</p>
     </div>
 
     <div class="card-grid">
-        <!-- Eksterior -->
+        <!-- Waterproofing -->
         <div class="card-item">
             <div class="card-image">
-                <img src="{{ asset('images/aquapanel-outdoor.png') }}" alt="Dinding Eksterior">
+                <img src="{{ asset('images/waterproofing.png') }}" alt="Waterproofing">
             </div>
             <div class="card-body">
-                <div class="card-name">Dinding Eksterior</div>
-                <button class="card-btn" onclick="openModal('modalEksterior')">Hitung</button>
-            </div>
-        </div>
-
-        <!-- Interior -->
-        <div class="card-item">
-            <div class="card-image">
-                <img src="{{ asset('images/aquapanel-indoor.png') }}" alt="Dinding Interior">
-            </div>
-            <div class="card-body">
-                <div class="card-name">Dinding Interior</div>
-                <button class="card-btn" onclick="openModal('modalInterior')">Hitung</button>
-            </div>
-        </div>
-
-        <!-- Insulasi -->
-        <div class="card-item">
-            <div class="card-image">
-                <img src="{{ asset('images/iko-insulasi.png') }}" alt="Insulasi">
-            </div>
-            <div class="card-body">
-                <div class="card-name">Insulasi</div>
-                <button class="card-btn" onclick="openModal('modalInsulasi')">Hitung</button>
+                <div class="card-name">Waterproofing</div>
+                <button class="card-btn" onclick="openModal('modalWaterproofing')">Hitung</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Eksterior -->
-@include('dinding.partials.modals.modal-eksterior')
-
-<!-- Modal Interior -->
-@include('dinding.partials.modals.modal-interior')
-
-<!-- Modal Insulasi -->
-@include('dinding.partials.modals.modal-insulasi')
+<!-- Modal Waterproofing -->
+@include('waterproofing.partials.modals.modal-waterproofing')
 
 <script>
 function openModal(modalId) {

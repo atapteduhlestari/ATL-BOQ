@@ -14,23 +14,27 @@
         </div>
 
         <!-- Menu -->
-        <nav class="flex-1 px-4 py-6 space-y-0.5">
-            <x-sidebar-link href="/atap-standar" :active="request()->is('atap-standar')">
-                <span class="text-sm font-medium text-slate-200 hover:text-white">Atap Standar</span>
-            </x-sidebar-link>
+       <nav class="flex-1 px-4 py-6 space-y-0.5">
+    <x-sidebar-link href="/atap-standar" :active="request()->is('atap-standar')">
+        <span class="text-sm font-medium text-slate-200 hover:text-white">Atap Standar</span>
+    </x-sidebar-link>
 
-            <x-sidebar-link href="/atap-kombinasi" :active="request()->is('atap-kombinasi')">
-                <span class="text-sm font-medium text-slate-200 hover:text-white">Atap Kombinasi</span>
-            </x-sidebar-link>
+    <x-sidebar-link href="/atap-kombinasi" :active="request()->is('atap-kombinasi')">
+        <span class="text-sm font-medium text-slate-200 hover:text-white">Atap Kombinasi</span>
+    </x-sidebar-link>
 
-             <x-sidebar-link href="/dinding" :active="request()->is('dinding') || request()->is('dinding/*')">
+    <x-sidebar-link href="/dinding" :active="request()->is('dinding') || request()->is('dinding/*')">
         <span class="text-sm font-medium text-slate-200 hover:text-white">Dinding</span>
     </x-sidebar-link>
 
-            <x-sidebar-link href="/jendela" :active="request()->is('jendela') || request()->is('jendela/*')">
-                <span class="text-sm font-medium text-slate-200 hover:text-white">Jendela</span>
-            </x-sidebar-link>
-        </nav>
+    <x-sidebar-link href="/waterproofing" :active="request()->is('waterproofing') || request()->is('waterproofing/*')">
+        <span class="text-sm font-medium text-slate-200 hover:text-white">Waterproofing</span>
+    </x-sidebar-link>
+
+    <x-sidebar-link href="/jendela" :active="request()->is('jendela') || request()->is('jendela/*')">
+        <span class="text-sm font-medium text-slate-200 hover:text-white">Jendela</span>
+    </x-sidebar-link>
+</nav>
 
         <!-- Footer -->
         <div class="px-6 py-5 border-t border-slate-700/50">

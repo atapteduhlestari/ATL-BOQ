@@ -144,7 +144,7 @@
     }
     
     .card-image {
-        height: 160px;
+        height: 250px;
         background: #f8fafc;
         display: flex;
         align-items: center;

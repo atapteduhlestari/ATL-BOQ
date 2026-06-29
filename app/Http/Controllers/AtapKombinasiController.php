@@ -8,10 +8,11 @@ use App\Models\ProductBrand;
 
 class AtapKombinasiController extends Controller
 {
-    public function index()
-    { $brands = ProductBrand::all();
-        return view('atap-kombinasi.index', compact('brands'));
-    }
+   public function index()
+{
+    $brands = ProductBrand::where('mapping_id', 1)->get();
+    return view('atap-kombinasi.index', compact('brands'));
+}
 
   public function hitung(Request $request)
 {

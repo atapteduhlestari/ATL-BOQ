@@ -41,7 +41,7 @@
                 <!-- Kolom Kiri: Gambar -->
                 <div class="md:w-2/5 relative bg-gray-900 rounded-t-xl md:rounded-l-xl md:rounded-tr-none overflow-hidden">
                     <div class="h-64 md:h-full min-h-[280px] relative flex items-center justify-center p-6">
-                        <img src="{{ asset('images/atap-standar/trapesium-kotak.png') }}" 
+                        <img src="{{ asset('images/atap-kombinasi/trapesium-kotak.png') }}" 
                              alt="Atap Trapesium Kotak" 
                              class="w-full h-full object-contain opacity-90">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>

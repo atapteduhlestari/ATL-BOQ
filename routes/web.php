@@ -10,6 +10,7 @@ use App\Http\Controllers\SkyshieldKombinasiController;
 use App\Http\Controllers\BoqController;
 use App\Http\Controllers\JendelaController;
 use App\Http\Controllers\DindingController;
+use App\Http\Controllers\WaterproofingController;
 // Route untuk halaman atap standar
 Route::get('/atap-standar', [AtapStandarController::class, 'index'])->name('atap-standar.index');
 
@@ -137,4 +138,13 @@ Route::post('/hitung-insulasi', [DindingController::class, 'hitungInsulasi'])->n
     
     // Export PDF
     Route::post('/boq/export-pdf', [DindingController::class, 'exportPdf'])->name('dinding.export-pdf');
+});
+
+
+// Waterproofing
+Route::prefix('waterproofing')->group(function () {
+    Route::get('/', [WaterproofingController::class, 'index'])->name('waterproofing.index');
+    Route::get('/boq', [WaterproofingController::class, 'boq'])->name('waterproofing.boq');
+    Route::post('/hitung', [WaterproofingController::class, 'hitung'])->name('waterproofing.hitung');
+    Route::post('/export-pdf', [WaterproofingController::class, 'exportPdf'])->name('waterproofing.export-pdf');
 });

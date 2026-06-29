@@ -46,7 +46,7 @@
                              class="w-full h-full object-contain opacity-90">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                         <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                            <h4 class="text-lg font-medium">Pelana + 2 Trapesium</h4>
+                            <h4 class="text-lg font-medium">Pelana 2 Trapesium</h4>
                             <p class="text-xs text-gray-300">Kombinasi pelana dengan dua trapesium</p>
                         </div>
                     </div>
@@ -60,11 +60,20 @@
                     </div>
 
                     <div class="space-y-4">
+                        <div class="bg-gray-50 border-l-2 border-gray-400 rounded-lg p-3">
+    <p class="text-xs text-gray-600 font-medium">Cara menghitung :</p>
+    <div class="text-xs text-gray-500 mt-1 space-y-0.5">
+        <div>Bagi bidang menjadi 3 bagian:</div>
+        <div class="pl-2">• <strong>Bagian Atas</strong> = Pelana</div>
+        <div class="pl-2">• <strong>Bagian Bawah</strong> = Trapesium</div>
+        <div class="pl-6">∘ <strong>Bagian Bawah Terbagi 2</strong> = Bagian (Kanan-Kiri) dan (Depan-Belakang) </div>
+    </div>
+</div>
                         <!-- Bagian 1: Pelana (Tengah) -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
-                                <span class="text-sm font-medium text-gray-700">Bagian Tengah - Pelana</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Tengah</span>
+                                <span class="text-sm font-medium text-gray-700">Bagian Atas - Pelana</span>
+                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Atas</span>
                             </div>
                             <div class="grid grid-cols-3 gap-3">
                                 <div>
@@ -99,8 +108,8 @@
                         <!-- Bagian 2: Trapesium A (Kiri) -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
-                                <span class="text-sm font-medium text-gray-700">Bagian Kiri - Trapesium A</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Kiri</span>
+                                <span class="text-sm font-medium text-gray-700">Bagian Bawah - Trapesium</span>
+                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">(Kiri - Kanan)</span>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
@@ -143,8 +152,8 @@
                         <!-- Bagian 3: Trapesium B (Kanan) -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
-                                <span class="text-sm font-medium text-gray-700">Bagian Kanan - Trapesium B</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Kanan</span>
+                                <span class="text-sm font-medium text-gray-700">Bagian Bawah - Trapesium</span>
+                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">(Depan - Belakang)</span>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <div>

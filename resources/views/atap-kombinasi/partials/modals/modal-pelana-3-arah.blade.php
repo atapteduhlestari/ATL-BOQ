@@ -115,11 +115,19 @@
                     </div>
 
                     <div class="space-y-4">
+
+                     <div class="bg-gray-50 border-l-2 border-gray-400 rounded-lg p-3">
+    <p class="text-xs text-gray-600 font-medium">Cara menghitung :</p>
+    <div class="text-xs text-gray-500 mt-1 space-y-0.5">
+        <div>Bagi bidang menjadi 2 bagian:</div>
+        <div class="pl-2">• <strong>Bagian Depan</strong> = Pelana</div>
+        <div class="pl-2">• <strong>Bagian Belakang</strong> = Pelana</div>
+    </div>
+</div>
                         <!-- Bagian 1: Sisi Depan -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
-                                <span class="text-sm font-medium text-gray-700">Sisi Depan</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Depan</span>
+                                <span class="text-sm font-medium text-gray-700">Bagian Depan</span>
                             </div>
                             <div class="grid grid-cols-3 gap-3">
                                 <div>
@@ -140,8 +148,7 @@
                         <!-- Bagian 2: Sisi Belakang -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
-                                <span class="text-sm font-medium text-gray-700">Sisi Belakang</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Belakang</span>
+                                <span class="text-sm font-medium text-gray-700">Bagian Belakang</span>
                             </div>
                             <div class="grid grid-cols-3 gap-3">
                                 <div>
@@ -156,15 +163,6 @@
                                     <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Kemiringan</label>
                                     <input type="number" id="pelana3arah_sudut_b" step="1" min="1" max="89" value="30" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" oninput="updateModelPelana3Arah()">
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Informasi Sisi Samping (Otomatis) -->
-                        <div class="border rounded-lg p-3 bg-gray-50 border-gray-200">
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-medium text-gray-600">Sisi Samping</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Otomatis</span>
-                                <span class="text-[10px] text-gray-400">(Sama dengan Sisi Belakang)</span>
                             </div>
                         </div>
 
@@ -468,11 +466,6 @@ function hitungPelana3Arah() {
                     </div>
                 </div>`;
             });
-            
-            detailHtml += `<div class="bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs">
-                <div class="font-medium text-gray-600">Sisi Samping (Otomatis)</div>
-                <div class="text-gray-400 text-[10px]">Sama dengan Sisi Belakang</div>
-            </div>`;
             
             document.getElementById('detailBagianPelana3Arah').innerHTML = detailHtml;
             document.getElementById('hasilPerhitunganPelana3Arah').classList.remove('hidden');

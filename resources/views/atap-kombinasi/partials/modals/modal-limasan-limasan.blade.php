@@ -60,11 +60,18 @@
                     </div>
 
                     <div class="space-y-4">
+                         <div class="bg-gray-50 border-l-2 border-gray-400 rounded-lg p-3">
+    <p class="text-xs text-gray-600 font-medium">Cara menghitung :</p>
+    <div class="text-xs text-gray-500 mt-1 space-y-0.5">
+        <div>Bagi bidang menjadi 2 bagian:</div>
+        <div class="pl-2">• <strong>Bagian Depan</strong> = Limasan</div>
+        <div class="pl-2">• <strong>Bagian Belakang</strong> = Limasan</div>
+    </div>
+</div>
                         <!-- Bagian 1: Limasan A (Atas) -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
-                                <span class="text-sm font-medium text-gray-700">Bagian Atas - Limasan A</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Atas</span>
+                                <span class="text-sm font-medium text-gray-700">Bagian Depan - Limasan A</span>
                             </div>
                             <div class="grid grid-cols-3 gap-3">
                                 <div>
@@ -99,8 +106,7 @@
                         <!-- Bagian 2: Limasan B (Bawah) -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
-                                <span class="text-sm font-medium text-gray-700">Bagian Bawah - Limasan B</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Bawah</span>
+                                <span class="text-sm font-medium text-gray-700">Bagian Belakang - Limasan B</span>
                             </div>
                             <div class="grid grid-cols-3 gap-3">
                                 <div>

@@ -15,7 +15,7 @@ export default defineConfig({
         port: 5173,
         https: false,
         hmr: {
-            host: '192.168.1.5', // Ganti dengan IP komputer Anda
+            host: '192.168.1.50', // Ganti dengan IP komputer Anda
         },
         watch: {
             ignored: ['**/storage/framework/views/**'],

@@ -61,11 +61,20 @@
                     </div>
 
                     <div class="space-y-4">
+
+                         <div class="bg-gray-50 border-l-2 border-gray-400 rounded-lg p-3">
+                            <p class="text-xs text-gray-600 font-medium">Catatan:</p>
+                            <p class="text-xs text-gray-500 mt-1">
+                                Bagi bidang menjadi 2 bagian:<br>
+                                • <strong>Bagian Kiri</strong> = Pelana<br>
+                                • <strong>Bagian Kanan</strong> = Limasan
+                            </p>
+                        </div>
                         <!-- Bagian 1: Limas -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
                                 <span class="text-sm font-medium text-gray-700">Atap Limasan</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Bagian 1</span>
+                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Bagian Kanan</span>
                             </div>
                             <div class="grid grid-cols-3 gap-3">
                                 <div>
@@ -101,7 +110,7 @@
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
                                 <span class="text-sm font-medium text-gray-700">Atap Pelana</span>
-                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Bagian 2</span>
+                                <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Bagian Kiri</span>
                             </div>
                             <div class="grid grid-cols-3 gap-3">
                                 <div>
