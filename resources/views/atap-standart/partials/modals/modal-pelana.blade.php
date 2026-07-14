@@ -252,6 +252,7 @@ function lanjutKeBOQPelana() {
     let panjangFlashing = parseFloat(document.getElementById('flashingPelana').innerText) || 0;
     let sudut = parseFloat(document.getElementById('sudut_pelana').value) || 0;
     
+    // Mapping URL berdasarkan brand
     const controllerMap = {
         'iko-atap': '/boq/iko-atap',
         'skyshield': '/boq/skyshield',
@@ -260,10 +261,17 @@ function lanjutKeBOQPelana() {
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
     
+    // Khusus PALMEX: tambahkan model ke URL
+    if (brandSlug === 'palmex') {
+        url = '/boq/palmex/pelana';
+    }
+    
     if (brandSlug === 'iko-insulasi') {
         window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
-    } else if(brandSlug === 'skyshield'){
+    } else if (brandSlug === 'skyshield') {
         window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+    } else if (brandSlug === 'palmex') {
+        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}&model=pelana`;
     } else {
         window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
     }

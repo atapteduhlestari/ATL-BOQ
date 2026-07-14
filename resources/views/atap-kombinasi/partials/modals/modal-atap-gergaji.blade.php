@@ -62,6 +62,16 @@
                     </div>
 
                     <div class="space-y-4">
+                        <div class="bg-gray-50 border-l-2 border-gray-400 rounded-lg p-3">
+                            <p class="text-xs text-gray-600 font-medium">Cara menghitung :</p>
+                            <div class="text-xs text-gray-500 mt-1 space-y-0.5">
+                                <div>Atap gergaji terdiri dari beberapa gerigi yang sama:</div>
+                                <div class="pl-2">• <strong>Jumlah Gerigi</strong> = Banyaknya puncak atap</div>
+                                <div class="pl-2">• <strong>Tinggi Gerigi</strong> = Tinggi setiap puncak</div>
+                                <div class="pl-2">• <strong>Kemiringan</strong> = Sudut kemiringan atap</div>
+                            </div>
+                        </div>
+
                         <!-- Parameter Utama -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="grid grid-cols-3 gap-3">
@@ -110,7 +120,7 @@
                                     <span id="totalStarterGergaji" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">Panjang Nok & Jurai</span>
+                                    <span class="text-gray-500" id="labelNokJuraiGergaji">Panjang Nok & Jurai</span>
                                     <span id="totalNokJuraiGergaji" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
@@ -153,8 +163,13 @@
 let hasilGergaji = null;
 
 function hitungGergaji() {
+    // Ambil brand dari select BOQ
+    let brandSelect = document.getElementById('brand_boq_gergaji');
+    let brand = brandSelect ? brandSelect.value : 'iko';
+    
     let data = {
         jenis_kombinasi: 'gergaji',
+        brand: brand,
         panjang_bangunan: parseFloat(document.getElementById('panjang_bangunan').value) || 0,
         lebar_bangunan: parseFloat(document.getElementById('lebar_bangunan').value) || 0,
         jumlah_gerigi: parseFloat(document.getElementById('jumlah_gerigi').value) || 1,
@@ -172,32 +187,76 @@ function hitungGergaji() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('{{ route("atap-kombinasi.hitung") }}', {
+    // Tentukan URL berdasarkan brand
+    let url;
+    if (brand === 'palmex') {
+        url = '{{ route("palmex.kombinasi.hitung") }}';
+    } else {
+        url = '{{ route("atap-kombinasi.hitung") }}';
+    }
+    
+    fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        headers: { 
+            'Content-Type': 'application/json', 
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+        },
         body: JSON.stringify(data)
     })
     .then(res => res.json())
     .then(resData => {
         if (resData.success) {
             hasilGergaji = resData;
+            let total = resData.total;
             
-            document.getElementById('totalLuasGergaji').innerHTML = resData.total.luas_atap + ' m²';
-            document.getElementById('totalStarterGergaji').innerHTML = resData.total.panjang_starter + ' m';
-            document.getElementById('totalNokJuraiGergaji').innerHTML = resData.total.panjang_nok_jurai + ' m';
-            document.getElementById('totalFlashingGergaji').innerHTML = resData.total.panjang_flashing + ' m';
+            document.getElementById('totalLuasGergaji').innerHTML = total.luas_atap + ' m²';
+            document.getElementById('totalStarterGergaji').innerHTML = total.panjang_starter + ' m';
+            document.getElementById('totalFlashingGergaji').innerHTML = total.panjang_flashing + ' m';
             
+            // ===== TAMPILKAN NOK & JURAI =====
+            let labelElement = document.getElementById('labelNokJuraiGergaji');
+            let valueElement = document.getElementById('totalNokJuraiGergaji');
+            
+            if (brand === 'palmex') {
+                // PALMEX: HANYA NOK ATAS, TIDAK ADA JURAI
+                if (labelElement) labelElement.textContent = 'Panjang Nok Atas';
+                if (valueElement) {
+                    valueElement.innerHTML = total.panjang_nok_atas + ' m';
+                }
+            } else {
+                // IKO/SKYSHIELD: Nok & Jurai digabung
+                if (labelElement) labelElement.textContent = 'Panjang Nok & Jurai';
+                if (valueElement) {
+                    valueElement.innerHTML = total.panjang_nok_jurai + ' m';
+                }
+            }
+            
+            // ===== DETAIL PER BAGIAN =====
             let detailHtml = '<div class="text-xs font-medium text-gray-600 mb-1">Detail Per Bagian</div>';
             resData.details.forEach(item => {
                 detailHtml += `<div class="bg-white border border-gray-200 rounded-lg p-2 text-xs">
                     <div class="font-medium text-gray-800">${item.bagian}</div>
-                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">
+                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">`;
+                
+                if (brand === 'palmex') {
+                    // PALMEX: Hanya Nok Atas
+                    detailHtml += `
+                        <div>Luas: ${item.luas_atap} m²</div>
+                        <div>Starter: ${item.starter} m</div>
+                        <div>Nok Atas: ${item.nok_atas} m</div>
+                        <div>Flashing: ${item.flashing} m</div>
+                    `;
+                } else {
+                    // IKO/SKYSHIELD: Nok & Jurai digabung
+                    detailHtml += `
                         <div>Luas: ${item.luas_atap} m²</div>
                         <div>Starter: ${item.starter} m</div>
                         <div>Nok & Jurai: ${item.nok_jurai} m</div>
                         <div>Flashing: ${item.flashing} m</div>
-                    </div>
-                </div>`;
+                    `;
+                }
+                
+                detailHtml += `</div></div>`;
             });
             document.getElementById('detailBagianGergaji').innerHTML = detailHtml;
             document.getElementById('hasilPerhitunganGergaji').classList.remove('hidden');
@@ -205,8 +264,14 @@ function hitungGergaji() {
             alert('Error: ' + (resData.message || 'Gagal hitung'));
         }
     })
-    .catch(err => { console.error(err); alert('Terjadi kesalahan server'); })
-    .finally(() => { btn.innerHTML = originalText; btn.disabled = false; });
+    .catch(err => { 
+        console.error(err); 
+        alert('Terjadi kesalahan server'); 
+    })
+    .finally(() => { 
+        btn.innerHTML = originalText; 
+        btn.disabled = false; 
+    });
 }
 
 function resetForm() {
@@ -234,11 +299,16 @@ function lanjutKeBOQ() {
     }
     
     let total = hasilGergaji.total;
+    let details = hasilGergaji.details;
     
-    // Mapping URL berdasarkan brand
+    // ===== LOG UNTUK DEBUG =====
+    console.log('Hasil Gergaji:', hasilGergaji);
+    console.log('Total Nok Atas:', total.panjang_nok_atas);
+    
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/gergaji',
         'skyshield': '/boq/atap-kombinasi-skyshield/gergaji',
+        'palmex': '/boq/palmex/atap-kombinasi/gergaji',
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/gergaji';
@@ -246,7 +316,6 @@ function lanjutKeBOQ() {
     let url = `${baseUrl}?brand_slug=${brandSlug}`;
     url += `&luas_atap=${total.luas_atap}`;
     url += `&starter=${total.panjang_starter}`;
-    url += `&nok_jurai=${total.panjang_nok_jurai}`;
     url += `&flashing=${total.panjang_flashing}`;
     url += `&talang_jurai=${total.talang_jurai || 0}`;
     url += `&sudut=${document.getElementById('sudut').value}`;
@@ -255,6 +324,19 @@ function lanjutKeBOQ() {
     url += `&jumlah_gerigi=${document.getElementById('jumlah_gerigi').value}`;
     url += `&tinggi_gerigi=${document.getElementById('tinggi_gerigi').value}`;
     
+    // ===== BEDAKAN BRAND =====
+    if (brandSlug === 'palmex') {
+        // PALMEX: HANYA NOK ATAS, TIDAK ADA JURAI
+        url += `&nok_atas=${total.panjang_nok_atas}`;
+        url += `&total_nok_atas=${total.panjang_nok_atas}`;
+        url += `&jurai=0`;
+        url += `&total_jurai=0`;
+    } else {
+        // IKO/SKYSHIELD: NOK & JURAI digabung
+        url += `&nok_jurai=${total.panjang_nok_jurai}`;
+    }
+    
+    console.log('Final URL:', url);
     window.location.href = url;
 }
 </script>

@@ -110,7 +110,7 @@
                         </div>
 
                         <!-- Tombol Hitung -->
-                        <button type="button" onclick="hitungPelanaDinding()" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium transition-all">
+                        <button type="button" id="btnHitungPelanaDinding" onclick="hitungPelanaDinding()" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium transition-all">
                             Hitung Luas & Estimasi
                         </button>
 
@@ -133,7 +133,7 @@
                                     <span id="totalStarterPelanaDinding" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">Panjang Nok & Jurai</span>
+                                    <span class="text-gray-500" id="labelNokJuraiPelanaDinding">Panjang Nok & Jurai</span>
                                     <span id="totalNokJuraiPelanaDinding" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
@@ -180,8 +180,13 @@
 let hasilPelanaDinding = null;
 
 function hitungPelanaDinding() {
+    // Ambil brand dari select
+    let brandSelect = document.getElementById('brand_boq_pelana_dinding');
+    let brand = brandSelect ? brandSelect.value : 'iko';
+    
     let data = {
         jenis_kombinasi: 'pelana_dinding',
+        brand: brand,
         panjang: parseFloat(document.getElementById('pelana_dinding_panjang').value) || 0,
         lebar: parseFloat(document.getElementById('pelana_dinding_lebar').value) || 0,
         sudut: parseFloat(document.getElementById('pelana_dinding_sudut').value) || 0,
@@ -200,12 +205,20 @@ function hitungPelanaDinding() {
         return;
     }
     
-    let btn = event.target;
+    let btn = document.getElementById('btnHitungPelanaDinding');
     let originalText = btn.innerHTML;
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('{{ route("atap-kombinasi.hitung") }}', {
+    // Tentukan URL berdasarkan brand
+    let url;
+    if (brand === 'palmex') {
+        url = '{{ route("palmex.kombinasi.hitung") }}';
+    } else {
+        url = '{{ route("atap-kombinasi.hitung") }}';
+    }
+    
+    fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
         body: JSON.stringify(data)
@@ -218,22 +231,55 @@ function hitungPelanaDinding() {
             document.getElementById('totalLuasPelanaDinding').innerHTML = resData.total.luas_atap + ' m²';
             document.getElementById('totalLuasDindingPelanaDinding').innerHTML = resData.total.luas_dinding + ' m²';
             document.getElementById('totalStarterPelanaDinding').innerHTML = resData.total.panjang_starter + ' m';
-            document.getElementById('totalNokJuraiPelanaDinding').innerHTML = resData.total.panjang_nok_jurai + ' m';
             document.getElementById('totalFlashingPelanaDinding').innerHTML = resData.total.panjang_flashing + ' m';
             document.getElementById('totalWallFlashingPelanaDinding').innerHTML = resData.total.panjang_wall_flashing + ' m';
             
+            // ===== BEDAKAN BRAND =====
+            let labelElement = document.getElementById('labelNokJuraiPelanaDinding');
+            let valueElement = document.getElementById('totalNokJuraiPelanaDinding');
+            
+            if (brand === 'palmex') {
+                // PALMEX: Jurai dan Nok Atas dipisah
+                if (labelElement) labelElement.textContent = 'Panjang Jurai & Nok Atas';
+                if (valueElement) {
+                    valueElement.innerHTML = 
+                        'Jurai: ' + resData.total.panjang_jurai + ' m | Nok Atas: ' + resData.total.panjang_nok_atas + ' m';
+                }
+            } else {
+                // IKO/SKYSHIELD: Nok & Jurai digabung
+                if (labelElement) labelElement.textContent = 'Panjang Nok & Jurai';
+                if (valueElement) {
+                    valueElement.innerHTML = resData.total.panjang_nok_jurai + ' m';
+                }
+            }
+            
+            // ===== DETAIL PER BAGIAN =====
             let detailHtml = '<div class="text-xs font-medium text-gray-600 mb-1">Detail Per Bagian</div>';
             resData.details.forEach(item => {
                 detailHtml += `<div class="bg-white border border-gray-200 rounded-lg p-2 text-xs">
                     <div class="font-medium text-gray-800">${item.bagian}</div>
-                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">
+                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">`;
+                
+                if (brand === 'palmex') {
+                    detailHtml += `
+                        <div>Luas: ${item.luas_atap} m²</div>
+                        <div>Starter: ${item.starter} m</div>
+                        <div>Jurai: ${item.jurai} m</div>
+                        <div>Nok Atas: ${item.nok_atas} m</div>
+                        <div>Flashing: ${item.flashing} m</div>
+                        ${item.wall_flashing ? `<div>Wall Flashing: ${item.wall_flashing} m</div>` : ''}
+                    `;
+                } else {
+                    detailHtml += `
                         <div>Luas: ${item.luas_atap} m²</div>
                         <div>Starter: ${item.starter} m</div>
                         <div>Nok & Jurai: ${item.nok_jurai} m</div>
                         <div>Flashing: ${item.flashing} m</div>
                         ${item.wall_flashing ? `<div>Wall Flashing: ${item.wall_flashing} m</div>` : ''}
-                    </div>
-                </div>`;
+                    `;
+                }
+                
+                detailHtml += `</div></div>`;
             });
             document.getElementById('detailBagianPelanaDinding').innerHTML = detailHtml;
             document.getElementById('hasilPerhitunganPelanaDinding').classList.remove('hidden');
@@ -271,18 +317,29 @@ function lanjutKeBOQPelanaDinding() {
     }
     
     let d = hasilPelanaDinding.details;
+    let total = hasilPelanaDinding.total;
     
     // Mapping URL berdasarkan brand
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/pelana-dinding',
         'skyshield': '/boq/atap-kombinasi-skyshield/pelana-dinding',
+        'palmex': '/boq/palmex/atap-kombinasi/pelana-dinding',
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-dinding';
     
     let url = `${baseUrl}?brand_slug=${brandSlug}`;
-    url += `&luas_atap=${d[0]?.luas_atap||0}&starter=${d[0]?.starter||0}&nok_jurai=${d[0]?.nok_jurai||0}&flashing=${d[0]?.flashing||0}`;
-    url += `&luas_dinding=${d[1]?.luas_atap||0}&wall_flashing=${d[1]?.wall_flashing||0}`;
+    
+    // Atap (Bagian 1)
+    url += `&luas_atap=${d[0]?.luas_atap||0}`;
+    url += `&starter=${d[0]?.starter||0}`;
+    url += `&flashing=${d[0]?.flashing||0}`;
+    
+    // Dinding (Bagian 2)
+    url += `&luas_dinding=${d[1]?.luas_atap||0}`;
+    url += `&wall_flashing=${d[1]?.wall_flashing||0}`;
+    
+    // Inputan user
     url += `&panjang=${document.getElementById('pelana_dinding_panjang').value}`;
     url += `&lebar=${document.getElementById('pelana_dinding_lebar').value}`;
     url += `&sudut=${document.getElementById('pelana_dinding_sudut').value}`;
@@ -290,6 +347,14 @@ function lanjutKeBOQPelanaDinding() {
     url += `&tinggi_dinding=${document.getElementById('pelana_dinding_tinggi').value}`;
     url += `&jumlah_sisi=${document.getElementById('pelana_dinding_jumlah_sisi').value}`;
     
+    // ===== BEDAKAN BRAND =====
+    if (brandSlug === 'palmex') {
+        url += `&jurai=${total?.panjang_jurai||0}`;
+        url += `&nok_atas=${total?.panjang_nok_atas||0}`;
+    } else {
+        url += `&nok_jurai=${d[0]?.nok_jurai||0}`;
+    }
+    
     window.location.href = url;
 }
-</script>
+</script> 

@@ -89,29 +89,6 @@
         color: #2d3748;
     }
     
-    .data-box-dim {
-        background: #f7fafc;
-        border-radius: 8px;
-        padding: 10px 14px;
-        border: 1px solid #edf2f7;
-    }
-    
-    .data-box-dim label {
-        font-size: 9px !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #4a5568;
-        font-weight: 600;
-        display: block;
-        margin-bottom: 2px;
-    }
-    
-    .data-box-dim .value {
-        font-size: 14px;
-        font-weight: 600;
-        color: #2d3748;
-    }
-    
     .btn-primary {
         background: #2d3748;
         color: white;
@@ -306,6 +283,173 @@
         color: #dd6b20;
         margin-top: 4px;
     }
+
+    /* Opsi Tambahan Grid */
+    .opsi-tambahan-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    @media (max-width: 640px) {
+        .opsi-tambahan-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .opsi-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .opsi-item label {
+        font-size: 10px !important;
+        font-weight: 500;
+        color: #4a5568;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .opsi-item label .opsi-desc {
+        font-weight: 400;
+        color: #a0aec0;
+        font-size: 9px;
+    }
+    
+    .opsi-item input {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 12px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.2s;
+        background: white;
+    }
+    
+    .opsi-item input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    
+    .opsi-item input::placeholder {
+        color: #cbd5e1;
+        font-size: 11px;
+    }
+    
+    .opsi-item .opsi-satuan {
+        font-size: 10px;
+        color: #a0aec0;
+        margin-top: 2px;
+    }
+
+    /* NOTES / PEMBERITAHUAN */
+    .notes-container {
+        background: #fffbeb;
+        border: 1px solid #fcd34d;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+    }
+    
+    .notes-container .notes-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #92400e;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .notes-container .notes-title .icon {
+        font-size: 18px;
+    }
+    
+    .notes-container .notes-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .notes-container .notes-list li {
+        font-size: 12px;
+        color: #78350f;
+        padding: 4px 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        line-height: 1.5;
+    }
+    
+    .notes-container .notes-list li .bullet {
+        color: #d97706;
+        font-weight: 700;
+    }
+    
+    .notes-container .notes-list li strong {
+        color: #92400e;
+    }
+    
+    .notes-container .notes-list li .highlight {
+        background: #fef3c7;
+        padding: 0 6px;
+        border-radius: 4px;
+        font-weight: 500;
+        color: #92400e;
+    }
+    
+    .notes-container .notes-list li .badge-angin {
+        display: inline-block;
+        background: #fef3c7;
+        color: #92400e;
+        padding: 1px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 500;
+    }
+    
+    .notes-container .notes-list li .warning-text {
+        color: #991b1b;
+        font-weight: 600;
+    }
+
+    /* Group Header */
+    .group-header {
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-top: 8px;
+        font-weight: 600;
+        font-size: 12px;
+        color: #2d3748;
+    }
+    .group-header:first-child {
+        margin-top: 0;
+    }
+    .group-header-atap {
+        background: #ebf8ff;
+        border-left: 3px solid #2b6cb0;
+    }
+    .group-header-aksesoris {
+        background: #f0fff4;
+        border-left: 3px solid #38a169;
+    }
+    .group-header-additional {
+        background: #fff5f5;
+        border-left: 3px solid #e53e3e;
+    }
+    .empty-state {
+        text-align: center;
+        padding: 20px;
+        color: #a0aec0;
+        font-size: 13px;
+    }
 </style>
 
 <div class="space-y-6">
@@ -320,6 +464,48 @@
                 <span class="text-[10px] font-medium text-gray-300">IKO - ATAP</span>
             </div>
         </div>
+    </div>
+
+    <!-- ===== NOTES / PEMBERITAHUAN ===== -->
+    <div class="notes-container">
+        <div class="notes-title">
+            <span class="icon">📋</span> Petunjuk Pengisian BOQ
+        </div>
+        <ul class="notes-list">
+            <li>
+                <span class="bullet">•</span>
+                <span>Cek lebih detail apakah ada atap yang bertemu langsung dengan <strong>dinding</strong>, <strong>kaca</strong>, <strong>penangkal petir</strong>, <strong>Ventilasi Exhaust</strong> dll.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Jika bertemu dinding, kaca, penangkal petir, ventilasi exhaust, silahkan input berapa panjang/area pertemuannya di bagian <strong>"Opsi Tambahan"</strong> masing-masing bagian atap.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Untuk atap dengan kemiringan dibawah <strong>15 Derajat</strong> tidak disarankan menggunakan ridge ventilator.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Untuk lokasi dengan potensi <strong>angin kencang (&gt;97 km/jam)</strong>, direkomendasikan menggunakan <span class="highlight">Cambridge</span>.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span class="warning-text">⚠️ Jika memaksakan menggunakan produk lain selain Cambridge, maka garansi akan hilang.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span><strong>Hal yang perlu diperhatikan:</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Jarak usuk per <strong>60 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Jarak usuk per <strong>40 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Pemakaian underlayer <strong>self adhesive</strong> direkomendasikan</span>
+            </li>
+        </ul>
     </div>
 
     <div class="space-y-6">
@@ -373,33 +559,65 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Data Input Ukuran -->
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-                    <div class="data-box-dim">
-                        <label>Panjang</label>
-                        <div class="value">
-                            <input type="number" id="panjang_a" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
-                        </div>
+
+                <!-- ===== OPSI TAMBAHAN BAGIAN 1 ===== -->
+                <div class="opsi-tambahan-grid">
+                    <div class="opsi-item">
+                        <label>
+                            📐 Dinding
+                            <span class="opsi-desc">(panjang atap yang berbatasan dinding)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_dinding_1" 
+                               step="0.1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiDinding1 ?? 0 }}">
+                        <span class="opsi-satuan">meter</span>
                     </div>
-                    <div class="data-box-dim">
-                        <label>Lebar</label>
-                        <div class="value">
-                            <input type="number" id="lebar_a" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
-                        </div>
+                    <div class="opsi-item">
+                        <label>
+                            🪟 Kaca
+                            <span class="opsi-desc">(panjang area kaca/genteng kaca)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_kaca_1" 
+                               step="0.1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiKaca1 ?? 0 }}">
+                        <span class="opsi-satuan">meter</span>
                     </div>
-                    <div class="data-box-dim">
-                        <label>Kemiringan</label>
-                        <div class="value">
-                            <input type="number" id="sudut_input_a" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">°</span>
-                        </div>
+                    <div class="opsi-item">
+                        <label>
+                            ⚡ Penangkal Petir
+                            <span class="opsi-desc">(jumlah titik)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_penangkal_1" 
+                               step="1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiPenangkal1 ?? 0 }}">
+                        <span class="opsi-satuan">titik</span>
+                    </div>
+                    <div class="opsi-item">
+                        <label>
+                            💨 Ventilasi Exhaust
+                            <span class="opsi-desc">(jumlah titik)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_exhaust_1" 
+                               step="1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiExhaust1 ?? 0 }}">
+                        <span class="opsi-satuan">titik</span>
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <!-- Pilihan Material Bagian 1 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 mt-5">
                     <div>
                         <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Produk Atap Utama</label>
                         <select id="produk_atap_1" class="input-field">
@@ -421,13 +639,42 @@
                             <p class="warning-text">⚠️ Kemiringan sudut {{ $sudut_1 }}° (≤ 30°), disarankan menggunakan underlayer khusus.</p>
                         @endif
                     </div>
-                </div>
-                
-                <div class="mb-4">
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Waste (%)</label>
-                    <div class="waste-input">
-                        <input type="number" id="waste_1" step="1" value="5" class="input-field" style="width: 100px;">
-                        <span>%</span>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Starter</label>
+                        <select id="starter_produk_1" class="input-field">
+                            <option value="">Pilih Starter</option>
+                            @foreach($starters as $starter)
+                                <option value="{{ $starter->id }}">{{ $starter->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Struktur Rangka</label>
+                        <select id="rangka_1" class="input-field">
+                            <option value="Kayu">Kayu</option>
+                            <option value="Baja Ringan" selected>Baja Ringan</option>
+                            <option value="Baja Berat">Baja Berat</option>
+                            <option value="Beton">Beton</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Lantai Kerja</label>
+                        <select id="lantai_kerja_1" class="input-field">
+                            <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
+                            <option value="Plywood 12 mm">Plywood 12 mm</option>
+                            <option value="Plywood 15 mm">Plywood 15 mm</option>
+                            <option value="GRC 9 mm">GRC 9 mm</option>
+                            <option value="GRC 12 mm">GRC 12 mm</option>
+                            <option value="GRC 15 mm">GRC 15 mm</option>
+                            <option value="Beton">Beton</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Waste (%)</label>
+                        <div class="waste-input">
+                            <input type="number" id="waste_1" step="1" value="5" class="input-field" style="width: 100px;">
+                            <span>%</span>
+                        </div>
                     </div>
                 </div>
                 
@@ -487,33 +734,65 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Data Input Ukuran -->
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-                    <div class="data-box-dim">
-                        <label>Panjang</label>
-                        <div class="value">
-                            <input type="number" id="panjang_b" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
-                        </div>
+
+                <!-- ===== OPSI TAMBAHAN BAGIAN 2 ===== -->
+                <div class="opsi-tambahan-grid">
+                    <div class="opsi-item">
+                        <label>
+                            📐 Dinding
+                            <span class="opsi-desc">(panjang atap yang berbatasan dinding)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_dinding_2" 
+                               step="0.1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiDinding2 ?? 0 }}">
+                        <span class="opsi-satuan">meter</span>
                     </div>
-                    <div class="data-box-dim">
-                        <label>Lebar</label>
-                        <div class="value">
-                            <input type="number" id="lebar_b" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
-                        </div>
+                    <div class="opsi-item">
+                        <label>
+                            🪟 Kaca
+                            <span class="opsi-desc">(panjang area kaca/genteng kaca)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_kaca_2" 
+                               step="0.1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiKaca2 ?? 0 }}">
+                        <span class="opsi-satuan">meter</span>
                     </div>
-                    <div class="data-box-dim">
-                        <label>Kemiringan</label>
-                        <div class="value">
-                            <input type="number" id="sudut_input_b" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">°</span>
-                        </div>
+                    <div class="opsi-item">
+                        <label>
+                            ⚡ Penangkal Petir
+                            <span class="opsi-desc">(jumlah titik)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_penangkal_2" 
+                               step="1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiPenangkal2 ?? 0 }}">
+                        <span class="opsi-satuan">titik</span>
+                    </div>
+                    <div class="opsi-item">
+                        <label>
+                            💨 Ventilasi Exhaust
+                            <span class="opsi-desc">(jumlah titik)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_exhaust_2" 
+                               step="1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiExhaust2 ?? 0 }}">
+                        <span class="opsi-satuan">titik</span>
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <!-- Pilihan Material Bagian 2 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 mt-5">
                     <div>
                         <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Produk Atap Utama</label>
                         <select id="produk_atap_2" class="input-field">
@@ -535,13 +814,42 @@
                             <p class="warning-text">⚠️ Kemiringan sudut {{ $sudut_2 }}° (≤ 30°), disarankan menggunakan underlayer khusus.</p>
                         @endif
                     </div>
-                </div>
-                
-                <div class="mb-4">
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Waste (%)</label>
-                    <div class="waste-input">
-                        <input type="number" id="waste_2" step="1" value="5" class="input-field" style="width: 100px;">
-                        <span>%</span>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Starter</label>
+                        <select id="starter_produk_2" class="input-field">
+                            <option value="">Pilih Starter</option>
+                            @foreach($starters as $starter)
+                                <option value="{{ $starter->id }}">{{ $starter->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Struktur Rangka</label>
+                        <select id="rangka_2" class="input-field">
+                            <option value="Kayu">Kayu</option>
+                            <option value="Baja Ringan" selected>Baja Ringan</option>
+                            <option value="Baja Berat">Baja Berat</option>
+                            <option value="Beton">Beton</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Lantai Kerja</label>
+                        <select id="lantai_kerja_2" class="input-field">
+                            <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
+                            <option value="Plywood 12 mm">Plywood 12 mm</option>
+                            <option value="Plywood 15 mm">Plywood 15 mm</option>
+                            <option value="GRC 9 mm">GRC 9 mm</option>
+                            <option value="GRC 12 mm">GRC 12 mm</option>
+                            <option value="GRC 15 mm">GRC 15 mm</option>
+                            <option value="Beton">Beton</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Waste (%)</label>
+                        <div class="waste-input">
+                            <input type="number" id="waste_2" step="1" value="5" class="input-field" style="width: 100px;">
+                            <span>%</span>
+                        </div>
                     </div>
                 </div>
                 
@@ -601,33 +909,65 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Data Input Ukuran -->
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-                    <div class="data-box-dim">
-                        <label>Panjang</label>
-                        <div class="value">
-                            <input type="number" id="panjang_c" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
-                        </div>
+
+                <!-- ===== OPSI TAMBAHAN BAGIAN 3 ===== -->
+                <div class="opsi-tambahan-grid">
+                    <div class="opsi-item">
+                        <label>
+                            📐 Dinding
+                            <span class="opsi-desc">(panjang atap yang berbatasan dinding)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_dinding_3" 
+                               step="0.1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiDinding3 ?? 0 }}">
+                        <span class="opsi-satuan">meter</span>
                     </div>
-                    <div class="data-box-dim">
-                        <label>Lebar</label>
-                        <div class="value">
-                            <input type="number" id="lebar_c" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
-                        </div>
+                    <div class="opsi-item">
+                        <label>
+                            🪟 Kaca
+                            <span class="opsi-desc">(panjang area kaca/genteng kaca)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_kaca_3" 
+                               step="0.1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiKaca3 ?? 0 }}">
+                        <span class="opsi-satuan">meter</span>
                     </div>
-                    <div class="data-box-dim">
-                        <label>Kemiringan</label>
-                        <div class="value">
-                            <input type="number" id="sudut_input_c" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">°</span>
-                        </div>
+                    <div class="opsi-item">
+                        <label>
+                            ⚡ Penangkal Petir
+                            <span class="opsi-desc">(jumlah titik)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_penangkal_3" 
+                               step="1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiPenangkal3 ?? 0 }}">
+                        <span class="opsi-satuan">titik</span>
+                    </div>
+                    <div class="opsi-item">
+                        <label>
+                            💨 Ventilasi Exhaust
+                            <span class="opsi-desc">(jumlah titik)</span>
+                        </label>
+                        <input type="number" 
+                               id="opsi_exhaust_3" 
+                               step="1" 
+                               min="0"
+                               placeholder="0"
+                               value="{{ $opsiExhaust3 ?? 0 }}">
+                        <span class="opsi-satuan">titik</span>
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <!-- Pilihan Material Bagian 3 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 mt-5">
                     <div>
                         <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Produk Atap Utama</label>
                         <select id="produk_atap_3" class="input-field">
@@ -649,13 +989,42 @@
                             <p class="warning-text">⚠️ Kemiringan sudut {{ $sudut_3 }}° (≤ 30°), disarankan menggunakan underlayer khusus.</p>
                         @endif
                     </div>
-                </div>
-                
-                <div class="mb-4">
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Waste (%)</label>
-                    <div class="waste-input">
-                        <input type="number" id="waste_3" step="1" value="5" class="input-field" style="width: 100px;">
-                        <span>%</span>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Starter</label>
+                        <select id="starter_produk_3" class="input-field">
+                            <option value="">Pilih Starter</option>
+                            @foreach($starters as $starter)
+                                <option value="{{ $starter->id }}">{{ $starter->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Struktur Rangka</label>
+                        <select id="rangka_3" class="input-field">
+                            <option value="Kayu">Kayu</option>
+                            <option value="Baja Ringan" selected>Baja Ringan</option>
+                            <option value="Baja Berat">Baja Berat</option>
+                            <option value="Beton">Beton</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Lantai Kerja</label>
+                        <select id="lantai_kerja_3" class="input-field">
+                            <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
+                            <option value="Plywood 12 mm">Plywood 12 mm</option>
+                            <option value="Plywood 15 mm">Plywood 15 mm</option>
+                            <option value="GRC 9 mm">GRC 9 mm</option>
+                            <option value="GRC 12 mm">GRC 12 mm</option>
+                            <option value="GRC 15 mm">GRC 15 mm</option>
+                            <option value="Beton">Beton</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Waste (%)</label>
+                        <div class="waste-input">
+                            <input type="number" id="waste_3" step="1" value="5" class="input-field" style="width: 100px;">
+                            <span>%</span>
+                        </div>
                     </div>
                 </div>
                 
@@ -692,41 +1061,46 @@
             <input type="hidden" name="judul" value="BOQ - Pelana + 2 Sisi Kemiringan">
             <input type="hidden" name="brand" value="IKO - ATAP">
             
-            <!-- Waste -->
             <input type="hidden" name="waste_1" id="pdf_waste_1">
             <input type="hidden" name="waste_2" id="pdf_waste_2">
             <input type="hidden" name="waste_3" id="pdf_waste_3">
             
-            <!-- Data Perhitungan Bagian 1 -->
             <input type="hidden" name="bagian1[data_perhitungan][luas_atap]" id="pdf_luas_1">
             <input type="hidden" name="bagian1[data_perhitungan][sudut]" id="pdf_sudut_1">
             <input type="hidden" name="bagian1[data_perhitungan][starter]" id="pdf_starter_1">
             <input type="hidden" name="bagian1[data_perhitungan][nok_jurai]" id="pdf_nok_1">
             <input type="hidden" name="bagian1[data_perhitungan][flashing]" id="pdf_flashing_1">
-            <input type="hidden" name="bagian1[data_perhitungan][panjang]" id="pdf_panjang_a">
-            <input type="hidden" name="bagian1[data_perhitungan][lebar]" id="pdf_lebar_a">
             <input type="hidden" name="bagian1[hasil]" id="pdf_hasil_1">
             <input type="hidden" name="bagian1[total]" id="pdf_total_1">
             
-            <!-- Data Perhitungan Bagian 2 -->
+            <input type="hidden" name="bagian1[opsi][dinding]" id="pdf_opsi_dinding_1">
+            <input type="hidden" name="bagian1[opsi][kaca]" id="pdf_opsi_kaca_1">
+            <input type="hidden" name="bagian1[opsi][penangkal]" id="pdf_opsi_penangkal_1">
+            <input type="hidden" name="bagian1[opsi][exhaust]" id="pdf_opsi_exhaust_1">
+            
             <input type="hidden" name="bagian2[data_perhitungan][luas_atap]" id="pdf_luas_2">
             <input type="hidden" name="bagian2[data_perhitungan][sudut]" id="pdf_sudut_2">
             <input type="hidden" name="bagian2[data_perhitungan][starter]" id="pdf_starter_2">
             <input type="hidden" name="bagian2[data_perhitungan][flashing]" id="pdf_flashing_2">
-            <input type="hidden" name="bagian2[data_perhitungan][panjang]" id="pdf_panjang_b">
-            <input type="hidden" name="bagian2[data_perhitungan][lebar]" id="pdf_lebar_b">
             <input type="hidden" name="bagian2[hasil]" id="pdf_hasil_2">
             <input type="hidden" name="bagian2[total]" id="pdf_total_2">
             
-            <!-- Data Perhitungan Bagian 3 -->
+            <input type="hidden" name="bagian2[opsi][dinding]" id="pdf_opsi_dinding_2">
+            <input type="hidden" name="bagian2[opsi][kaca]" id="pdf_opsi_kaca_2">
+            <input type="hidden" name="bagian2[opsi][penangkal]" id="pdf_opsi_penangkal_2">
+            <input type="hidden" name="bagian2[opsi][exhaust]" id="pdf_opsi_exhaust_2">
+            
             <input type="hidden" name="bagian3[data_perhitungan][luas_atap]" id="pdf_luas_3">
             <input type="hidden" name="bagian3[data_perhitungan][sudut]" id="pdf_sudut_3">
             <input type="hidden" name="bagian3[data_perhitungan][starter]" id="pdf_starter_3">
             <input type="hidden" name="bagian3[data_perhitungan][flashing]" id="pdf_flashing_3">
-            <input type="hidden" name="bagian3[data_perhitungan][panjang]" id="pdf_panjang_c">
-            <input type="hidden" name="bagian3[data_perhitungan][lebar]" id="pdf_lebar_c">
             <input type="hidden" name="bagian3[hasil]" id="pdf_hasil_3">
             <input type="hidden" name="bagian3[total]" id="pdf_total_3">
+            
+            <input type="hidden" name="bagian3[opsi][dinding]" id="pdf_opsi_dinding_3">
+            <input type="hidden" name="bagian3[opsi][kaca]" id="pdf_opsi_kaca_3">
+            <input type="hidden" name="bagian3[opsi][penangkal]" id="pdf_opsi_penangkal_3">
+            <input type="hidden" name="bagian3[opsi][exhaust]" id="pdf_opsi_exhaust_3">
             
             <input type="hidden" name="grand_total" id="pdf_grand_total">
             <input type="hidden" name="tanggal" id="pdf_tanggal">
@@ -751,31 +1125,46 @@ window.onload = function() {
     document.getElementById('starter_1').value = urlParams.get('starter_1') || 0;
     document.getElementById('nok_1').value = urlParams.get('nok_1') || 0;
     document.getElementById('flashing_1').value = urlParams.get('flashing_1') || 0;
-    document.getElementById('panjang_a').value = urlParams.get('panjang_a') || 0;
-    document.getElementById('lebar_a').value = urlParams.get('lebar_a') || 0;
-    document.getElementById('sudut_input_a').value = urlParams.get('sudut_1') || 0;
+    
+    document.getElementById('opsi_dinding_1').value = urlParams.get('dinding_1') || 0;
+    document.getElementById('opsi_kaca_1').value = urlParams.get('kaca_1') || 0;
+    document.getElementById('opsi_penangkal_1').value = urlParams.get('penangkal_1') || 0;
+    document.getElementById('opsi_exhaust_1').value = urlParams.get('exhaust_1') || 0;
     
     // Bagian 2 (Tengah)
     document.getElementById('luas_atap_2').value = urlParams.get('luas_atap_2') || 0;
     document.getElementById('sudut_2').value = urlParams.get('sudut_2') || 0;
     document.getElementById('starter_2').value = urlParams.get('starter_2') || 0;
     document.getElementById('flashing_2').value = urlParams.get('flashing_2') || 0;
-    document.getElementById('panjang_b').value = urlParams.get('panjang_b') || 0;
-    document.getElementById('lebar_b').value = urlParams.get('lebar_b') || 0;
-    document.getElementById('sudut_input_b').value = urlParams.get('sudut_2') || 0;
+    
+    document.getElementById('opsi_dinding_2').value = urlParams.get('dinding_2') || 0;
+    document.getElementById('opsi_kaca_2').value = urlParams.get('kaca_2') || 0;
+    document.getElementById('opsi_penangkal_2').value = urlParams.get('penangkal_2') || 0;
+    document.getElementById('opsi_exhaust_2').value = urlParams.get('exhaust_2') || 0;
     
     // Bagian 3 (Kanan)
     document.getElementById('luas_atap_3').value = urlParams.get('luas_atap_3') || 0;
     document.getElementById('sudut_3').value = urlParams.get('sudut_3') || 0;
     document.getElementById('starter_3').value = urlParams.get('starter_3') || 0;
     document.getElementById('flashing_3').value = urlParams.get('flashing_3') || 0;
-    document.getElementById('panjang_c').value = urlParams.get('panjang_c') || 0;
-    document.getElementById('lebar_c').value = urlParams.get('lebar_c') || 0;
-    document.getElementById('sudut_input_c').value = urlParams.get('sudut_3') || 0;
+    
+    document.getElementById('opsi_dinding_3').value = urlParams.get('dinding_3') || 0;
+    document.getElementById('opsi_kaca_3').value = urlParams.get('kaca_3') || 0;
+    document.getElementById('opsi_penangkal_3').value = urlParams.get('penangkal_3') || 0;
+    document.getElementById('opsi_exhaust_3').value = urlParams.get('exhaust_3') || 0;
 };
 
 function hitungBagian(bagian) {
     let wasteValue = parseFloat(document.getElementById(`waste_${bagian}`).value) || 5;
+    
+    let opsiDinding = parseFloat(document.getElementById(`opsi_dinding_${bagian}`).value) || 0;
+    let opsiKaca = parseFloat(document.getElementById(`opsi_kaca_${bagian}`).value) || 0;
+    let opsiPenangkal = parseInt(document.getElementById(`opsi_penangkal_${bagian}`).value) || 0;
+    let opsiExhaust = parseInt(document.getElementById(`opsi_exhaust_${bagian}`).value) || 0;
+    
+    let rangka = document.getElementById(`rangka_${bagian}`)?.value || 'Baja Ringan';
+    let lantaiKerja = document.getElementById(`lantai_kerja_${bagian}`)?.value || 'Plywood 9 mm';
+    
     let data = {
         luas_atap: parseFloat(document.getElementById(`luas_atap_${bagian}`).value),
         sudut: parseFloat(document.getElementById(`sudut_${bagian}`).value),
@@ -783,11 +1172,15 @@ function hitungBagian(bagian) {
         panjang_nok_jurai: bagian === 1 ? parseFloat(document.getElementById(`nok_${bagian}`).value) : 0,
         panjang_flashing: parseFloat(document.getElementById(`flashing_${bagian}`).value),
         panjang_talang_jurai: 0,
-        panjang_wall_flashing: 0,
+        panjang_wall_flashing: opsiDinding,
+        opsi_kaca: opsiKaca,
+        opsi_penangkal: opsiPenangkal,
+        opsi_exhaust: opsiExhaust,
         produk_atap_id: document.getElementById(`produk_atap_${bagian}`).value,
         underlayer_id: document.getElementById(`underlayer_${bagian}`).value,
-        rangka: 'Baja Ringan',
-        lantai_kerja: 'Plywood 9 mm',
+        starter_produk_id: document.getElementById(`starter_produk_${bagian}`).value,
+        rangka: rangka,
+        lantai_kerja: lantaiKerja,
         waste: wasteValue
     };
     
@@ -804,14 +1197,16 @@ function hitungBagian(bagian) {
     .then(res => res.json())
     .then(data => {
         if (data.success) {
+            let sortedResults = sortResults(data.results);
+            
             if (bagian === 1) {
-                results1 = data.results;
+                results1 = sortedResults;
                 renderTable('1', results1, document.getElementById('grandTotal1'));
             } else if (bagian === 2) {
-                results2 = data.results;
+                results2 = sortedResults;
                 renderTable('2', results2, document.getElementById('grandTotal2'));
             } else {
-                results3 = data.results;
+                results3 = sortedResults;
                 renderTable('3', results3, document.getElementById('grandTotal3'));
             }
             document.getElementById(`hasilBagian${bagian}`).classList.remove('hidden');
@@ -829,71 +1224,167 @@ function hitungBagian(bagian) {
 
 function renderTable(bagian, results, grandTotalEl) {
     let container = document.getElementById(`tableBagian${bagian}`);
-    let html = `<table><thead><tr><th>Produk</th><th>Area</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Satuan</th><th style="text-align:right;">Total</th></tr></thead><tbody>`;
-    let total = 0;
+    if (!container) return;
+    
+    let kelompok = {
+        'Atap Utama': [],
+        'Aksesoris': [],
+        'Additional': []
+    };
+    
+    const aksesorisAreas = ['Starter', 'Nok & Jurai', 'Underlayer', 'Paku & Screw', 'Flashing', 'Metal Flashing', 'Shingle Stick', 'Talang Jurai'];
+    const additionalAreas = ['Wall Flashing', 'Flashing Kaca', 'Penangkal Petir', 'Ventilasi Exhaust'];
+    
     results.forEach(item => {
-        total += item.total_harga;
-        html += `<tr>
-            <td><strong>${item.nama_produk}</strong></td>
-            <td><span class="badge-area">${item.area}</span></td>
-            <td style="text-align:right; font-weight:500;">${item.qty}</td>
-            <td style="text-align:right; color:#718096;">${item.satuan}</td>
-            <td style="text-align:right; font-weight:600; color:#2d3748;">Rp ${item.total_harga.toLocaleString()}</td>
-        </tr>`;
+        if (item.area === 'Atap Utama') {
+            kelompok['Atap Utama'].push(item);
+        } else if (additionalAreas.includes(item.area)) {
+            if (item.qty > 0) {
+                kelompok['Additional'].push(item);
+            }
+        } else if (aksesorisAreas.includes(item.area)) {
+            kelompok['Aksesoris'].push(item);
+        } else {
+            kelompok['Aksesoris'].push(item);
+        }
     });
-    html += `</tbody></table>`;
+    
+    let html = '';
+    let grandTotal = 0;
+    
+    if (kelompok['Atap Utama'].length > 0) {
+        html += `<div class="group-header group-header-atap">🏠 ATAP UTAMA</div>`;
+        html += `<table><thead><tr><th>Produk</th><th>Area</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Satuan</th><th style="text-align:right;">Total</th></tr></thead><tbody>`;
+        kelompok['Atap Utama'].forEach(item => {
+            grandTotal += item.total_harga || 0;
+            html += `<tr>
+                <td><strong>${item.nama_produk}</strong></td>
+                <td><span class="badge-area">${item.area}</span></td>
+                <td style="text-align:right; font-weight:500;">${item.qty}</td>
+                <td style="text-align:right; color:#718096;">${item.satuan}</td>
+                <td style="text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+    }
+    
+    if (kelompok['Aksesoris'].length > 0) {
+        html += `<div class="group-header group-header-aksesoris">🔧 AKSESORIS</div>`;
+        html += `<table><thead><tr><th>Produk</th><th>Area</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Satuan</th><th style="text-align:right;">Total</th></tr></thead><tbody>`;
+        kelompok['Aksesoris'].forEach(item => {
+            grandTotal += item.total_harga || 0;
+            html += `<tr>
+                <td><strong>${item.nama_produk}</strong></td>
+                <td><span class="badge-area">${item.area}</span></td>
+                <td style="text-align:right; font-weight:500;">${item.qty}</td>
+                <td style="text-align:right; color:#718096;">${item.satuan}</td>
+                <td style="text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+    }
+    
+    if (kelompok['Additional'].length > 0) {
+        html += `<div class="group-header group-header-additional">➕ ADDITIONAL</div>`;
+        html += `<table><thead><tr><th>Produk</th><th>Area</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Satuan</th><th style="text-align:right;">Total</th></tr></thead><tbody>`;
+        kelompok['Additional'].forEach(item => {
+            grandTotal += item.total_harga || 0;
+            html += `<tr>
+                <td><strong>${item.nama_produk}</strong></td>
+                <td><span class="badge-area">${item.area}</span></td>
+                <td style="text-align:right; font-weight:500;">${item.qty}</td>
+                <td style="text-align:right; color:#718096;">${item.satuan}</td>
+                <td style="text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+    }
+    
+    if (html === '') {
+        html = `<div class="empty-state">Belum ada data material</div>`;
+    }
+    
     container.innerHTML = html;
-    grandTotalEl.innerHTML = `Rp ${total.toLocaleString()}`;
+    if (grandTotalEl) grandTotalEl.innerHTML = `Rp ${grandTotal.toLocaleString()}`;
 }
 
 function updateTotal() {
-    let total1 = results1.reduce((s, i) => s + i.total_harga, 0);
-    let total2 = results2.reduce((s, i) => s + i.total_harga, 0);
-    let total3 = results3.reduce((s, i) => s + i.total_harga, 0);
+    let total1 = results1.reduce((s, i) => s + (i.total_harga || 0), 0);
+    let total2 = results2.reduce((s, i) => s + (i.total_harga || 0), 0);
+    let total3 = results3.reduce((s, i) => s + (i.total_harga || 0), 0);
     document.getElementById('totalKeseluruhan').innerHTML = `Rp ${(total1 + total2 + total3).toLocaleString()}`;
 }
 
 function updatePdfData() {
-    // Waste
     document.getElementById('pdf_waste_1').value = document.getElementById('waste_1').value;
     document.getElementById('pdf_waste_2').value = document.getElementById('waste_2').value;
     document.getElementById('pdf_waste_3').value = document.getElementById('waste_3').value;
     
-    // Bagian 1
     document.getElementById('pdf_luas_1').value = document.getElementById('luas_atap_1').value;
     document.getElementById('pdf_sudut_1').value = document.getElementById('sudut_1').value;
     document.getElementById('pdf_starter_1').value = document.getElementById('starter_1').value;
     document.getElementById('pdf_nok_1').value = document.getElementById('nok_1').value;
     document.getElementById('pdf_flashing_1').value = document.getElementById('flashing_1').value;
-    document.getElementById('pdf_panjang_a').value = document.getElementById('panjang_a').value;
-    document.getElementById('pdf_lebar_a').value = document.getElementById('lebar_a').value;
     document.getElementById('pdf_hasil_1').value = JSON.stringify(results1);
     document.getElementById('pdf_total_1').value = document.getElementById('grandTotal1').innerText;
     
-    // Bagian 2
+    document.getElementById('pdf_opsi_dinding_1').value = document.getElementById('opsi_dinding_1').value || 0;
+    document.getElementById('pdf_opsi_kaca_1').value = document.getElementById('opsi_kaca_1').value || 0;
+    document.getElementById('pdf_opsi_penangkal_1').value = document.getElementById('opsi_penangkal_1').value || 0;
+    document.getElementById('pdf_opsi_exhaust_1').value = document.getElementById('opsi_exhaust_1').value || 0;
+    
     document.getElementById('pdf_luas_2').value = document.getElementById('luas_atap_2').value;
     document.getElementById('pdf_sudut_2').value = document.getElementById('sudut_2').value;
     document.getElementById('pdf_starter_2').value = document.getElementById('starter_2').value;
     document.getElementById('pdf_flashing_2').value = document.getElementById('flashing_2').value;
-    document.getElementById('pdf_panjang_b').value = document.getElementById('panjang_b').value;
-    document.getElementById('pdf_lebar_b').value = document.getElementById('lebar_b').value;
     document.getElementById('pdf_hasil_2').value = JSON.stringify(results2);
     document.getElementById('pdf_total_2').value = document.getElementById('grandTotal2').innerText;
     
-    // Bagian 3
+    document.getElementById('pdf_opsi_dinding_2').value = document.getElementById('opsi_dinding_2').value || 0;
+    document.getElementById('pdf_opsi_kaca_2').value = document.getElementById('opsi_kaca_2').value || 0;
+    document.getElementById('pdf_opsi_penangkal_2').value = document.getElementById('opsi_penangkal_2').value || 0;
+    document.getElementById('pdf_opsi_exhaust_2').value = document.getElementById('opsi_exhaust_2').value || 0;
+    
     document.getElementById('pdf_luas_3').value = document.getElementById('luas_atap_3').value;
     document.getElementById('pdf_sudut_3').value = document.getElementById('sudut_3').value;
     document.getElementById('pdf_starter_3').value = document.getElementById('starter_3').value;
     document.getElementById('pdf_flashing_3').value = document.getElementById('flashing_3').value;
-    document.getElementById('pdf_panjang_c').value = document.getElementById('panjang_c').value;
-    document.getElementById('pdf_lebar_c').value = document.getElementById('lebar_c').value;
     document.getElementById('pdf_hasil_3').value = JSON.stringify(results3);
     document.getElementById('pdf_total_3').value = document.getElementById('grandTotal3').innerText;
     
-    // Grand Total
+    document.getElementById('pdf_opsi_dinding_3').value = document.getElementById('opsi_dinding_3').value || 0;
+    document.getElementById('pdf_opsi_kaca_3').value = document.getElementById('opsi_kaca_3').value || 0;
+    document.getElementById('pdf_opsi_penangkal_3').value = document.getElementById('opsi_penangkal_3').value || 0;
+    document.getElementById('pdf_opsi_exhaust_3').value = document.getElementById('opsi_exhaust_3').value || 0;
+    
     document.getElementById('pdf_grand_total').value = document.getElementById('totalKeseluruhan').innerText;
     document.getElementById('pdf_tanggal').value = new Date().toLocaleDateString('id-ID');
     document.getElementById('pdf_waktu').value = new Date().toLocaleTimeString('id-ID');
+}
+
+function sortResults(results) {
+    const urutan = [
+        'Atap Utama',
+        'Starter',
+        'Nok & Jurai',
+        'Underlayer',
+        'Paku & Screw',
+        'Flashing',
+        'Metal Flashing',
+        'Shingle Stick',
+        'Wall Flashing',
+        'Flashing Kaca',
+        'Penangkal Petir',
+        'Ventilasi Exhaust'
+    ];
+    
+    return results.sort((a, b) => {
+        let indexA = urutan.indexOf(a.area);
+        let indexB = urutan.indexOf(b.area);
+        if (indexA === -1) indexA = urutan.length;
+        if (indexB === -1) indexB = urutan.length;
+        return indexA - indexB;
+    });
 }
 </script>
 @endsection

@@ -178,29 +178,64 @@ function hitungAtapKerucut() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('/atap-standar/hitung', {
+    // Pilih endpoint berdasarkan brand yang dipilih
+    let brandSlug = document.getElementById('brand_boq_kerucut')?.value || '';
+    let url = '/atap-standar/hitung'; // default
+    let requestData = {};
+    
+    if (brandSlug === 'palmex') {
+        url = '/atap-standar/hitung-palmex-kerucut';
+        requestData = {
+            diameter: d,
+            tinggi: t
+        };
+    } else {
+        requestData = {
+            jenis_atap: 5,
+            diameter: d,
+            tinggi: t
+        };
+    }
+    
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
             'Accept': 'application/json'
         },
-        body: JSON.stringify({
-            jenis_atap: 5,
-            diameter: d,
-            tinggi: t
-        })
+        body: JSON.stringify(requestData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
-            hasilPerhitunganKerucut = data;
+            window.hasilPerhitunganKerucut = data;
             
             document.getElementById('luasAtapKerucut').innerHTML = data.luas_atap + ' m²';
             document.getElementById('panjangSisiMiringKerucut').innerHTML = data.panjang_sisi_miring + ' m';
             document.getElementById('jariJariKerucut').innerHTML = data.jari_jari + ' m';
             document.getElementById('startingKerucut').innerHTML = data.starting + ' m';
-            document.getElementById('nokJuraiKerucut').innerHTML = data.nok_jurai + ' m';
+            
+            // Cek apakah ada panjang_nok dan panjang_jurai (PALMEX)
+            if (data.panjang_nok !== undefined && data.panjang_jurai !== undefined) {
+                document.getElementById('nokJuraiKerucut').innerHTML = 'Nok: ' + data.panjang_nok + ' m | Jurai: ' + data.panjang_jurai + ' m';
+                window.hasilPerhitunganKerucut = {
+                    ...data,
+                    panjang_jurai: data.panjang_jurai
+                };
+            } else {
+                document.getElementById('nokJuraiKerucut').innerHTML = data.nok_jurai + ' m';
+                window.hasilPerhitunganKerucut = {
+                    ...data,
+                    nok_jurai: data.nok_jurai
+                };
+            }
+            
             document.getElementById('flashingKerucut').innerHTML = data.flashing + ' m';
             document.getElementById('hasilPerhitunganKerucut').classList.remove('hidden');
         } else {
@@ -209,14 +244,13 @@ function hitungAtapKerucut() {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Terjadi kesalahan pada server');
+        alert('Terjadi kesalahan pada server: ' + error.message);
     })
     .finally(() => {
         btn.innerHTML = originalText;
         btn.disabled = false;
     });
 }
-
 function resetFormKerucut() {
     document.getElementById('diameter_kerucut').value = '';
     document.getElementById('tinggi_kerucut').value = '';
@@ -232,28 +266,34 @@ function lanjutKeBOQKerucut() {
         return;
     }
     
-    let luasAtap = parseFloat(document.getElementById('luasAtapKerucut').innerText) || 0;
-    let panjangStarter = parseFloat(document.getElementById('startingKerucut').innerText) || 0;
-    let panjangNokJurai = parseFloat(document.getElementById('nokJuraiKerucut').innerText) || 0;
-    let panjangFlashing = parseFloat(document.getElementById('flashingKerucut').innerText) || 0;
-    let sudut = 0;
+    if (!window.hasilPerhitunganKerucut) {
+        alert('Hitung luas atap terlebih dahulu!');
+        return;
+    }
+    
+    let hasil = window.hasilPerhitunganKerucut;
+    let luasAtap = hasil.luas_atap || 0;
+    let sudut = hasil.sudut || 0;
+    let panjangStarter = hasil.starting || 0;
+    let panjangFlashing = hasil.flashing || 0;
     
     // Mapping URL untuk setiap brand
     const controllerMap = {
         'iko-atap': '/boq/iko-atap',
         'skyshield': '/boq/skyshield',
         'iko-insulasi': '/boq/iko-insulasi',
+        'palmex': '/boq/palmex/kerucut',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
     
     // Kirim parameter sesuai brand
     if (brandSlug === 'iko-insulasi') {
-        window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
-    } else if (brandSlug === 'skyshield') {
-        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+        window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${hasil.nok_jurai || 0}&panjang_flashing=${panjangFlashing}`;
+    } else if (brandSlug === 'palmex') {
+        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok=${hasil.panjang_nok || 0}&panjang_jurai=${hasil.panjang_jurai || 0}&panjang_flashing=${panjangFlashing}`;
     } else {
-        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${hasil.nok_jurai || 0}&panjang_flashing=${panjangFlashing}`;
     }
 }
 </script>

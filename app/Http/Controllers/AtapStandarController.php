@@ -168,8 +168,8 @@ private function hitungLimasan($request)
     $lebar = $request->lebar ?? $request->input('lebar', 0);
     $sudut = $request->sudut ?? $request->input('sudut', 0);
     
-    // Untuk atap limas, gunakan sisi terpendek atau rata-rata
-    $sisi = min($panjang, $lebar); // atau ($panjang + $lebar) / 2
+    // Untuk atap limas, gunakan sisi terpendek
+    $sisi = min($panjang, $lebar);
     
     // variable_b_limas = sisi / 2
     $variable_b_limas = $sisi / 2;
@@ -181,8 +181,11 @@ private function hitungLimasan($request)
     // panjang sisi miring = sqrt((variable_a_limas^2) + (variable_b_limas^2))
     $panjangSisiMiring = sqrt(($variable_a_limas * $variable_a_limas) + ($variable_b_limas * $variable_b_limas));
     
-    // luas area = (sisi x panjangSisiMiring / 2) x 4
-    $luasAtap = ($sisi * $panjangSisiMiring / 2) * 4;
+    // ============================================================
+    // LUAS ATAP PIRAMID
+    // Rumus: ((Panjang × 0.5) × Panjang Sisi Miring) × 4
+    // ============================================================
+    $luasAtap = (($panjang * 0.5) * $panjangSisiMiring) * 4;
     
     // starting = keliling
     $starting = ($panjang * 2) + ($lebar * 2);
@@ -191,13 +194,13 @@ private function hitungLimasan($request)
     $flashing = $starting;
     
     // nok dan jurai
-    $setengahSisi = $sisi * 0.5;
+    $setengahSisi = $panjang * 0.5;
     $nokJuraiKuadrat = ($setengahSisi * $setengahSisi) + ($panjangSisiMiring * $panjangSisiMiring);
     $nokJurai = sqrt($nokJuraiKuadrat) * 4;
     
     $hasil = [
         'success' => true,
-        'jenis_atap' => 'Atap Limas / Piramid',
+        'jenis_atap' => 'Atap Piramid',
         'panjang' => round($panjang, 2),
         'lebar' => round($lebar, 2),
         'sudut' => round($sudut, 2),
@@ -341,5 +344,320 @@ private function hitungDome($request)
         'nok_jurai' => round($nokJurai, 2),
     ];
    return response()->json($hasil);
+}
+
+/**
+ * ============================================================
+ * HITUNG ATAP LIMASAN - PALMEX
+ * Nok dan Jurai dipisah
+ * ============================================================
+ */
+public function hitungPalmexLimasan(Request $request)
+{
+    // Ambil data dari request
+    $panjang = $request->panjang ?? $request->input('panjang', 0);
+    $lebar = $request->lebar ?? $request->input('lebar', 0);
+    $sudut = $request->sudut ?? $request->input('sudut', 0);
+    
+    // Rumus 1: variable a = ((lebar/2) * tan(deg2rad(angle)))
+    $lebarSetengah = $lebar / 2;
+    $rad = deg2rad($sudut);
+    $variable_a = $lebarSetengah * tan($rad);
+    
+    // Rumus 2: panjang sisi miring = SQRT(((lebar/2)*(lebar/2)) + ($variable_a*$variable_a))
+    $panjangSisiMiring = sqrt(($lebarSetengah * $lebarSetengah) + ($variable_a * $variable_a));
+    
+    // Rumus 3: Variable b = panjang - lebar
+    $variable_b = $panjang - $lebar;
+    
+    // Rumus 4: variable c = (panjang + variable b) / 2
+    $variable_c = ($panjang + $variable_b) / 2;
+    
+    // Rumus 5: variable d = (panjang sisi miring x variable c) x 2
+    $variable_d = ($panjangSisiMiring * $variable_c) * 2;
+    
+    // Rumus 6: variable e = (lebar x panjang sisi miring x 0.5) x 2
+    $variable_e = ($lebar * $panjangSisiMiring * 0.5) * 2;
+    
+    // Rumus 7: luas atap = variable d + variable e
+    $luasAtap = $variable_d + $variable_e;
+    
+    // Perhitungan STARTING
+    $starting = ($lebar * 2) + ($panjang * 2);
+    
+    // FLASHING = STARTING
+    $flashing = $starting;
+    
+    // ============================================================
+    // PERHITUNGAN NOK DAN JURAI DIPISAH
+    // ============================================================
+    // Panjang Nok = panjang - lebar (sama dengan variable_b)
+    $panjangNok = $variable_b;
+    
+    // Panjang Jurai = (panjang sisi miring × 4)
+    $panjangJurai = (sqrt(($lebarSetengah * $lebarSetengah) + ($panjangSisiMiring  * $panjangSisiMiring )))*4;
+    
+    $hasil = [
+        'success' => true,
+        'jenis_atap' => 'Atap Limasan - PALMEX',
+        'panjang' => round($panjang, 2),
+        'lebar' => round($lebar, 2),
+        'sudut' => round($sudut, 2),
+        'luas_atap' => round($luasAtap, 2),
+        'panjang_sisi_miring' => round($panjangSisiMiring, 2),
+        'starting' => round($starting, 2),
+        'panjang_nok' => round($panjangNok, 2),      // <-- NOK TERPISAH
+        'panjang_jurai' => round($panjangJurai, 2),  // <-- JURAI TERPISAH
+        'flashing' => round($flashing, 2),
+    ];
+    
+    return response()->json($hasil);
+}
+public function hitungPalmexPiramid(Request $request)
+{
+    // Ambil data dari request
+    $panjang = $request->panjang ?? $request->input('panjang', 0);
+    $lebar = $request->lebar ?? $request->input('lebar', 0);
+    $sudut = $request->sudut ?? $request->input('sudut', 0);
+    
+    // Validasi
+    if ($panjang <= 0 || $lebar <= 0) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Panjang dan lebar harus lebih dari 0'
+        ]);
+    }
+    
+    if ($sudut <= 0 || $sudut >= 90) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Sudut kemiringan harus antara 1° - 89°'
+        ]);
+    }
+    
+    // Untuk atap limas, gunakan sisi terpendek
+    $sisi = min($panjang, $lebar);
+    
+    // variable_b_limas = sisi / 2
+    $variable_b_limas = $sisi / 2;
+    
+    // variable_a_limas = variable_b_limas * tan(deg2rad(sudut))
+    $rad = deg2rad($sudut);
+    $variable_a_limas = $variable_b_limas * tan($rad);
+    
+    // panjang sisi miring = sqrt((variable_a_limas^2) + (variable_b_limas^2))
+    $panjangSisiMiring = sqrt(($variable_a_limas * $variable_a_limas) + ($variable_b_limas * $variable_b_limas));
+    
+    // ============================================================
+    // LUAS ATAP PIRAMID
+    // Rumus: ((Panjang × 0.5) × Panjang Sisi Miring) × 4
+    // ============================================================
+    $luasAtap = (($panjang * 0.5) * $panjangSisiMiring) * 4;
+    
+    // starting = keliling
+    $panjangStarter = ($panjang * 2) + ($lebar * 2);
+    
+    // flashing = starting
+    $panjangFlashing = $panjangStarter;
+    
+    // ============================================================
+    // PERHITUNGAN JURAI (PIRAMID TIDAK PUNYA NOK)
+    // ============================================================
+    $setengahSisi = $sisi * 0.5;
+    $nokJuraiKuadrat = ($setengahSisi * $setengahSisi) + ($panjangSisiMiring * $panjangSisiMiring);
+    $panjangJurai = sqrt($nokJuraiKuadrat) * 4;
+    
+    $hasil = [
+        'success' => true,
+        'jenis_atap' => 'Piramid - PALMEX',
+        'panjang' => round($panjang, 2),
+        'lebar' => round($lebar, 2),
+        'sudut' => round($sudut, 2),
+        'panjang_sisi_miring' => round($panjangSisiMiring, 2),
+        'luas_atap' => round($luasAtap, 2),
+        'starting' => round($panjangStarter, 2),
+        'panjang_jurai' => round($panjangJurai, 2),
+        'flashing' => round($panjangFlashing, 2),
+    ];
+    
+    return response()->json($hasil);
+}
+/**
+ * ============================================================
+ * HITUNG ATAP KERUCUT - PALMEX
+ * Nok dan Jurai dipisah
+ * ============================================================
+ */
+public function hitungPalmexKerucut(Request $request)
+{
+    // Ambil data dari request
+    $diameter = $request->diameter ?? $request->input('diameter', 0);
+    $tinggi = $request->tinggi ?? $request->input('tinggi', 0);
+    
+    // Validasi
+    if ($diameter <= 0 || $tinggi <= 0) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Diameter dan tinggi harus lebih dari 0'
+        ]);
+    }
+    
+    $jariJari = $diameter / 2;
+    
+    // ============================================================
+    // PERHITUNGAN ATAP KERUCUT
+    // Rumus: s = √(r² + t²)
+    // Luas = π × r × s
+    // ============================================================
+    $s = sqrt(($jariJari * $jariJari) + ($tinggi * $tinggi));
+    $luasAtap = M_PI * $jariJari * $s;
+    
+    // Starter = keliling lingkaran
+    $panjangStarter = 2 * M_PI * $jariJari;
+    
+    // Flashing = Starter
+    $panjangFlashing = $panjangStarter;
+    
+    // ============================================================
+    // NOK & JURAI (dipisah untuk PALMEX)
+    // ============================================================
+    $panjangNok = $diameter;
+    $panjangJurai = $diameter * 2; // atau sesuai rumus PALMEX
+    
+    $hasil = [
+        'success' => true,
+        'jenis_atap' => 'Kerucut - PALMEX',
+        'diameter' => round($diameter, 2),
+        'tinggi' => round($tinggi, 2),
+        'jari_jari' => round($jariJari, 2),
+        'panjang_sisi_miring' => round($s, 2),
+        'luas_atap' => round($luasAtap, 2),
+        'starting' => round($panjangStarter, 2),
+        'panjang_nok' => round($panjangNok, 2),
+        'panjang_jurai' => round($panjangJurai, 2),
+        'flashing' => round($panjangFlashing, 2),
+    ];
+    
+    return response()->json($hasil);
+}
+/**
+ * ============================================================
+ * HITUNG ATAP SATU KEMIRINGAN - PALMEX
+ * Nok dan Jurai dipisah
+ * ============================================================
+ */
+public function hitungPalmexSatuKemiringan(Request $request)
+{
+    // Ambil data dari request
+    $panjang = $request->panjang ?? $request->input('panjang', 0);
+    $lebar = $request->lebar ?? $request->input('lebar', 0);
+    $sudut = $request->sudut ?? $request->input('sudut', 0);
+    
+    // Validasi
+    if ($panjang <= 0 || $lebar <= 0) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Panjang dan lebar harus lebih dari 0'
+        ]);
+    }
+    
+    if ($sudut <= 0 || $sudut >= 90) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Sudut kemiringan harus antara 1° - 89°'
+        ]);
+    }
+    
+    // ============================================================
+    // PERHITUNGAN ATAP SATU KEMIRINGAN
+    // Rumus: Luas = (Panjang × Lebar) / cos(Sudut)
+    // ============================================================
+    $rad = deg2rad($sudut);
+    $luasAtap = ($panjang * $lebar) / cos($rad);
+    
+    // Starter = keliling
+    $panjangStarter = (2 * $panjang) + (2 * $lebar);
+    
+    // Flashing = Starter
+    $panjangFlashing = $panjangStarter;
+    
+    // ============================================================
+    // NOK & JURAI (dipisah untuk PALMEX)
+    // ============================================================
+    $panjangNok = $panjang;
+    $panjangJurai = $panjang; // untuk satu kemiringan, jurai = panjang
+    
+    // Panjang sisi miring
+    $panjangSisiMiring = $lebar / cos($rad);
+    
+    $hasil = [
+        'success' => true,
+        'jenis_atap' => 'Satu Kemiringan - PALMEX',
+        'panjang' => round($panjang, 2),
+        'lebar' => round($lebar, 2),
+        'sudut' => round($sudut, 2),
+        'panjang_sisi_miring' => round($panjangSisiMiring, 2),
+        'luas_atap' => round($luasAtap, 2),
+        'starting' => round($panjangStarter, 2),
+        'panjang_nok' => round($panjangNok, 2),
+        'panjang_jurai' => round($panjangJurai, 2),
+        'flashing' => round($panjangFlashing, 2),
+    ];
+    
+    return response()->json($hasil);
+}
+
+/**
+ * ============================================================
+ * HITUNG ATAP DOME - PALMEX
+ * Menggunakan rumus yang sama dengan hitungDome()
+ * Output: panjang_jurai (tanpa nok)
+ * ============================================================
+ */
+public function hitungPalmexDome(Request $request)
+{
+    // Ambil data dari request
+    $diameter = $request->diameter ?? $request->input('diameter', 0);
+    $tinggi = $request->tinggi ?? $request->input('tinggi', 0);
+    
+    // Validasi
+    if ($diameter <= 0 || $tinggi <= 0) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Diameter dan tinggi harus lebih dari 0'
+        ]);
+    }
+    
+    // Jari-jari = diameter / 2
+    $jariJari = $diameter / 2;
+    
+    // ============================================================
+    // PERHITUNGAN ATAP DOME
+    // Rumus: Luas = 2 × (22/7) × r × tinggi
+    // ============================================================
+    $luasAtap = 2 * (22/7) * $jariJari * $tinggi;
+    
+    // Starter = 2 × (22/7) × r
+    $panjangStarter = 2 * (22/7) * $jariJari;
+    
+    // Flashing = Starter
+    $panjangFlashing = $panjangStarter;
+    
+    // Jurai (dome tidak punya nok)
+    $panjangJurai = 2 * (22/7) * $jariJari;
+    
+    $hasil = [
+        'success' => true,
+        'jenis_atap' => 'Dome - PALMEX',
+        'diameter' => round($diameter, 2),
+        'tinggi' => round($tinggi, 2),
+        'jari_jari' => round($jariJari, 2),
+        'luas_atap' => round($luasAtap, 2),
+        'starting' => round($panjangStarter, 2),
+        'panjang_jurai' => round($panjangJurai, 2),  // <-- JURAI (tanpa Nok)
+        'flashing' => round($panjangFlashing, 2),
+    ];
+    
+    return response()->json($hasil);
 }
 }

@@ -8,6 +8,24 @@
         font-family: 'Poppins', sans-serif;
     }
     
+    /* Header dengan Panduan */
+    .header-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 4px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .header-left {
+        flex: 1;
+    }
+    
+    .header-right {
+        flex-shrink: 0;
+    }
+    
     .page-title {
         font-size: 20px;
         font-weight: 600;
@@ -21,6 +39,51 @@
         color: #94a3b8;
         font-weight: 400;
         margin-bottom: 24px;
+    }
+    
+    .btn-guide {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 18px;
+        background: #1a1a2e;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+        white-space: nowrap;
+    }
+    
+    .btn-guide:hover {
+        background: #2d2d44;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(26,26,46,0.15);
+    }
+    
+    .btn-guide svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+    }
+    
+    @media (max-width: 640px) {
+        .header-section {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .header-right {
+            width: 100%;
+        }
+        
+        .btn-guide {
+            width: 100%;
+            justify-content: center;
+        }
     }
     
     .card-grid {
@@ -435,6 +498,113 @@
         background: #f8fafc;
     }
     
+    /* MODAL PANDUAN */
+    .modal-guide-content {
+        padding: 0 4px;
+    }
+    
+    .guide-step {
+        display: flex;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid #eef2f6;
+        align-items: flex-start;
+    }
+    
+    .guide-step:last-child {
+        border-bottom: none;
+    }
+    
+    .guide-number {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        background: #1a1a2e;
+        color: #ffffff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .guide-text {
+        flex: 1;
+    }
+    
+    .guide-text h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin: 0 0 4px 0;
+    }
+    
+    .guide-text p {
+        font-size: 13px;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.5;
+    }
+    
+    .guide-text .highlight {
+        color: #1a1a2e;
+        font-weight: 500;
+    }
+    
+    .guide-icon-box {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f1f4f9;
+        padding: 2px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #1a1a2e;
+        margin-top: 4px;
+    }
+    
+    .guide-icon-box svg {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .modal-guide-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 8px;
+    }
+    
+    @media (max-width: 600px) {
+        .modal-guide-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .guide-tip {
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 14px 16px;
+        border-left: 3px solid #1a1a2e;
+    }
+    
+    .guide-tip h5 {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin: 0 0 4px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+    
+    .guide-tip p {
+        font-size: 12px;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.5;
+    }
+    
     .modal-container::-webkit-scrollbar {
         width: 4px;
     }
@@ -456,11 +626,21 @@
 </style>
 
 <div class="max-w-7xl mx-auto px-4 py-6">
-    <!-- Header -->
-    <div>
-        <h1 class="page-title">Atap Kombinasi</h1>
-        <p class="page-subtitle">Pilih model atap kombinasi untuk menghitung kebutuhan material</p>
+    <!-- Header dengan Tombol Panduan -->
+    <div class="header-section">
+        <div class="header-left">
+            <h1 class="page-title">Atap Kombinasi</h1>
+        </div>
+        <div class="header-right">
+            <button class="btn-guide" onclick="openModal('modalPanduan')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Panduan Pengguna
+            </button>
+        </div>
     </div>
+    <p class="page-subtitle">Pilih model atap kombinasi untuk menghitung kebutuhan material</p>
 
     <!-- Cards -->
     <div class="card-grid">
@@ -597,7 +777,7 @@
         </div>
 
         <!-- Trapesium + Pelana 4 Sisi -->
-        <div class="card-item">
+        <!-- <div class="card-item">
             <div class="card-image">
                 <img src="{{ asset('images/atap-kombinasi/trapesium-pelana.png') }}" alt="Trapesium + Pelana">
             </div>
@@ -605,9 +785,9 @@
                 <div class="card-name">Trapesium Pelana</div>
                 <button class="card-btn" onclick="openModal('modalTrapesiumPelana4Sisi')">Hitung</button>
             </div>
-        </div>
+        </div> -->
         <!-- Card: Atap Trapesium Kotak -->
-<div class="card-item">
+<!-- <div class="card-item">
     <div class="card-image">
         <img src="{{ asset('images/atap-kombinasi/trapesium-kotak.png') }}" alt="Trapesium Kotak">
     </div>
@@ -615,7 +795,106 @@
         <div class="card-name">Trapesium Kotak</div>
         <button class="card-btn" onclick="openModal('modalTrapesiumKotak')">Hitung</button>
     </div>
+</div> -->
+    </div>
 </div>
+
+<!-- MODAL PANDUAN PENGGUNA -->
+<div class="modal-overlay" id="modalPanduan">
+    <div class="modal-wrapper">
+        <div class="modal-container" style="max-width: 720px;">
+            <button class="modal-close" onclick="closeModal('modalPanduan')">&times;</button>
+            
+            <div style="padding: 28px 30px;">
+                <h2 style="font-size: 18px; font-weight: 600; color: #1a1a2e; margin: 0 0 4px 0; letter-spacing: -0.2px;">
+                    📘 Panduan Pengguna
+                </h2>
+                <p style="font-size: 13px; color: #94a3b8; margin: 0 0 20px 0;">
+                    Cara menghitung kebutuhan material atap kombinasi
+                </p>
+                
+                <div class="modal-guide-content">
+                    <!-- Langkah 1 -->
+                    <div class="guide-step">
+                        <div class="guide-number">1</div>
+                        <div class="guide-text">
+                            <h4>Pilih Model Atap</h4>
+                            <p>Klik pada tombol <span class="highlight">"Hitung"</span> di bawah gambar model atap yang ingin Anda gunakan.</p>
+                            <div class="guide-icon-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                </svg>
+                                <span>Pilih sesuai bentuk atap bangunan Anda</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Langkah 2 -->
+                    <div class="guide-step">
+                        <div class="guide-number">2</div>
+                        <div class="guide-text">
+                            <h4>Masukkan Dimensi</h4>
+                            <p>Isi semua ukuran yang diminta seperti <span class="highlight">panjang</span>, <span class="highlight">lebar</span>, dan <span class="highlight">kemiringan</span> atap.</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">📏 Panjang (m)</span>
+                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">📐 Lebar (m)</span>
+                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">📐 Kemiringan (°)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Langkah 3 -->
+                    <div class="guide-step">
+                        <div class="guide-number">3</div>
+                        <div class="guide-text">
+                            <h4>Pilih Jenis Material</h4>
+                            <p>Pilih material atap yang akan digunakan dari pilihan yang tersedia.</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">Genteng Metal</span>
+                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">Genteng Keramik</span>
+                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">Asbes Gelombang</span>
+                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">Seng Gelombang</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Langkah 4 -->
+                    <div class="guide-step">
+                        <div class="guide-number">4</div>
+                        <div class="guide-text">
+                            <h4>Klik Hitung & Lihat Hasil</h4>
+                            <p>Klik tombol <span class="highlight">"Hitung"</span> untuk melihat hasil perhitungan kebutuhan material.</p>
+                            <div style="margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap;">
+                                <span style="background:#1a1a2e;color:#fff;padding:4px 12px;border-radius:4px;font-size:11px;font-weight:500;">✓ Luas Atap</span>
+                                <span style="background:#1a1a2e;color:#fff;padding:4px 12px;border-radius:4px;font-size:11px;font-weight:500;">✓ Jumlah Genteng</span>
+                                <span style="background:#1a1a2e;color:#fff;padding:4px 12px;border-radius:4px;font-size:11px;font-weight:500;">✓ Kebutuhan Nok</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tips -->
+                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #eef2f6;">
+                    <div class="modal-guide-grid">
+                        <div class="guide-tip">
+                            <h5>💡 Tips</h5>
+                            <p>Tambahkan <strong>5-10%</strong> material cadangan untuk antisipasi pemotongan dan kerusakan.</p>
+                        </div>
+                        <div class="guide-tip">
+                            <h5>📌 Catatan</h5>
+                            <p>Pastikan semua ukuran dalam satuan <strong>meter (m)</strong> untuk hasil yang akurat.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tombol Tutup -->
+                <div style="margin-top: 20px; text-align: right;">
+                    <button onclick="closeModal('modalPanduan')" style="padding:8px 24px;background:#1a1a2e;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Poppins',sans-serif;">
+                        Tutup Panduan
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -632,8 +911,8 @@
 @include('atap-kombinasi.partials.modals.modal-pelana-2-sisi')
 @include('atap-kombinasi.partials.modals.modal-pelana-dinding')
 @include('atap-kombinasi.partials.modals.modal-pelana-3-arah')
-@include('atap-kombinasi.partials.modals.modal-trapesium-pelana-4-sisi')
-@include('atap-kombinasi.partials.modals.modal-trapesium-kotak')
+<!-- @include('atap-kombinasi.partials.modals.modal-trapesium-pelana-4-sisi') -->
+<!-- @include('atap-kombinasi.partials.modals.modal-trapesium-kotak') -->
 
 <script>
 function openModal(modalId) {

@@ -164,7 +164,7 @@
                                     <span id="totalStarterPelana" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">Panjang Nok & Jurai</span>
+                                    <span class="text-gray-500" id="labelNokJuraiPelana">Panjang Nok & Jurai</span>
                                     <span id="totalNokJuraiPelana" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
@@ -208,8 +208,13 @@
 let hasilKombinasiLimasPelana = null;
 
 function hitungKombinasiLimasPelana() {
+    // Ambil brand dari select BOQ
+    let brandSelect = document.getElementById('brand_boq_limas_pelana');
+    let brand = brandSelect ? brandSelect.value : 'iko';
+    
     let data = {
         jenis_kombinasi: 'limas_pelana',
+        brand: brand,
         panjang_limas: parseFloat(document.getElementById('panjang_limas').value) || 0,
         lebar_limas: parseFloat(document.getElementById('lebar_limas').value) || 0,
         sudut_limas: parseFloat(document.getElementById('sudut_limas').value) || 0,
@@ -235,7 +240,15 @@ function hitungKombinasiLimasPelana() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('{{ route("atap-kombinasi.hitung") }}', {
+    // Tentukan URL berdasarkan brand
+    let url;
+    if (brand === 'palmex') {
+        url = '{{ route("palmex.kombinasi.hitung") }}';
+    } else {
+        url = '{{ route("atap-kombinasi.hitung") }}';
+    }
+    
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -251,21 +264,56 @@ function hitungKombinasiLimasPelana() {
             
             document.getElementById('totalLuasPelana').innerHTML = total.luas_atap + ' m²';
             document.getElementById('totalStarterPelana').innerHTML = total.panjang_starter + ' m';
-            document.getElementById('totalNokJuraiPelana').innerHTML = total.panjang_nok_jurai + ' m';
             document.getElementById('totalFlashingPelana').innerHTML = total.panjang_flashing + ' m';
             
-            let detailHtml = '<div class="text-xs font-medium text-gray-600 mb-1">Detail Per Bagian</div>';
-            responseData.details.forEach(item => {
-                detailHtml += `<div class="bg-white border border-gray-200 rounded-lg p-2 text-xs">
-                    <div class="font-medium text-gray-800">${item.bagian}</div>
-                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">
-                        <div>Luas: ${item.luas_atap} m²</div>
-                        <div>Starter: ${item.starter} m</div>
-                        <div>Nok & Jurai: ${item.nok_jurai} m</div>
-                        <div>Flashing: ${item.flashing} m</div>
-                    </div>
-                </div>`;
-            });
+            // ===== TAMPILKAN NOK & JURAI =====
+            let labelElement = document.getElementById('labelNokJuraiPelana');
+            let valueElement = document.getElementById('totalNokJuraiPelana');
+            
+            if (brand === 'palmex') {
+                // PALMEX: Jurai dan Nok Atas dipisah
+                if (labelElement) labelElement.textContent = 'Panjang Jurai & Nok Atas';
+                if (valueElement) {
+                    valueElement.innerHTML = 
+                        'Jurai: ' + total.panjang_jurai + ' m | Nok Atas: ' + total.panjang_nok_atas + ' m';
+                }
+            } else {
+                // IKO/SKYSHIELD: Nok & Jurai digabung
+                if (labelElement) labelElement.textContent = 'Panjang Nok & Jurai';
+                if (valueElement) {
+                    valueElement.innerHTML = total.panjang_nok_jurai + ' m';
+                }
+            }
+            
+          // ===== DETAIL PER BAGIAN =====
+let detailHtml = '<div class="text-xs font-medium text-gray-600 mb-1">Detail Per Bagian</div>';
+responseData.details.forEach((item, index) => {
+    let bagianLabel = index === 0 ? 'Limasan (Kanan)' : 'Pelana (Kiri)';
+    detailHtml += `<div class="bg-white border border-gray-200 rounded-lg p-2 text-xs">
+        <div class="font-medium text-gray-800">${item.bagian}</div>
+        <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">`;
+    
+    if (brand === 'palmex') {
+        // PALMEX: Jurai dan Nok Atas
+        detailHtml += `
+            <div>Luas: ${item.luas_atap} m²</div>
+            <div>Starter: ${item.starter} m</div>
+            <div>Jurai: ${item.jurai} m</div>
+            <div>Nok Atas: ${item.nok_atas} m</div>
+            <div>Flashing: ${item.flashing} m</div>
+        `;
+    } else {
+        // IKO/SKYSHIELD: Nok & Jurai digabung
+        detailHtml += `
+            <div>Luas: ${item.luas_atap} m²</div>
+            <div>Starter: ${item.starter} m</div>
+            <div>Nok & Jurai: ${item.nok_jurai} m</div>
+            <div>Flashing: ${item.flashing} m</div>
+        `;
+    }
+    
+    detailHtml += `</div></div>`;
+});
             
             document.getElementById('detailBagianLimasPelana').innerHTML = detailHtml;
             document.getElementById('hasilPerhitunganLimasPelana').classList.remove('hidden');
@@ -309,27 +357,49 @@ function lanjutKeBOQLimasPelana() {
     }
     
     let details = hasilKombinasiLimasPelana.details;
-    
-    let luas1 = details[0]?.luas_atap || 0;
-    let starter1 = details[0]?.starter || 0;
-    let nok1 = details[0]?.nok_jurai || 0;
-    let flashing1 = details[0]?.flashing || 0;
-    
-    let luas2 = details[1]?.luas_atap || 0;
-    let starter2 = details[1]?.starter || 0;
-    let nok2 = details[1]?.nok_jurai || 0;
-    let flashing2 = details[1]?.flashing || 0;
+    let total = hasilKombinasiLimasPelana.total;
     
     let sudutLimas = parseFloat(document.getElementById('sudut_limas').value) || 0;
     let sudutPelana = parseFloat(document.getElementById('sudut_pelana').value) || 0;
     
+    // Mapping URL berdasarkan brand
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/limas-pelana',
         'skyshield': '/boq/atap-kombinasi-skyshield/limas-pelana',
+        'palmex': '/boq/palmex/atap-kombinasi/limas-pelana',
     };
     
-    let url = controllerMap[brandSlug] || '/boq/atap-kombinasi/limas-pelana';
+    let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limas-pelana';
     
-    window.location.href = `${url}?luas_atap_1=${luas1}&sudut_1=${sudutLimas}&starter_1=${starter1}&nok_1=${nok1}&flashing_1=${flashing1}&luas_atap_2=${luas2}&sudut_2=${sudutPelana}&starter_2=${starter2}&nok_2=${nok2}&flashing_2=${flashing2}`;
+    let url = `${baseUrl}?brand_slug=${brandSlug}`;
+    
+    // ===== KIRIM DATA BAGIAN 1 (LIMASAN) =====
+    url += `&luas_atap_1=${details[0]?.luas_atap||0}`;
+    url += `&sudut_1=${sudutLimas}`;
+    url += `&starter_1=${details[0]?.starter||0}`;
+    url += `&flashing_1=${details[0]?.flashing||0}`;
+    
+    // ===== KIRIM DATA BAGIAN 2 (PELANA) =====
+    url += `&luas_atap_2=${details[1]?.luas_atap||0}`;
+    url += `&sudut_2=${sudutPelana}`;
+    url += `&starter_2=${details[1]?.starter||0}`;
+    url += `&flashing_2=${details[1]?.flashing||0}`;
+    
+    // ===== BEDAKAN BRAND =====
+    if (brandSlug === 'palmex') {
+        // PALMEX: kirim jurai & nok_atas terpisah
+        url += `&jurai_1=${details[0]?.jurai||0}`;
+        url += `&nok_atas_1=${details[0]?.nok_atas||0}`;
+        url += `&jurai_2=${details[1]?.jurai||0}`;
+        url += `&nok_atas_2=${details[1]?.nok_atas||0}`;
+        url += `&total_jurai=${total?.panjang_jurai||0}`;
+        url += `&total_nok_atas=${total?.panjang_nok_atas||0}`;
+    } else {
+        // IKO/SKYSHIELD: kirim nok_jurai digabung
+        url += `&nok_1=${details[0]?.nok_jurai||0}`;
+        url += `&nok_2=${details[1]?.nok_jurai||0}`;
+    }
+    
+    window.location.href = url;
 }
 </script>

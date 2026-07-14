@@ -4,6 +4,8 @@ use App\Http\Controllers\AtapStandarController;
 use App\Http\Controllers\AtapKombinasiController;
 use App\Http\Controllers\IkoAtapController;
 use App\Http\Controllers\SkyshieldStandarController;
+use App\Http\Controllers\PalmexController;
+use App\Http\Controllers\PalmexKombinasiController;
 use App\Http\Controllers\IkoInsulasiController;
 use App\Http\Controllers\IkoAtapKombinasiController;
 use App\Http\Controllers\SkyshieldKombinasiController;
@@ -20,6 +22,12 @@ Route::post('/atap-standar/hitung-pelana', [AtapStandarController::class, 'hitun
 Route::post('/atap-standar/hitung-perisai', [AtapStandarController::class, 'hitungPerisai'])->name('atap-standar.hitung-perisai');
 Route::post('/atap-standar/hitung-satu-kemiringan', [AtapStandarController::class, 'hitungSatuKemiringan'])->name('atap-standar.hitung-satu-kemiringan');
 
+
+Route::post('/atap-standar/hitung-palmex-limasan', [AtapStandarController::class, 'hitungPalmexLimasan'])->name('atap-standar.hitung-palmex-limasan');
+Route::post('/atap-standar/hitung-palmex-piramid', [AtapStandarController::class, 'hitungPalmexPiramid'])->name('atap-standar.hitung-palmex-piramid');
+Route::post('/atap-standar/hitung-palmex-kerucut', [AtapStandarController::class, 'hitungPalmexKerucut'])->name('atap-standar.hitung-palmex-kerucut');
+Route::post('/atap-standar/hitung-palmex-satu-kemiringan', [AtapStandarController::class, 'hitungPalmexSatuKemiringan'])->name('atap-standar.hitung-palmex-satu-kemiringan');
+Route::post('/atap-standar/hitung-palmex-dome', [AtapStandarController::class, 'hitungPalmexDome'])->name('atap-standar.hitung-palmex-dome');
 // Route handler umum
 Route::post('/atap-standar/hitung', [AtapStandarController::class, 'hitung'])->name('atap-standar.hitung');
 // BOQ Routes
@@ -92,7 +100,85 @@ Route::get('/atap-kombinasi-skyshield/pelana-3-arah', [SkyshieldKombinasiControl
 
 });
 
+// PALMEX BOQ
+// PALMEX - Semua model
+Route::prefix('boq/palmex')->name('boq.palmex.')->group(function () {
+    Route::get('/{model}', [App\Http\Controllers\PalmexController::class, 'index'])->name('index');
+    Route::post('/{model}/hitung', [App\Http\Controllers\PalmexController::class, 'hitung'])->name('hitung');
+    Route::post('/{model}/export-pdf', [App\Http\Controllers\PalmexController::class, 'exportPdf'])->name('export-pdf');
+});
+Route::post('/palmex/kombinasi/hitung', [App\Http\Controllers\AtapKombinasiController::class, 'hitung'])
+    ->name('palmex.kombinasi.hitung');
+    Route::get('/boq/palmex/atap-kombinasi/limasan-trapesium', [App\Http\Controllers\PalmexKombinasiController::class, 'limasanTrapesium'])
+    ->name('boq.palmex.atap-kombinasi.limasan-trapesium');
+   Route::get('/boq/palmex/atap-kombinasi/limas-pelana', [App\Http\Controllers\PalmexKombinasiController::class, 'limasPelana'])
+    ->name('boq.palmex.atap-kombinasi.limas-pelana');
+    Route::get('/boq/palmex/atap-kombinasi/pelana-2trapesium', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'pelana2Trapesium']
+)->name('boq.palmex.atap-kombinasi.pelana-2trapesium');
+Route::get('/boq/palmex/atap-kombinasi/limasan-limasan', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'limasanLimasan']
+)->name('boq.palmex.atap-kombinasi.limasan-limasan');
+Route::get('/boq/palmex/atap-kombinasi/pelana-2-kemiringan', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'pelana2Kemiringan']
+)->name('boq.palmex.atap-kombinasi.pelana-2-kemiringan');
+Route::get('/boq/palmex/atap-kombinasi/pelana-2-sisi', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'pelana2Sisi']
+)->name('boq.palmex.atap-kombinasi.pelana-2-sisi');
+Route::get('/boq/palmex/atap-kombinasi/pelana-3-arah', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'pelana3Arah']
+)->name('boq.palmex.atap-kombinasi.pelana-3-arah');
+Route::get('/boq/palmex/atap-kombinasi/pelana-x', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'pelanaX']
+)->name('boq.palmex.atap-kombinasi.pelana-x');
+Route::get('/boq/palmex/atap-kombinasi/limasan-x', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'limasanX']
+)->name('boq.palmex.atap-kombinasi.limasan-x');
+Route::get('/boq/palmex/atap-kombinasi/gergaji', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'gergaji']
+)->name('boq.palmex.atap-kombinasi.gergaji');
+Route::get('/boq/palmex/atap-kombinasi/lengkung-2-sisi', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'lengkung2Sisi']
+)->name('boq.palmex.atap-kombinasi.lengkung-2-sisi');
+Route::get('/boq/palmex/atap-kombinasi/pelana-dinding', [PalmexKombinasiController::class, 'pelanaDinding'])->name('boq.palmex.atap-kombinasi.pelana-dinding');
 
+
+    Route::post('/boq/palmex/atap-kombinasi/limasan-trapesium/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungLimasanTrapesium']
+)->name('boq.palmex.atap-kombinasi.limasan-trapesium.hitung');
+Route::post('/boq/palmex/atap-kombinasi/limas-pelana/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungLimasPelana']
+)->name('boq.palmex.atap-kombinasi.limas-pelana.hitung');
+Route::post('/boq/palmex/atap-kombinasi/pelana-2trapesium/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungPelana2Trapesium']
+)->name('boq.palmex.atap-kombinasi.pelana-2trapesium.hitung');
+Route::post('/boq/palmex/atap-kombinasi/limasan-limasan/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungLimasanLimasan']
+)->name('boq.palmex.atap-kombinasi.limasan-limasan.hitung');
+Route::post('/boq/palmex/atap-kombinasi/pelana-2-kemiringan/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungPelana2Kemiringan']
+)->name('boq.palmex.atap-kombinasi.pelana-2-kemiringan.hitung');
+Route::post('/boq/palmex/atap-kombinasi/pelana-2-sisi/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungPelana2Sisi']
+)->name('boq.palmex.atap-kombinasi.pelana-2-sisi.hitung');
+Route::post('/boq/palmex/atap-kombinasi/pelana-3-arah/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungPelana3Arah']
+)->name('boq.palmex.atap-kombinasi.pelana-3-arah.hitung');
+Route::post('/boq/palmex/atap-kombinasi/pelana-x/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungPelanaX']
+)->name('boq.palmex.atap-kombinasi.pelana-x.hitung');
+Route::post('/boq/palmex/atap-kombinasi/limasan-x/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungLimasanX']
+)->name('boq.palmex.atap-kombinasi.limasan-x.hitung');
+Route::post('/boq/palmex/atap-kombinasi/gergaji/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungGergaji']
+)->name('boq.palmex.atap-kombinasi.gergaji.hitung');
+Route::post('/boq/palmex/atap-kombinasi/lengkung-2-sisi/hitung', 
+    [App\Http\Controllers\PalmexKombinasiController::class, 'hitungLengkung2Sisi']
+)->name('boq.palmex.atap-kombinasi.lengkung-2-sisi.hitung');
+Route::post('/boq/palmex/atap-kombinasi/pelana-dinding/hitung', [PalmexKombinasiController::class, 'hitungPelanaDinding'])->name('boq.palmex.atap-kombinasi.pelana-dinding.hitung');
+    Route::post('/boq/palmex/atap-kombinasi/{jenis}/export-pdf', [PalmexKombinasiController::class, 'exportPdf'])
+    ->name('boq.palmex.kombinasi.export-pdf');
 // ==================== JENDELA ====================
 
 // Halaman utama jendela

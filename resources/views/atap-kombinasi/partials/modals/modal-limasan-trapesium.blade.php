@@ -216,8 +216,13 @@
 let hasilKombinasiLimasanTrapesium = null;
 
 function hitungKombinasi() {
+    // Ambil brand dari select BOQ (bukan brand_selector)
+    let brandSelect = document.getElementById('brand_boq_limasan_trapesium');
+    let brand = brandSelect ? brandSelect.value : 'iko';
+    
     let data = {
         jenis_kombinasi: 'limasan_trapesium',
+        brand: brand,
         panjang_limasan: parseFloat(document.getElementById('panjang_limasan').value) || 0,
         lebar_limasan: parseFloat(document.getElementById('lebar_limasan').value) || 0,
         sudut_limasan: parseFloat(document.getElementById('sudut_limasan').value) || 0,
@@ -245,7 +250,14 @@ function hitungKombinasi() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('{{ route("atap-kombinasi.hitung") }}', {
+    let url;
+    if (brand === 'palmex') {
+        url = '{{ route("palmex.kombinasi.hitung") }}';
+    } else {
+        url = '{{ route("atap-kombinasi.hitung") }}';
+    }
+    
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -257,24 +269,61 @@ function hitungKombinasi() {
     .then(data => {
         if (data.success) {
             hasilKombinasiLimasanTrapesium = data;
+            
+            // ===== TOTAL =====
             document.getElementById('totalLuasLimasanTrapesium').innerHTML = data.total.luas_atap + ' m²';
             document.getElementById('totalStarterLimasanTrapesium').innerHTML = data.total.panjang_starter + ' m';
-            document.getElementById('totalNokJuraiLimasanTrapesium').innerHTML = data.total.panjang_nok_jurai + ' m';
             document.getElementById('totalFlashingLimasanTrapesium').innerHTML = data.total.panjang_flashing + ' m';
             
+            // ===== TAMPILKAN NOK & JURAI =====
+            let labelElement = document.getElementById('labelNokJuraiLimasanTrapesium');
+            let valueElement = document.getElementById('totalNokJuraiLimasanTrapesium');
+            
+            if (brand === 'palmex') {
+                // PALMEX: Jurai dan Nok Atas dipisah
+                if (labelElement) labelElement.textContent = 'Panjang Jurai & Nok Atas';
+                if (valueElement) {
+                    valueElement.innerHTML = 
+                        'Jurai: ' + data.total.panjang_jurai + ' m | Nok Atas: ' + data.total.panjang_nok_atas + ' m';
+                }
+            } else {
+                // IKO/SKYSHIELD: Nok & Jurai digabung
+                if (labelElement) labelElement.textContent = 'Panjang Nok & Jurai';
+                if (valueElement) {
+                    valueElement.innerHTML = data.total.panjang_nok_jurai + ' m';
+                }
+            }
+            
+            // ===== DETAIL PER BAGIAN =====
             let detailHtml = '<div class="text-xs font-medium text-gray-600 mb-1">Detail Per Bagian</div>';
             data.details.forEach(item => {
                 detailHtml += `<div class="bg-white border border-gray-200 rounded-lg p-2 text-xs">
                     <div class="font-medium text-gray-800">${item.bagian}</div>
-                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">
+                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">`;
+                
+                if (brand === 'palmex') {
+                    // PALMEX: Jurai dan Nok Atas
+                    detailHtml += `
+                        <div>Luas: ${item.luas_atap} m²</div>
+                        <div>Starter: ${item.starter} m</div>
+                        <div>Jurai: ${item.jurai} m</div>
+                        <div>Nok Atas: ${item.nok_atas} m</div>
+                        <div>Flashing: ${item.flashing} m</div>
+                    `;
+                } else {
+                    // IKO/SKYSHIELD: Nok & Jurai digabung
+                    detailHtml += `
                         <div>Luas: ${item.luas_atap} m²</div>
                         <div>Starter: ${item.starter} m</div>
                         <div>Nok & Jurai: ${item.nok_jurai} m</div>
                         <div>Flashing: ${item.flashing} m</div>
-                    </div>
-                </div>`;
+                    `;
+                }
+                
+                detailHtml += `</div></div>`;
             });
             document.getElementById('detailBagianLimasanTrapesium').innerHTML = detailHtml;
+            
             document.getElementById('hasilPerhitunganLimasanTrapesium').classList.remove('hidden');
         } else {
             alert('Terjadi kesalahan: ' + (data.message || 'Unknown error'));
@@ -317,16 +366,7 @@ function lanjutKeBOQLimasanTrapesium() {
     }
     
     let details = hasilKombinasiLimasanTrapesium.details;
-    
-    let luas1 = details[0]?.luas_atap || 0;
-    let starter1 = details[0]?.starter || 0;
-    let nok1 = details[0]?.nok_jurai || 0;
-    let flashing1 = details[0]?.flashing || 0;
-    
-    let luas2 = details[1]?.luas_atap || 0;
-    let starter2 = details[1]?.starter || 0;
-    let nok2 = details[1]?.nok_jurai || 0;
-    let flashing2 = details[1]?.flashing || 0;
+    let total = hasilKombinasiLimasanTrapesium.total;
     
     let sudutLimasan = parseFloat(document.getElementById('sudut_limasan').value) || 0;
     let sudutTrapesium = parseFloat(document.getElementById('sudut_trapesium').value) || 0;
@@ -335,10 +375,26 @@ function lanjutKeBOQLimasanTrapesium() {
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/limasan-trapesium',
         'skyshield': '/boq/atap-kombinasi-skyshield/limasan-trapesium',
+        'palmex': '/boq/palmex/atap-kombinasi/limasan-trapesium',
     };
     
-    let url = controllerMap[brandSlug] || '/boq/atap-kombinasi/limasan-trapesium';
+    let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limasan-trapesium';
     
-    window.location.href = `${url}?luas_atap_1=${luas1}&sudut_1=${sudutLimasan}&starter_1=${starter1}&nok_1=${nok1}&flashing_1=${flashing1}&luas_atap_2=${luas2}&sudut_2=${sudutTrapesium}&starter_2=${starter2}&nok_2=${nok2}&flashing_2=${flashing2}`;
+    let url = `${baseUrl}?brand_slug=${brandSlug}`;
+    url += `&luas_atap_1=${details[0]?.luas_atap||0}&sudut_1=${sudutLimasan}&starter_1=${details[0]?.starter||0}&flashing_1=${details[0]?.flashing||0}`;
+    url += `&luas_atap_2=${details[1]?.luas_atap||0}&sudut_2=${sudutTrapesium}&starter_2=${details[1]?.starter||0}&flashing_2=${details[1]?.flashing||0}`;
+    
+    // ===== BEDAKAN BRAND =====
+    if (brandSlug === 'palmex') {
+        // PALMEX: kirim jurai & nok_atas terpisah
+        url += `&jurai_1=${details[0]?.jurai||0}&nok_atas_1=${details[0]?.nok_atas||0}`;
+        url += `&jurai_2=${details[1]?.jurai||0}&nok_atas_2=${details[1]?.nok_atas||0}`;
+        url += `&total_jurai=${total?.panjang_jurai||0}&total_nok_atas=${total?.panjang_nok_atas||0}`;
+    } else {
+        // IKO/SKYSHIELD: kirim nok_jurai digabung
+        url += `&nok_1=${details[0]?.nok_jurai||0}&nok_2=${details[1]?.nok_jurai||0}`;
+    }
+    
+    window.location.href = url;
 }
 </script>

@@ -214,6 +214,14 @@ public function limasanTrapesium(Request $request)
     $sudut_1 = $request->query('sudut_1', 0);
     $sudut_2 = $request->query('sudut_2', 0);
     
+    // Ambil opsi tambahan dari URL
+    $opsiDinding1 = $request->query('dinding', 0);
+    $opsiKaca1 = $request->query('kaca', 0);
+    $opsiPenangkal1 = $request->query('penangkal', 0);
+    $opsiDinding2 = $request->query('dinding', 0);
+    $opsiKaca2 = $request->query('kaca', 0);
+    $opsiPenangkal2 = $request->query('penangkal', 0);
+    
     \Log::info('=== BOQ Limasan Trapesium ===');
     \Log::info('sudut_1 (Limasan): ' . $sudut_1);
     \Log::info('sudut_2 (Trapesium): ' . $sudut_2);
@@ -226,13 +234,20 @@ public function limasanTrapesium(Request $request)
     
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
     // UNDERLAYER UNTUK LIMASAN (Bagian 1)
     $underlayers_1 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut_1 <= 30 && $sudut_1 > 0) {
-        \Log::info('Limasan: Sudut ' . $sudut_1 . '° <= 30°, filter underlayer ID 22');
+    if ($sudut_1 <= 15 && $sudut_1 > 0) {
+        \Log::info('Limasan: Sudut ' . $sudut_1 . '° <= 30°, filter underlayer ID 32');
         $underlayers_1 = $underlayers_1->where('id', 32);
     } else {
         \Log::info('Limasan: Sudut ' . $sudut_1 . '° > 30°, tampilkan semua underlayer');
@@ -244,8 +259,8 @@ public function limasanTrapesium(Request $request)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut_2 <= 30 && $sudut_2 > 0) {
-        \Log::info('Trapesium: Sudut ' . $sudut_2 . '° <= 30°, filter underlayer ID 22');
+    if ($sudut_2 <= 15 && $sudut_2 > 0) {
+        \Log::info('Trapesium: Sudut ' . $sudut_2 . '° <= 30°, filter underlayer ID 32');
         $underlayers_2 = $underlayers_2->where('id', 32);
     } else {
         \Log::info('Trapesium: Sudut ' . $sudut_2 . '° > 30°, tampilkan semua underlayer');
@@ -258,8 +273,12 @@ public function limasanTrapesium(Request $request)
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
     $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
-    return view('boq.atap-kombinasi.limasan-trapesium', compact(
-        'products', 'underlayers_1', 'underlayers_2', 'rangkaOptions', 'lantaiKerjaOptions', 'sudut_1', 'sudut_2'
+    return view('boq.skyshield.skyshield-limasan-trapesium', compact(
+        'products', 'starters', 'underlayers_1', 'underlayers_2', 
+        'rangkaOptions', 'lantaiKerjaOptions', 
+        'sudut_1', 'sudut_2',
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2'
     ));
 }
 public function limasPelana(Request $request)
@@ -269,6 +288,14 @@ public function limasPelana(Request $request)
     // Ambil sudut dari request/URL
     $sudut_1 = $request->query('sudut_1', 0);
     $sudut_2 = $request->query('sudut_2', 0);
+    
+    // Ambil opsi tambahan dari URL
+    $opsiDinding1 = $request->query('dinding', 0);
+    $opsiKaca1 = $request->query('kaca', 0);
+    $opsiPenangkal1 = $request->query('penangkal', 0);
+    $opsiDinding2 = $request->query('dinding', 0);
+    $opsiKaca2 = $request->query('kaca', 0);
+    $opsiPenangkal2 = $request->query('penangkal', 0);
     
     \Log::info('=== BOQ Limas + Pelana ===');
     \Log::info('sudut_1 (Limas): ' . $sudut_1);
@@ -282,13 +309,20 @@ public function limasPelana(Request $request)
     
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
     // UNDERLAYER UNTUK LIMAS (Bagian 1)
     $underlayers_1 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut_1 <= 30 && $sudut_1 > 0) {
-        \Log::info('Limas: Sudut ' . $sudut_1 . '° <= 30°, filter underlayer ID 22');
+    if ($sudut_1 <= 15 && $sudut_1 > 0) {
+        \Log::info('Limas: Sudut ' . $sudut_1 . '° <= 30°, filter underlayer ID 32');
         $underlayers_1 = $underlayers_1->where('id', 32);
     } else {
         \Log::info('Limas: Sudut ' . $sudut_1 . '° > 30°, tampilkan semua underlayer');
@@ -300,8 +334,8 @@ public function limasPelana(Request $request)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut_2 <= 30 && $sudut_2 > 0) {
-        \Log::info('Pelana: Sudut ' . $sudut_2 . '° <= 30°, filter underlayer ID 22');
+    if ($sudut_2 <= 15 && $sudut_2 > 0) {
+        \Log::info('Pelana: Sudut ' . $sudut_2 . '° <= 30°, filter underlayer ID 32');
         $underlayers_2 = $underlayers_2->where('id', 32);
     } else {
         \Log::info('Pelana: Sudut ' . $sudut_2 . '° > 30°, tampilkan semua underlayer');
@@ -314,8 +348,12 @@ public function limasPelana(Request $request)
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
     $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
-    return view('boq.atap-kombinasi.limas-pelana', compact(
-        'products', 'underlayers_1', 'underlayers_2', 'rangkaOptions', 'lantaiKerjaOptions', 'sudut_1', 'sudut_2'
+    return view('boq.skyshield.skyshield-limasan-pelana', compact(
+        'products', 'starters', 'underlayers_1', 'underlayers_2', 
+        'rangkaOptions', 'lantaiKerjaOptions', 
+        'sudut_1', 'sudut_2',
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2'
     ));
 }
 public function exportPdfLimasPelana(Request $request)
@@ -402,6 +440,17 @@ public function pelana2Trapesium(Request $request)
     $sudut_2 = $request->query('sudut_2', 0); // Trapesium A
     $sudut_3 = $request->query('sudut_3', 0); // Trapesium B
     
+    // Ambil opsi tambahan dari URL
+    $opsiDinding1 = $request->query('dinding', 0);
+    $opsiKaca1 = $request->query('kaca', 0);
+    $opsiPenangkal1 = $request->query('penangkal', 0);
+    $opsiDinding2 = $request->query('dinding', 0);
+    $opsiKaca2 = $request->query('kaca', 0);
+    $opsiPenangkal2 = $request->query('penangkal', 0);
+    $opsiDinding3 = $request->query('dinding', 0);
+    $opsiKaca3 = $request->query('kaca', 0);
+    $opsiPenangkal3 = $request->query('penangkal', 0);
+    
     \Log::info('=== BOQ Pelana + 2 Trapesium ===');
     \Log::info('sudut_1 (Pelana): ' . $sudut_1);
     \Log::info('sudut_2 (Trapesium A): ' . $sudut_2);
@@ -415,13 +464,20 @@ public function pelana2Trapesium(Request $request)
     
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
     // UNDERLAYER UNTUK PELANA (Bagian 1)
     $underlayers_1 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut_1 <= 30 && $sudut_1 > 0) {
-        \Log::info('Pelana: Sudut ' . $sudut_1 . '° <= 30°, filter underlayer ID 22');
+    if ($sudut_1 <= 15 && $sudut_1 > 0) {
+        \Log::info('Pelana: Sudut ' . $sudut_1 . '° <= 30°, filter underlayer ID 32');
         $underlayers_1 = $underlayers_1->where('id', 32);
     } else {
         \Log::info('Pelana: Sudut ' . $sudut_1 . '° > 30°, tampilkan semua underlayer');
@@ -433,8 +489,8 @@ public function pelana2Trapesium(Request $request)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut_2 <= 30 && $sudut_2 > 0) {
-        \Log::info('Trapesium A: Sudut ' . $sudut_2 . '° <= 30°, filter underlayer ID 22');
+    if ($sudut_2 <= 15 && $sudut_2 > 0) {
+        \Log::info('Trapesium A: Sudut ' . $sudut_2 . '° <= 30°, filter underlayer ID 32');
         $underlayers_2 = $underlayers_2->where('id', 32);
     } else {
         \Log::info('Trapesium A: Sudut ' . $sudut_2 . '° > 30°, tampilkan semua underlayer');
@@ -446,8 +502,8 @@ public function pelana2Trapesium(Request $request)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut_3 <= 30 && $sudut_3 > 0) {
-        \Log::info('Trapesium B: Sudut ' . $sudut_3 . '° <= 30°, filter underlayer ID 22');
+    if ($sudut_3 <= 15 && $sudut_3 > 0) {
+        \Log::info('Trapesium B: Sudut ' . $sudut_3 . '° <= 30°, filter underlayer ID 32');
         $underlayers_3 = $underlayers_3->where('id', 32);
     } else {
         \Log::info('Trapesium B: Sudut ' . $sudut_3 . '° > 30°, tampilkan semua underlayer');
@@ -461,12 +517,15 @@ public function pelana2Trapesium(Request $request)
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
     $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
-    return view('boq.atap-kombinasi.pelana-2trapesium', compact(
-        'products', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
-        'rangkaOptions', 'lantaiKerjaOptions', 'sudut_1', 'sudut_2', 'sudut_3'
+    return view('boq.skyshield.skyshield-pelana-2-trapesium', compact(
+        'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
+        'rangkaOptions', 'lantaiKerjaOptions', 
+        'sudut_1', 'sudut_2', 'sudut_3',
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2',
+        'opsiDinding3', 'opsiKaca3', 'opsiPenangkal3'
     ));
 }
-
 public function exportPdfPelana2Trapesium(Request $request)
 {
     $data = $request->all();
@@ -523,12 +582,16 @@ public function limasanLimasan(Request $request)
     $brand = ProductBrand::where('nama_brand', 'SKYSHIELD')->first();
     
     // Ambil sudut dari request/URL
-    $sudut_1 = $request->query('sudut_1', 0); // Limasan A (Atas)
-    $sudut_2 = $request->query('sudut_2', 0); // Limasan B (Bawah)
+    $sudut_1 = $request->query('sudut_1', 0);
+    $sudut_2 = $request->query('sudut_2', 0);
     
-    \Log::info('=== BOQ Limasan + Limasan ===');
-    \Log::info('sudut_1 (Limasan A): ' . $sudut_1);
-    \Log::info('sudut_2 (Limasan B): ' . $sudut_2);
+    // Ambil opsi tambahan dari URL
+    $opsiDinding1 = $request->query('dinding', 0);
+    $opsiKaca1 = $request->query('kaca', 0);
+    $opsiPenangkal1 = $request->query('penangkal', 0);
+    $opsiDinding2 = $request->query('dinding', 0);
+    $opsiKaca2 = $request->query('kaca', 0);
+    $opsiPenangkal2 = $request->query('penangkal', 0);
     
     $areaAtapUtama = ProductArea::where('nama_area', 'Atap Utama')->first();
     $products = Product::where('brand_id', $brand->id)
@@ -538,40 +601,42 @@ public function limasanLimasan(Request $request)
     
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
-    // UNDERLAYER UNTUK LIMASAN A (Bagian 1 - Atas)
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
+    // UNDERLAYER UNTUK LIMASAN A
     $underlayers_1 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut_1 <= 30 && $sudut_1 > 0) {
-        \Log::info('Limasan A: Sudut ' . $sudut_1 . '° <= 30°, filter underlayer ID 22');
-        $underlayers_1 = $underlayers_1->where('id', 32);
-    } else {
-        \Log::info('Limasan A: Sudut ' . $sudut_1 . '° > 30°, tampilkan semua underlayer');
+    if ($sudut_1 <= 15 && $sudut_1 > 0) {
+        $underlayers_1 = $underlayers_1->where('id', 22);
     }
     $underlayers_1 = $underlayers_1->get();
     
-    // UNDERLAYER UNTUK LIMASAN B (Bagian 2 - Bawah)
+    // UNDERLAYER UNTUK LIMASAN B
     $underlayers_2 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut_2 <= 30 && $sudut_2 > 0) {
-        \Log::info('Limasan B: Sudut ' . $sudut_2 . '° <= 30°, filter underlayer ID 22');
-        $underlayers_2 = $underlayers_2->where('id', 32);
-    } else {
-        \Log::info('Limasan B: Sudut ' . $sudut_2 . '° > 30°, tampilkan semua underlayer');
+    if ($sudut_2 <= 15 && $sudut_2 > 0) {
+        $underlayers_2 = $underlayers_2->where('id', 22);
     }
     $underlayers_2 = $underlayers_2->get();
-    
-    \Log::info('Jumlah underlayer Limasan A: ' . $underlayers_1->count());
-    \Log::info('Jumlah underlayer Limasan B: ' . $underlayers_2->count());
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
     $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
-    return view('boq.atap-kombinasi.limasan-limasan', compact(
-        'products', 'underlayers_1', 'underlayers_2', 'rangkaOptions', 'lantaiKerjaOptions', 'sudut_1', 'sudut_2'
+    return view('boq.skyshield.skyshield-limasan-limasan', compact(
+        'products', 'starters', 'underlayers_1', 'underlayers_2', 
+        'rangkaOptions', 'lantaiKerjaOptions', 
+        'sudut_1', 'sudut_2',
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2'
     ));
 }
 
@@ -646,8 +711,8 @@ public function pelanaPelana(Request $request)
     $underlayers_2 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)->with('unit');
     
-    if ($sudut_1 <= 30 && $sudut_1 > 0) $underlayers_1 = $underlayers_1->where('id', 22);
-    if ($sudut_2 <= 30 && $sudut_2 > 0) $underlayers_2 = $underlayers_2->where('id', 22);
+    if ($sudut_1 <= 15 && $sudut_1 > 0) $underlayers_1 = $underlayers_1->where('id', 22);
+    if ($sudut_2 <= 15 && $sudut_2 > 0) $underlayers_2 = $underlayers_2->where('id', 22);
     
     $underlayers_1 = $underlayers_1->get();
     $underlayers_2 = $underlayers_2->get();
@@ -662,6 +727,11 @@ public function pelanaX(Request $request)
     $sudut_2 = $request->query('sudut_2', 0);
     $sudut_3 = $request->query('sudut_3', 0);
     
+    // Ambil opsi tambahan dari URL
+    $opsiDinding = $request->query('dinding', 0);
+    $opsiKaca = $request->query('kaca', 0);
+    $opsiPenangkal = $request->query('penangkal', 0);
+    
     $areaAtapUtama = ProductArea::where('nama_area', 'Atap Utama')->first();
     $products = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaAtapUtama->id)
@@ -670,24 +740,45 @@ public function pelanaX(Request $request)
     
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
-    $underlayers_1 = Product::where('brand_id', $brand->id)->where('area_id', $areaUnderlayer->id)->with('unit');
-    if ($sudut_1 <= 30 && $sudut_1 > 0) $underlayers_1 = $underlayers_1->where('id', 32);
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
+    $underlayers_1 = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaUnderlayer->id)
+        ->with('unit');
+    if ($sudut_1 <= 15 && $sudut_1 > 0) {
+        $underlayers_1 = $underlayers_1->where('id', 32);
+    }
     $underlayers_1 = $underlayers_1->get();
     
-    $underlayers_2 = Product::where('brand_id', $brand->id)->where('area_id', $areaUnderlayer->id)->with('unit');
-    if ($sudut_2 <= 30 && $sudut_2 > 0) $underlayers_2 = $underlayers_2->where('id', 32);
+    $underlayers_2 = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaUnderlayer->id)
+        ->with('unit');
+    if ($sudut_2 <= 15 && $sudut_2 > 0) {
+        $underlayers_2 = $underlayers_2->where('id', 32);
+    }
     $underlayers_2 = $underlayers_2->get();
     
-    $underlayers_3 = Product::where('brand_id', $brand->id)->where('area_id', $areaUnderlayer->id)->with('unit');
-    if ($sudut_3 <= 30 && $sudut_3 > 0) $underlayers_3 = $underlayers_3->where('id', 32);
+    $underlayers_3 = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaUnderlayer->id)
+        ->with('unit');
+    if ($sudut_3 <= 15 && $sudut_3 > 0) {
+        $underlayers_3 = $underlayers_3->where('id', 32);
+    }
     $underlayers_3 = $underlayers_3->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
     $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
-    return view('boq.atap-kombinasi.pelana-x', compact(
-        'products', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
-        'rangkaOptions', 'lantaiKerjaOptions', 'sudut_1', 'sudut_2', 'sudut_3'
+    return view('boq.skyshield.skyshield-pelana-x', compact(
+        'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
+        'rangkaOptions', 'lantaiKerjaOptions', 
+        'sudut_1', 'sudut_2', 'sudut_3',
+        'opsiDinding', 'opsiKaca', 'opsiPenangkal'
     ));
 }
 public function exportPdfPelanaX(Request $request)
@@ -773,6 +864,11 @@ public function limasanX(Request $request)
     $sudut_2 = $request->query('sudut_2', 0);
     $sudut_3 = $request->query('sudut_3', 0);
     
+    // Ambil opsi tambahan dari URL
+    $opsiDinding = $request->query('dinding', 0);
+    $opsiKaca = $request->query('kaca', 0);
+    $opsiPenangkal = $request->query('penangkal', 0);
+    
     $areaAtapUtama = ProductArea::where('nama_area', 'Atap Utama')->first();
     $products = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaAtapUtama->id)
@@ -781,6 +877,13 @@ public function limasanX(Request $request)
     
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
     $underlayers_1 = $this->getFilteredUnderlayers($brand, $areaUnderlayer, $sudut_1);
     $underlayers_2 = $this->getFilteredUnderlayers($brand, $areaUnderlayer, $sudut_2);
     $underlayers_3 = $this->getFilteredUnderlayers($brand, $areaUnderlayer, $sudut_3);
@@ -788,9 +891,11 @@ public function limasanX(Request $request)
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
     $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
-    return view('boq.atap-kombinasi.limasan-x', compact(
-        'products', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
-        'rangkaOptions', 'lantaiKerjaOptions', 'sudut_1', 'sudut_2', 'sudut_3'
+    return view('boq.skyshield.skyshield-limasan-x', compact(
+        'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
+        'rangkaOptions', 'lantaiKerjaOptions', 
+        'sudut_1', 'sudut_2', 'sudut_3',
+        'opsiDinding', 'opsiKaca', 'opsiPenangkal'
     ));
 }
 
@@ -862,8 +967,10 @@ private function getFilteredUnderlayers($brand, $areaUnderlayer, $sudut)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut <= 30 && $sudut > 0) {
-        $query = $query->where('id', 22);
+    if ($sudut <= 15 && $sudut > 0) {
+        // Cari underlayer khusus untuk SKYSHIELD
+        // Ganti ID 22 dengan ID yang benar dari database SKYSHIELD
+        $query = $query->where('id', 32); // atau ID yang sesuai
     }
     
     return $query->get();
@@ -878,6 +985,12 @@ public function gergaji(Request $request)
     $jumlahGerigi = $request->query('jumlah_gerigi', 0);
     $tinggiGerigi = $request->query('tinggi_gerigi', 0);
     
+    // ===== AMBIL OPSI TAMBAHAN DARI URL =====
+    $opsiDinding = $request->query('dinding', 0);
+    $opsiKaca = $request->query('kaca', 0);
+    $opsiPenangkal = $request->query('penangkal', 0);
+    $opsiExhaust = $request->query('exhaust', 0);
+    
     $areaAtapUtama = ProductArea::where('nama_area', 'Atap Utama')->first();
     $products = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaAtapUtama->id)
@@ -886,11 +999,21 @@ public function gergaji(Request $request)
     
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
+    // ===== UNDERLAYER =====
     $underlayers = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
     
-    if ($sudut <= 30 && $sudut > 0) {
+    if ($sudut <= 15 && $sudut > 0) {
+        // Pastikan ID 32 benar untuk SKYSHIELD
+        // Jika tidak, ganti dengan ID yang sesuai atau cari berdasarkan nama
         $underlayers = $underlayers->where('id', 32);
     }
     $underlayers = $underlayers->get();
@@ -898,9 +1021,10 @@ public function gergaji(Request $request)
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
     $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
-    return view('boq.atap-kombinasi.gergaji', compact(
-        'products', 'underlayers', 'rangkaOptions', 'lantaiKerjaOptions', 
-        'sudut', 'panjangBangunan', 'lebarBangunan', 'jumlahGerigi', 'tinggiGerigi'
+    return view('boq.skyshield.skyshield-gergaji', compact(
+        'products', 'starters', 'underlayers', 'rangkaOptions', 'lantaiKerjaOptions',
+        'sudut', 'panjangBangunan', 'lebarBangunan', 'jumlahGerigi', 'tinggiGerigi',
+        'opsiDinding', 'opsiKaca', 'opsiPenangkal', 'opsiExhaust'
     ));
 }
 public function exportPdfGergaji(Request $request)
@@ -972,6 +1096,22 @@ public function pelana2Kemiringan(Request $request)
     $sudut_2 = $request->query('sudut_2', 0);
     $sudut_3 = $request->query('sudut_3', 0);
     
+    // Ambil opsi tambahan dari URL
+    $opsiDinding1 = $request->query('dinding_1', 0);
+    $opsiKaca1 = $request->query('kaca_1', 0);
+    $opsiPenangkal1 = $request->query('penangkal_1', 0);
+    $opsiExhaust1 = $request->query('exhaust_1', 0);
+    
+    $opsiDinding2 = $request->query('dinding_2', 0);
+    $opsiKaca2 = $request->query('kaca_2', 0);
+    $opsiPenangkal2 = $request->query('penangkal_2', 0);
+    $opsiExhaust2 = $request->query('exhaust_2', 0);
+    
+    $opsiDinding3 = $request->query('dinding_3', 0);
+    $opsiKaca3 = $request->query('kaca_3', 0);
+    $opsiPenangkal3 = $request->query('penangkal_3', 0);
+    $opsiExhaust3 = $request->query('exhaust_3', 0);
+    
     $areaAtapUtama = ProductArea::where('nama_area', 'Atap Utama')->first();
     $products = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaAtapUtama->id)
@@ -980,24 +1120,50 @@ public function pelana2Kemiringan(Request $request)
     
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
-    $underlayers_1 = Product::where('brand_id', $brand->id)->where('area_id', $areaUnderlayer->id)->with('unit');
-    if ($sudut_1 <= 30 && $sudut_1 > 0) $underlayers_1 = $underlayers_1->where('id', 32);
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
+    // UNDERLAYER BAGIAN 1
+    $underlayers_1 = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaUnderlayer->id)
+        ->with('unit');
+    if ($sudut_1 <= 15 && $sudut_1 > 0) {
+        $underlayers_1 = $underlayers_1->where('id', 32);
+    }
     $underlayers_1 = $underlayers_1->get();
     
-    $underlayers_2 = Product::where('brand_id', $brand->id)->where('area_id', $areaUnderlayer->id)->with('unit');
-    if ($sudut_2 <= 30 && $sudut_2 > 0) $underlayers_2 = $underlayers_2->where('id', 32);
+    // UNDERLAYER BAGIAN 2
+    $underlayers_2 = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaUnderlayer->id)
+        ->with('unit');
+    if ($sudut_2 <= 15 && $sudut_2 > 0) {
+        $underlayers_2 = $underlayers_2->where('id', 32);
+    }
     $underlayers_2 = $underlayers_2->get();
     
-    $underlayers_3 = Product::where('brand_id', $brand->id)->where('area_id', $areaUnderlayer->id)->with('unit');
-    if ($sudut_3 <= 30 && $sudut_3 > 0) $underlayers_3 = $underlayers_3->where('id', 32);
+    // UNDERLAYER BAGIAN 3
+    $underlayers_3 = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaUnderlayer->id)
+        ->with('unit');
+    if ($sudut_3 <= 15 && $sudut_3 > 0) {
+        $underlayers_3 = $underlayers_3->where('id', 32);
+    }
     $underlayers_3 = $underlayers_3->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
     $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
-    return view('boq.atap-kombinasi.pelana-2-kemiringan', compact(
-        'products', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
-        'rangkaOptions', 'lantaiKerjaOptions', 'sudut_1', 'sudut_2', 'sudut_3'
+    return view('boq.skyshield.skyshield-pelana-2-kemiringan', compact(
+        'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
+        'rangkaOptions', 'lantaiKerjaOptions', 
+        'sudut_1', 'sudut_2', 'sudut_3',
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1', 'opsiExhaust1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2', 'opsiExhaust2',
+        'opsiDinding3', 'opsiKaca3', 'opsiPenangkal3', 'opsiExhaust3'
     ));
 }
 public function exportPdfPelana2Kemiringan(Request $request)
@@ -1101,9 +1267,23 @@ public function exportPdfPelana2Kemiringan(Request $request)
     $lebarC = floatval($request->query('lebar_c', 0));
     $sudutC = floatval($request->query('sudut_c', 0));
     
-    // ==================== AMBIL DATA BRAND ====================
-    $brand = ProductBrand::where('nama_brand', 'SKYSHIELD')->first();
+    // ===== AMBIL OPSI TAMBAHAN DARI URL =====
+    $opsiDinding1 = floatval($request->query('dinding_1', 0));
+    $opsiKaca1 = floatval($request->query('kaca_1', 0));
+    $opsiPenangkal1 = floatval($request->query('penangkal_1', 0));
+    $opsiExhaust1 = floatval($request->query('exhaust_1', 0));
     
+    $opsiDinding2 = floatval($request->query('dinding_2', 0));
+    $opsiKaca2 = floatval($request->query('kaca_2', 0));
+    $opsiPenangkal2 = floatval($request->query('penangkal_2', 0));
+    $opsiExhaust2 = floatval($request->query('exhaust_2', 0));
+    
+    $opsiDinding3 = floatval($request->query('dinding_3', 0));
+    $opsiKaca3 = floatval($request->query('kaca_3', 0));
+    $opsiPenangkal3 = floatval($request->query('penangkal_3', 0));
+    $opsiExhaust3 = floatval($request->query('exhaust_3', 0));
+    
+    // ==================== AMBIL DATA BRAND ====================
     if (!$brand) {
         return redirect()->back()->with('error', 'Brand tidak ditemukan');
     }
@@ -1115,6 +1295,13 @@ public function exportPdfPelana2Kemiringan(Request $request)
         ->with(['unit', 'accessories.unit', 'accessories.area'])
         ->get();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
     // ==================== AMBIL UNDERLAYER ====================
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
@@ -1122,7 +1309,7 @@ public function exportPdfPelana2Kemiringan(Request $request)
     $underlayers_1 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
-    if ($sudut_1 <= 30 && $sudut_1 > 0) {
+    if ($sudut_1 <= 15 && $sudut_1 > 0) {
         $underlayers_1 = $underlayers_1->where('id', 32);
     }
     $underlayers_1 = $underlayers_1->get();
@@ -1137,7 +1324,7 @@ public function exportPdfPelana2Kemiringan(Request $request)
     $underlayers_3 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
-    if ($sudut_3 <= 30 && $sudut_3 > 0) {
+    if ($sudut_3 <= 15 && $sudut_3 > 0) {
         $underlayers_3 = $underlayers_3->where('id', 32);
     }
     $underlayers_3 = $underlayers_3->get();
@@ -1157,10 +1344,14 @@ public function exportPdfPelana2Kemiringan(Request $request)
     $jumlahNok = ceil($totalNok / 1);
     $jumlahFlashing = ceil($totalFlashing / 1);
     
+    $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
+    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    
     // ==================== KIRIM KE VIEW ====================
-    return view('boq.atap-kombinasi.lengkung-2-sisi', compact(
+    return view('boq.skyshield.skyshield-lengkung-2-sisi', compact(
         'brand',
         'products',
+        'starters',
         'underlayers_1',
         'underlayers_2',
         'underlayers_3',
@@ -1173,7 +1364,11 @@ public function exportPdfPelana2Kemiringan(Request $request)
         'totalLuas', 'totalStarter', 'totalNok', 'totalFlashing',
         'jumlahLembaran', 'jumlahStarter', 'jumlahNok', 'jumlahFlashing',
         'ukuranLembaran',
-        'sudut_1', 'sudut_3'
+        'sudut_1', 'sudut_3',
+        'rangkaOptions', 'lantaiKerjaOptions',
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1', 'opsiExhaust1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2', 'opsiExhaust2',
+        'opsiDinding3', 'opsiKaca3', 'opsiPenangkal3', 'opsiExhaust3'
     ));
 }
 public function exportPdfLengkung2Sisi(Request $request)
@@ -1279,9 +1474,23 @@ public function pelana2Sisi(Request $request)
     $panjangC = floatval($request->query('panjang_c', 0));
     $lebarC = floatval($request->query('lebar_c', 0));
     
-    // ==================== AMBIL DATA BRAND ====================
-    $brand = ProductBrand::where('nama_brand', 'SKYSHIELD')->first();
+    // ===== AMBIL OPSI TAMBAHAN DARI URL =====
+    $opsiDinding1 = floatval($request->query('dinding_1', 0));
+    $opsiKaca1 = floatval($request->query('kaca_1', 0));
+    $opsiPenangkal1 = floatval($request->query('penangkal_1', 0));
+    $opsiExhaust1 = floatval($request->query('exhaust_1', 0));
     
+    $opsiDinding2 = floatval($request->query('dinding_2', 0));
+    $opsiKaca2 = floatval($request->query('kaca_2', 0));
+    $opsiPenangkal2 = floatval($request->query('penangkal_2', 0));
+    $opsiExhaust2 = floatval($request->query('exhaust_2', 0));
+    
+    $opsiDinding3 = floatval($request->query('dinding_3', 0));
+    $opsiKaca3 = floatval($request->query('kaca_3', 0));
+    $opsiPenangkal3 = floatval($request->query('penangkal_3', 0));
+    $opsiExhaust3 = floatval($request->query('exhaust_3', 0));
+    
+    // ==================== AMBIL DATA BRAND ====================
     if (!$brand) {
         return redirect()->back()->with('error', 'Brand tidak ditemukan');
     }
@@ -1293,6 +1502,13 @@ public function pelana2Sisi(Request $request)
         ->with(['unit', 'accessories.unit', 'accessories.area'])
         ->get();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
     // ==================== AMBIL UNDERLAYER ====================
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
@@ -1300,7 +1516,7 @@ public function pelana2Sisi(Request $request)
     $underlayers_1 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
-    if ($sudut_1 <= 30 && $sudut_1 > 0) {
+    if ($sudut_1 <= 15 && $sudut_1 > 0) {
         $underlayers_1 = $underlayers_1->where('id', 32);
     }
     $underlayers_1 = $underlayers_1->get();
@@ -1309,7 +1525,7 @@ public function pelana2Sisi(Request $request)
     $underlayers_2 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
-    if ($sudut_2 <= 30 && $sudut_2 > 0) {
+    if ($sudut_2 <= 15 && $sudut_2 > 0) {
         $underlayers_2 = $underlayers_2->where('id', 32);
     }
     $underlayers_2 = $underlayers_2->get();
@@ -1318,7 +1534,7 @@ public function pelana2Sisi(Request $request)
     $underlayers_3 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
-    if ($sudut_3 <= 30 && $sudut_3 > 0) {
+    if ($sudut_3 <= 15 && $sudut_3 > 0) {
         $underlayers_3 = $underlayers_3->where('id', 32);
     }
     $underlayers_3 = $underlayers_3->get();
@@ -1338,10 +1554,14 @@ public function pelana2Sisi(Request $request)
     $jumlahNok = ceil($totalNok / 1);
     $jumlahFlashing = ceil($totalFlashing / 1);
     
+    $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
+    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    
     // ==================== KIRIM KE VIEW ====================
-    return view('boq.atap-kombinasi.pelana-2-sisi', compact(
+    return view('boq.skyshield.skyshield-pelana-2-sisi', compact(
         'brand',
         'products',
+        'starters',
         'underlayers_1',
         'underlayers_2',
         'underlayers_3',
@@ -1354,7 +1574,11 @@ public function pelana2Sisi(Request $request)
         'totalLuas', 'totalStarter', 'totalNok', 'totalFlashing',
         'jumlahLembaran', 'jumlahStarter', 'jumlahNok', 'jumlahFlashing',
         'ukuranLembaran',
-        'sudut_1', 'sudut_2', 'sudut_3'
+        'sudut_1', 'sudut_2', 'sudut_3',
+        'rangkaOptions', 'lantaiKerjaOptions',
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1', 'opsiExhaust1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2', 'opsiExhaust2',
+        'opsiDinding3', 'opsiKaca3', 'opsiPenangkal3', 'opsiExhaust3'
     ));
 }
 public function pelanaDinding(Request $request)
@@ -1380,9 +1604,20 @@ public function pelanaDinding(Request $request)
     $tinggiDinding = floatval($request->query('tinggi_dinding', 0));
     $jumlahSisi = intval($request->query('jumlah_sisi', 2));
     
-    // ==================== AMBIL DATA BRAND ====================
-    $brand = ProductBrand::where('nama_brand', 'SKYSHIELD')->first();
+    // ===== AMBIL OPSI TAMBAHAN DARI URL =====
+    // Opsi untuk Atap (Bagian 1)
+    $opsiDinding1 = floatval($request->query('dinding_1', 0));
+    $opsiKaca1 = floatval($request->query('kaca_1', 0));
+    $opsiPenangkal1 = floatval($request->query('penangkal_1', 0));
+    $opsiExhaust1 = floatval($request->query('exhaust_1', 0));
     
+    // Opsi untuk Dinding (Bagian 2)
+    $opsiDinding2 = floatval($request->query('dinding_2', 0));
+    $opsiKaca2 = floatval($request->query('kaca_2', 0));
+    $opsiPenangkal2 = floatval($request->query('penangkal_2', 0));
+    $opsiExhaust2 = floatval($request->query('exhaust_2', 0));
+    
+    // ==================== AMBIL DATA BRAND ====================
     if (!$brand) {
         return redirect()->back()->with('error', 'Brand tidak ditemukan');
     }
@@ -1394,13 +1629,20 @@ public function pelanaDinding(Request $request)
         ->with(['unit', 'accessories.unit', 'accessories.area'])
         ->get();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
     // ==================== AMBIL UNDERLAYER ====================
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
     $underlayers = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
-    if ($sudut <= 30 && $sudut > 0) {
+    if ($sudut <= 15 && $sudut > 0) {
         $underlayers = $underlayers->where('id', 32);
     }
     $underlayers = $underlayers->get();
@@ -1426,10 +1668,14 @@ public function pelanaDinding(Request $request)
     $jumlahFlashing = ceil($totalFlashing / 1);
     $jumlahWallFlashing = ceil($totalWallFlashing / 1);
     
+    $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
+    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    
     // ==================== KIRIM KE VIEW ====================
-    return view('boq.atap-kombinasi.pelana-dinding', compact(
+    return view('boq.skyshield.skyshield-pelana-dinding', compact(
         'brand',
         'products',
+        'starters',
         'underlayers',
         'productsDinding',
         'luasAtap',
@@ -1454,7 +1700,11 @@ public function pelanaDinding(Request $request)
         'jumlahNok',
         'jumlahFlashing',
         'jumlahWallFlashing',
-        'ukuranLembaran'
+        'ukuranLembaran',
+        'rangkaOptions',
+        'lantaiKerjaOptions',
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1', 'opsiExhaust1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2', 'opsiExhaust2'
     ));
 }
 public function pelana3Arah(Request $request)
@@ -1470,11 +1720,13 @@ public function pelana3Arah(Request $request)
     $starter1 = floatval($request->query('starter_1', 0));
     $nok1 = floatval($request->query('nok_1', 0));
     $flashing1 = floatval($request->query('flashing_1', 0));
+    $talangJurai1 = floatval($request->query('talang_jurai_1', 0));
     
     $luasAtap2 = floatval($request->query('luas_atap_2', 0));
     $starter2 = floatval($request->query('starter_2', 0));
     $nok2 = floatval($request->query('nok_2', 0));
     $flashing2 = floatval($request->query('flashing_2', 0));
+    $talangJurai2 = floatval($request->query('talang_jurai_2', 0));
     
     // Data dimensi
     $panjangA = floatval($request->query('panjang_a', 0));
@@ -1482,9 +1734,20 @@ public function pelana3Arah(Request $request)
     $panjangB = floatval($request->query('panjang_b', 0));
     $lebarB = floatval($request->query('lebar_b', 0));
     
-    // ==================== AMBIL DATA BRAND ====================
-    $brand = ProductBrand::where('nama_brand', 'SKYSHIELD')->first();
+    // ===== AMBIL OPSI TAMBAHAN DARI URL =====
+    // Opsi untuk Bagian 1 (Depan)
+    $opsiDinding1 = floatval($request->query('dinding_1', 0));
+    $opsiKaca1 = floatval($request->query('kaca_1', 0));
+    $opsiPenangkal1 = floatval($request->query('penangkal_1', 0));
+    $opsiExhaust1 = floatval($request->query('exhaust_1', 0));
     
+    // Opsi untuk Bagian 2 (Belakang)
+    $opsiDinding2 = floatval($request->query('dinding_2', 0));
+    $opsiKaca2 = floatval($request->query('kaca_2', 0));
+    $opsiPenangkal2 = floatval($request->query('penangkal_2', 0));
+    $opsiExhaust2 = floatval($request->query('exhaust_2', 0));
+    
+    // ==================== AMBIL DATA BRAND ====================
     if (!$brand) {
         return redirect()->back()->with('error', 'Brand tidak ditemukan');
     }
@@ -1496,13 +1759,20 @@ public function pelana3Arah(Request $request)
         ->with(['unit', 'accessories.unit', 'accessories.area'])
         ->get();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
     // ==================== AMBIL UNDERLAYER ====================
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
     $underlayers_1 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
-    if ($sudut_1 <= 30 && $sudut_1 > 0) {
+    if ($sudut_1 <= 15 && $sudut_1 > 0) {
         $underlayers_1 = $underlayers_1->where('id', 32);
     }
     $underlayers_1 = $underlayers_1->get();
@@ -1510,7 +1780,7 @@ public function pelana3Arah(Request $request)
     $underlayers_2 = Product::where('brand_id', $brand->id)
         ->where('area_id', $areaUnderlayer->id)
         ->with('unit');
-    if ($sudut_2 <= 30 && $sudut_2 > 0) {
+    if ($sudut_2 <= 15 && $sudut_2 > 0) {
         $underlayers_2 = $underlayers_2->where('id', 32);
     }
     $underlayers_2 = $underlayers_2->get();
@@ -1520,6 +1790,7 @@ public function pelana3Arah(Request $request)
     $totalStarter = $starter1 + $starter2 + $starter2;
     $totalNok = $nok1 + $nok2 + $nok2;
     $totalFlashing = $flashing1 + $flashing2 + $flashing2;
+    $totalTalangJurai = $talangJurai1 + $talangJurai2 + $talangJurai2;
     
     // ==================== KEBUTUHAN MATERIAL ====================
     $ukuranLembaran = 1.2;
@@ -1529,21 +1800,29 @@ public function pelana3Arah(Request $request)
     $jumlahStarter = ceil($totalStarter / 1);
     $jumlahNok = ceil($totalNok / 1);
     $jumlahFlashing = ceil($totalFlashing / 1);
+    $jumlahTalangJurai = ceil($totalTalangJurai / 1);
+    
+    $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
+    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
     // ==================== KIRIM KE VIEW ====================
-    return view('boq.atap-kombinasi.pelana-3-arah', compact(
+    return view('boq.skyshield.skyshield-pelana-3-arah', compact(
         'brand',
         'products',
+        'starters',
         'underlayers_1',
         'underlayers_2',
-        'luasAtap1', 'starter1', 'nok1', 'flashing1',
-        'luasAtap2', 'starter2', 'nok2', 'flashing2',
+        'luasAtap1', 'starter1', 'nok1', 'flashing1', 'talangJurai1',
+        'luasAtap2', 'starter2', 'nok2', 'flashing2', 'talangJurai2',
         'panjangA', 'lebarA',
         'panjangB', 'lebarB',
-        'totalLuas', 'totalStarter', 'totalNok', 'totalFlashing',
-        'jumlahLembaran', 'jumlahStarter', 'jumlahNok', 'jumlahFlashing',
+        'totalLuas', 'totalStarter', 'totalNok', 'totalFlashing', 'totalTalangJurai',
+        'jumlahLembaran', 'jumlahStarter', 'jumlahNok', 'jumlahFlashing', 'jumlahTalangJurai',
         'ukuranLembaran',
-        'sudut_1', 'sudut_2'
+        'sudut_1', 'sudut_2',
+        'rangkaOptions', 'lantaiKerjaOptions',
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1', 'opsiExhaust1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2', 'opsiExhaust2'
     ));
 }
 public function exportPdfPelana3Arah(Request $request)
@@ -1811,8 +2090,14 @@ public function trapesiumKotak(Request $request)
     $luas_atap = floatval($request->query('luas_atap', 0));
     $starter = floatval($request->query('starter', 0));
     $nok_jurai = floatval($request->query('nok_jurai', 0));
-    $flashing = floatval($request->query('flashing', 0));
-    $brand_slug = $request->query('brand_slug', 'iko-atap');
+    $talang_jurai = floatval($request->query('talang_jurai', 0));
+    $brand_slug = $request->query('brand_slug', 'skyshield');
+    
+    // ===== AMBIL OPSI TAMBAHAN DARI URL =====
+    $opsiDinding = floatval($request->query('dinding', 0));
+    $opsiKaca = floatval($request->query('kaca', 0));
+    $opsiPenangkal = floatval($request->query('penangkal', 0));
+    $opsiExhaust = floatval($request->query('exhaust', 0));
     
     // ==================== AMBIL DATA BRAND ====================
     $brand = ProductBrand::where('slug', $brand_slug)->first();
@@ -1832,6 +2117,13 @@ public function trapesiumKotak(Request $request)
         ->with(['unit', 'accessories.unit', 'accessories.area'])
         ->get();
     
+    // ===== AMBIL PRODUK STARTER =====
+    $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
+    $starters = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaStarter->id)
+        ->with('unit')
+        ->get();
+    
     // ==================== AMBIL UNDERLAYER ====================
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
     
@@ -1840,8 +2132,7 @@ public function trapesiumKotak(Request $request)
         ->with('unit');
     
     // Filter underlayer berdasarkan sudut
-    if ($sudut <= 30 && $sudut > 0) {
-        // Cari underlayer khusus untuk sudut <= 30 derajat (misal id 22)
+    if ($sudut <= 15 && $sudut > 0) {
         $underlayers = $underlayers->where('id', 32);
     }
     $underlayers = $underlayers->get();
@@ -1850,7 +2141,7 @@ public function trapesiumKotak(Request $request)
     $totalLuas = $luas_atap;
     $totalStarter = $starter;
     $totalNok = $nok_jurai;
-    $totalFlashing = $flashing;
+    $totalTalangJurai = $talang_jurai;
     
     // ==================== KEBUTUHAN MATERIAL ====================
     $ukuranLembaran = 1.2;
@@ -1859,7 +2150,10 @@ public function trapesiumKotak(Request $request)
     $jumlahLembaran = ceil(($totalLuas / $ukuranLembaran) * (1 + $waste));
     $jumlahStarter = ceil($totalStarter / 1);
     $jumlahNok = ceil($totalNok / 1);
-    $jumlahFlashing = ceil($totalFlashing / 1);
+    $jumlahTalangJurai = ceil($totalTalangJurai / 1);
+    
+    $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
+    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
     // ==================== DATA UNTUK VIEW ====================
     $data = [
@@ -1873,19 +2167,20 @@ public function trapesiumKotak(Request $request)
         'luas_atap' => $totalLuas,
         'starter' => $totalStarter,
         'nok_jurai' => $totalNok,
-        'flashing' => $totalFlashing,
+        'talang_jurai' => $totalTalangJurai,
         'jumlah_lembaran' => $jumlahLembaran,
         'jumlah_starter' => $jumlahStarter,
         'jumlah_nok' => $jumlahNok,
-        'jumlah_flashing' => $jumlahFlashing,
+        'jumlah_talang_jurai' => $jumlahTalangJurai,
         'ukuran_lembaran' => $ukuranLembaran,
         'waste' => $waste * 100
     ];
     
     // ==================== KIRIM KE VIEW ====================
-    return view('boq.atap-kombinasi.trapesium-kotak', compact(
+    return view('boq.skyshield.skyshield-trapesium-kotak', compact(
         'brand',
         'products',
+        'starters',
         'underlayers',
         'panjang_atas',
         'panjang_bawah',
@@ -1894,13 +2189,16 @@ public function trapesiumKotak(Request $request)
         'totalLuas',
         'totalStarter',
         'totalNok',
-        'totalFlashing',
+        'totalTalangJurai',
         'jumlahLembaran',
         'jumlahStarter',
         'jumlahNok',
-        'jumlahFlashing',
+        'jumlahTalangJurai',
         'ukuranLembaran',
-        'data'
+        'data',
+        'rangkaOptions',
+        'lantaiKerjaOptions',
+        'opsiDinding', 'opsiKaca', 'opsiPenangkal', 'opsiExhaust'
     ));
 }
 public function exportPdfTrapesiumKotak(Request $request)

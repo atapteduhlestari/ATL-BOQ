@@ -61,14 +61,15 @@
 
                     <div class="space-y-4">
                         <div class="bg-gray-50 border-l-2 border-gray-400 rounded-lg p-3">
-    <p class="text-xs text-gray-600 font-medium">Cara menghitung :</p>
-    <div class="text-xs text-gray-500 mt-1 space-y-0.5">
-        <div>Bagi bidang menjadi 3 bagian:</div>
-        <div class="pl-2">• <strong>Bagian Atas</strong> = Pelana</div>
-        <div class="pl-2">• <strong>Bagian Bawah</strong> = Trapesium</div>
-        <div class="pl-6">∘ <strong>Bagian Bawah Terbagi 2</strong> = Bagian (Kanan-Kiri) dan (Depan-Belakang) </div>
-    </div>
-</div>
+                            <p class="text-xs text-gray-600 font-medium">Cara menghitung :</p>
+                            <div class="text-xs text-gray-500 mt-1 space-y-0.5">
+                                <div>Bagi bidang menjadi 3 bagian:</div>
+                                <div class="pl-2">• <strong>Bagian Atas</strong> = Pelana</div>
+                                <div class="pl-2">• <strong>Bagian Bawah</strong> = Trapesium</div>
+                                <div class="pl-6">∘ <strong>Bagian Bawah Terbagi 2</strong> = Bagian (Kanan-Kiri) dan (Depan-Belakang)</div>
+                            </div>
+                        </div>
+
                         <!-- Bagian 1: Pelana (Tengah) -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
@@ -105,7 +106,7 @@
                             </div>
                         </div>
 
-                        <!-- Bagian 2: Trapesium A (Kiri) -->
+                        <!-- Bagian 2: Trapesium A (Kiri-Kanan) -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
                                 <span class="text-sm font-medium text-gray-700">Bagian Bawah - Trapesium</span>
@@ -149,7 +150,7 @@
                             </div>
                         </div>
 
-                        <!-- Bagian 3: Trapesium B (Kanan) -->
+                        <!-- Bagian 3: Trapesium B (Depan-Belakang) -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
                                 <span class="text-sm font-medium text-gray-700">Bagian Bawah - Trapesium</span>
@@ -215,7 +216,7 @@
                                     <span id="totalStarterPelana2" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">Panjang Nok & Jurai</span>
+                                    <span class="text-gray-500" id="labelNokJuraiPelana2">Panjang Nok & Jurai</span>
                                     <span id="totalNokJuraiPelana2" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
@@ -259,8 +260,13 @@
 let hasilKombinasiPelana2Trapesium = null;
 
 function hitungKombinasiPelana2Trapesium() {
+    // Ambil brand dari select BOQ
+    let brandSelect = document.getElementById('brand_boq_pelana_2trapesium');
+    let brand = brandSelect ? brandSelect.value : 'iko';
+    
     let data = {
         jenis_kombinasi: 'pelana_2trapesium',
+        brand: brand,
         panjang_pelana: parseFloat(document.getElementById('panjang_pelana_tengah').value) || 0,
         lebar_pelana: parseFloat(document.getElementById('lebar_pelana_tengah').value) || 0,
         sudut_pelana: parseFloat(document.getElementById('sudut_pelana_tengah').value) || 0,
@@ -297,7 +303,15 @@ function hitungKombinasiPelana2Trapesium() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('{{ route("atap-kombinasi.hitung") }}', {
+    // Tentukan URL berdasarkan brand
+    let url;
+    if (brand === 'palmex') {
+        url = '{{ route("palmex.kombinasi.hitung") }}';
+    } else {
+        url = '{{ route("atap-kombinasi.hitung") }}';
+    }
+    
+    fetch(url, {
         method: 'POST',
         headers: { 
             'Content-Type': 'application/json', 
@@ -309,23 +323,58 @@ function hitungKombinasiPelana2Trapesium() {
     .then(responseData => {
         if (responseData.success) {
             hasilKombinasiPelana2Trapesium = responseData;
+            let total = responseData.total;
             
-            document.getElementById('totalLuasPelana2').innerHTML = responseData.total.luas_atap + ' m²';
-            document.getElementById('totalStarterPelana2').innerHTML = responseData.total.panjang_starter + ' m';
-            document.getElementById('totalNokJuraiPelana2').innerHTML = responseData.total.panjang_nok_jurai + ' m';
-            document.getElementById('totalFlashingPelana2').innerHTML = responseData.total.panjang_flashing + ' m';
+            document.getElementById('totalLuasPelana2').innerHTML = total.luas_atap + ' m²';
+            document.getElementById('totalStarterPelana2').innerHTML = total.panjang_starter + ' m';
+            document.getElementById('totalFlashingPelana2').innerHTML = total.panjang_flashing + ' m';
             
+            // ===== TAMPILKAN NOK & JURAI =====
+            let labelElement = document.getElementById('labelNokJuraiPelana2');
+            let valueElement = document.getElementById('totalNokJuraiPelana2');
+            
+            if (brand === 'palmex') {
+                // PALMEX: Jurai dan Nok Atas dipisah
+                if (labelElement) labelElement.textContent = 'Panjang Jurai & Nok Atas';
+                if (valueElement) {
+                    valueElement.innerHTML = 
+                        'Jurai: ' + total.panjang_jurai + ' m | Nok Atas: ' + total.panjang_nok_atas + ' m';
+                }
+            } else {
+                // IKO/SKYSHIELD: Nok & Jurai digabung
+                if (labelElement) labelElement.textContent = 'Panjang Nok & Jurai';
+                if (valueElement) {
+                    valueElement.innerHTML = total.panjang_nok_jurai + ' m';
+                }
+            }
+            
+            // ===== DETAIL PER BAGIAN =====
             let detailHtml = '<div class="text-xs font-medium text-gray-600 mb-1">Detail Per Bagian</div>';
             responseData.details.forEach(item => {
                 detailHtml += `<div class="bg-white border border-gray-200 rounded-lg p-2 text-xs">
                     <div class="font-medium text-gray-800">${item.bagian}</div>
-                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">
+                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">`;
+                
+                if (brand === 'palmex') {
+                    // PALMEX: Jurai dan Nok Atas
+                    detailHtml += `
+                        <div>Luas: ${item.luas_atap} m²</div>
+                        <div>Starter: ${item.starter} m</div>
+                        <div>Jurai: ${item.jurai} m</div>
+                        <div>Nok Atas: ${item.nok_atas} m</div>
+                        <div>Flashing: ${item.flashing} m</div>
+                    `;
+                } else {
+                    // IKO/SKYSHIELD: Nok & Jurai digabung
+                    detailHtml += `
                         <div>Luas: ${item.luas_atap} m²</div>
                         <div>Starter: ${item.starter} m</div>
                         <div>Nok & Jurai: ${item.nok_jurai} m</div>
                         <div>Flashing: ${item.flashing} m</div>
-                    </div>
-                </div>`;
+                    `;
+                }
+                
+                detailHtml += `</div></div>`;
             });
             document.getElementById('detailBagianPelana2Trapesium').innerHTML = detailHtml;
             document.getElementById('hasilPerhitunganPelana2Trapesium').classList.remove('hidden');
@@ -374,21 +423,7 @@ function lanjutKeBOQPelana2Trapesium() {
     }
     
     let details = hasilKombinasiPelana2Trapesium.details;
-    
-    let luas1 = details[0]?.luas_atap || 0;
-    let starter1 = details[0]?.starter || 0;
-    let nok1 = details[0]?.nok_jurai || 0;
-    let flashing1 = details[0]?.flashing || 0;
-    
-    let luas2 = details[1]?.luas_atap || 0;
-    let starter2 = details[1]?.starter || 0;
-    let nok2 = details[1]?.nok_jurai || 0;
-    let flashing2 = details[1]?.flashing || 0;
-    
-    let luas3 = details[2]?.luas_atap || 0;
-    let starter3 = details[2]?.starter || 0;
-    let nok3 = details[2]?.nok_jurai || 0;
-    let flashing3 = details[2]?.flashing || 0;
+    let total = hasilKombinasiPelana2Trapesium.total;
     
     let sudutPelana = parseFloat(document.getElementById('sudut_pelana_tengah').value) || 0;
     let sudutA = parseFloat(document.getElementById('sudut_a').value) || 0;
@@ -398,10 +433,54 @@ function lanjutKeBOQPelana2Trapesium() {
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/pelana-2trapesium',
         'skyshield': '/boq/atap-kombinasi-skyshield/pelana-2trapesium',
+        'palmex': '/boq/palmex/atap-kombinasi/pelana-2trapesium',
     };
     
-    let url = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-2trapesium';
+    let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-2trapesium';
     
-    window.location.href = `${url}?luas_atap_1=${luas1}&sudut_1=${sudutPelana}&starter_1=${starter1}&nok_1=${nok1}&flashing_1=${flashing1}&luas_atap_2=${luas2}&sudut_2=${sudutA}&starter_2=${starter2}&nok_2=${nok2}&flashing_2=${flashing2}&luas_atap_3=${luas3}&sudut_3=${sudutB}&starter_3=${starter3}&nok_3=${nok3}&flashing_3=${flashing3}`;
+    let url = `${baseUrl}?brand_slug=${brandSlug}`;
+    
+    // ===== BAGIAN 1 (PELANA) =====
+    url += `&luas_atap_1=${details[0]?.luas_atap||0}`;
+    url += `&sudut_1=${sudutPelana}`;
+    url += `&starter_1=${details[0]?.starter||0}`;
+    url += `&flashing_1=${details[0]?.flashing||0}`;
+    
+    // ===== BAGIAN 2 (TRAPESIUM A) =====
+    url += `&luas_atap_2=${details[1]?.luas_atap||0}`;
+    url += `&sudut_2=${sudutA}`;
+    url += `&starter_2=${details[1]?.starter||0}`;
+    url += `&flashing_2=${details[1]?.flashing||0}`;
+    
+    // ===== BAGIAN 3 (TRAPESIUM B) =====
+    url += `&luas_atap_3=${details[2]?.luas_atap||0}`;
+    url += `&sudut_3=${sudutB}`;
+    url += `&starter_3=${details[2]?.starter||0}`;
+    url += `&flashing_3=${details[2]?.flashing||0}`;
+    
+    // ===== BEDAKAN BRAND =====
+    if (brandSlug === 'palmex') {
+        // PALMEX: jurai & nok_atas terpisah
+        // Pelana: ada nok_atas, jurai = 0
+        // Trapesium: ada jurai, nok_atas = 0
+        url += `&jurai_1=0`;
+        url += `&nok_atas_1=${details[0]?.nok_atas||0}`;
+        
+        url += `&jurai_2=${details[1]?.jurai||0}`;
+        url += `&nok_atas_2=0`;
+        
+        url += `&jurai_3=${details[2]?.jurai||0}`;
+        url += `&nok_atas_3=0`;
+        
+        url += `&total_jurai=${total?.panjang_jurai||0}`;
+        url += `&total_nok_atas=${total?.panjang_nok_atas||0}`;
+    } else {
+        // IKO/SKYSHIELD: nok_jurai digabung
+        url += `&nok_1=${details[0]?.nok_jurai||0}`;
+        url += `&nok_2=${details[1]?.nok_jurai||0}`;
+        url += `&nok_3=${details[2]?.nok_jurai||0}`;
+    }
+    
+    window.location.href = url;
 }
 </script>

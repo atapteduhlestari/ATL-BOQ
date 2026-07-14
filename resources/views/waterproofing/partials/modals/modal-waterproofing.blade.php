@@ -12,6 +12,23 @@
                     <h3 class="modal-form-title">Waterproofing</h3>
                     <p class="modal-form-sub">Masukkan data perhitungan waterproofing</p>
 
+                    <!-- ===== NOTES / PEMBERITAHUAN ===== -->
+                    <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;">
+                        <div style="font-size: 11px; font-weight: 600; color: #92400e; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 14px;">📋</span> Petunjuk Pengisian
+                        </div>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="font-size: 10px; color: #78350f; padding: 2px 0; display: flex; align-items: flex-start; gap: 5px; line-height: 1.3;">
+                                <span style="color: #d97706; font-weight: 700;">•</span>
+                                <span><strong>Perimeter</strong> dihitung berdasarkan <strong>panjang keliling Membrane</strong> yang bertemu dengan dinding.</span>
+                            </li>
+                            <li style="font-size: 10px; color: #78350f; padding: 2px 0; display: flex; align-items: flex-start; gap: 5px; line-height: 1.3;">
+                                <span style="color: #d97706; font-weight: 700;">•</span>
+                                <span>Jika tinggi perimeter <strong>≤ 15 cm</strong>, maka perhitungan area = <strong>Panjang area + 0.2 m</strong>.</span>
+                            </li>
+                        </ul>
+                    </div>
+
                     <form id="formWaterproofing">
                         <div class="input-group-2">
                             <div>
@@ -30,7 +47,7 @@
                                 <input type="number" id="panjang_perimeter" class="input-field" step="0.01" placeholder="0" value="0">
                             </div>
                             <div>
-                                <label class="input-label">Tinggi Perimeter (m)</label>
+                                <label class="input-label">Tinggi Perimeter (cm)</label>
                                 <input type="number" id="tinggi_perimeter" class="input-field" step="0.01" placeholder="0" value="0">
                             </div>
                         </div>
@@ -69,6 +86,12 @@ function lanjutKeBOQWaterproofing() {
         return;
     }
 
-    window.location.href = "{{ route('waterproofing.boq') }}?luas=" + luas + "&waste=" + waste + "&panjang_perimeter=" + panjangPerimeter + "&tinggi_perimeter=" + tinggiPerimeter + "&sudut=" + sudut;
+    // Jika tinggi perimeter <= 15 cm, tambahkan 0.2 m ke panjang perimeter
+    let finalPanjangPerimeter = panjangPerimeter;
+    if (tinggiPerimeter <= 15 && tinggiPerimeter > 0) {
+        finalPanjangPerimeter = panjangPerimeter + 0.2;
+    }
+
+    window.location.href = "{{ route('waterproofing.boq') }}?luas=" + luas + "&waste=" + waste + "&panjang_perimeter=" + finalPanjangPerimeter + "&tinggi_perimeter=" + tinggiPerimeter + "&sudut=" + sudut;
 }
 </script>

@@ -117,108 +117,110 @@
                     <div class="space-y-4">
 
                      <div class="bg-gray-50 border-l-2 border-gray-400 rounded-lg p-3">
-    <p class="text-xs text-gray-600 font-medium">Cara menghitung :</p>
-    <div class="text-xs text-gray-500 mt-1 space-y-0.5">
-        <div>Bagi bidang menjadi 2 bagian:</div>
-        <div class="pl-2">• <strong>Bagian Depan</strong> = Pelana</div>
-        <div class="pl-2">• <strong>Bagian Belakang</strong> = Pelana</div>
-    </div>
-</div>
-                        <!-- Bagian 1: Sisi Depan -->
-                        <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="text-sm font-medium text-gray-700">Bagian Depan</span>
+                        <p class="text-xs text-gray-600 font-medium">Cara menghitung :</p>
+                        <div class="text-xs text-gray-500 mt-1 space-y-0.5">
+                            <div>Bagi bidang menjadi 2 bagian:</div>
+                            <div class="pl-2">• <strong>Bagian Depan</strong> = Pelana</div>
+                            <div class="pl-2">• <strong>Bagian Belakang</strong> = Pelana</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bagian 1: Sisi Depan -->
+                    <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-sm font-medium text-gray-700">Bagian Depan</span>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Pelana</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang</label>
+                                <input type="number" id="pelana3arah_panjang_a" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" placeholder="0" oninput="updateModelPelana3Arah()">
                             </div>
-                            <div class="grid grid-cols-3 gap-3">
-                                <div>
-                                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang</label>
-                                    <input type="number" id="pelana3arah_panjang_a" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" placeholder="0" oninput="updateModelPelana3Arah()">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Lebar</label>
-                                    <input type="number" id="pelana3arah_lebar_a" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" placeholder="0" oninput="updateModelPelana3Arah()">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Kemiringan</label>
-                                    <input type="number" id="pelana3arah_sudut_a" step="1" min="1" max="89" value="30" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" oninput="updateModelPelana3Arah()">
-                                </div>
+                            <div>
+                                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Lebar</label>
+                                <input type="number" id="pelana3arah_lebar_a" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" placeholder="0" oninput="updateModelPelana3Arah()">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Kemiringan</label>
+                                <input type="number" id="pelana3arah_sudut_a" step="1" min="1" max="89" value="30" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" oninput="updateModelPelana3Arah()">
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Bagian 2: Sisi Belakang -->
-                        <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="text-sm font-medium text-gray-700">Bagian Belakang</span>
+                    <!-- Bagian 2: Sisi Belakang -->
+                    <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-sm font-medium text-gray-700">Bagian Belakang</span>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">Pelana</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang</label>
+                                <input type="number" id="pelana3arah_panjang_b" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" placeholder="0" oninput="updateModelPelana3Arah()">
                             </div>
-                            <div class="grid grid-cols-3 gap-3">
-                                <div>
-                                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang</label>
-                                    <input type="number" id="pelana3arah_panjang_b" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" placeholder="0" oninput="updateModelPelana3Arah()">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Lebar</label>
-                                    <input type="number" id="pelana3arah_lebar_b" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" placeholder="0" oninput="updateModelPelana3Arah()">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Kemiringan</label>
-                                    <input type="number" id="pelana3arah_sudut_b" step="1" min="1" max="89" value="30" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" oninput="updateModelPelana3Arah()">
-                                </div>
+                            <div>
+                                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Lebar</label>
+                                <input type="number" id="pelana3arah_lebar_b" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" placeholder="0" oninput="updateModelPelana3Arah()">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Kemiringan</label>
+                                <input type="number" id="pelana3arah_sudut_b" step="1" min="1" max="89" value="30" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white" oninput="updateModelPelana3Arah()">
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Tombol Hitung -->
-                        <button type="button" onclick="hitungPelana3Arah()" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium transition-all">
-                            Hitung Luas & Estimasi
+                    <!-- Tombol Hitung -->
+                    <button type="button" onclick="hitungPelana3Arah()" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium transition-all">
+                        Hitung Luas & Estimasi
+                    </button>
+
+                    <!-- Hasil Perhitungan -->
+                    <div id="hasilPerhitunganPelana3Arah" class="hidden">
+                        <div class="bg-gray-50 rounded-lg p-4 space-y-2 border border-gray-200">
+                            <div class="flex justify-between items-center text-sm font-medium text-gray-700">
+                                <span>Total Keseluruhan</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm pt-2 border-t border-gray-200">
+                                <span class="text-gray-500">Luas Atap</span>
+                                <span id="totalLuasPelana3Arah" class="font-medium text-gray-900">- m²</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">Panjang Starter</span>
+                                <span id="totalStarterPelana3Arah" class="font-medium text-gray-900">- m</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500" id="labelNokJuraiPelana3Arah">Panjang Nok & Jurai</span>
+                                <span id="totalNokJuraiPelana3Arah" class="font-medium text-gray-900">- m</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">Panjang Flashing</span>
+                                <span id="totalFlashingPelana3Arah" class="font-medium text-gray-900">- m</span>
+                            </div>
+                        </div>
+                        <div id="detailBagianPelana3Arah" class="mt-3 space-y-2"></div>
+                    </div>
+
+                    <!-- Pilih Brand untuk BOQ -->
+                    <div class="mt-4 pt-3 border-t border-gray-200">
+                        <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">
+                            Pilih Brand
+                        </label>
+                        <select id="brand_boq_pelana3arah" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white cursor-pointer">
+                            <option value="">-- Pilih Brand --</option>
+                            @foreach($brands ?? [] as $brand)
+                                <option value="{{ $brand->slug }}">{{ $brand->nama_brand }}</option>
+                            @endforeach
+                        </select>
+                        
+                        <button onclick="lanjutKeBOQPelana3Arah()" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium mt-3 transition-all">
+                            Lanjut ke BOQ
                         </button>
-
-                        <!-- Hasil Perhitungan -->
-                        <div id="hasilPerhitunganPelana3Arah" class="hidden">
-                            <div class="bg-gray-50 rounded-lg p-4 space-y-2 border border-gray-200">
-                                <div class="flex justify-between items-center text-sm font-medium text-gray-700">
-                                    <span>Total Keseluruhan</span>
-                                </div>
-                                <div class="flex justify-between items-center text-sm pt-2 border-t border-gray-200">
-                                    <span class="text-gray-500">Luas Atap</span>
-                                    <span id="totalLuasPelana3Arah" class="font-medium text-gray-900">- m²</span>
-                                </div>
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">Panjang Starter</span>
-                                    <span id="totalStarterPelana3Arah" class="font-medium text-gray-900">- m</span>
-                                </div>
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">Panjang Nok & Jurai</span>
-                                    <span id="totalNokJuraiPelana3Arah" class="font-medium text-gray-900">- m</span>
-                                </div>
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">Panjang Flashing</span>
-                                    <span id="totalFlashingPelana3Arah" class="font-medium text-gray-900">- m</span>
-                                </div>
-                            </div>
-                            <div id="detailBagianPelana3Arah" class="mt-3 space-y-2"></div>
-                        </div>
-
-                        <!-- Pilih Brand untuk BOQ -->
-                        <div class="mt-4 pt-3 border-t border-gray-200">
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">
-                                Pilih Brand
-                            </label>
-                            <select id="brand_boq_pelana3arah" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white cursor-pointer">
-                                <option value="">-- Pilih Brand --</option>
-                                @foreach($brands ?? [] as $brand)
-                                    <option value="{{ $brand->slug }}">{{ $brand->nama_brand }}</option>
-                                @endforeach
-                            </select>
-                            
-                            <button onclick="lanjutKeBOQPelana3Arah()" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium mt-3 transition-all">
-                                Lanjut ke BOQ
-                            </button>
-                        </div>
                     </div>
+                </div>
 
-                    <div class="flex gap-3 mt-6 pt-4 border-t border-gray-200">
-                        <button onclick="closeModal('modalPelana3Arah')" class="flex-1 px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all">Tutup</button>
-                        <button onclick="resetPelana3Arah()" class="flex-1 px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all">Reset</button>
-                    </div>
+                <div class="flex gap-3 mt-6 pt-4 border-t border-gray-200">
+                    <button onclick="closeModal('modalPelana3Arah')" class="flex-1 px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all">Tutup</button>
+                    <button onclick="resetPelana3Arah()" class="flex-1 px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all">Reset</button>
                 </div>
             </div>
         </div>
@@ -405,7 +407,13 @@ function animatePelana() {
 }
 
 // ==================== FUNGSI LAINNYA ====================
+let hasilPelana3Arah = null;
+
 function hitungPelana3Arah() {
+    // Ambil brand dari select BOQ
+    let brandSelect = document.getElementById('brand_boq_pelana3arah');
+    let brand = brandSelect ? brandSelect.value : 'iko';
+    
     let panjangA = parseFloat(document.getElementById('pelana3arah_panjang_a').value) || 0;
     let lebarA = parseFloat(document.getElementById('pelana3arah_lebar_a').value) || 0;
     let sudutA = parseFloat(document.getElementById('pelana3arah_sudut_a').value) || 0;
@@ -421,6 +429,7 @@ function hitungPelana3Arah() {
     
     let data = {
         jenis_kombinasi: 'pelana_3_arah',
+        brand: brand,
         panjang_a: panjangA,
         lebar_a: lebarA,
         sudut_a: sudutA,
@@ -437,34 +446,75 @@ function hitungPelana3Arah() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('/atap-kombinasi/hitung', {
+    let url;
+    if (brand === 'palmex') {
+        url = '{{ route("palmex.kombinasi.hitung") }}';
+    } else {
+        url = '{{ route("atap-kombinasi.hitung") }}';
+    }
+    
+    fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        headers: { 
+            'Content-Type': 'application/json', 
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+        },
         body: JSON.stringify(data)
     })
     .then(res => res.json())
     .then(resData => {
         if (resData.success) {
             hasilPelana3Arah = resData;
+            let total = resData.total;
             
-            document.getElementById('totalLuasPelana3Arah').innerHTML = resData.total.luas_atap + ' m²';
-            document.getElementById('totalStarterPelana3Arah').innerHTML = resData.total.panjang_starter + ' m';
-            document.getElementById('totalNokJuraiPelana3Arah').innerHTML = resData.total.panjang_nok_jurai + ' m';
-            document.getElementById('totalFlashingPelana3Arah').innerHTML = resData.total.panjang_flashing + ' m';
+            document.getElementById('totalLuasPelana3Arah').innerHTML = total.luas_atap + ' m²';
+            document.getElementById('totalStarterPelana3Arah').innerHTML = total.panjang_starter + ' m';
+            document.getElementById('totalFlashingPelana3Arah').innerHTML = total.panjang_flashing + ' m';
             
+            // ===== TAMPILKAN NOK & JURAI =====
+            let labelElement = document.getElementById('labelNokJuraiPelana3Arah');
+            let valueElement = document.getElementById('totalNokJuraiPelana3Arah');
+            
+            if (brand === 'palmex') {
+                if (labelElement) labelElement.textContent = 'Panjang Jurai & Nok Atas';
+                if (valueElement) {
+                    valueElement.innerHTML = 
+                        'Jurai: ' + total.panjang_jurai + ' m | Nok Atas: ' + total.panjang_nok_atas + ' m';
+                }
+            } else {
+                if (labelElement) labelElement.textContent = 'Panjang Nok & Jurai';
+                if (valueElement) {
+                    valueElement.innerHTML = total.panjang_nok_jurai + ' m';
+                }
+            }
+            
+            // ===== DETAIL PER BAGIAN =====
             let detailHtml = '<div class="text-xs font-medium text-gray-600 mb-1">Detail Per Bagian</div>';
             
             let detailsToShow = resData.details.slice(0, 2);
             detailsToShow.forEach(item => {
                 detailHtml += `<div class="bg-white border border-gray-200 rounded-lg p-2 text-xs">
                     <div class="font-medium text-gray-800">${item.bagian}</div>
-                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">
+                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">`;
+                
+                if (brand === 'palmex') {
+                    detailHtml += `
+                        <div>Luas: ${item.luas_atap} m²</div>
+                        <div>Starter: ${item.starter} m</div>
+                        <div>Jurai: ${item.jurai} m</div>
+                        <div>Nok Atas: ${item.nok_atas} m</div>
+                        <div>Flashing: ${item.flashing} m</div>
+                    `;
+                } else {
+                    detailHtml += `
                         <div>Luas: ${item.luas_atap} m²</div>
                         <div>Starter: ${item.starter} m</div>
                         <div>Nok & Jurai: ${item.nok_jurai} m</div>
                         <div>Flashing: ${item.flashing} m</div>
-                    </div>
-                </div>`;
+                    `;
+                }
+                
+                detailHtml += `</div></div>`;
             });
             
             document.getElementById('detailBagianPelana3Arah').innerHTML = detailHtml;
@@ -473,8 +523,14 @@ function hitungPelana3Arah() {
             alert('Error: ' + (resData.message || 'Gagal hitung'));
         }
     })
-    .catch(err => { console.error(err); alert('Terjadi kesalahan server'); })
-    .finally(() => { btn.innerHTML = originalText; btn.disabled = false; });
+    .catch(err => { 
+        console.error(err); 
+        alert('Terjadi kesalahan server'); 
+    })
+    .finally(() => { 
+        btn.innerHTML = originalText; 
+        btn.disabled = false; 
+    });
 }
 
 function resetPelana3Arah() {
@@ -506,24 +562,43 @@ function lanjutKeBOQPelana3Arah() {
     }
     
     let d = hasilPelana3Arah.details;
+    let total = hasilPelana3Arah.total;
     
-    // Mapping URL berdasarkan brand
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/pelana-3-arah',
         'skyshield': '/boq/atap-kombinasi-skyshield/pelana-3-arah',
+        'palmex': '/boq/palmex/atap-kombinasi/pelana-3-arah',
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-3-arah';
-    
     let url = `${baseUrl}?brand_slug=${brandSlug}`;
-    url += `&luas_atap_1=${d[0]?.luas_atap||0}&starter_1=${d[0]?.starter||0}&nok_1=${d[0]?.nok_jurai||0}&flashing_1=${d[0]?.flashing||0}`;
-    url += `&luas_atap_2=${d[1]?.luas_atap||0}&starter_2=${d[1]?.starter||0}&nok_2=${d[1]?.nok_jurai||0}&flashing_2=${d[1]?.flashing||0}`;
+    
+    // ===== BAGIAN 1 (DEPAN) =====
+    url += `&luas_atap_1=${d[0]?.luas_atap||0}`;
+    url += `&starter_1=${d[0]?.starter||0}`;
+    url += `&flashing_1=${d[0]?.flashing||0}`;
+    url += `&sudut_1=${document.getElementById('pelana3arah_sudut_a').value}`;
     url += `&panjang_a=${document.getElementById('pelana3arah_panjang_a').value}`;
     url += `&lebar_a=${document.getElementById('pelana3arah_lebar_a').value}`;
-    url += `&sudut_1=${document.getElementById('pelana3arah_sudut_a').value}`;
+    
+    // ===== BAGIAN 2 (BELAKANG) =====
+    url += `&luas_atap_2=${d[1]?.luas_atap||0}`;
+    url += `&starter_2=${d[1]?.starter||0}`;
+    url += `&flashing_2=${d[1]?.flashing||0}`;
+    url += `&sudut_2=${document.getElementById('pelana3arah_sudut_b').value}`;
     url += `&panjang_b=${document.getElementById('pelana3arah_panjang_b').value}`;
     url += `&lebar_b=${document.getElementById('pelana3arah_lebar_b').value}`;
-    url += `&sudut_2=${document.getElementById('pelana3arah_sudut_b').value}`;
+    
+    // ===== BEDAKAN BRAND =====
+    if (brandSlug === 'palmex') {
+        url += `&jurai_1=0&nok_atas_1=${d[0]?.nok_atas||0}`;
+        url += `&jurai_2=0&nok_atas_2=${d[1]?.nok_atas||0}`;
+        url += `&total_jurai=${total?.panjang_jurai||0}`;
+        url += `&total_nok_atas=${total?.panjang_nok_atas||0}`;
+    } else {
+        url += `&nok_1=${d[0]?.nok_jurai||0}`;
+        url += `&nok_2=${d[1]?.nok_jurai||0}`;
+    }
     
     window.location.href = url;
 }

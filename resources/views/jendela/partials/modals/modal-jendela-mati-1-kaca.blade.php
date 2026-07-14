@@ -1,139 +1,89 @@
-<!-- Modal Jendela Mati 1 Kaca (Fixed Window) -->
-<div id="modalJendelaMati1Kaca" class="fixed inset-0 z-50 hidden overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4 py-8">
-        <div class="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="closeModal('modalJendelaMati1Kaca')"></div>
-        
-        <div class="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-auto transition-all max-h-[90vh] overflow-y-auto">
-            <button onclick="closeModal('modalJendelaMati1Kaca')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10 bg-white rounded-full p-1 shadow-md">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
+<!-- Modal Jendela Mati 1 Kaca -->
+<div id="modalJendelaMati1Kaca" class="modal-overlay">
+    <div class="modal-wrapper">
+        <div class="modal-container">
+            <!-- Close Button -->
+            <button class="modal-close" onclick="closeModal('modalJendelaMati1Kaca')">&times;</button>
 
-            <div class="flex flex-col md:flex-row">
-                <!-- Kolom Kiri: Gambar -->
-                <div class="md:w-2/5 relative bg-gradient-to-br from-teal-600 to-cyan-600 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none overflow-hidden">
-                    <div class="h-64 md:h-full min-h-[280px] relative flex items-center justify-center p-6">
-                        <img src="{{ asset('images/jendela/jendela-mati-1-kaca.png') }}" 
-                             alt="Jendela Mati 1 Kaca" 
-                             class="w-full h-full object-contain">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                            <h4 class="text-lg font-bold">Jendela Mati 1 Kaca</h4>
-                            <p class="text-xs text-white/80">Jendela tetap / non-opening / fixed window</p>
-                        </div>
-                    </div>
+            <!-- Modal Content -->
+            <div class="modal-grid">
+                <!-- Image Section -->
+                <div class="modal-image">
+                    <img src="{{ asset('images/jendela/jendela-1-kaca.png') }}" alt="Jendela Mati 1 Kaca">
                 </div>
 
-                <!-- Kolom Kanan: Form Perhitungan -->
-                <div class="md:w-3/5 p-6">
-                    <div class="mb-5">
-                        <h3 class="text-base font-semibold text-gray-900">Hitung Kebutuhan Jendela Mati</h3>
-                        <p class="text-xs text-gray-500 mt-1">Masukkan ukuran untuk estimasi material</p>
+                <!-- Form Section -->
+                <div class="modal-form">
+                    <h2 class="modal-form-title">Jendela Mati 1 Kaca</h2>
+                    <p class="modal-form-sub">Hitung kebutuhan material</p>
+
+                    <!-- Notes / Pemberitahuan -->
+                    <div class="notes-container">
+                        <div class="notes-title">
+                            <span class="icon">ℹ️</span> Informasi Perhitungan
+                        </div>
+                        <ul class="notes-list">
+                            <li>
+                                <span class="bullet">•</span>
+                                <span>Dimensi yang dimasukkan adalah ukuran <span class="highlight">bersih</span> lubang jendela (bukaan)</span>
+                            </li>
+                            <li>
+                                <span class="bullet">•</span>
+                                <span>Hasil perhitungan akan menampilkan kebutuhan <span class="highlight">kaca</span></span>
+                            </li>
+                            <li>
+                                <span class="bullet">•</span>
+                                <span>Tambahkan <span class="highlight">toleransi 5-10%</span> untuk antisipasi waste material</span>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div class="space-y-4">
-                        <!-- Input Ukuran -->
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1.5">Lebar (m)</label>
-                                <input type="number" id="mati1_lebar" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="0">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1.5">Tinggi (m)</label>
-                                <input type="number" id="mati1_tinggi" step="0.1" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="0">
-                            </div>
+                    <!-- Form Input -->
+                    <form id="formJendelaMati1Kaca" onsubmit="return false;">
+                        <div style="margin-bottom: 12px;">
+                            <label class="input-label">Panjang (cm)</label>
+                            <input type="number" class="input-field" id="panjangMati1" placeholder="Contoh: 120" required min="1">
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1.5">Jenis Material</label>
-                                <select id="mati1_material" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                                    <option value="kayu">Kayu</option>
-                                    <option value="aluminium">Aluminium</option>
-                                    <option value="upvc">UPVC</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1.5">Jenis Kaca</label>
-                                <select id="mati1_kaca" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                                    <option value="polos">Kaca Polos 5mm</option>
-                                    <option value="patri">Kaca Patri</option>
-                                    <option value="tempered">Kaca Tempered</option>
-                                    <option value="isolasi">Kaca Isolasi Double</option>
-                                </select>
-                            </div>
+                        <div style="margin-bottom: 12px;">
+                            <label class="input-label">Lebar (cm)</label>
+                            <input type="number" class="input-field" id="lebarMati1" placeholder="Contoh: 80" required min="1">
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1.5">Tebal Kusen (cm)</label>
-                                <input type="number" id="mati1_tebal_kusen" step="0.5" value="5" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1.5">Waste (%)</label>
-                                <input type="number" id="mati1_waste" step="1" value="5" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                            </div>
+                        <div style="margin-bottom: 12px;">
+                            <label class="input-label">Ketebalan Kaca (mm)</label>
+                            <input type="number" class="input-field" id="tebalKacaMati1" placeholder="Contoh: 5" value="5" min="1">
                         </div>
 
-                        <!-- Tombol Hitung -->
-                        <button type="button" onclick="hitungJendelaMati1Kaca()" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-2.5 rounded-lg text-sm font-medium">
-                            <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-6 3v-3m-6 3h18M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
-                            </svg>
-                            Hitung Luas & Estimasi
-                        </button>
-
-                        <!-- Hasil Perhitungan -->
-                        <div id="hasilPerhitunganMati1Kaca" class="hidden">
-                            <div class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-4 space-y-2 border border-teal-100">
-                                <div class="flex justify-between items-center text-sm font-semibold text-gray-700">
-                                    <span>📊 TOTAL KESELURUHAN</span>
-                                </div>
-                                <div class="flex justify-between items-center text-sm pt-2 border-t border-teal-100">
-                                    <span class="text-gray-600">Luas Jendela</span>
-                                    <span id="mati1_luas" class="font-semibold text-gray-900">- m²</span>
-                                </div>
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-600">Panjang Kusen</span>
-                                    <span id="mati1_kusen" class="font-semibold text-gray-900">- m</span>
-                                </div>
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-600">Luas Kaca</span>
-                                    <span id="mati1_kaca_luas" class="font-semibold text-gray-900">- m²</span>
-                                </div>
-                                <div class="grand-total mt-3 text-right">
-                                    <span class="text-sm">💰 Total Biaya:</span>
-                                    <span id="mati1_total" class="text-lg font-bold ml-2">Rp 0</span>
-                                </div>
-                            </div>
-                            <div id="mati1_detail" class="mt-3 space-y-2"></div>
-                        </div>
-
-                        <!-- Pilih Brand untuk BOQ -->
-                        <div class="mt-4 pt-3 border-t border-gray-100">
-                            <label class="block text-xs font-medium text-gray-700 mb-1.5">
-                                Pilih Brand <span class="text-red-500">*</span>
-                            </label>
-                            <select id="brand_boj_mati1" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white cursor-pointer">
-                                <option value="">-- Pilih Brand --</option>
-                                @foreach($brands ?? [] as $brand)
-                                    <option value="{{ $brand->slug }}">{{ $brand->nama_brand }}</option>
-                                @endforeach
+                        <div style="margin-bottom: 12px;">
+                            <label class="input-label">Warna Profile</label>
+                            <select class="input-field" id="warnaKacaMati1">
+                                <option value="clear">Clear (Bening)</option>
+                                <option value="hitam">Hitam</option>
+                                <option value="putih">Putih</option>
+                                <option value="walnut">Walnut</option>
                             </select>
-                            
-                            <button onclick="lanjutKeBOQMati1()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg text-sm font-medium mt-3">
-                                <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                                </svg>
-                                Lanjut ke BOQ →
-                            </button>
                         </div>
-                    </div>
 
-                    <div class="flex gap-3 mt-6 pt-4 border-t border-gray-100">
-                        <button onclick="closeModal('modalJendelaMati1Kaca')" class="flex-1 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Tutup</button>
-                        <button onclick="resetMati1()" class="flex-1 px-3 py-2 text-sm text-teal-600 hover:bg-teal-50 rounded-lg">Reset</button>
+                        <div style="margin-bottom: 16px;">
+                            <label class="input-label">Type Kaca</label>
+                            <select class="input-field" id="typeKacaMati1">
+                                <option value="clear">Clear (Bening)</option>
+                                <option value="temper">Temper (Safety Glass)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-primary" onclick="hitungJendelaMati1()">
+                            Hitung Kebutuhan Material
+                        </button>
+                    </form>
+
+                    <!-- Hasil Perhitungan -->
+                    <div id="hasilMati1" style="display: none; margin-top: 16px; padding: 14px; background: #f8fafc; border-radius: 8px; border: 1px solid #eef2f6;">
+                        <h3 style="font-size: 12px; font-weight: 600; color: #1a1a2e; margin-bottom: 10px;">📋 Hasil Perhitungan</h3>
+                        <div id="hasilContentMati1" style="font-size: 12px; color: #334155; line-height: 1.8;">
+                            <!-- Hasil akan diisi oleh JavaScript -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -142,161 +92,166 @@
 </div>
 
 <script>
-let hasilMati1 = null;
+function hitungJendelaMati1() {
+    // Ambil nilai input
+    const panjang = parseFloat(document.getElementById('panjangMati1').value);
+    const lebar = parseFloat(document.getElementById('lebarMati1').value);
+    const tebalKaca = parseFloat(document.getElementById('tebalKacaMati1').value) || 5;
+    const warnaKaca = document.getElementById('warnaKacaMati1').value;
+    const typeKaca = document.getElementById('typeKacaMati1').value;
 
-function hitungJendelaMati1Kaca() {
-    let lebar = parseFloat(document.getElementById('mati1_lebar').value) || 0;
-    let tinggi = parseFloat(document.getElementById('mati1_tinggi').value) || 0;
-    let material = document.getElementById('mati1_material').value;
-    let jenisKaca = document.getElementById('mati1_kaca').value;
-    let tebalKusen = parseFloat(document.getElementById('mati1_tebal_kusen').value) || 5;
-    let waste = parseFloat(document.getElementById('mati1_waste').value) || 5;
-    
-    if (lebar <= 0 || tinggi <= 0) {
-        alert('⚠️ Isi lebar dan tinggi dengan nilai > 0!');
+    // Validasi input
+    if (!panjang || !lebar || panjang <= 0 || lebar <= 0) {
+        alert('Mohon masukkan panjang dan lebar yang valid!');
         return;
     }
+
+    // Konversi ke meter
+    const panjangM = panjang / 100;
+    const lebarM = lebar / 100;
+    const tebalKacaM = tebalKaca / 1000;
+
+    // === PERHITUNGAN MATERIAL ===
     
-    // Perhitungan
-    let luasJendela = lebar * tinggi;
+    // 1. Luas Kaca (m²)
+    const luasKaca = panjangM * lebarM;
     
-    // Panjang kusen = keliling + (tebal kusen x 4 untuk sambungan)
-    let keliling = 2 * (lebar + tinggi);
-    let panjangKusen = keliling + (tebalKusen / 100 * 4);
+    // 2. Volume Kaca (m³)
+    const volumeKaca = luasKaca * tebalKacaM;
     
-    // Luas kaca = luas jendela - (tebal kusen x keliling / 100)
-    let luasKaca = luasJendela - ((tebalKusen / 100) * keliling);
-    if (luasKaca < 0) luasKaca = luasJendela * 0.8;
-    
-    // Waste
-    let wasteFactor = 1 + (waste / 100);
-    let panjangKusenDenganWaste = panjangKusen * wasteFactor;
-    let luasKacaDenganWaste = luasKaca * wasteFactor;
-    
-    // Harga estimasi per jenis material
-    let hargaKusenPerMeter = 0;
+    // 3. Harga Kaca berdasarkan type dan warna
     let hargaKacaPerM2 = 0;
+    let typeKacaLabel = '';
+    let warnaKacaLabel = '';
     
-    switch(material) {
-        case 'kayu':
-            hargaKusenPerMeter = 250000;
-            break;
-        case 'aluminium':
-            hargaKusenPerMeter = 350000;
-            break;
-        case 'upvc':
-            hargaKusenPerMeter = 450000;
-            break;
+    // Set label warna
+    if (warnaKaca === 'clear') {
+        warnaKacaLabel = 'Clear';
+    } else if (warnaKaca === 'hitam') {
+        warnaKacaLabel = 'Hitam';
+    } else if (warnaKaca === 'putih') {
+        warnaKacaLabel = 'Putih';
+    } else if (warnaKaca === 'walnut') {
+        warnaKacaLabel = 'Walnut';
     }
     
-    switch(jenisKaca) {
-        case 'polos':
-            hargaKacaPerM2 = 150000;
-            break;
-        case 'patri':
-            hargaKacaPerM2 = 350000;
-            break;
-        case 'tempered':
-            hargaKacaPerM2 = 450000;
-            break;
-        case 'isolasi':
-            hargaKacaPerM2 = 650000;
-            break;
+    // Harga berdasarkan type dan warna
+    if (typeKaca === 'clear') {
+        if (warnaKaca === 'clear') {
+            if (tebalKaca <= 5) {
+                hargaKacaPerM2 = 150000;
+            } else if (tebalKaca <= 8) {
+                hargaKacaPerM2 = 200000;
+            } else {
+                hargaKacaPerM2 = 250000;
+            }
+        } else if (warnaKaca === 'hitam') {
+            if (tebalKaca <= 5) {
+                hargaKacaPerM2 = 180000;
+            } else if (tebalKaca <= 8) {
+                hargaKacaPerM2 = 230000;
+            } else {
+                hargaKacaPerM2 = 280000;
+            }
+        } else if (warnaKaca === 'putih') {
+            if (tebalKaca <= 5) {
+                hargaKacaPerM2 = 170000;
+            } else if (tebalKaca <= 8) {
+                hargaKacaPerM2 = 220000;
+            } else {
+                hargaKacaPerM2 = 270000;
+            }
+        } else if (warnaKaca === 'walnut') {
+            if (tebalKaca <= 5) {
+                hargaKacaPerM2 = 200000;
+            } else if (tebalKaca <= 8) {
+                hargaKacaPerM2 = 250000;
+            } else {
+                hargaKacaPerM2 = 300000;
+            }
+        }
+        typeKacaLabel = 'Clear Glass';
+    } else if (typeKaca === 'temper') {
+        if (warnaKaca === 'clear') {
+            if (tebalKaca <= 5) {
+                hargaKacaPerM2 = 350000;
+            } else if (tebalKaca <= 8) {
+                hargaKacaPerM2 = 450000;
+            } else {
+                hargaKacaPerM2 = 550000;
+            }
+        } else if (warnaKaca === 'hitam') {
+            if (tebalKaca <= 5) {
+                hargaKacaPerM2 = 380000;
+            } else if (tebalKaca <= 8) {
+                hargaKacaPerM2 = 480000;
+            } else {
+                hargaKacaPerM2 = 580000;
+            }
+        } else if (warnaKaca === 'putih') {
+            if (tebalKaca <= 5) {
+                hargaKacaPerM2 = 370000;
+            } else if (tebalKaca <= 8) {
+                hargaKacaPerM2 = 470000;
+            } else {
+                hargaKacaPerM2 = 570000;
+            }
+        } else if (warnaKaca === 'walnut') {
+            if (tebalKaca <= 5) {
+                hargaKacaPerM2 = 400000;
+            } else if (tebalKaca <= 8) {
+                hargaKacaPerM2 = 500000;
+            } else {
+                hargaKacaPerM2 = 600000;
+            }
+        }
+        typeKacaLabel = 'Tempered Glass';
     }
     
-    let totalKusen = panjangKusenDenganWaste * hargaKusenPerMeter;
-    let totalKaca = luasKacaDenganWaste * hargaKacaPerM2;
-    let totalKeseluruhan = totalKusen + totalKaca;
+    // 4. Total Harga Kaca
+    const hargaKacaTotal = luasKaca * hargaKacaPerM2;
+
+    // Tampilkan hasil
+    const hasilDiv = document.getElementById('hasilMati1');
+    const hasilContent = document.getElementById('hasilContentMati1');
     
-    // Aksesoris
-    let aksesoris = 50000;
-    totalKeseluruhan += aksesoris;
-    
-    hasilMati1 = {
-        lebar: lebar,
-        tinggi: tinggi,
-        luas: luasJendela,
-        panjang_kusen: panjangKusen,
-        panjang_kusen_waste: panjangKusenDenganWaste,
-        luas_kaca: luasKaca,
-        luas_kaca_waste: luasKacaDenganWaste,
-        total: totalKeseluruhan,
-        material: material,
-        jenis_kaca: jenisKaca
-    };
-    
-    document.getElementById('mati1_luas').innerHTML = luasJendela.toFixed(2) + ' m²';
-    document.getElementById('mati1_kusen').innerHTML = panjangKusen.toFixed(2) + ' m';
-    document.getElementById('mati1_kaca_luas').innerHTML = luasKaca.toFixed(2) + ' m²';
-    document.getElementById('mati1_total').innerHTML = 'Rp ' + totalKeseluruhan.toLocaleString();
-    
-    let detailHtml = `
-        <div class="bg-teal-50 rounded-lg p-3 text-xs space-y-2">
-            <div class="font-semibold text-teal-700">📋 Detail Perhitungan</div>
-            <div class="grid grid-cols-2 gap-2">
-                <div>Material Kusen:</div>
-                <div class="font-semibold">${material.toUpperCase()}</div>
-                <div>Panjang Kusen:</div>
-                <div>${panjangKusen.toFixed(2)} m</div>
-                <div>+ Waste ${waste}%:</div>
-                <div>${panjangKusenDenganWaste.toFixed(2)} m</div>
-                <div>Harga Kusen/m:</div>
-                <div>Rp ${hargaKusenPerMeter.toLocaleString()}</div>
-                <div class="border-t pt-1">Total Kusen:</div>
-                <div class="border-t pt-1">Rp ${totalKusen.toLocaleString()}</div>
-                <div>Jenis Kaca:</div>
-                <div>${jenisKaca.toUpperCase()}</div>
-                <div>Luas Kaca:</div>
-                <div>${luasKaca.toFixed(2)} m²</div>
-                <div>+ Waste ${waste}%:</div>
-                <div>${luasKacaDenganWaste.toFixed(2)} m²</div>
-                <div>Harga Kaca/m²:</div>
-                <div>Rp ${hargaKacaPerM2.toLocaleString()}</div>
-                <div class="border-t pt-1">Total Kaca:</div>
-                <div class="border-t pt-1">Rp ${totalKaca.toLocaleString()}</div>
-                <div>Aksesoris:</div>
-                <div>Rp ${aksesoris.toLocaleString()}</div>
+    hasilContent.innerHTML = `
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px;">
+            <div><span style="color: #94a3b8;">Luas Kaca</span></div>
+            <div><strong>${luasKaca.toFixed(2)}</strong> m²</div>
+            
+            <div><span style="color: #94a3b8;">Tebal Kaca</span></div>
+            <div><strong>${tebalKaca}</strong> mm</div>
+            
+            <div><span style="color: #94a3b8;">Volume Kaca</span></div>
+            <div><strong>${volumeKaca.toFixed(4)}</strong> m³</div>
+            
+            <div><span style="color: #94a3b8;">Warna Kaca</span></div>
+            <div><strong>${warnaKacaLabel}</strong></div>
+            
+            <div><span style="color: #94a3b8;">Type Kaca</span></div>
+            <div><strong>${typeKacaLabel}</strong></div>
+            
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e2e8f0; grid-column: span 2;">
+                <span style="color: #94a3b8;">Estimasi Biaya</span>
+            </div>
+            <div style="grid-column: span 2; background: #f1f5f9; padding: 6px 10px; border-radius: 4px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                    <span>Kaca ${warnaKacaLabel} ${typeKacaLabel} (${tebalKaca}mm)</span>
+                    <span><strong>Rp ${hargaKacaTotal.toLocaleString('id-ID')}</strong></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 4px; padding-top: 4px; border-top: 1px solid #e2e8f0; font-weight: 600;">
+                    <span>Total Estimasi</span>
+                    <span>Rp ${hargaKacaTotal.toLocaleString('id-ID')}</span>
+                </div>
             </div>
         </div>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #94a3b8;">
+            * Perhitungan ini adalah estimasi. Harga material dapat berbeda di setiap daerah.
+            <br>* Tambahkan toleransi 5-10% untuk pembelian material.
+        </div>
     `;
-    document.getElementById('mati1_detail').innerHTML = detailHtml;
-    document.getElementById('hasilPerhitunganMati1Kaca').classList.remove('hidden');
-}
-
-function resetMati1() {
-    document.getElementById('mati1_lebar').value = '';
-    document.getElementById('mati1_tinggi').value = '';
-    document.getElementById('mati1_material').value = 'kayu';
-    document.getElementById('mati1_kaca').value = 'polos';
-    document.getElementById('mati1_tebal_kusen').value = '5';
-    document.getElementById('mati1_waste').value = '5';
-    document.getElementById('hasilPerhitunganMati1Kaca').classList.add('hidden');
-    hasilMati1 = null;
-}
-
-function lanjutKeBOQMati1() {
-    let brandSlug = document.getElementById('brand_boj_mati1').value;
     
-    if (!brandSlug) {
-        alert('Pilih brand terlebih dahulu!');
-        return;
-    }
-    
-    if (!hasilMati1) {
-        alert('Hitung kebutuhan jendela terlebih dahulu!');
-        return;
-    }
-    
-    let url = `/boq/jendela/mati-1-kaca?brand_slug=${brandSlug}`;
-    url += `&lebar=${hasilMati1.lebar}`;
-    url += `&tinggi=${hasilMati1.tinggi}`;
-    url += `&material=${hasilMati1.material}`;
-    url += `&jenis_kaca=${hasilMati1.jenis_kaca}`;
-    url += `&luas_jendela=${hasilMati1.luas}`;
-    url += `&panjang_kusen=${hasilMati1.panjang_kusen}`;
-    url += `&luas_kaca=${hasilMati1.luas_kaca}`;
-    url += `&grand_total=${hasilMati1.total}`;
-    
-    window.location.href = url;
+    hasilDiv.style.display = 'block';
 }
 </script>

@@ -247,6 +247,170 @@
         color: #dd6b20;
         margin-top: 4px;
     }
+
+    /* Opsi Tambahan Grid - 3 Kolom (karena talang jurai dihapus) */
+    .opsi-tambahan-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    @media (max-width: 640px) {
+        .opsi-tambahan-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .opsi-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .opsi-item label {
+        font-size: 10px !important;
+        font-weight: 500;
+        color: #4a5568;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .opsi-item label .opsi-desc {
+        font-weight: 400;
+        color: #a0aec0;
+        font-size: 9px;
+    }
+    
+    .opsi-item input {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 12px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.2s;
+        background: white;
+    }
+    
+    .opsi-item input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    
+    .opsi-item input::placeholder {
+        color: #cbd5e1;
+        font-size: 11px;
+    }
+    
+    .opsi-item .opsi-satuan {
+        font-size: 10px;
+        color: #a0aec0;
+        margin-top: 2px;
+    }
+
+    /* NOTES / PEMBERITAHUAN */
+    .notes-container {
+        background: #fffbeb;
+        border: 1px solid #fcd34d;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+    }
+    
+    .notes-container .notes-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #92400e;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .notes-container .notes-title .icon {
+        font-size: 18px;
+    }
+    
+    .notes-container .notes-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .notes-container .notes-list li {
+        font-size: 12px;
+        color: #78350f;
+        padding: 4px 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        line-height: 1.5;
+    }
+    
+    .notes-container .notes-list li .bullet {
+        color: #d97706;
+        font-weight: 700;
+    }
+    
+    .notes-container .notes-list li strong {
+        color: #92400e;
+    }
+    
+    .notes-container .notes-list li .highlight {
+        background: #fef3c7;
+        padding: 0 6px;
+        border-radius: 4px;
+        font-weight: 500;
+        color: #92400e;
+    }
+    
+    .notes-container .notes-list li .badge-angin {
+        display: inline-block;
+        background: #fef3c7;
+        color: #92400e;
+        padding: 1px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 500;
+    }
+    
+    .notes-container .notes-list li .warning-text {
+        color: #991b1b;
+        font-weight: 600;
+    }
+    /* Group Header */
+.group-header {
+    background: #f0f4f8;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #2d3748;
+}
+.group-header:first-child {
+    margin-top: 0;
+}
+.group-header-atap {
+    border-left: 3px solid #2b6cb0;
+}
+.group-header-aksesoris {
+    border-left: 3px solid #38a169;
+}
+.group-header-additional {
+    border-left: 3px solid #e53e3e;
+}
+.empty-state {
+    text-align: center;
+    padding: 20px;
+    color: #a0aec0;
+    font-size: 13px;
+}
 </style>
 
 <div class="space-y-6">
@@ -263,6 +427,48 @@
         </div>
     </div>
 
+    <!-- ===== NOTES / PEMBERITAHUAN ===== -->
+    <div class="notes-container">
+        <div class="notes-title">
+            <span class="icon">📋</span> Petunjuk Pengisian BOQ
+        </div>
+        <ul class="notes-list">
+            <li>
+                <span class="bullet">•</span>
+                <span>Cek lebih detail apakah ada atap yang bertemu langsung dengan <strong>dinding</strong>, <strong>kaca</strong>, <strong>penangkal petir</strong>, <strong>Ventilasi Exhaust</strong> dll.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Jika bertemu dinding, kaca, penangkal petir, ventilasi exhaust, silahkan input berapa panjang/area pertemuannya di bagian <strong>"Opsi Tambahan"</strong> masing-masing bagian atap.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Untuk atap dengan kemiringan dibawah <strong>15 Derajat</strong> tidak disarankan menggunakan ridge ventilator.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Untuk lokasi dengan potensi <strong>angin kencang (&gt;97 km/jam)</strong>, direkomendasikan menggunakan <span class="highlight">Cambridge</span>.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span class="warning-text">⚠️ Jika memaksakan menggunakan produk lain selain Cambridge, maka garansi akan hilang.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span><strong>Hal yang perlu diperhatikan:</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Jarak usuk per <strong>60 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Jarak usuk per <strong>40 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Pemakaian underlayer <strong>self adhesive</strong> direkomendasikan</span>
+            </li>
+        </ul>
+    </div>
+
     <!-- Data Perhitungan (Readonly) -->
     <div class="section-card">
         <div class="section-header">
@@ -275,7 +481,7 @@
             </div>
         </div>
         <div class="section-body">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
                 <div class="data-box">
                     <label>Luas Atap Total</label>
                     <div class="value">
@@ -311,37 +517,86 @@
                         <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Input Talang Jurai & Wall Flashing -->
-    <div class="section-card">
-        <div class="section-header">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h3 class="section-title">🔧 Aksesoris Tambahan</h3>
-                    <p class="section-subtitle">Masukkan panjang aksesoris tambahan</p>
-                </div>
-                <span class="badge-section">OPSIONAL</span>
-            </div>
-        </div>
-        <div class="section-body">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">📏 Talang Jurai</label>
-                    <input type="number" id="talang_jurai" step="0.1" value="{{ request()->get('talang_jurai', 0) }}" class="input-field">
-                    <span style="font-size: 10px; color: #a0aec0;">meter</span>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">🧱 Wall Flashing</label>
-                    <input type="number" id="wall_flashing" step="0.1" value="0" class="input-field">
-                    <span style="font-size: 10px; color: #a0aec0;">meter</span>
+                <div class="data-box">
+                    <label>Talang Jurai</label>
+                    <div class="value">
+                        <input type="number" id="talang_jurai" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
+                        <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ===== OPSI TAMBAHAN ===== -->
+<div class="section-card">
+    <div class="section-header">
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="section-title">🔧 Opsi Tambahan</h3>
+                <p class="section-subtitle">Masukkan panjang atap yang berbatasan dengan elemen lain</p>
+            </div>
+            <span class="badge-section">OPSIONAL</span>
+        </div>
+    </div>
+    <div class="section-body">
+        <div class="opsi-tambahan-grid">
+            <div class="opsi-item">
+                <label>
+                    📐 Dinding
+                    <span class="opsi-desc">(panjang atap yang berbatasan dinding)</span>
+                </label>
+                <input type="number" 
+                       id="opsi_dinding" 
+                       step="0.1" 
+                       min="0"
+                       placeholder="0"
+                       value="{{ $opsiDinding ?? 0 }}">
+                <span class="opsi-satuan">meter</span>
+            </div>
+            <div class="opsi-item">
+                <label>
+                    🪟 Kaca
+                    <span class="opsi-desc">(panjang area kaca/genteng kaca)</span>
+                </label>
+                <input type="number" 
+                       id="opsi_kaca" 
+                       step="0.1" 
+                       min="0"
+                       placeholder="0"
+                       value="{{ $opsiKaca ?? 0 }}">
+                <span class="opsi-satuan">meter</span>
+            </div>
+            <div class="opsi-item">
+                <label>
+                    ⚡ Penangkal Petir
+                    <span class="opsi-desc">(jumlah titik)</span>
+                </label>
+                <input type="number" 
+                       id="opsi_penangkal" 
+                       step="1" 
+                       min="0"
+                       placeholder="0"
+                       value="{{ $opsiPenangkal ?? 0 }}">
+                <span class="opsi-satuan">titik</span>
+            </div>
+            <!-- ===== TAMBAHKAN VENTILASI EXHAUST ===== -->
+            <div class="opsi-item">
+                <label>
+                    💨 Ventilasi Exhaust
+                    <span class="opsi-desc">(jumlah titik)</span>
+                </label>
+                <input type="number" 
+                       id="opsi_exhaust" 
+                       step="1" 
+                       min="0"
+                       placeholder="0"
+                       value="{{ $opsiExhaust ?? 0 }}">
+                <span class="opsi-satuan">titik</span>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- Pilih Produk & Hitung Material -->
     <div class="section-card">
         <div class="section-header">
@@ -376,13 +631,45 @@
                         <p class="warning-text">⚠️ Kemiringan sudut {{ $sudut_1 }}° (≤ 30°), disarankan menggunakan underlayer khusus.</p>
                     @endif
                 </div>
-            </div>
-            
-            <div class="mb-4">
-                <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Waste (%)</label>
-                <div class="waste-input">
-                    <input type="number" id="waste" step="1" value="5" class="input-field" style="width: 100px;">
-                    <span>%</span>
+                <!-- ===== DROPDOWN STARTER ===== -->
+                <div>
+                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Starter</label>
+                    <select id="starter_produk" class="input-field">
+                        <option value="">Pilih Starter</option>
+                        @foreach($starters as $starter)
+                            <option value="{{ $starter->id }}">{{ $starter->nama_produk }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <!-- ===== DROPDOWN STRUKTUR RANGKA ===== -->
+                <div>
+                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Struktur Rangka</label>
+                    <select id="rangka" class="input-field">
+                        <option value="Kayu">Kayu</option>
+                        <option value="Baja Ringan" selected>Baja Ringan</option>
+                        <option value="Baja Berat">Baja Berat</option>
+                        <option value="Beton">Beton</option>
+                    </select>
+                </div>
+                <!-- ===== DROPDOWN LANTAI KERJA ===== -->
+                <div>
+                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Lantai Kerja</label>
+                    <select id="lantai_kerja" class="input-field">
+                        <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
+                        <option value="Plywood 12 mm">Plywood 12 mm</option>
+                        <option value="Plywood 15 mm">Plywood 15 mm</option>
+                        <option value="GRC 9 mm">GRC 9 mm</option>
+                        <option value="GRC 12 mm">GRC 12 mm</option>
+                        <option value="GRC 15 mm">GRC 15 mm</option>
+                        <option value="Beton">Beton</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Waste (%)</label>
+                    <div class="waste-input">
+                        <input type="number" id="waste" step="1" value="5" class="input-field" style="width: 100px;">
+                        <span>%</span>
+                    </div>
                 </div>
             </div>
             
@@ -421,11 +708,23 @@
             <input type="hidden" name="sudut" id="pdf_sudut">
             <input type="hidden" name="starter" id="pdf_starter">
             <input type="hidden" name="nok_jurai" id="pdf_nok_jurai">
+            <input type="hidden" name="flashing" id="pdf_flashing">
             <input type="hidden" name="talang_jurai" id="pdf_talang_jurai">
-            <input type="hidden" name="wall_flashing" id="pdf_wall_flashing">
             <input type="hidden" name="waste" id="pdf_waste">
             <input type="hidden" name="hasil" id="pdf_hasil">
             <input type="hidden" name="grand_total" id="pdf_grand_total">
+            
+            <!-- Opsi Tambahan -->
+            <input type="hidden" name="opsi_dinding" id="pdf_opsi_dinding">
+            <input type="hidden" name="opsi_kaca" id="pdf_opsi_kaca">
+            <input type="hidden" name="opsi_penangkal" id="pdf_opsi_penangkal">
+              <input type="hidden" name="opsi_exhaust" id="pdf_opsi_exhaust"> 
+            
+            <!-- Data tambahan untuk PDF -->
+            <input type="hidden" name="lantai_kerja" id="pdf_lantai_kerja">
+            <input type="hidden" name="rangka" id="pdf_rangka">
+            <input type="hidden" name="detail_results" id="pdf_detail_results">
+            
             <input type="hidden" name="tanggal" id="pdf_tanggal">
             <input type="hidden" name="waktu" id="pdf_waktu">
             
@@ -461,9 +760,16 @@ window.onload = function() {
     let nok2 = parseFloat(urlParams.get('nok_2')) || 0;
     let nok3 = parseFloat(urlParams.get('nok_3')) || 0;
     
-    // Talang Jurai & Wall Flashing dari URL
-    let talangJurai = parseFloat(urlParams.get('talang_jurai')) || 0;
-    let wallFlashing = parseFloat(urlParams.get('wall_flashing')) || 0;
+    // Opsi dari URL
+    let opsiDindingEl = document.getElementById('opsi_dinding');
+    let opsiKacaEl = document.getElementById('opsi_kaca');
+    let opsiPenangkalEl = document.getElementById('opsi_penangkal');
+      let opsiExhaustEl = document.getElementById('opsi_exhaust'); 
+    
+    if (opsiDindingEl) opsiDindingEl.value = urlParams.get('dinding') || 0;
+    if (opsiKacaEl) opsiKacaEl.value = urlParams.get('kaca') || 0;
+    if (opsiPenangkalEl) opsiPenangkalEl.value = urlParams.get('penangkal') || 0;
+      if (opsiExhaustEl) opsiExhaustEl.value = urlParams.get('exhaust') || 0;
     
     // Hitung TOTAL STARTER = (starter1+starter2+starter3) - ((lebarB x 4) / cos(sudut))
     let radSudut = sudut * Math.PI / 180;
@@ -471,34 +777,76 @@ window.onload = function() {
     let pengurang = (lebarB * 4) / cosSudut;
     let totalStarter = (starter1 + starter2 + starter3) - pengurang;
     
-    // Set nilai ke input
-    document.getElementById('luas_atap_total').value = luas1 + luas2 + luas3;
-    document.getElementById('sudut').value = sudut;
-    document.getElementById('starter').value = totalStarter.toFixed(2);
-    document.getElementById('nok_jurai').value = nok1 + nok2 + nok3;
-    document.getElementById('flashing').value = totalStarter.toFixed(2);
+    // HITUNG TALANG JURAI
+    // Rumus: sqrt(2 x (lebar b/2)^2 + ((lebar b/2) x tan(radians(sudut kemiringan)))^2) x 4
+    let lebarSetengah = lebarB / 2;
+    let talangJurai = Math.sqrt(
+        (2 * Math.pow(lebarSetengah, 2)) + 
+        Math.pow(lebarSetengah * Math.tan(radSudut), 2)
+    ) * 4;
     
-    // Set nilai talang jurai & wall flashing
-    document.getElementById('talang_jurai').value = talangJurai;
-    document.getElementById('wall_flashing').value = wallFlashing;
+    // Set nilai ke input dengan pembulatan 2 desimal
+    let luasAtapTotalEl = document.getElementById('luas_atap_total');
+    let sudutEl = document.getElementById('sudut');
+    let starterEl = document.getElementById('starter');
+    let nokJuraiEl = document.getElementById('nok_jurai');
+    let flashingEl = document.getElementById('flashing');
+    let talangJuraiEl = document.getElementById('talang_jurai');
+    
+    if (luasAtapTotalEl) luasAtapTotalEl.value = (luas1 + luas2 + luas3).toFixed(2);
+    if (sudutEl) sudutEl.value = sudut.toFixed(2);
+    if (starterEl) starterEl.value = totalStarter.toFixed(2);
+    if (nokJuraiEl) nokJuraiEl.value = (nok1 + nok2 + nok3).toFixed(2);
+    if (flashingEl) flashingEl.value = totalStarter.toFixed(2);
+    if (talangJuraiEl) talangJuraiEl.value = talangJurai.toFixed(2);
+    
+    updatePdfData();
 };
 
 function hitungMaterial() {
     let wasteValue = parseFloat(document.getElementById('waste').value) || 5;
+    
+    // Ambil nilai opsi tambahan
+    let opsiDinding = parseFloat(document.getElementById('opsi_dinding')?.value) || 0;
+    let opsiKaca = parseFloat(document.getElementById('opsi_kaca')?.value) || 0;
+    let opsiPenangkal = parseInt(document.getElementById('opsi_penangkal')?.value) || 0;
+    let opsiExhaust = parseInt(document.getElementById('opsi_exhaust')?.value) || 0;
+    
+    // Ambil nilai rangka & lantai kerja
+    let rangka = document.getElementById('rangka')?.value || 'Baja Ringan';
+    let lantaiKerja = document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm';
+    
+    // Ambil nilai dengan pengecekan null
+    let luasAtapEl = document.getElementById('luas_atap_total');
+    let sudutEl = document.getElementById('sudut');
+    let starterEl = document.getElementById('starter');
+    let nokJuraiEl = document.getElementById('nok_jurai');
+    let flashingEl = document.getElementById('flashing');
+    let talangJuraiEl = document.getElementById('talang_jurai');
+    
     let data = {
-        luas_atap: parseFloat(document.getElementById('luas_atap_total').value),
-        sudut: parseFloat(document.getElementById('sudut').value),
-        panjang_starter: parseFloat(document.getElementById('starter').value),
-        panjang_nok_jurai: parseFloat(document.getElementById('nok_jurai').value),
-        panjang_flashing: parseFloat(document.getElementById('starter').value),
-        panjang_talang_jurai: parseFloat(document.getElementById('talang_jurai').value) || 0,
-        panjang_wall_flashing: parseFloat(document.getElementById('wall_flashing').value) || 0,
+        luas_atap: luasAtapEl ? parseFloat(luasAtapEl.value) || 0 : 0,
+        sudut: sudutEl ? parseFloat(sudutEl.value) || 0 : 0,
+        panjang_starter: starterEl ? parseFloat(starterEl.value) || 0 : 0,
+        panjang_nok_jurai: nokJuraiEl ? parseFloat(nokJuraiEl.value) || 0 : 0,
+        panjang_flashing: flashingEl ? parseFloat(flashingEl.value) || 0 : 0,
+        panjang_talang_jurai: talangJuraiEl ? parseFloat(talangJuraiEl.value) || 0 : 0,
+        panjang_wall_flashing: opsiDinding,
+        opsi_kaca: opsiKaca,
+        opsi_penangkal: opsiPenangkal,
+        opsi_exhaust: opsiExhaust, 
         produk_atap_id: document.getElementById('produk_atap').value,
         underlayer_id: document.getElementById('underlayer').value,
-        rangka: 'Baja Ringan',
-        lantai_kerja: 'Plywood 9 mm',
+        starter_produk_id: document.getElementById('starter_produk').value,
+        rangka: rangka,
+        lantai_kerja: lantaiKerja,
         waste: wasteValue
     };
+    
+    if (!data.produk_atap_id) {
+        alert('Pilih produk atap utama terlebih dahulu!');
+        return;
+    }
     
     fetch('{{ route("boq.iko-atap.hitung") }}', {
         method: 'POST',
@@ -513,39 +861,134 @@ function hitungMaterial() {
             document.getElementById('hasilMaterial').classList.remove('hidden');
             updatePdfData();
         }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Terjadi kesalahan server');
     });
 }
 
 function renderTable(results) {
     let container = document.getElementById('tableMaterial');
-    let html = `<table><thead><tr><th>Produk</th><th>Area</th><th style="text-align:right;">Qty</th><th style="text-align:right;">Satuan</th><th style="text-align:right;">Total</th></tr></thead><tbody>`;
-    let total = 0;
+    
+    // ===== KELOMPOKKAN HASIL =====
+    let kelompok = {
+        'Atap Utama': [],
+        'Aksesoris': [],
+        'Additional': []
+    };
+    
+    const aksesorisAreas = ['Starter', 'Nok & Jurai', 'Underlayer', 'Flashing', 'Paku & Screw', 'Metal Flashing', 'Shingle Stick', 'Talang Jurai'];
+    const additionalAreas = ['Wall Flashing', 'Flashing Kaca', 'Penangkal Petir', 'Ventilasi Exhaust'];
+    
     results.forEach(item => {
-        total += item.total_harga;
-        html += `<tr>
-            <td><strong>${item.nama_produk}</strong></td>
-            <td><span class="badge-area">${item.area}</span></td>
-            <td style="text-align:right; font-weight:500;">${item.qty}</td>
-            <td style="text-align:right; color:#718096;">${item.satuan}</td>
-            <td style="text-align:right; font-weight:600; color:#2d3748;">Rp ${item.total_harga.toLocaleString()}</td>
-        </tr>`;
+        if (item.area === 'Atap Utama') {
+            kelompok['Atap Utama'].push(item);
+        } else if (additionalAreas.includes(item.area)) {
+            if (item.qty > 0) {
+                kelompok['Additional'].push(item);
+            }
+        } else if (aksesorisAreas.includes(item.area)) {
+            kelompok['Aksesoris'].push(item);
+        } else {
+            kelompok['Aksesoris'].push(item);
+        }
     });
-    html += `</tbody></table>`;
+    
+    let html = '';
+    let grandTotal = 0;
+    
+    // ===== RENDER ATAP UTAMA =====
+    if (kelompok['Atap Utama'].length > 0) {
+        html += `<div class="group-header group-header-atap">🏠 ATAP UTAMA</div>`;
+        html += `<table>`;
+        kelompok['Atap Utama'].forEach(item => {
+            grandTotal += item.total_harga || 0;
+            html += `<tr>
+                <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
+                <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
+                <td style="width:15%; text-align:right; font-weight:500;">${parseFloat(item.qty).toFixed(2)}</td>
+                <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
+                <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+            </tr>`;
+        });
+        html += `</table>`;
+    }
+    
+    // ===== RENDER AKSESORIS =====
+    if (kelompok['Aksesoris'].length > 0) {
+        html += `<div class="group-header group-header-aksesoris">🔧 AKSESORIS</div>`;
+        html += `<table>`;
+        kelompok['Aksesoris'].forEach(item => {
+            grandTotal += item.total_harga || 0;
+            html += `<tr>
+                <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
+                <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
+                <td style="width:15%; text-align:right; font-weight:500;">${parseFloat(item.qty).toFixed(2)}</td>
+                <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
+                <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+            </tr>`;
+        });
+        html += `</table>`;
+    }
+    
+    // ===== RENDER ADDITIONAL =====
+    if (kelompok['Additional'].length > 0) {
+        html += `<div class="group-header group-header-additional">➕ ADDITIONAL</div>`;
+        html += `<table>`;
+        kelompok['Additional'].forEach(item => {
+            grandTotal += item.total_harga || 0;
+            html += `<tr>
+                <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
+                <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
+                <td style="width:15%; text-align:right; font-weight:500;">${parseFloat(item.qty).toFixed(2)}</td>
+                <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
+                <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+            </tr>`;
+        });
+        html += `</table>`;
+    }
+    
+    if (html === '') {
+        html = `<div class="empty-state">Belum ada data material</div>`;
+    }
+    
     container.innerHTML = html;
-    document.getElementById('grandTotal').innerHTML = `Rp ${total.toLocaleString()}`;
-    document.getElementById('totalKeseluruhan').innerHTML = `Rp ${total.toLocaleString()}`;
+    document.getElementById('grandTotal').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
+    document.getElementById('totalKeseluruhan').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
 }
 
 function updatePdfData() {
-    document.getElementById('pdf_luas_atap').value = document.getElementById('luas_atap_total').value;
-    document.getElementById('pdf_sudut').value = document.getElementById('sudut').value;
-    document.getElementById('pdf_starter').value = document.getElementById('starter').value;
-    document.getElementById('pdf_nok_jurai').value = document.getElementById('nok_jurai').value;
-    document.getElementById('pdf_talang_jurai').value = document.getElementById('talang_jurai').value;
-    document.getElementById('pdf_wall_flashing').value = document.getElementById('wall_flashing').value;
-    document.getElementById('pdf_waste').value = document.getElementById('waste').value;
+    let luasAtapEl = document.getElementById('luas_atap_total');
+    let sudutEl = document.getElementById('sudut');
+    let starterEl = document.getElementById('starter');
+    let nokJuraiEl = document.getElementById('nok_jurai');
+    let flashingEl = document.getElementById('flashing');
+    let talangJuraiEl = document.getElementById('talang_jurai');
+    let wasteEl = document.getElementById('waste');
+    let grandTotalEl = document.getElementById('grandTotal');
+    
+    document.getElementById('pdf_luas_atap').value = luasAtapEl ? luasAtapEl.value : 0;
+    document.getElementById('pdf_sudut').value = sudutEl ? sudutEl.value : 0;
+    document.getElementById('pdf_starter').value = starterEl ? starterEl.value : 0;
+    document.getElementById('pdf_nok_jurai').value = nokJuraiEl ? nokJuraiEl.value : 0;
+    document.getElementById('pdf_flashing').value = flashingEl ? flashingEl.value : 0;
+    document.getElementById('pdf_talang_jurai').value = talangJuraiEl ? talangJuraiEl.value : 0;
+    document.getElementById('pdf_waste').value = wasteEl ? wasteEl.value : 5;
     document.getElementById('pdf_hasil').value = JSON.stringify(results);
-    document.getElementById('pdf_grand_total').value = document.getElementById('grandTotal').innerText;
+    document.getElementById('pdf_grand_total').value = grandTotalEl ? grandTotalEl.innerText : 'Rp 0';
+    
+    // Opsi Tambahan
+    document.getElementById('pdf_opsi_dinding').value = document.getElementById('opsi_dinding')?.value || 0;
+    document.getElementById('pdf_opsi_kaca').value = document.getElementById('opsi_kaca')?.value || 0;
+    document.getElementById('pdf_opsi_penangkal').value = document.getElementById('opsi_penangkal')?.value || 0;
+     document.getElementById('pdf_opsi_exhaust').value = document.getElementById('opsi_exhaust')?.value || 0;
+    
+    // Data tambahan untuk PDF
+    document.getElementById('pdf_lantai_kerja').value = document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm';
+    document.getElementById('pdf_rangka').value = document.getElementById('rangka')?.value || 'Baja Ringan';
+    document.getElementById('pdf_detail_results').value = JSON.stringify(results);
+    
     document.getElementById('pdf_tanggal').value = new Date().toLocaleDateString('id-ID');
     document.getElementById('pdf_waktu').value = new Date().toLocaleTimeString('id-ID');
 }

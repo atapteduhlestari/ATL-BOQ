@@ -24,24 +24,364 @@
     .delete-row:hover {
         transform: scale(1.1);
     }
+
+    /* NOTES / PEMBERITAHUAN */
+    .notes-container {
+        background: #fffbeb;
+        border: 1px solid #fcd34d;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+    }
+    
+    .notes-container .notes-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #92400e;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .notes-container .notes-title .icon {
+        font-size: 18px;
+    }
+    
+    .notes-container .notes-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .notes-container .notes-list li {
+        font-size: 12px;
+        color: #78350f;
+        padding: 4px 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        line-height: 1.5;
+    }
+    
+    .notes-container .notes-list li .bullet {
+        color: #d97706;
+        font-weight: 700;
+    }
+    
+    .notes-container .notes-list li strong {
+        color: #92400e;
+    }
+    
+    .notes-container .notes-list li .highlight {
+        background: #fef3c7;
+        padding: 0 6px;
+        border-radius: 4px;
+        font-weight: 500;
+        color: #92400e;
+    }
+    
+    .notes-container .notes-list li .warning-text {
+        color: #991b1b;
+        font-weight: 600;
+    }
+
+    /* Opsi Tambahan */
+    .opsi-tambahan-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    @media (max-width: 640px) {
+        .opsi-tambahan-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .opsi-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .opsi-item label {
+        font-size: 10px !important;
+        font-weight: 500;
+        color: #4a5568;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .opsi-item label .opsi-desc {
+        font-weight: 400;
+        color: #a0aec0;
+        font-size: 9px;
+    }
+    
+    .opsi-item input {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 12px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.2s;
+        background: white;
+    }
+    
+    .opsi-item input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    
+    .opsi-item input::placeholder {
+        color: #cbd5e1;
+        font-size: 11px;
+    }
+    
+    .opsi-item .opsi-satuan {
+        font-size: 10px;
+        color: #a0aec0;
+        margin-top: 2px;
+    }
+
+    /* HEADER ELEGANT MINIMALIS */
+    .header-brand {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        border-radius: 16px;
+        padding: 28px 32px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    
+    .header-brand::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 50%;
+    }
+    
+    .header-brand .brand-icon.iko {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+    
+    .header-brand .brand-icon.skyshield {
+        background: linear-gradient(135deg, #06b6d4, #0891b2);
+    }
+    
+    .header-brand .brand-icon.palmex {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+    
+    .header-brand .brand-name {
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+        letter-spacing: -0.3px;
+    }
+    
+    .header-brand .brand-sub {
+        font-size: 12px;
+        color: rgba(255,255,255,0.6);
+        font-weight: 400;
+        margin-top: 2px;
+    }
+    
+    .header-brand .brand-badge {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 500;
+        color: rgba(255,255,255,0.7);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    /* STYLING HASIL PERHITUNGAN - TABLE MINIMALIS */
+    .result-section {
+        margin-bottom: 20px;
+    }
+
+    .result-section .section-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 8px 12px;
+        background: #f8fafc;
+        border-radius: 6px 6px 0 0;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .result-table {
+        width: 100%;
+        font-size: 12px;
+        border-collapse: collapse;
+    }
+
+    .result-table th {
+        text-align: left;
+        padding: 8px 12px;
+        font-weight: 500;
+        color: #94a3b8;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #fafbfc;
+    }
+
+    .result-table td {
+        padding: 7px 12px;
+        border-bottom: 1px solid #f1f4f9;
+        color: #1a1a2e;
+    }
+
+    .result-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .result-table .product-name {
+        font-weight: 500;
+    }
+
+    .result-table .area-tag {
+        font-size: 10px;
+        color: #94a3b8;
+    }
+
+    .result-table .qty {
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .result-table .unit {
+        color: #94a3b8;
+        font-size: 11px;
+        text-align: left;
+    }
+
+    .result-table .total {
+        font-weight: 500;
+        text-align: right;
+    }
+
+    .result-table .total-empty {
+        color: #cbd5e1;
+        font-weight: 400;
+        text-align: right;
+    }
+
+    .result-table .text-center {
+        text-align: center;
+    }
+
+    .result-table .text-right {
+        text-align: right;
+    }
+
+    .grand-total-minimal {
+        background: #1a1a2e;
+        border-radius: 8px;
+        padding: 14px 20px;
+        margin-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .grand-total-minimal .label {
+        color: rgba(255,255,255,0.6);
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .grand-total-minimal .amount {
+        color: white;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: #94a3b8;
+        font-size: 13px;
+    }
 </style>
 
 <div class="space-y-6">
     <!-- Header -->
-    <div class="relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 rounded-2xl p-8 text-white shadow-xl">
-        <div class="absolute inset-0 bg-black/10"></div>
-        <div class="relative z-10">
-            <div class="flex items-center justify-between">
+    <div class="header-brand">
+        <div class="flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-4">
+                <div class="brand-icon iko">I</div>
                 <div>
-                    <h2 class="text-2xl font-semibold mb-1 tracking-tight">BOQ - IKO Atap</h2>
-                    <p class="text-blue-100 text-xs">Hitung kebutuhan material atap IKO berdasarkan perhitungan luas</p>
-                </div>
-                <div class="bg-white/20 backdrop-blur-md rounded-full px-3 py-1.5">
-                    <span class="text-[10px] font-medium">IKO - ATAP</span>
+                    <div class="brand-name">BOQ - IKO Atap</div>
+                    <div class="brand-sub">Hitung kebutuhan material atap IKO berdasarkan perhitungan luas</div>
                 </div>
             </div>
+            <div class="brand-badge">IKO - ATAP</div>
         </div>
-        <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- ===== NOTES / PEMBERITAHUAN ===== -->
+    <div class="notes-container">
+        <div class="notes-title">
+            <span class="icon">📋</span> Petunjuk Pengisian BOQ
+        </div>
+        <ul class="notes-list">
+            <li>
+                <span class="bullet">•</span>
+                <span>Cek lebih detail apakah ada atap yang bertemu langsung dengan <strong>dinding</strong>, <strong>kaca</strong>, <strong>penangkal petir</strong>, <strong>Ventilasi Exhaust</strong> dll.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Jika bertemu dinding, kaca, penangkal petir, ventilasi exhaust, silahkan input berapa panjang/area pertemuannya di bagian <strong>"Opsi Tambahan"</strong>.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Untuk atap dengan kemiringan dibawah <strong>15 Derajat</strong> tidak disarankan menggunakan ridge ventilator.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Untuk lokasi dengan potensi <strong>angin kencang (&gt;97 km/jam)</strong>, direkomendasikan menggunakan <span class="highlight">Cambridge</span>.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span class="warning-text">⚠️ Jika memaksakan menggunakan produk lain selain Cambridge, maka garansi akan hilang.</span>
+            </li>
+              <li>
+                <span class="bullet">•</span>
+                <span><strong>Hal yang perlu diperhatikan:</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Jarak usuk per <strong>60 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Jarak usuk per <strong>40 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Pemakaian underlayer <strong>self adhesive</strong> direkomendasikan</span>
+            </li>
+        </ul>
     </div>
     
     <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
@@ -74,13 +414,61 @@
                             <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Flashing</label>
                             <input type="number" id="panjang_flashing" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" readonly placeholder="0 m">
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Talang Jurai</label>
-                            <input type="number" id="panjang_talang_jurai" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="0 m">
+                    </div>
+
+                    <!-- ===== OPSI TAMBAHAN ===== -->
+                    <div class="opsi-tambahan-grid">
+                        <div class="opsi-item">
+                            <label>
+                                📐 Dinding
+                                <span class="opsi-desc">(Panjang atap yang berbatasan dinding)</span>
+                            </label>
+                            <input type="number" 
+                                   id="opsi_dinding" 
+                                   step="0.1" 
+                                   min="0"
+                                   placeholder="0"
+                                   value="0">
+                            <span class="opsi-satuan">meter</span>
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Wall Flashing</label>
-                            <input type="number" id="panjang_wall_flashing" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="0 m">
+                        <div class="opsi-item">
+                            <label>
+                                🪟 Kaca
+                                <span class="opsi-desc">(panjang area kaca/genteng kaca)</span>
+                            </label>
+                            <input type="number" 
+                                   id="opsi_kaca" 
+                                   step="0.1" 
+                                   min="0"
+                                   placeholder="0"
+                                   value="0">
+                            <span class="opsi-satuan">meter</span>
+                        </div>
+                        <div class="opsi-item">
+                            <label>
+                                ⚡ Penangkal Petir
+                                <span class="opsi-desc">(jumlah titik)</span>
+                            </label>
+                            <input type="number" 
+                                   id="opsi_penangkal" 
+                                   step="1" 
+                                   min="0"
+                                   placeholder="0"
+                                   value="0">
+                            <span class="opsi-satuan">titik</span>
+                        </div>
+                        <div class="opsi-item">
+                            <label>
+                                💨 Ventilasi Exhaust
+                                <span class="opsi-desc">(jumlah titik)</span>
+                            </label>
+                            <input type="number" 
+                                   id="opsi_exhaust" 
+                                   step="1" 
+                                   min="0"
+                                   placeholder="0"
+                                   value="0">
+                            <span class="opsi-satuan">titik</span>
                         </div>
                     </div>
                 </div>
@@ -115,6 +503,19 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <!-- ===== DROPDOWN STARTER ===== -->
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">STARTER</label>
+                            <select id="starter_produk_id" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                <option value="">Pilih Starter</option>
+                                @foreach($starters as $starter)
+                                    <option value="{{ $starter->id }}">
+                                        {{ $starter->nama_produk }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         
                         <div>
                             <label class="block text-[10px] font-medium text-gray-500 mb-1.5">STRUKTUR RANGKA</label>
@@ -143,7 +544,7 @@
                 
                 <!-- Tombol Hitung -->
                 <div class="flex gap-3">
-                    <button type="button" onclick="hitungBOQ()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg text-sm font-medium transition-all">
+                    <button type="button" onclick="hitungBOQ()" class="flex-1 bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium transition-all">
                         <svg class="inline w-4 h-4 mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-6 3v-3m-6 3h18M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
                         </svg>
@@ -160,31 +561,14 @@
             
             <!-- Hasil Perhitungan -->
             <div id="hasilBOQ" class="mt-8 hidden">
-                <div class="flex items-center gap-2 mb-3">
-                    <div class="w-1 h-5 bg-emerald-600 rounded-full"></div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-1 h-5 bg-gray-900 rounded-full"></div>
                     <h3 class="text-base font-semibold text-gray-800">Rincian Kebutuhan Material</h3>
                 </div>
-                <div class="overflow-x-auto rounded-lg border border-gray-200">
-                    <table class="w-full text-sm">
-                        <thead>
-                            <tr class="bg-gray-50 border-b border-gray-200">
-                                <th class="p-3 text-left text-xs font-medium text-gray-600">Nama Produk</th>
-                                <th class="p-3 text-left text-xs font-medium text-gray-600">Area</th>
-                                <th class="p-3 text-right text-xs font-medium text-gray-600">Qty</th>
-                                <th class="p-3 text-right text-xs font-medium text-gray-600">Satuan</th>
-                                <th class="p-3 text-right text-xs font-medium text-gray-600">Harga Satuan</th>
-                                <th class="p-3 text-right text-xs font-medium text-gray-600">Total</th>
-                                <th class="p-3 text-center text-xs font-medium text-gray-600">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="boqTableBody" class="divide-y divide-gray-100"></tbody>
-                        <tfoot class="bg-gray-50 border-t border-gray-200">
-                            <tr class="font-semibold">
-                                <td colspan="6" class="p-3 text-right text-sm text-gray-700">GRAND TOTAL</td>
-                                <td id="grandTotal" class="p-3 text-right text-blue-600 font-bold text-base">Rp 0</td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                <div class="rounded-xl border border-gray-200 overflow-hidden bg-white">
+                    <div id="boqResultContainer" class="p-4">
+                        <!-- Akan diisi oleh JavaScript -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -194,42 +578,113 @@
 <script>
 let currentResults = [];
 
-function updateGrandTotal() {
-    let grandTotal = currentResults.reduce((sum, item) => sum + item.total_harga, 0);
-    document.getElementById('grandTotal').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
+function updateGrandTotal(total) {
+    let grandTotalEl = document.getElementById('grandTotal');
+    if (grandTotalEl) {
+        grandTotalEl.innerHTML = `Rp ${(total || 0).toLocaleString()}`;
+    }
 }
 
 function renderTable() {
-    let tbody = document.getElementById('boqTableBody');
-    tbody.innerHTML = '';
+    let container = document.getElementById('boqResultContainer');
     
-    currentResults.forEach((item, index) => {
-        let row = `<tr class="hover:bg-gray-50">
-            <td class="p-3 text-gray-800">${item.nama_produk}</td>
-            <td class="p-3"><span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium ${getAreaColorClass(item.area)}">${item.area}</span></td>
-            <td class="p-3 text-right font-medium">${item.qty.toLocaleString()}</td>
-            <td class="p-3 text-right">${item.satuan}</td>
-            <td class="p-3 text-right">${item.harga_satuan.toLocaleString()}</td>
-            <td class="p-3 text-right font-medium text-emerald-600">${item.total_harga.toLocaleString()}</td>
-            <td class="p-3 text-center">
-                <button onclick="deleteRow(${index})" class="delete-row text-red-500 hover:text-red-700">
-                    <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                </button>
-            </td>
-        </tr>`;
-        tbody.innerHTML += row;
+    if (!container) {
+        console.error('Container boqResultContainer tidak ditemukan!');
+        return;
+    }
+    
+    if (!currentResults || currentResults.length === 0) {
+        container.innerHTML = `<div class="empty-state">Belum ada data material</div>`;
+        return;
+    }
+    
+    // Kelompokkan berdasarkan area
+    const groups = {
+        'Atap Utama': { label: 'KELOMPOK ATAP UTAMA', items: [] },
+        'Aksesoris': { label: 'AKSESORIS', items: [] },
+        'Additional': { label: 'ADDITIONAL', items: [] },
+        'Sistem Pendukung': { label: 'SISTEM PENDUKUNG', items: [] }
+    };
+    
+    const additionalAreas = ['Wall Flashing', 'Flashing Kaca', 'Penangkal Petir', 'Ventilasi Exhaust'];
+    const systemAreas = ['Underlayer', 'Lantai Kerja', 'Screw Plywood', 'Paku & Screw'];
+    const aksesorisAreas = ['Starter', 'Nok & Jurai', 'Talang Jurai', 'Flashing', 'Metal Flashing', 'Shingle Stick'];
+    
+    currentResults.forEach(item => {
+        if (item.area === 'Atap Utama') {
+            groups['Atap Utama'].items.push(item);
+        } else if (additionalAreas.includes(item.area)) {
+            groups['Additional'].items.push(item);
+        } else if (systemAreas.includes(item.area)) {
+            groups['Sistem Pendukung'].items.push(item);
+        } else if (aksesorisAreas.includes(item.area)) {
+            groups['Aksesoris'].items.push(item);
+        } else {
+            groups['Aksesoris'].items.push(item);
+        }
     });
     
-    updateGrandTotal();
+    let html = '';
+    let grandTotal = 0;
+    
+    const groupKeys = ['Atap Utama', 'Aksesoris', 'Additional', 'Sistem Pendukung'];
+    
+    groupKeys.forEach(key => {
+        const group = groups[key];
+        if (group.items.length === 0) return;
+        
+        const groupTotal = group.items.reduce((sum, item) => sum + (item.total_harga || 0), 0);
+        grandTotal += groupTotal;
+        
+        html += `<div class="result-section">`;
+        html += `<div class="section-label">${group.label}</div>`;
+        
+        html += `<table class="result-table">
+            <thead>
+                <tr>
+                    <th style="width:35%;">Nama Produk</th>
+                    <th style="width:20%;">Area</th>
+                    <th style="width:15%;text-align:center;">Qty</th>
+                    <th style="width:15%;">Satuan</th>
+                    <th style="width:20%;text-align:right;">Total</th>
+                </tr>
+            </thead>
+            <tbody>`;
+        
+        group.items.forEach(item => {
+            let totalDisplay = '';
+            if (item.total_harga > 0) {
+                totalDisplay = `<span class="total">Rp ${item.total_harga.toLocaleString()}</span>`;
+            } else {
+                totalDisplay = `<span class="total-empty">-</span>`;
+            }
+            
+            html += `<tr>
+                <td class="product-name">${item.nama_produk || '-'}</td>
+                <td><span class="area-tag">${item.area || '-'}</span></td>
+                <td class="qty text-center">${(item.qty || 0).toLocaleString()}</td>
+                <td class="unit">${item.satuan || '-'}</td>
+                <td class="text-right">${totalDisplay}</td>
+            </tr>`;
+        });
+        
+        html += `</tbody></table>`;
+        html += `</div>`;
+    });
+    
+    // Grand Total
+    html += `<div class="grand-total-minimal">
+        <span class="label">Grand Total</span>
+        <span class="amount">Rp ${grandTotal.toLocaleString()}</span>
+    </div>`;
+    
+    container.innerHTML = html;
 }
 
 function deleteRow(index) {
     if (confirm('Hapus item ini?')) {
         currentResults.splice(index, 1);
         renderTable();
-        
         if (currentResults.length === 0) {
             document.getElementById('hasilBOQ').classList.add('hidden');
             document.getElementById('btnPDF').classList.add('hidden');
@@ -239,11 +694,44 @@ function deleteRow(index) {
 
 window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
+    
     document.getElementById('luas_atap').value = urlParams.get('luas_atap') || 0;
     document.getElementById('sudut').value = urlParams.get('sudut') || 0;
     document.getElementById('panjang_starter').value = urlParams.get('panjang_starter') || 0;
     document.getElementById('panjang_nok_jurai').value = urlParams.get('panjang_nok_jurai') || 0;
     document.getElementById('panjang_flashing').value = urlParams.get('panjang_flashing') || 0;
+    document.getElementById('opsi_dinding').value = urlParams.get('dinding') || 0;
+    document.getElementById('opsi_kaca').value = urlParams.get('kaca') || 0;
+    document.getElementById('opsi_penangkal').value = urlParams.get('penangkal') || 0;
+    document.getElementById('opsi_exhaust').value = urlParams.get('exhaust') || 0;
+
+    toggleFields();
+};
+
+function sortResults(results) {
+    const urutan = [
+        'Atap Utama',
+        'Starter',
+        'Nok & Jurai',
+        'Talang Jurai',
+        'Underlayer',
+        'Paku & Screw',
+        'Flashing',
+        'Metal Flashing',
+        'Shingle Stick',
+        'Wall Flashing',
+        'Flashing Kaca',
+        'Penangkal Petir',
+        'Ventilasi Exhaust'
+    ];
+    
+    return results.sort((a, b) => {
+        let indexA = urutan.indexOf(a.area);
+        let indexB = urutan.indexOf(b.area);
+        if (indexA === -1) indexA = urutan.length;
+        if (indexB === -1) indexB = urutan.length;
+        return indexA - indexB;
+    });
 }
 
 function hitungBOQ() {
@@ -252,20 +740,44 @@ function hitungBOQ() {
     btn.innerHTML = '<svg class="inline w-4 h-4 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Memproses...';
     btn.disabled = true;
     
+    let opsiDinding = parseFloat(document.getElementById('opsi_dinding')?.value) || 0;
+    let opsiKaca = parseFloat(document.getElementById('opsi_kaca')?.value) || 0;
+    let opsiPenangkal = parseInt(document.getElementById('opsi_penangkal')?.value) || 0;
+    let opsiExhaust = parseInt(document.getElementById('opsi_exhaust')?.value) || 0;
+    
     let data = {
-        luas_atap: parseFloat(document.getElementById('luas_atap').value),
-        sudut: parseFloat(document.getElementById('sudut').value),
-        panjang_starter: parseFloat(document.getElementById('panjang_starter').value),
-        panjang_nok_jurai: parseFloat(document.getElementById('panjang_nok_jurai').value),
-        panjang_talang_jurai: parseFloat(document.getElementById('panjang_talang_jurai').value),
-        panjang_flashing: parseFloat(document.getElementById('panjang_flashing').value),
-        panjang_wall_flashing: parseFloat(document.getElementById('panjang_wall_flashing').value),
-        produk_atap_id: document.getElementById('produk_atap_id').value,
-        underlayer_id: document.getElementById('underlayer_id').value,
-        rangka: document.getElementById('rangka').value,
-        lantai_kerja: document.getElementById('lantai_kerja').value,
-        waste: parseFloat(document.getElementById('waste').value)
+        luas_atap: parseFloat(document.getElementById('luas_atap')?.value) || 0,
+        sudut: parseFloat(document.getElementById('sudut')?.value) || 0,
+        panjang_starter: parseFloat(document.getElementById('panjang_starter')?.value) || 0,
+        panjang_nok_jurai: parseFloat(document.getElementById('panjang_nok_jurai')?.value) || 0,
+        panjang_talang_jurai: parseFloat(document.getElementById('panjang_talang_jurai')?.value) || 0,
+        panjang_flashing: parseFloat(document.getElementById('panjang_flashing')?.value) || 0,
+        panjang_wall_flashing: opsiDinding,
+        produk_atap_id: document.getElementById('produk_atap_id')?.value || '',
+        underlayer_id: document.getElementById('underlayer_id')?.value || '',
+        starter_produk_id: document.getElementById('starter_produk_id')?.value || '',
+        rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+        lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+        waste: parseFloat(document.getElementById('waste')?.value) || 5,
+        opsi_dinding: opsiDinding,
+        opsi_kaca: opsiKaca,
+        opsi_penangkal: opsiPenangkal,
+        opsi_exhaust: opsiExhaust
     };
+    
+    if (!data.produk_atap_id) {
+        alert('Pilih Produk Atap Utama terlebih dahulu!');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        return;
+    }
+    
+    if (data.luas_atap <= 0) {
+        alert('Data luas atap tidak valid! Silakan hitung ulang dari halaman sebelumnya.');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        return;
+    }
     
     fetch('{{ route("boq.iko-atap.hitung") }}', {
         method: 'POST',
@@ -275,50 +787,52 @@ function hitungBOQ() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            currentResults = data.results;
+            currentResults = sortResults(data.results);
             renderTable();
             document.getElementById('hasilBOQ').classList.remove('hidden');
             document.getElementById('hasilBOQ').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             document.getElementById('btnPDF').classList.remove('hidden');
         } else {
-            alert('Terjadi kesalahan');
+            alert('Terjadi kesalahan: ' + (data.message || 'Unknown error'));
         }
     })
-    .catch(error => { alert('Error'); })
-    .finally(() => { btn.innerHTML = originalText; btn.disabled = false; });
+    .catch(error => { 
+        console.error('Error:', error);
+        alert('Error: ' + error.message); 
+    })
+    .finally(() => { 
+        btn.innerHTML = originalText; 
+        btn.disabled = false; 
+    });
 }
 
-function getAreaColorClass(area) {
-    const colors = {
-        'Atap Utama': 'bg-blue-100 text-blue-700',
-        'Underlayer': 'bg-green-100 text-green-700',
-        'Starter': 'bg-orange-100 text-orange-700',
-        'Nok & Jurai': 'bg-purple-100 text-purple-700',
-        'Flashing': 'bg-yellow-100 text-yellow-700',
-        'Talang Jurai': 'bg-cyan-100 text-cyan-700',
-        'Wall Flashing': 'bg-pink-100 text-pink-700',
-    };
-    return colors[area] || 'bg-gray-100 text-gray-700';
+function toggleFields() {
+    // Tidak ada toggle untuk IKO, semua field selalu muncul
 }
 
 function exportToPDF() {
     let data = {
-        luas_atap: document.getElementById('luas_atap').value,
-        sudut: document.getElementById('sudut').value,
-        panjang_starter: document.getElementById('panjang_starter').value,
-        panjang_nok_jurai: document.getElementById('panjang_nok_jurai').value,
-        panjang_flashing: document.getElementById('panjang_flashing').value,
-        talang_jurai: document.getElementById('panjang_talang_jurai').value,
-        wall_flashing: document.getElementById('panjang_wall_flashing').value,
-        waste: document.getElementById('waste').value,
-        produk_atap: document.getElementById('produk_atap_id').selectedOptions[0]?.text,
-        underlayer: document.getElementById('underlayer_id').selectedOptions[0]?.text,
-        rangka: document.getElementById('rangka').value,
-        lantai_kerja: document.getElementById('lantai_kerja').value,
-        grand_total: document.getElementById('grandTotal').innerText,
+        luas_atap: document.getElementById('luas_atap')?.value || 0,
+        sudut: document.getElementById('sudut')?.value || 0,
+        panjang_starter: document.getElementById('panjang_starter')?.value || 0,
+        panjang_nok_jurai: document.getElementById('panjang_nok_jurai')?.value || 0,
+        panjang_flashing: document.getElementById('panjang_flashing')?.value || 0,
+        talang_jurai: document.getElementById('panjang_talang_jurai')?.value || 0,
+        wall_flashing: document.getElementById('opsi_dinding')?.value || 0,
+        waste: document.getElementById('waste')?.value || 5,
+        produk_atap: document.getElementById('produk_atap_id')?.selectedOptions[0]?.text || '',
+        underlayer: document.getElementById('underlayer_id')?.selectedOptions[0]?.text || '',
+        starter: document.getElementById('starter_produk_id')?.selectedOptions[0]?.text || '',
+        rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+        lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+        grand_total: document.getElementById('grandTotal')?.innerText || 'Rp 0',
+        opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
+        opsi_kaca: document.getElementById('opsi_kaca')?.value || 0,
+        opsi_penangkal: document.getElementById('opsi_penangkal')?.value || 0,
+        opsi_exhaust: document.getElementById('opsi_exhaust')?.value || 0,
         results: currentResults.map(item => ({
-            id: item.id,                    // <-- TAMBAHKAN INI!
-            product_id: item.product_id,    // <-- TAMBAHKAN INI JUGA
+            id: item.id,
+            product_id: item.product_id,
             nama: item.nama_produk,
             area: item.area,
             qty: item.qty,

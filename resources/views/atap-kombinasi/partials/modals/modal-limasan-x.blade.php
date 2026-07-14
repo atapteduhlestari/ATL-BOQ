@@ -60,6 +60,16 @@
                     </div>
 
                     <div class="space-y-4">
+                         <div class="bg-gray-50 border-l-2 border-gray-400 rounded-lg p-3">
+                            <p class="text-xs text-gray-600 font-medium">Cara menghitung :</p>
+                            <div class="text-xs text-gray-500 mt-1 space-y-0.5">
+                                <div>Bagi bidang menjadi 3 bagian:</div>
+                                <div class="pl-2">• <strong>Bagian Atas</strong> = Limasan A</div>
+                                <div class="pl-2">• <strong>Bagian Tengah</strong> = Limasan B</div>
+                                <div class="pl-2">• <strong>Bagian Bawah</strong> = Limasan C</div>
+                            </div>
+                        </div>
+
                         <!-- Bagian 1: Limasan A (Atas) -->
                         <div class="border rounded-lg p-4 bg-gray-50/50 border-gray-200">
                             <div class="flex items-center gap-2 mb-3">
@@ -146,7 +156,7 @@
                                     <span id="totalStarterLimasanX" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">Panjang Nok & Jurai</span>
+                                    <span class="text-gray-500" id="labelNokJuraiLimasanX">Panjang Nok & Jurai</span>
                                     <span id="totalNokJuraiLimasanX" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
@@ -189,8 +199,13 @@
 let hasilLimasanX = null;
 
 function hitungLimasanX() {
+    // Ambil brand dari select BOQ
+    let brandSelect = document.getElementById('brand_boq_limasan_x');
+    let brand = brandSelect ? brandSelect.value : 'iko';
+    
     let data = {
         jenis_kombinasi: 'limasan_x',
+        brand: brand,
         panjang_a: parseFloat(document.getElementById('limasan_x_panjang_a').value) || 0,
         lebar_a: parseFloat(document.getElementById('limasan_x_lebar_a').value) || 0,
         sudut_a: parseFloat(document.getElementById('limasan_x_sudut_a').value) || 0,
@@ -214,32 +229,78 @@ function hitungLimasanX() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('{{ route("atap-kombinasi.hitung") }}', {
+    // Tentukan URL berdasarkan brand
+    let url;
+    if (brand === 'palmex') {
+        url = '{{ route("palmex.kombinasi.hitung") }}';
+    } else {
+        url = '{{ route("atap-kombinasi.hitung") }}';
+    }
+    
+    fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        headers: { 
+            'Content-Type': 'application/json', 
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+        },
         body: JSON.stringify(data)
     })
     .then(res => res.json())
     .then(resData => {
         if (resData.success) {
             hasilLimasanX = resData;
+            let total = resData.total;
             
-            document.getElementById('totalLuasLimasanX').innerHTML = resData.total.luas_atap + ' m²';
-            document.getElementById('totalStarterLimasanX').innerHTML = resData.total.panjang_starter + ' m';
-            document.getElementById('totalNokJuraiLimasanX').innerHTML = resData.total.panjang_nok_jurai + ' m';
-            document.getElementById('totalFlashingLimasanX').innerHTML = resData.total.panjang_flashing + ' m';
+            document.getElementById('totalLuasLimasanX').innerHTML = total.luas_atap + ' m²';
+            document.getElementById('totalStarterLimasanX').innerHTML = total.panjang_starter + ' m';
+            document.getElementById('totalFlashingLimasanX').innerHTML = total.panjang_flashing + ' m';
             
+            // ===== TAMPILKAN NOK & JURAI =====
+            let labelElement = document.getElementById('labelNokJuraiLimasanX');
+            let valueElement = document.getElementById('totalNokJuraiLimasanX');
+            
+            if (brand === 'palmex') {
+                // PALMEX: Jurai dan Nok Atas dipisah
+                if (labelElement) labelElement.textContent = 'Panjang Jurai & Nok Atas';
+                if (valueElement) {
+                    valueElement.innerHTML = 
+                        'Jurai: ' + total.panjang_jurai + ' m | Nok Atas: ' + total.panjang_nok_atas + ' m';
+                }
+            } else {
+                // IKO/SKYSHIELD: Nok & Jurai digabung
+                if (labelElement) labelElement.textContent = 'Panjang Nok & Jurai';
+                if (valueElement) {
+                    valueElement.innerHTML = total.panjang_nok_jurai + ' m';
+                }
+            }
+            
+            // ===== DETAIL PER BAGIAN =====
             let detailHtml = '<div class="text-xs font-medium text-gray-600 mb-1">Detail Per Bagian</div>';
             resData.details.forEach(item => {
                 detailHtml += `<div class="bg-white border border-gray-200 rounded-lg p-2 text-xs">
                     <div class="font-medium text-gray-800">${item.bagian}</div>
-                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">
+                    <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">`;
+                
+                if (brand === 'palmex') {
+                    // PALMEX: Jurai dan Nok Atas
+                    detailHtml += `
+                        <div>Luas: ${item.luas_atap} m²</div>
+                        <div>Starter: ${item.starter} m</div>
+                        <div>Jurai: ${item.jurai} m</div>
+                        <div>Nok Atas: ${item.nok_atas} m</div>
+                        <div>Flashing: ${item.flashing} m</div>
+                    `;
+                } else {
+                    // IKO/SKYSHIELD: Nok & Jurai digabung
+                    detailHtml += `
                         <div>Luas: ${item.luas_atap} m²</div>
                         <div>Starter: ${item.starter} m</div>
                         <div>Nok & Jurai: ${item.nok_jurai} m</div>
                         <div>Flashing: ${item.flashing} m</div>
-                    </div>
-                </div>`;
+                    `;
+                }
+                
+                detailHtml += `</div></div>`;
             });
             document.getElementById('detailBagianLimasanX').innerHTML = detailHtml;
             document.getElementById('hasilPerhitunganLimasanX').classList.remove('hidden');
@@ -272,9 +333,10 @@ function resetFormLimasanX() {
 }
 
 function lanjutKeBOQLimasanX() {
-    let brandSlug = document.getElementById('brand_boq_limasan_x').value;
+    let selectEl = document.getElementById('brand_boq_limasan_x');
+    let brandSlug = selectEl ? selectEl.value : '';
     
-    if (!brandSlug) {
+    if (!brandSlug || brandSlug === '') {
         alert('Pilih brand terlebih dahulu!');
         return;
     }
@@ -287,13 +349,57 @@ function lanjutKeBOQLimasanX() {
     let d = hasilLimasanX.details;
     let total = hasilLimasanX.total;
     
-    let url = `/boq/atap-kombinasi/limasan-x?brand_slug=${brandSlug}`;
-    url += `&luas_atap_1=${d[0]?.luas_atap||0}&sudut_1=${document.getElementById('limasan_x_sudut_a').value}&starter_1=${d[0]?.starter||0}&nok_1=${d[0]?.nok_jurai||0}&flashing_1=${d[0]?.flashing||0}&lebar_1=${document.getElementById('limasan_x_lebar_a').value}`;
-    url += `&luas_atap_2=${d[1]?.luas_atap||0}&sudut_2=${document.getElementById('limasan_x_sudut_b').value}&starter_2=${d[1]?.starter||0}&nok_2=${d[1]?.nok_jurai||0}&flashing_2=${d[1]?.flashing||0}&lebar_2=${document.getElementById('limasan_x_lebar_b').value}`;
-    url += `&luas_atap_3=${d[2]?.luas_atap||0}&sudut_3=${document.getElementById('limasan_x_sudut_c').value}&starter_3=${d[2]?.starter||0}&nok_3=${d[2]?.nok_jurai||0}&flashing_3=${d[2]?.flashing||0}&lebar_3=${document.getElementById('limasan_x_lebar_c').value}`;
+    const controllerMap = {
+        'iko-atap': '/boq/atap-kombinasi/limasan-x',
+        'skyshield': '/boq/atap-kombinasi-skyshield/limasan-x',
+        'palmex': '/boq/palmex/atap-kombinasi/limasan-x',
+    };
     
+    let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limasan-x';
+    let url = `${baseUrl}?brand_slug=${brandSlug}`;
+    
+    // ===== BAGIAN 1 (LIMASAN A - ATAS) =====
+    url += `&luas_atap_1=${d[0]?.luas_atap||0}`;
+    url += `&sudut_1=${document.getElementById('limasan_x_sudut_a').value}`;
+    url += `&starter_1=${d[0]?.starter||0}`;
+    url += `&flashing_1=${d[0]?.flashing||0}`;
+    url += `&lebar_1=${document.getElementById('limasan_x_lebar_a').value}`;
+    
+    // ===== BAGIAN 2 (LIMASAN B - TENGAH) =====
+    url += `&luas_atap_2=${d[1]?.luas_atap||0}`;
+    url += `&sudut_2=${document.getElementById('limasan_x_sudut_b').value}`;
+    url += `&starter_2=${d[1]?.starter||0}`;
+    url += `&flashing_2=${d[1]?.flashing||0}`;
+    url += `&lebar_2=${document.getElementById('limasan_x_lebar_b').value}`;
+    
+    // ===== BAGIAN 3 (LIMASAN C - BAWAH) =====
+    url += `&luas_atap_3=${d[2]?.luas_atap||0}`;
+    url += `&sudut_3=${document.getElementById('limasan_x_sudut_c').value}`;
+    url += `&starter_3=${d[2]?.starter||0}`;
+    url += `&flashing_3=${d[2]?.flashing||0}`;
+    url += `&lebar_3=${document.getElementById('limasan_x_lebar_c').value}`;
+    
+    // ===== STARTER TOTAL & TALANG JURAI =====
     url += `&starter_total=${total?.panjang_starter||0}`;
     url += `&talang_jurai=${total?.talang_jurai||0}`;
+    
+    // ===== BEDAKAN BRAND =====
+    if (brandSlug === 'palmex') {
+        // PALMEX: semua limasan punya jurai & nok_atas
+        url += `&jurai_1=${d[0]?.jurai||0}`;
+        url += `&nok_atas_1=${d[0]?.nok_atas||0}`;
+        url += `&jurai_2=${d[1]?.jurai||0}`;
+        url += `&nok_atas_2=${d[1]?.nok_atas||0}`;
+        url += `&jurai_3=${d[2]?.jurai||0}`;
+        url += `&nok_atas_3=${d[2]?.nok_atas||0}`;
+        url += `&total_jurai=${total?.panjang_jurai||0}`;
+        url += `&total_nok_atas=${total?.panjang_nok_atas||0}`;
+    } else {
+        // IKO/SKYSHIELD: nok_jurai digabung
+        url += `&nok_1=${d[0]?.nok_jurai||0}`;
+        url += `&nok_2=${d[1]?.nok_jurai||0}`;
+        url += `&nok_3=${d[2]?.nok_jurai||0}`;
+    }
     
     window.location.href = url;
 }

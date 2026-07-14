@@ -192,28 +192,65 @@ function hitungPiramid() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('/atap-standar/hitung', {
+    // Pilih endpoint berdasarkan brand yang dipilih
+    let brandSlug = document.getElementById('brand_piramid')?.value || '';
+    let url = '/atap-standar/hitung'; // default dengan jenis_atap
+    
+    if (brandSlug === 'palmex') {
+        url = '/atap-standar/hitung-palmex-piramid';
+    }
+    
+    let requestData = {};
+    
+    if (brandSlug === 'palmex') {
+        // PALMEX: kirim panjang, lebar, sudut
+        requestData = {
+            panjang: p,
+            lebar: l,
+            sudut: s
+        };
+    } else {
+        // DEFAULT: kirim jenis_atap = 3 (Piramid)
+        requestData = {
+            jenis_atap: 3,
+            panjang: p,
+            lebar: l,
+            sudut: s
+        };
+    }
+    
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
             'Accept': 'application/json'
         },
-        body: JSON.stringify({
-            jenis_atap: 3,
-            panjang: p,
-            lebar: l,
-            sudut: s
-        })
+        body: JSON.stringify(requestData)
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Network response was not ok: ' + res.status);
+        }
+        return res.json();
+    })
     .then(data => {
+        console.log('Response data:', data); // Debug
         if (data.success) {
+            // Simpan data ke variabel global
             dataPiramid = data;
+            
             document.getElementById('luasPiramid').innerHTML = data.luas_atap + ' m²';
             document.getElementById('sisiMiringPiramid').innerHTML = data.panjang_sisi_miring + ' m';
             document.getElementById('starterPiramid').innerHTML = data.starting + ' m';
-            document.getElementById('nokPiramid').innerHTML = data.nok_jurai + ' m';
+            
+            // Cek apakah ada panjang_jurai (PALMEX) atau nok_jurai (default)
+            if (data.panjang_jurai !== undefined) {
+                document.getElementById('nokPiramid').innerHTML = data.panjang_jurai + ' m';
+            } else {
+                document.getElementById('nokPiramid').innerHTML = data.nok_jurai + ' m';
+            }
+            
             document.getElementById('flashingPiramid').innerHTML = data.flashing + ' m';
             document.getElementById('hasilPiramid').classList.remove('hidden');
         } else {
@@ -221,15 +258,14 @@ function hitungPiramid() {
         }
     })
     .catch(err => {
-        console.error(err);
-        alert('Terjadi kesalahan server');
+        console.error('Error:', err);
+        alert('Terjadi kesalahan server: ' + err.message);
     })
     .finally(() => {
         btn.innerHTML = originalText;
         btn.disabled = false;
     });
 }
-
 function resetPiramid() {
     document.getElementById('panjang_piramid').value = '';
     document.getElementById('lebar_piramid').value = '';
@@ -253,15 +289,18 @@ function lanjutPiramid() {
     
     let luasAtap = parseFloat(dataPiramid.luas_atap) || 0;
     let panjangStarter = parseFloat(dataPiramid.starting) || 0;
-    let panjangNokJurai = parseFloat(dataPiramid.nok_jurai) || 0;
     let panjangFlashing = parseFloat(dataPiramid.flashing) || 0;
     let sudut = parseFloat(dataPiramid.sudut) || 0;
+    
+    // Cek apakah ada panjang_jurai (PALMEX) atau nok_jurai (default)
+    let panjangNokJurai = dataPiramid.panjang_jurai || dataPiramid.nok_jurai || 0;
     
     // Mapping URL untuk setiap brand
     const controllerMap = {
         'iko-atap': '/boq/iko-atap',
         'skyshield': '/boq/skyshield',
         'iko-insulasi': '/boq/iko-insulasi',
+        'palmex': '/boq/palmex/piramid',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
@@ -269,8 +308,9 @@ function lanjutPiramid() {
     // Kirim parameter sesuai brand
     if (brandSlug === 'iko-insulasi') {
         window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
-    } else if (brandSlug === 'skyshield') {
-        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+    } else if (brandSlug === 'palmex') {
+        // PALMEX Piramid: kirim panjang_jurai (tanpa nok)
+        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
     } else {
         window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
     }

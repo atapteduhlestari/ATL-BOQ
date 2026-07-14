@@ -106,10 +106,6 @@
                                     <span id="startingDome" class="font-medium text-gray-900">- m</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">Nok & Jurai</span>
-                                    <span id="nokJuraiDome" class="font-medium text-gray-900">- m</span>
-                                </div>
-                                <div class="flex justify-between items-center text-sm">
                                     <span class="text-gray-500">Flashing</span>
                                     <span id="flashingDome" class="font-medium text-gray-900">- m</span>
                                 </div>
@@ -174,28 +170,50 @@ function hitungAtapDome() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    fetch('/atap-standar/hitung', {
+    // Pilih endpoint berdasarkan brand yang dipilih
+    let brandSlug = document.getElementById('brand_boq_dome')?.value || '';
+    let url = '/atap-standar/hitung'; // default
+    let requestData = {};
+    
+    if (brandSlug === 'palmex') {
+        url = '/atap-standar/hitung-palmex-dome';
+        requestData = {
+            diameter: d,
+            tinggi: t
+        };
+    } else {
+        requestData = {
+            jenis_atap: 6,
+            diameter: d,
+            tinggi: t
+        };
+    }
+    
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
             'Accept': 'application/json'
         },
-        body: JSON.stringify({
-            jenis_atap: 6,
-            diameter: d,
-            tinggi: t
-        })
+        body: JSON.stringify(requestData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
-            hasilPerhitunganDome = data;
+            window.hasilPerhitunganDome = data;
             
             document.getElementById('luasAtapDome').innerHTML = data.luas_atap + ' m²';
             document.getElementById('jariJariDome').innerHTML = data.jari_jari + ' m';
             document.getElementById('startingDome').innerHTML = data.starting + ' m';
-            document.getElementById('nokJuraiDome').innerHTML = data.nok_jurai + ' m';
+            
+           
+            
             document.getElementById('flashingDome').innerHTML = data.flashing + ' m';
             document.getElementById('hasilPerhitunganDome').classList.remove('hidden');
         } else {
@@ -204,7 +222,7 @@ function hitungAtapDome() {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Terjadi kesalahan pada server');
+        alert('Terjadi kesalahan pada server: ' + error.message);
     })
     .finally(() => {
         btn.innerHTML = originalText;
@@ -227,28 +245,37 @@ function lanjutKeBOQDome() {
         return;
     }
     
-    let luasAtap = parseFloat(document.getElementById('luasAtapDome').innerText) || 0;
-    let panjangStarter = parseFloat(document.getElementById('startingDome').innerText) || 0;
-    let panjangNokJurai = parseFloat(document.getElementById('nokJuraiDome').innerText) || 0;
-    let panjangFlashing = parseFloat(document.getElementById('flashingDome').innerText) || 0;
-    let sudut = 0; // Dome tidak punya sudut kemiringan
+    if (!window.hasilPerhitunganDome) {
+        alert('Hitung luas atap terlebih dahulu!');
+        return;
+    }
+    
+    let hasil = window.hasilPerhitunganDome;
+    let luasAtap = hasil.luas_atap || 0;
+    let panjangStarter = hasil.starting || 0;
+    let panjangFlashing = hasil.flashing || 0;
+    
+    // Dome hanya punya Jurai (tanpa Nok)
+    let panjangJurai = hasil.panjang_jurai || hasil.nok_jurai || 0;
     
     // Mapping URL untuk setiap brand
     const controllerMap = {
         'iko-atap': '/boq/iko-atap',
         'skyshield': '/boq/skyshield',
         'iko-insulasi': '/boq/iko-insulasi',
+        'palmex': '/boq/palmex/dome',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
     
     // Kirim parameter sesuai brand
     if (brandSlug === 'iko-insulasi') {
-        window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
-    } else if (brandSlug === 'skyshield') {
-        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+        window.location.href = `${url}?luas=${luasAtap}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
+    } else if (brandSlug === 'palmex') {
+        // PALMEX Dome: kirim panjang_jurai (tanpa nok)
+        window.location.href = `${url}?luas_atap=${luasAtap}&panjang_starter=${panjangStarter}&panjang_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     } else {
-        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+        window.location.href = `${url}?luas_atap=${luasAtap}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     }
 }
 </script>
