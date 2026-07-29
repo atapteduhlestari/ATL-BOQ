@@ -11,6 +11,7 @@ use App\Http\Controllers\IkoAtapKombinasiController;
 use App\Http\Controllers\SkyshieldKombinasiController;
 use App\Http\Controllers\BoqController;
 use App\Http\Controllers\JendelaController;
+use App\Http\Controllers\PintuController;
 use App\Http\Controllers\DindingController;
 use App\Http\Controllers\WaterproofingController;
 // Route untuk halaman atap standar
@@ -191,12 +192,85 @@ Route::post('/jendela/hitung', [JendelaController::class, 'hitung'])->name('jend
 Route::post('/jendela/export-pdf', [JendelaController::class, 'exportPdf'])->name('jendela.export-pdf');
 
 // BOQ Jendela
-Route::prefix('boq/jendela')->name('boq.jendela.')->group(function () {
-    Route::get('/kayu', [JendelaController::class, 'bojKayu'])->name('kayu');
-    Route::get('/aluminium', [JendelaController::class, 'bojAluminium'])->name('aluminium');
-    Route::get('/upvc', [JendelaController::class, 'bojUpvc'])->name('upvc');
-    Route::get('/mati-1-kaca', [JendelaController::class, 'bojMati1Kaca'])->name('mati-1-kaca');
-});
+Route::post('/boq/jendela/mati1/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati1'])->name('boq.jendela.mati1.export-pdf');
+Route::post('/boq/jendela/mati2/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati2'])->name('boq.jendela.mati2.export-pdf');
+Route::post('/boq/jendela/mati3/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati3'])->name('boq.jendela.mati3.export-pdf');
+Route::post('/boq/jendela/mati1mullion/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati1Mullion'])->name('boq.jendela.mati1mullion.export-pdf');
+Route::post('/boq/jendela/mati2mullion/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati2Mullion'])->name('boq.jendela.mati2mullion.export-pdf');
+Route::post('/boq/jendela/mati3mullion/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati3Mullion'])->name('boq.jendela.mati3mullion.export-pdf');
+Route::post('/boq/jendela/swing1/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfSwing1'])->name('boq.jendela.swing1.export-pdf');
+Route::post('/boq/jendela/swing1mullionvertikalhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfSwing1mullionvertikalhorizontal'])->name('boq.jendela.swing1mullionvertikalhorizontal.export-pdf');
+Route::post('/boq/jendela/swing1mullionvertikal2mullionhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfSwing1mullionvertikal2mullionhorizontal'])->name('boq.jendela.swing1mullionvertikal2mullionhorizontal.export-pdf');
+Route::post('/boq/jendela/swing1mullionvertikal3mullionhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfSwing1mullionvertikal3mullionhorizontal'])->name('boq.jendela.swing1mullionvertikal3mullionhorizontal.export-pdf');
+Route::post('/boq/jendela/swing2mullionvertikal1mullionhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfSwing2mullionvertikal1mullionhorizontal'])->name('boq.jendela.swing2mullionvertikal1mullionhorizontal.export-pdf');
+Route::post('/boq/jendela/swing2mullionvertikal2mullionhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfSwing2mullionvertikal2mullionhorizontal'])->name('boq.jendela.swing2mullionvertikal2mullionhorizontal.export-pdf');
+Route::post('/boq/jendela/swing2mullionvertikal3mullionhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfSwing2mullionvertikal3mullionhorizontal'])->name('boq.jendela.swing2mullionvertikal3mullionhorizontal.export-pdf');
+Route::post('/boq/jendela/swing2/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfSwing2'])->name('boq.jendela.swing2.export-pdf');
+Route::post('/boq/jendela/jungkit1/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit1'])->name('boq.jendela.jungkit1.export-pdf');
+Route::post('/boq/jendela/jungkit1mullionvertikal1mullionhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit1mullionvertikal1mullionhorizontal'])->name('boq.jendela.jungkit1mullionvertikal1mullionhorizontal.export-pdf');
+Route::post('/boq/jendela/jungkit1mullionvertikal2mullionhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit1mullionvertikal2mullionhorizontal'])->name('boq.jendela.jungkit1mullionvertikal2mullionhorizontal.export-pdf');
+Route::post('/boq/jendela/jungkit2mullionvertikal1mullionhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit2mullionvertikal1mullionhorizontal'])->name('boq.jendela.jungkit2mullionvertikal1mullionhorizontal.export-pdf');
+Route::post('/boq/jendela/jungkit2mullionvertikal3mullionhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit2mullionvertikal3mullionhorizontal'])->name('boq.jendela.jungkit2mullionvertikal3mullionhorizontal.export-pdf');
+Route::post('/boq/jendela/jungkit2/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit2'])->name('boq.jendela.jungkit2.export-pdf');
+Route::post('/boq/jendela/jungkit1mullion/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit1mullion'])->name('boq.jendela.jungkit1mullion.export-pdf');
+Route::post('/boq/jendela/jungkit2mullion/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit2mullion'])->name('boq.jendela.jungkit2mullion.export-pdf');
+Route::post('/boq/jendela/jungkit4bouven/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit4bouven'])->name('boq.jendela.jungkit4bouven.export-pdf');
+Route::post('/boq/jendela/jungkit2bouven/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit2bouven'])->name('boq.jendela.jungkit2bouven.export-pdf');
+Route::post('/boq/jendela/jungkit12bouven/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfJungkit12bouven'])->name('boq.jendela.jungkit12bouven.export-pdf');
+Route::post('/boq/jendela/sliding/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfSliding'])->name('boq.jendela.sliding.export-pdf');
+Route::post('/boq/jendela/mati1mullion2horizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati1Mullion2Horizontal'])->name('boq.jendela.mati1mullion2horizontal.export-pdf');
+Route::post('/boq/jendela/mati3mullion2vertikalmullion1horizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati3Mullion2vertikalmullion1horizontal'])->name('boq.jendela.mati3mullion2vertikalmullion1horizontal.export-pdf');
+Route::post('/boq/jendela/mati1mullion1vertikalhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati1Mullion1VertikalHorizontal'])->name('boq.jendela.mati1mullion1vertikalhorizontal.export-pdf');
+Route::post('/boq/jendela/mati2mullion2vertikalhorizontal/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati2Mullion2VertikalHorizontal'])->name('boq.jendela.mati2mullion2vertikalhorizontal.export-pdf');
+
+// Route untuk hitung Jendela Mati 1 Kaca
+Route::post('/boq/jendela/mati1/hitung', [JendelaController::class, 'hitungMati1'])->name('boq.jendela.mati1.hitung');
+Route::post('/boq/jendela/mati2/hitung', [JendelaController::class, 'hitungMati2'])->name('boq.jendela.mati2.hitung');
+Route::post('/boq/jendela/mati3/hitung', [JendelaController::class, 'hitungMati3'])->name('boq.jendela.mati3.hitung');
+Route::post('/boq/jendela/mati1mullion/hitung', [JendelaController::class, 'hitungMati1Mullion'])->name('boq.jendela.mati1mullion.hitung');
+Route::post('/boq/jendela/mati2mullion/hitung', [JendelaController::class, 'hitungMati2Mullion'])->name('boq.jendela.mati2mullion.hitung');
+Route::post('/boq/jendela/mati3mullion/hitung', [JendelaController::class, 'hitungMati3Mullion'])->name('boq.jendela.mati3mullion.hitung');
+Route::post('/boq/jendela/swing1/hitung', [JendelaController::class, 'hitungSwing1'])->name('boq.jendela.swing1.hitung');
+Route::post('/boq/jendela/swing1mullionvertikalhorizontal/hitung', [JendelaController::class, 'hitungSwing1mullionvertikalhorizontal'])->name('boq.jendela.swing1mullionvertikalhorizontal.hitung');
+Route::post('/boq/jendela/swing1mullionvertikal2mullionhorizontal/hitung', [JendelaController::class, 'hitungSwing1mullionvertikal2mullionhorizontal'])->name('boq.jendela.swing1mullionvertikal2mullionhorizontal.hitung');
+Route::post('/boq/jendela/swing1mullionvertikal3mullionhorizontal/hitung', [JendelaController::class, 'hitungSwing1mullionvertikal3mullionhorizontal'])->name('boq.jendela.swing1mullionvertikal3mullionhorizontal.hitung');
+Route::post('/boq/jendela/swing2mullionvertikal1mullionhorizontal/hitung', [JendelaController::class, 'hitungSwing2mullionvertikal1mullionhorizontal'])->name('boq.jendela.swing2mullionvertikal1mullionhorizontal.hitung');
+Route::post('/boq/jendela/swing2mullionvertikal2mullionhorizontal/hitung', [JendelaController::class, 'hitungSwing2mullionvertikal2mullionhorizontal'])->name('boq.jendela.swing2mullionvertikal2mullionhorizontal.hitung');
+Route::post('/boq/jendela/swing2mullionvertikal3mullionhorizontal/hitung', [JendelaController::class, 'hitungSwing2mullionvertikal3mullionhorizontal'])->name('boq.jendela.swing2mullionvertikal3mullionhorizontal.hitung');
+Route::post('/boq/jendela/swing2/hitung', [JendelaController::class, 'hitungSwing2'])->name('boq.jendela.swing2.hitung');
+Route::post('/boq/jendela/jungkit1/hitung', [JendelaController::class, 'hitungJungkit1'])->name('boq.jendela.jungkit1.hitung');
+Route::post('/boq/jendela/jungkit1mullionvertikal1mullionhorizontal/hitung', [JendelaController::class, 'hitungJungkit1mullionvertikal1mullionhorizontal'])->name('boq.jendela.jungkit1mullionvertikal1mullionhorizontal.hitung');
+Route::post('/boq/jendela/jungkit1mullionvertikal2mullionhorizontal/hitung', [JendelaController::class, 'hitungJungkit1mullionvertikal2mullionhorizontal'])->name('boq.jendela.jungkit1mullionvertikal2mullionhorizontal.hitung');
+Route::post('/boq/jendela/jungkit2mullionvertikal1mullionhorizontal/hitung', [JendelaController::class, 'hitungJungkit2mullionvertikal1mullionhorizontal'])->name('boq.jendela.jungkit2mullionvertikal1mullionhorizontal.hitung');
+Route::post('/boq/jendela/jungkit2mullionvertikal3mullionhorizontal/hitung', [JendelaController::class, 'hitungJungkit2mullionvertikal3mullionhorizontal'])->name('boq.jendela.jungkit2mullionvertikal3mullionhorizontal.hitung');
+Route::post('/boq/jendela/jungkit2/hitung', [JendelaController::class, 'hitungJungkit2'])->name('boq.jendela.jungkit2.hitung');
+Route::post('/boq/jendela/jungkit1mullion/hitung', [JendelaController::class, 'hitungJungkit1mullion'])->name('boq.jendela.jungkit1mullion.hitung');
+Route::post('/boq/jendela/jungkit2mullion/hitung', [JendelaController::class, 'hitungJungkit2mullion'])->name('boq.jendela.jungkit2mullion.hitung');
+Route::post('/boq/jendela/jungkit4bouven/hitung', [JendelaController::class, 'hitungJungkit4bouven'])->name('boq.jendela.jungkit4bouven.hitung');
+Route::post('/boq/jendela/jungkit2bouven/hitung', [JendelaController::class, 'hitungJungkit2bouven'])->name('boq.jendela.jungkit2bouven.hitung');
+Route::post('/boq/jendela/jungkit12bouven/hitung', [JendelaController::class, 'hitungJungkit12bouven'])->name('boq.jendela.jungkit12bouven.hitung');
+Route::post('/boq/jendela/sliding/hitung', [JendelaController::class, 'hitungSliding'])->name('boq.jendela.sliding.hitung');
+Route::post('/boq/jendela/mati1mullion2horizontal/hitung', [JendelaController::class, 'hitungMati1Mullion2Horizontal'])->name('boq.jendela.mati1mullion2horizontal.hitung');
+Route::post('/boq/jendela/mati3mullion2vertikalmullion1horizontal/hitung', [JendelaController::class, 'hitungMati3Mullion2vertikalmullion1horizontal'])->name('boq.jendela.mati3mullion2vertikalmullion1horizontal.hitung');
+Route::post('/boq/jendela/mati1mullion1vertikalhorizontal/hitung', [JendelaController::class, 'hitungMati1Mullion1VertikalHorizontal'])->name('boq.jendela.mati1mullion1vertikalhorizontal.hitung');
+Route::post('/boq/jendela/mati2mullion2vertikalhorizontal/hitung', [JendelaController::class, 'hitungMati2Mullion2VertikalHorizontal'])->name('boq.jendela.mati2mullion2vertikalhorizontal.hitung');
+
+// BOQ PINTU
+Route::get('/pintu', [PintuController::class, 'index'])->name('pintu.index');
+Route::post('/boq/pintu/swing1/hitung', [PintuController::class, 'hitungSwing1'])->name('boq.pintu.swing1.hitung');
+Route::post('/boq/pintu/swingDouble/hitung', [PintuController::class, 'hitungSwingDouble'])->name('boq.pintu.swingDouble.hitung');
+Route::post('/boq/pintu/sliding/hitung', [PintuController::class, 'hitungSliding'])->name('boq.pintu.sliding.hitung');
+Route::post('/boq/pintu/sliding1/hitung', [PintuController::class, 'hitungSliding1'])->name('boq.pintu.sliding1.hitung');
+Route::post('/boq/pintu/sliding3track/hitung', [PintuController::class, 'hitungSliding3track'])->name('boq.pintu.sliding3track.hitung');
+Route::post('/boq/pintu/sliding4/hitung', [PintuController::class, 'hitungSliding4'])->name('boq.pintu.sliding4.hitung');
+
+// Export PDF PINTU
+Route::post('/boq/pintu/swing1/export-pdf', [PintuController::class, 'exportPdfSwing1'])->name('boq.pintu.swing1.export-pdf');
+Route::post('/boq/pintu/swingDouble/export-pdf', [PintuController::class, 'exportPdfSwingDouble'])->name('boq.pintu.swingDouble.export-pdf');
+Route::post('/boq/pintu/sliding/export-pdf', [PintuController::class, 'exportPdfSliding'])->name('boq.pintu.sliding.export-pdf');
+Route::post('/boq/pintu/sliding1/export-pdf', [PintuController::class, 'exportPdfSliding1'])->name('boq.pintu.sliding1.export-pdf');
+Route::post('/boq/pintu/sliding3track/export-pdf', [PintuController::class, 'exportPdfSliding3track'])->name('boq.pintu.sliding3track.export-pdf');
+Route::post('/boq/pintu/sliding4/export-pdf', [PintuController::class, 'exportPdfSliding4'])->name('boq.pintu.sliding4.export-pdf');
 
 Route::get('/atap-kombinasi', [AtapKombinasiController::class, 'index'])->name('atap-kombinasi.index');
 Route::post('/atap-kombinasi/hitung', [AtapKombinasiController::class, 'hitung'])->name('atap-kombinasi.hitung');

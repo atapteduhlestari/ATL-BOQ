@@ -6813,98 +6813,147 @@ public function hitungPelanaDinding(Request $request)
     ]);
 }
 
-    public function exportPdf(Request $request, $jenis)
+   public function exportPdfMati1(Request $request)
 {
-    Log::info('=== PalmexKombinasiController: exportPdf() === Jenis: ' . $jenis);
+    $panjang = $request->panjang;
+    $lebar = $request->lebar;
+    $tebal_kaca = $request->tebal_kaca;
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $type_kaca = $request->type_kaca;
+    $judul = $request->judul ?? 'BOQ - Jendela Mati 1 Kaca';
+
+    // Ambil data aksesoris
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 145)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
     
-    $data = $request->all();
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10;
+
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
     
-    Log::info('DATA MENTAH DARI REQUEST PALMEX KOMBINASI:', [
-        'jenis' => $jenis,
-        'data' => $data
-    ]);
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    $variableA = $jumlah * $satuanTerkecilVertikal;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
     
-    // ============ DECODE HASIL YANG MUNGKIN JSON STRING ============
-    $bagianKeys = ['bagian1', 'bagian2', 'bagian3', 'bagian4', 'total'];
-    for ($i = 0; $i < count($bagianKeys); $i++) {
-        $key = $bagianKeys[$i];
-        if (isset($data[$key]['hasil'])) {
-            if (is_string($data[$key]['hasil'])) {
-                $decoded = json_decode($data[$key]['hasil'], true);
-                if (is_array($decoded)) {
-                    $data[$key]['hasil'] = $decoded;
-                } else {
-                    $data[$key]['hasil'] = [];
-                }
-            }
-        }
-    }
-    
-    // Decode detail_results juga
-    if (isset($data['detail_results']) && is_string($data['detail_results'])) {
-        $decoded = json_decode($data['detail_results'], true);
-        if (is_array($decoded)) {
-            $data['detail_results'] = $decoded;
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    $variableB = $jumlah * $satuanTerkecilHorizontal;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SCREW ===
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 1;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === HITUNG QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'glaze-bead-vertical') {
+            $qty = ($panjang / 100) * $jumlah;
+        } elseif ($areaSlug == 'glaze-bead-horizontal') {
+            $qty = ($lebar / 100) * $jumlah;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
         } else {
-            $data['detail_results'] = [];
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
         }
+        
+        $item->qty = $qty;
     }
-    
+
+    // Kelompokkan berdasarkan area
+    $grouped = [];
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : 'lainnya';
+        if (str_starts_with($areaSlug, 'profile')) {
+            $groupKey = 'profile';
+        } else {
+            $groupKey = $areaSlug;
+        }
+        if (!isset($grouped[$groupKey])) {
+            $grouped[$groupKey] = [];
+        }
+        $grouped[$groupKey][] = $item;
+    }
+
+    $areaLabels = [
+        'profile' => 'PROFILE',
+        'reinforcement' => 'REINFORCEMENT',
+        'kaca' => 'KACA',
+        'screw' => 'SCREW',
+    ];
+
     // ============ GENERATE NOMOR BOQ ============
     $nomorBoq = Boq::generateNomorBoq();
-    $data['nomor_boq'] = $nomorBoq;
-    $data['jenis'] = $jenis;
-    
+
     // ============ STORE BOQ ============
     try {
         $allResults = [];
         
-        // Kumpulkan semua hasil dari semua bagian - menggunakan for
-        for ($i = 0; $i < count($bagianKeys); $i++) {
-            $key = $bagianKeys[$i];
-            if (isset($data[$key]['hasil']) && is_array($data[$key]['hasil'])) {
-                $hasilCount = count($data[$key]['hasil']);
-                for ($j = 0; $j < $hasilCount; $j++) {
-                    $allResults[] = $data[$key]['hasil'][$j];
-                }
+        // Kumpulkan semua hasil dari aksesoris
+        foreach ($aksesoris as $item) {
+            if ($item->qty > 0) {
+                $allResults[] = [
+                    'produk_id' => $item->id,
+                    'qty' => $item->qty,
+                    'nama_produk' => $item->nama_produk,
+                ];
             }
         }
         
-        // Jika ada detail_results
-        if (isset($data['detail_results']) && is_array($data['detail_results'])) {
-            $detailCount = count($data['detail_results']);
-            for ($i = 0; $i < $detailCount; $i++) {
-                $allResults[] = $data['detail_results'][$i];
-            }
-        }
-        
-        Log::info('TOTAL RESULTS SEBELUM FILTER: ' . count($allResults));
-        
-        // Filter duplikat berdasarkan produk_id - menggunakan for
+        // Filter duplikat berdasarkan produk_id
         $uniqueResults = [];
         $seenIds = [];
         
-        $totalAll = count($allResults);
-        for ($i = 0; $i < $totalAll; $i++) {
-            $item = $allResults[$i];
-            $produkId = $item['produk_id'] ?? $item['id'] ?? $item['product_id'] ?? null;
+        foreach ($allResults as $item) {
+            $produkId = $item['produk_id'] ?? null;
             
             if (!$produkId) {
                 continue;
             }
             
-            // Cek apakah sudah ada di seenIds - menggunakan for
-            $isDuplicate = false;
-            $seenCount = count($seenIds);
-            for ($j = 0; $j < $seenCount; $j++) {
-                if ($seenIds[$j] == $produkId) {
-                    $isDuplicate = true;
-                    Log::warning("DUPLIKAT SKIP:", ['id' => $produkId]);
-                    break;
-                }
-            }
-            
-            if ($isDuplicate) {
+            if (in_array($produkId, $seenIds)) {
                 continue;
             }
             
@@ -6912,21 +6961,15 @@ public function hitungPelanaDinding(Request $request)
             $uniqueResults[] = $item;
         }
         
-        Log::info('UNIQUE RESULTS:', [
-            'total' => count($uniqueResults),
-        ]);
-        
-        // Simpan ke database - menggunakan for
+        // Simpan ke database
         if (count($uniqueResults) > 0) {
             $boq = new Boq();
             $boq->nomor_boq = $nomorBoq;
             $boq->tanggal_boq = now();
             $boq->save();
             
-            $uniqueCount = count($uniqueResults);
-            for ($i = 0; $i < $uniqueCount; $i++) {
-                $item = $uniqueResults[$i];
-                $produkId = $item['produk_id'] ?? $item['id'] ?? $item['product_id'] ?? null;
+            foreach ($uniqueResults as $item) {
+                $produkId = $item['produk_id'] ?? null;
                 $qty = (int)($item['qty'] ?? 0);
                 
                 if ($produkId && $qty > 0) {
@@ -6943,49 +6986,40 @@ public function hitungPelanaDinding(Request $request)
                 }
             }
             
-            Log::info('BOQ SAVED:', [
+            \Log::info('BOQ SAVED JENDELA MATI 1:', [
                 'boq_id' => $boq->id,
+                'nomor_boq' => $nomorBoq,
                 'total' => count($uniqueResults)
             ]);
         }
         
     } catch (\Exception $e) {
-        Log::error('Error saving BOQ: ' . $e->getMessage());
-        Log::error($e->getTraceAsString());
+        \Log::error('Error saving BOQ Jendela Mati 1: ' . $e->getMessage());
+        \Log::error($e->getTraceAsString());
     }
-    
-    // ============ PILIH VIEW BERDASARKAN JENIS ============
-    $viewMap = [
-        // Limasan + ...
-        'limas-pelana' => 'boq.palmex.atap-kombinasi.pdf-palmex-limasan-pelana',
-        'limasan-x' => 'boq.palmex.atap-kombinasi.pdf-palmex-limasan-x',
-        'limasan-limasan' => 'boq.palmex.atap-kombinasi.pdf-palmex-limasan-limasan',
-        'limasan-trapesium' => 'boq.palmex.atap-kombinasi.pdf-palmex-limasan-trapesium',
-        
-        // Pelana + ...
-        'pelana-2-kemiringan' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-2-kemiringan',
-        'pelana-2-sisi' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-2-sisi',
-        'pelana-2trapesium' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-2trapesium',
-        'pelana-3-arah' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-3-arah',
-        'pelana-dinding' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-dinding',
-        
-        // Pelana X
-        'pelana-x' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-x',
-        
-        // Gergaji
-        'gergaji' => 'boq.palmex.atap-kombinasi.pdf-palmex-gergaji',
-        
-        // Lengkung
-        'lengkung-2-sisi' => 'boq.palmex.atap-kombinasi.pdf-palmex-lengkung-2-sisi',
-    ];
-    
-    $view = $viewMap[$jenis] ?? 'boq.palmex.pdf-palmex-pelana';
-    
-    Log::info('VIEW SELECTED: ' . $view);
-    
-    return view($view, compact('data'));
-}
 
+    $data = [
+        'judul' => $judul,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebal_kaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $type_kaca,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_total' => $kelilingTotal,
+        'batang_vertikal' => $batangVertikal,
+        'batang_horizontal' => $batangHorizontal,
+        'reinforcement_qty' => $reinforcementQty,
+        'screw_qty' => $screwQty,
+        'grouped' => $grouped,
+        'areaLabels' => $areaLabels,
+        'nomor_boq' => $nomorBoq,
+    ];
+
+    // Return view PDF (bukan stream/download)
+    return view('boq.jendela.pdf-jendela-mati-1-kaca', compact('data'));
+}
     // ============================================================
     // FUNGSI BANTUAN (helper functions)
     // ============================================================

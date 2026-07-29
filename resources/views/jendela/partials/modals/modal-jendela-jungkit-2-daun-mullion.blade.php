@@ -1,20 +1,20 @@
-<!-- Modal Jendela Mati 1 Kaca -->
-<div id="modalJendelaMati1Kaca" class="modal-overlay">
+<!-- Modal Jendela Jungkit 2 Daun Mullion -->
+<div id="modalJendelaJungkit2DaunMullion" class="modal-overlay">
     <div class="modal-wrapper">
         <div class="modal-container">
             <!-- Close Button -->
-            <button class="modal-close" onclick="closeModal('modalJendelaMati1Kaca')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modalJendelaJungkit2DaunMullion')">&times;</button>
 
             <!-- Modal Content -->
             <div class="modal-grid">
                 <!-- Image Section -->
                 <div class="modal-image">
-                    <img src="{{ asset('images/jendela/jendela-1-kaca.png') }}" alt="Jendela Mati 1 Kaca">
+                    <img src="{{ asset('images/jendela/jendela-jungkit-2-mullion.png') }}" alt="Jendela Jungkit 2 Daun Mullion">
                 </div>
 
                 <!-- Form Section -->
                 <div class="modal-form">
-                    <h2 class="modal-form-title">Jendela Mati 1 Kaca</h2>
+                    <h2 class="modal-form-title">Jendela Jungkit 2 Daun Mullion</h2>
                     <p class="modal-form-sub">Hitung kebutuhan material</p>
 
                     <!-- Notes / Informasi -->
@@ -52,11 +52,15 @@
                                 <span class="bullet">•</span>
                                 <span>Ketebalan profile standar: <strong>Casement Series 60</strong> dan <strong>Sliding Series 60 / Series 88</strong></span>
                             </li>
+                            <li>
+                                <span class="bullet">•</span>
+                                <span>Jendela Jungkit 2 Daun Mullion adalah jendela <strong>top hung</strong> (buka ke atas) dengan <strong>2 panel kaca</strong> yang disatukan dengan <strong>coupling</strong> dan <strong>mullion</strong> sebagai penambah kekuatan struktur</span>
+                            </li>
                         </ul>
                     </div>
 
-                    <!-- Form Input -->
-                    <form action="{{ route('boq.jendela.mati1.hitung') }}" method="POST">
+                    <!-- Form Input - Kirim ke Controller -->
+                    <form action="{{ route('boq.jendela.jungkit2mullion.hitung') }}" method="POST">
                         @csrf
                         
                         <div style="margin-bottom: 10px;">
@@ -74,6 +78,7 @@
                             <input type="number" class="input-field" name="tebal_kaca" placeholder="Contoh: 5" value="5" min="1">
                         </div>
 
+                        <!-- INPUT JUMLAH UNIT -->
                         <div style="margin-bottom: 10px;">
                             <label class="input-label">Jumlah Unit</label>
                             <input type="number" class="input-field" name="jumlah" placeholder="Contoh: 2" value="1" min="1" required>
@@ -88,7 +93,7 @@
                             </select>
                         </div>
 
-                        <div style="margin-bottom: 14px;">
+                        <div style="margin-bottom: 10px;">
                             <label class="input-label">Type Kaca</label>
                             <select class="input-field" name="type_kaca">
                                 <option value="Clear">Clear (Bening)</option>

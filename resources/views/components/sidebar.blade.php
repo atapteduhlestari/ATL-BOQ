@@ -34,6 +34,9 @@
     <x-sidebar-link href="/jendela" :active="request()->is('jendela') || request()->is('jendela/*')">
         <span class="text-sm font-medium text-slate-200 hover:text-white">Jendela</span>
     </x-sidebar-link>
+    <x-sidebar-link href="/pintu" :active="request()->is('Pintu') || request()->is('jendela/*')">
+        <span class="text-sm font-medium text-slate-200 hover:text-white">Pintu</span>
+    </x-sidebar-link>
 </nav>
 
         <!-- Footer -->
