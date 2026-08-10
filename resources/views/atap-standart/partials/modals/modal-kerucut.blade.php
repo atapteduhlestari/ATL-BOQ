@@ -276,24 +276,26 @@ function lanjutKeBOQKerucut() {
     let sudut = hasil.sudut || 0;
     let panjangStarter = hasil.starting || 0;
     let panjangFlashing = hasil.flashing || 0;
+    let panjangJurai = hasil.panjang_jurai || hasil.nok_jurai || 0;
     
-    // Mapping URL untuk setiap brand
+    // MAPPING URL - TAMBAHKAN TAPE ROOF
     const controllerMap = {
         'iko-atap': '/boq/iko-atap',
         'skyshield': '/boq/skyshield',
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/kerucut',
+        'tape-roof': '/boq/taperoof/kerucut',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
     
-    // Kirim parameter sesuai brand
     if (brandSlug === 'iko-insulasi') {
-        window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${hasil.nok_jurai || 0}&panjang_flashing=${panjangFlashing}`;
+        window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     } else if (brandSlug === 'palmex') {
         window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok=${hasil.panjang_nok || 0}&panjang_jurai=${hasil.panjang_jurai || 0}&panjang_flashing=${panjangFlashing}`;
     } else {
-        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${hasil.nok_jurai || 0}&panjang_flashing=${panjangFlashing}`;
+        // TAPE ROOF dan lainnya pake ini
+        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     }
 }
 </script>

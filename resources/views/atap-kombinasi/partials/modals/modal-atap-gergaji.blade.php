@@ -301,14 +301,11 @@ function lanjutKeBOQ() {
     let total = hasilGergaji.total;
     let details = hasilGergaji.details;
     
-    // ===== LOG UNTUK DEBUG =====
-    console.log('Hasil Gergaji:', hasilGergaji);
-    console.log('Total Nok Atas:', total.panjang_nok_atas);
-    
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/gergaji',
         'skyshield': '/boq/atap-kombinasi-skyshield/gergaji',
         'palmex': '/boq/palmex/atap-kombinasi/gergaji',
+        'tape-roof': '/boq/taperoof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/gergaji';
@@ -324,15 +321,17 @@ function lanjutKeBOQ() {
     url += `&jumlah_gerigi=${document.getElementById('jumlah_gerigi').value}`;
     url += `&tinggi_gerigi=${document.getElementById('tinggi_gerigi').value}`;
     
-    // ===== BEDAKAN BRAND =====
     if (brandSlug === 'palmex') {
-        // PALMEX: HANYA NOK ATAS, TIDAK ADA JURAI
         url += `&nok_atas=${total.panjang_nok_atas}`;
         url += `&total_nok_atas=${total.panjang_nok_atas}`;
         url += `&jurai=0`;
         url += `&total_jurai=0`;
+    } else if (brandSlug === 'tape-roof') {
+        // TAPE ROOF: Pakai Nok & Jurai (sama seperti IKO/SKYSHIELD)
+        url += `&nok_jurai=${total.panjang_nok_jurai}`;
+        url += `&panjang_nok=${total.panjang_nok_jurai}`;
+        url += `&panjang_jurai=0`;
     } else {
-        // IKO/SKYSHIELD: NOK & JURAI digabung
         url += `&nok_jurai=${total.panjang_nok_jurai}`;
     }
     

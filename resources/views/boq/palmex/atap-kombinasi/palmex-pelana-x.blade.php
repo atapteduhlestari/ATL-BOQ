@@ -70,6 +70,11 @@
         color: #2d3748;
         font-weight: 500;
     }
+    .input-field:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: #f7fafc !important;
+    }
     
     .data-box {
         background: #f7fafc;
@@ -562,6 +567,103 @@
         letter-spacing: 0.5px;
         text-transform: uppercase;
     }
+
+    /* ===== COVERAGE STYLES ===== */
+    .coverage-info {
+        font-size: 10px;
+        color: #6b7280;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .coverage-info .badge {
+        display: inline-block;
+        padding: 1px 10px;
+        border-radius: 10px;
+        font-size: 9px;
+        font-weight: 600;
+    }
+
+    .coverage-info .badge.expose {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .coverage-info .badge.non-expose {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .coverage-info .badge.auto {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .coverage-recommendation {
+        font-size: 10px;
+        color: #6b7280;
+        margin-top: 4px;
+        padding: 4px 10px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 6px;
+        display: inline-block;
+    }
+
+    .coverage-recommendation strong {
+        color: #16a34a;
+    }
+
+    /* FORCED NON-EXPOSE */
+    .forced-badge {
+        display: inline-block;
+        background: #dc2626;
+        color: white;
+        font-size: 9px;
+        font-weight: 600;
+        padding: 2px 10px;
+        border-radius: 10px;
+        margin-left: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .sistem-label-wrapper {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .sistem_warning {
+        transition: all 0.3s ease;
+        font-size: 11px;
+    }
+
+    .sistem_warning .warning-icon {
+        font-size: 14px;
+    }
+
+    /* NOTIFICATION TOAST */
+    .notification-toast {
+        animation: slideDown 0.3s ease-out;
+        z-index: 9999;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 </style>
 
 <div class="space-y-6">
@@ -599,6 +701,23 @@
             </li>
             <li>
                 <span class="bullet">•</span>
+                <span><strong style="color: #dc2626;">⚠️ PERHATIAN PENTING:</strong> Jika sudut atap < 30°, sistem akan <strong style="color: #dc2626;">OTOMATIS</strong> menggunakan <strong style="color: #dc2626;">NON-EXPOSE</strong> dan TIDAK BISA diubah ke EXPOSE</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span><strong>Coverage (daun/m²) dapat dipilih sendiri:</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Untuk Expose, disarankan pilih <strong>7 atau 8 daun/m²</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Untuk Non-Expose, disarankan pilih <strong>7 daun/m²</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Jika sudut > 40° Non-Expose, bisa pilih <strong>6 atau 7 daun/m²</strong></span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
                 <span>Cek lebih detail apakah ada atap yang bertemu langsung dengan <strong>dinding</strong>, <strong>kaca</strong>, <strong>penangkal petir</strong>, <strong>Ventilasi Exhaust</strong> dll.</span>
             </li>
             <li>
@@ -610,10 +729,10 @@
                 <span><strong>Hal yang perlu diperhatikan:</strong></span>
             </li>
             <li style="padding-left: 28px;">
-                <span>• Jarak usuk per <strong>60 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
+                <span>• Jarak usuk per <strong>61 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
             </li>
             <li style="padding-left: 28px;">
-                <span>• Jarak usuk per <strong>40 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
+                <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
             </li>
             <li style="padding-left: 28px;">
                 <span>• Pemakaian underlayer <strong>self adhesive</strong> (IKO Stormshield)</span>
@@ -685,48 +804,48 @@
         </div>
     </div>
 
-   <!-- ===== OPSI TAMBAHAN ===== -->
-<div class="section-card">
-    <div class="section-header">
-        <div class="flex items-center justify-between">
-            <div>
-                <h3 class="section-title">🔧 Opsi Tambahan</h3>
-                <p class="section-subtitle">Masukkan panjang atap yang berbatasan dengan elemen lain</p>
-            </div>
-            <span class="badge-section">OPSIONAL</span>
-        </div>
-    </div>
-    <div class="section-body">
-        <div class="opsi-tambahan-grid">
-            <div class="opsi-item">
-                <label>
-                    📐 Dinding
-                    <span class="opsi-desc">(panjang atap yang berbatasan dinding)</span>
-                </label>
-                <input type="number" 
-                       id="opsi_dinding" 
-                       step="0.1" 
-                       min="0"
-                       placeholder="0"
-                       value="{{ $opsiDinding ?? 0 }}">
-                <span class="opsi-satuan">meter</span>
-            </div>
-            <div class="opsi-item">
-                <label>
-                    🪟 Kaca
-                    <span class="opsi-desc">(panjang area kaca/genteng kaca)</span>
-                </label>
-                <input type="number" 
-                       id="opsi_kaca" 
-                       step="0.1" 
-                       min="0"
-                       placeholder="0"
-                       value="{{ $opsiKaca ?? 0 }}">
-                <span class="opsi-satuan">meter</span>
+    <!-- ===== OPSI TAMBAHAN ===== -->
+    <div class="section-card">
+        <div class="section-header">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="section-title">🔧 Opsi Tambahan</h3>
+                    <p class="section-subtitle">Masukkan panjang atap yang berbatasan dengan elemen lain</p>
+                </div>
+                <span class="badge-section">OPSIONAL</span>
             </div>
         </div>
+        <div class="section-body">
+            <div class="opsi-tambahan-grid">
+                <div class="opsi-item">
+                    <label>
+                        📐 Dinding
+                        <span class="opsi-desc">(panjang atap yang berbatasan dinding)</span>
+                    </label>
+                    <input type="number" 
+                           id="opsi_dinding" 
+                           step="0.1" 
+                           min="0"
+                           placeholder="0"
+                           value="{{ $opsiDinding ?? 0 }}">
+                    <span class="opsi-satuan">meter</span>
+                </div>
+                <div class="opsi-item">
+                    <label>
+                        🪟 Kaca
+                        <span class="opsi-desc">(panjang area kaca/genteng kaca)</span>
+                    </label>
+                    <input type="number" 
+                           id="opsi_kaca" 
+                           step="0.1" 
+                           min="0"
+                           placeholder="0"
+                           value="{{ $opsiKaca ?? 0 }}">
+                    <span class="opsi-satuan">meter</span>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
     <!-- Pilih Produk & Hitung Material -->
     <div class="section-card">
@@ -742,11 +861,42 @@
         <div class="section-body">
             <!-- ===== SISTEM PEMASANGAN ===== -->
             <div class="mb-4">
-                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Sistem Pemasangan</label>
+                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">
+                    <span class="sistem-label-wrapper">
+                        Sistem Pemasangan
+                        <span id="forced_badge" class="forced-badge hidden">FORCED NON-EXPOSE</span>
+                    </span>
+                </label>
                 <select id="sistem_pemasangan" class="input-field" onchange="toggleFields()">
                     <option value="expose">Expose</option>
                     <option value="non-expose">Non-Expose</option>
                 </select>
+                <!-- ===== WARNING SISTEM ===== -->
+                <div id="sistem_warning" class="hidden mt-2 bg-yellow-50 border border-yellow-300 rounded-lg px-3 py-2 text-xs text-yellow-800 flex items-center gap-2">
+                    <span class="warning-icon">⚠️</span>
+                    <span id="sistem_warning_text">Sudut atap < 30°, sistem otomatis NON-EXPOSE (tidak bisa diubah)</span>
+                </div>
+            </div>
+
+            <!-- ===== COVERAGE ===== -->
+            <div class="mb-4">
+                <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
+                    COVERAGE <span class="required-star">*</span>
+                    <span id="coverage_info_text" class="font-normal text-gray-400 text-[9px]"></span>
+                </label>
+                <select id="coverage" class="input-field" required>
+                    <option value="">Pilih Coverage</option>
+                    <option value="8">8 daun / m²</option>
+                    <option value="7">7 daun / m²</option>
+                    <option value="6">6 daun / m²</option>
+                </select>
+                <div class="coverage-info">
+                    <span id="coverage_status" class="badge">✎ Bebas</span>
+                    <span id="coverage_description" class="text-gray-500">Pilih sesuai kebutuhan</span>
+                </div>
+                <div id="coverage_recommendation" class="coverage-recommendation hidden">
+                    💡 Rekomendasi: <strong id="recommendation_text">7 daun/m²</strong>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -865,6 +1015,7 @@
             <input type="hidden" name="hasil" id="pdf_hasil">
             <input type="hidden" name="grand_total" id="pdf_grand_total">
             <input type="hidden" name="nok_atas_id" id="pdf_nok_atas_id">
+            <input type="hidden" name="coverage" id="pdf_coverage">
             
             <!-- Opsi Tambahan -->
             <input type="hidden" name="opsi_dinding" id="pdf_opsi_dinding">
@@ -889,10 +1040,157 @@
 <script>
 let results = [];
 
+function showNotification(message, type = 'info') {
+    let existing = document.querySelector('.notification-toast');
+    if (existing) existing.remove();
+    
+    let toast = document.createElement('div');
+    toast.className = 'notification-toast fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-md';
+    
+    if (type === 'warning') {
+        toast.className += ' bg-yellow-50 border border-yellow-400 text-yellow-800';
+    } else if (type === 'error') {
+        toast.className += ' bg-red-50 border border-red-400 text-red-800';
+    } else {
+        toast.className += ' bg-blue-50 border border-blue-400 text-blue-800';
+    }
+    
+    toast.innerHTML = `
+        <div class="flex items-start gap-3">
+            <span class="text-lg">${type === 'warning' ? '⚠️' : type === 'error' ? '❌' : 'ℹ️'}</span>
+            <div class="flex-1">
+                <p class="text-sm font-medium">${message}</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                ✕
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        if (toast.parentElement) toast.remove();
+    }, 5000);
+}
+
+// ===== FUNGSI UPDATE COVERAGE =====
+function updateCoverage() {
+    let sudut = parseFloat(document.getElementById('sudut')?.value) || 0;
+    let sistem = document.getElementById('sistem_pemasangan')?.value || '';
+    let coverageSelect = document.getElementById('coverage');
+    let coverageStatus = document.getElementById('coverage_status');
+    let coverageDesc = document.getElementById('coverage_description');
+    let coverageInfoText = document.getElementById('coverage_info_text');
+    let recommendationEl = document.getElementById('coverage_recommendation');
+    let recommendationText = document.getElementById('recommendation_text');
+    
+    let recommendedValue = null;
+    let descText = '';
+    let infoText = '';
+    
+    if (sistem === 'expose') {
+        if (sudut >= 30 && sudut <= 31) {
+            recommendedValue = '8';
+            descText = 'Rekomendasi: 8 daun/m² (Expose 30°)';
+            infoText = ' (Expose 30° → disarankan 8 daun/m²)';
+        } else if (sudut > 30) {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Expose >30°)';
+            infoText = ' (Expose >30° → disarankan 7 daun/m²)';
+        } else {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Sudut < 30° → Non-Expose)';
+            infoText = ' (Sudut < 30° → disarankan 7 daun/m²)';
+        }
+    } else if (sistem === 'non-expose') {
+        if (sudut > 30 && sudut <= 40) {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Non-Expose 31-40°)';
+            infoText = ' (Non-Expose 31-40° → disarankan 7 daun/m²)';
+        } else if (sudut > 40) {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Non-Expose >40°, bisa pilih 6 atau 7)';
+            infoText = ' (Non-Expose >40° → bisa pilih 6 atau 7)';
+        } else if (sudut >= 15 && sudut <= 30) {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Non-Expose 15-30°)';
+            infoText = ' (Non-Expose 15-30° → disarankan 7 daun/m²)';
+        } else {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Sudut < 15°)';
+            infoText = ' (Sudut < 15° → disarankan 7 daun/m²)';
+        }
+    } else {
+        recommendedValue = null;
+        descText = 'Pilih sistem pemasangan terlebih dahulu';
+        infoText = '';
+    }
+    
+    if (coverageStatus) {
+        coverageStatus.className = 'badge';
+        coverageStatus.textContent = '✎ Bebas';
+    }
+    if (coverageDesc) {
+        coverageDesc.textContent = descText || 'Pilih sesuai kebutuhan';
+    }
+    if (coverageInfoText) {
+        coverageInfoText.textContent = infoText || '';
+    }
+    
+    if (recommendedValue && recommendationEl) {
+        recommendationEl.classList.remove('hidden');
+        if (recommendationText) {
+            recommendationText.textContent = recommendedValue + ' daun/m²';
+        }
+    } else if (recommendationEl) {
+        recommendationEl.classList.add('hidden');
+    }
+}
+
 function toggleFields() {
     let sistem = document.getElementById('sistem_pemasangan').value;
+    let sudut = parseFloat(document.getElementById('sudut')?.value) || 0;
     let underlayerContainer = document.getElementById('underlayer_container');
     let lantaiKerjaContainer = document.getElementById('lantai_kerja_container');
+    let warningEl = document.getElementById('sistem_warning');
+    let warningText = document.getElementById('sistem_warning_text');
+    let sistemSelect = document.getElementById('sistem_pemasangan');
+    let forcedBadge = document.getElementById('forced_badge');
+    
+    if (sudut < 30) {
+        sistemSelect.value = 'non-expose';
+        sistem = 'non-expose';
+        
+        if (warningEl) {
+            warningEl.classList.remove('hidden');
+            if (warningText) {
+                warningText.textContent = '⚠️ Sudut atap ' + sudut + '° (< 30°), sistem otomatis NON-EXPOSE (tidak bisa diubah)';
+            }
+        }
+        
+        if (forcedBadge) {
+            forcedBadge.classList.remove('hidden');
+        }
+        
+        sistemSelect.disabled = true;
+        sistemSelect.style.cursor = 'not-allowed';
+        sistemSelect.style.opacity = '0.7';
+        sistemSelect.style.backgroundColor = '#f7fafc';
+    } else {
+        if (warningEl) {
+            warningEl.classList.add('hidden');
+        }
+        
+        if (forcedBadge) {
+            forcedBadge.classList.add('hidden');
+        }
+        
+        sistemSelect.disabled = false;
+        sistemSelect.style.cursor = 'default';
+        sistemSelect.style.opacity = '1';
+        sistemSelect.style.backgroundColor = 'white';
+    }
     
     if (sistem === 'expose') {
         if (underlayerContainer) underlayerContainer.style.display = 'none';
@@ -901,6 +1199,8 @@ function toggleFields() {
         if (underlayerContainer) underlayerContainer.style.display = 'block';
         if (lantaiKerjaContainer) lantaiKerjaContainer.style.display = 'block';
     }
+    
+    updateCoverage();
 }
 
 window.onload = function() {
@@ -943,6 +1243,19 @@ window.onload = function() {
     document.getElementById('nok_atas').value = totalNokAtas.toFixed(2);
     document.getElementById('flashing').value = totalStarter.toFixed(2);
     document.getElementById('talang_jurai').value = talangJurai.toFixed(2);
+    
+    // Event listeners
+    document.getElementById('sistem_pemasangan').addEventListener('change', function() {
+        toggleFields();
+    });
+    
+    document.getElementById('coverage').addEventListener('change', function() {
+        let coverageStatus = document.getElementById('coverage_status');
+        if (coverageStatus && coverageStatus.textContent !== '✎ Manual') {
+            coverageStatus.className = 'badge non-expose';
+            coverageStatus.textContent = '✎ Manual';
+        }
+    });
     
     updatePdfData();
 };
@@ -1030,12 +1343,29 @@ function renderResultTable(results, grandTotalEl) {
 function hitungMaterial() {
     let wasteValue = parseFloat(document.getElementById('waste').value) || 5;
     let sistemPemasangan = document.getElementById('sistem_pemasangan').value || 'expose';
+    let coverage = parseFloat(document.getElementById('coverage').value) || 0;
+    let sudut = parseFloat(document.getElementById('sudut').value) || 0;
     
     let opsiDinding = parseFloat(document.getElementById('opsi_dinding').value) || 0;
     let opsiKaca = parseFloat(document.getElementById('opsi_kaca').value) || 0;
     
     let rangka = document.getElementById('rangka')?.value || 'Baja Ringan';
     let lantaiKerja = document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm';
+    
+    // ===== VALIDASI COVERAGE =====
+    if (!coverage || coverage <= 0) {
+        alert('⚠️ Pilih Coverage (daun/m²) terlebih dahulu!');
+        document.getElementById('coverage').focus();
+        return;
+    }
+    
+    // ===== VALIDASI SUDUT =====
+    if (sudut < 30 && sistemPemasangan === 'expose') {
+        sistemPemasangan = 'non-expose';
+        document.getElementById('sistem_pemasangan').value = 'non-expose';
+        toggleFields();
+        showNotification('⚠️ Sudut ' + sudut + '° < 30°, sistem dipaksa NON-EXPOSE', 'warning');
+    }
     
     // ===== AMBIL DARI DROPDOWN =====
     let nokAtasDropdown = document.getElementById('nok_atas_dropdown');
@@ -1050,7 +1380,7 @@ function hitungMaterial() {
     
     let data = {
         luas_atap: parseFloat(document.getElementById('luas_atap_total').value) || 0,
-        sudut: parseFloat(document.getElementById('sudut').value) || 0,
+        sudut: sudut,
         panjang_starter: parseFloat(document.getElementById('starter').value) || 0,
         panjang_jurai: 0,
         panjang_nok_atas: parseFloat(document.getElementById('nok_atas').value) || 0,
@@ -1066,7 +1396,9 @@ function hitungMaterial() {
         starter_produk_id: document.getElementById('starter_produk').value,
         rangka: rangka,
         lantai_kerja: lantaiKerja,
-        waste: wasteValue
+        waste: wasteValue,
+        coverage: coverage,
+        jenis: 'pelana-x'
     };
     
     if (!data.produk_atap_id) {
@@ -1074,9 +1406,11 @@ function hitungMaterial() {
         return;
     }
     
-    if (sistemPemasangan === 'non-expose') {
+    if (sistemPemasangan === 'expose') {
+        data.underlayer_id = data.underlayer_id || '';
+    } else {
         if (!data.underlayer_id) {
-            alert('Pilih underlayer terlebih dahulu untuk sistem Non-Expose!');
+            alert('Pilih underlayer terlebih dahulu!');
             return;
         }
     }
@@ -1133,6 +1467,7 @@ function updatePdfData() {
     document.getElementById('pdf_hasil').value = JSON.stringify(results);
     document.getElementById('pdf_grand_total').value = document.getElementById('grandTotal').innerText || 'Rp 0';
     document.getElementById('pdf_nok_atas_id').value = document.getElementById('nok_atas_dropdown').value || '';
+    document.getElementById('pdf_coverage').value = document.getElementById('coverage').value || '';
     
     document.getElementById('pdf_opsi_dinding').value = document.getElementById('opsi_dinding').value || 0;
     document.getElementById('pdf_opsi_kaca').value = document.getElementById('opsi_kaca').value || 0;

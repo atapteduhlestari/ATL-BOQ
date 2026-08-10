@@ -416,35 +416,47 @@
             </div>
         </div>
     </div>
-
-  <!-- ===== NOTES / PEMBERITAHUAN ===== -->
-<div class="notes-container">
-    <div class="notes-title">
-        <span class="icon">📋</span> Petunjuk Pengisian BOQ
+ <!-- ===== NOTES / PEMBERITAHUAN ===== -->
+    <div class="notes-container">
+        <div class="notes-title">
+            <span class="icon">📋</span> Petunjuk Pengisian BOQ
+        </div>
+        <ul class="notes-list">
+            <li>
+                <span class="bullet">•</span>
+                <span>Cek lebih detail apakah ada atap yang bertemu langsung dengan <strong>dinding</strong>, <strong>kaca</strong>, <strong>penangkal petir</strong>, <strong>Ventilasi Exhaust</strong> dll.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Jika bertemu dinding, kaca, penangkal petir, ventilasi exhaust, silahkan input berapa panjang/area pertemuannya di bagian <strong>"Opsi Tambahan"</strong> masing-masing bagian atap.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Untuk atap dengan kemiringan dibawah <strong>15 Derajat</strong> tidak disarankan menggunakan ridge ventilator.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Untuk lokasi dengan potensi <strong>angin kencang (&gt;97 km/jam)</strong>, direkomendasikan menggunakan <span class="highlight">Cambridge</span>.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span class="warning-text">⚠️ Jika memaksakan menggunakan produk lain selain Cambridge, maka garansi akan hilang.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span><strong>Hal yang perlu diperhatikan:</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Jarak usuk per <strong>61 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Pemakaian underlayer <strong>self adhesive</strong> direkomendasikan</span>
+            </li>
+        </ul>
     </div>
-    <ul class="notes-list">
-        <li>
-            <span class="bullet">•</span>
-            <span>Cek lebih detail apakah ada atap yang bertemu langsung dengan <strong>dinding</strong>, <strong>kaca</strong>, <strong>penangkal petir</strong>, <strong>Ventilasi Exhaust</strong> dll.</span>
-        </li>
-        <li>
-            <span class="bullet">•</span>
-            <span>Jika bertemu dinding, kaca, penangkal petir, ventilasi exhaust, silahkan input berapa panjang/area pertemuannya di bagian <strong>"Opsi Tambahan"</strong> masing-masing bagian atap.</span>
-        </li>
-        <li>
-            <span class="bullet">•</span>
-            <span>Untuk atap dengan kemiringan dibawah <strong>15 Derajat</strong> tidak disarankan menggunakan ridge ventilator.</span>
-        </li>
-        <li>
-            <span class="bullet">•</span>
-            <span>Untuk lokasi dengan potensi <strong>angin kencang (&gt;97 km/jam)</strong>, direkomendasikan menggunakan <span class="highlight">Cambridge</span>.</span>
-        </li>
-        <li>
-            <span class="bullet">•</span>
-            <span class="warning-text">⚠️ Jika memaksakan menggunakan produk lain selain Cambridge, maka garansi akan hilang.</span>
-        </li>
-    </ul>
-</div>
     
     <div class="space-y-6">
         

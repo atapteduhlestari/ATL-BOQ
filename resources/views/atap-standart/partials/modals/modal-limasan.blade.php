@@ -294,7 +294,6 @@ function loadGLBModel() {
     loader.load(
         modelPath,
         function(gltf) {
-            // Success
             var model = gltf.scene;
             model.scale.set(1.5, 1.5, 1.5);
             model.position.y = 0;
@@ -311,14 +310,12 @@ function loadGLBModel() {
             console.log('Model 3D loaded successfully');
         },
         function(xhr) {
-            // Progress
             var progress = (xhr.loaded / xhr.total * 100);
             if (loadingEl) {
                 loadingEl.innerHTML = `<div class="spinner"></div><div>Memuat model... ${Math.round(progress)}%</div>`;
             }
         },
         function(error) {
-            // Error - fallback ke Canvas 2D
             console.error('Error loading model:', error);
             if (loadingEl) {
                 loadingEl.innerHTML = `
@@ -331,7 +328,6 @@ function loadGLBModel() {
                     </div>
                 `;
             }
-            // Fallback: tampilkan gambar
             showFallbackImage();
         }
     );
@@ -364,9 +360,6 @@ function updateModel3D() {
         var scaleZ = Math.min(lebar / 4, 2);
         var scale = Math.min(scaleX, scaleZ);
         modelGroup.scale.set(scale, scale, scale);
-        
-        // Rotasi berdasarkan sudut (jika model mendukung)
-        // modelGroup.rotation.x = sudut * Math.PI / 180 * 0.3;
     }
 }
 
@@ -422,13 +415,11 @@ function hitungAtapLimasan() {
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
     
-    // Pilih endpoint berdasarkan brand yang dipilih
     let brandSlug = document.getElementById('brand_boq')?.value || '';
-    let url = '/atap-standar/hitung'; // default
+    let url = '/atap-standar/hitung';
     let requestData = {};
     
     if (brandSlug === 'palmex') {
-        // PALMEX: kirim panjang, lebar, sudut
         url = '/atap-standar/hitung-palmex-limasan';
         requestData = {
             panjang: p,
@@ -436,7 +427,6 @@ function hitungAtapLimasan() {
             sudut: s
         };
     } else {
-        // DEFAULT: kirim jenis_atap = 1 (Limasan)
         requestData = {
             jenis_atap: 1,
             panjang: p,
@@ -462,16 +452,13 @@ function hitungAtapLimasan() {
     })
     .then(data => {
         if (data.success) {
-            // HTML pakai ID: luasAtap, panjangSisiMiring, starting, nokJurai, flashing
             document.getElementById('luasAtap').innerHTML = data.luas_atap + ' m²';
             document.getElementById('panjangSisiMiring').innerHTML = data.panjang_sisi_miring + ' m';
             document.getElementById('starting').innerHTML = data.starting + ' m';
             document.getElementById('flashing').innerHTML = data.flashing + ' m';
             
-            // CEK apakah ada panjang_nok dan panjang_jurai (PALMEX)
             if (data.panjang_nok !== undefined && data.panjang_jurai !== undefined) {
                 document.getElementById('nokJurai').innerHTML = 'Nok: ' + data.panjang_nok + ' m | Jurai: ' + data.panjang_jurai + ' m';
-                // Simpan untuk lanjut ke BOQ
                 window.hasilPerhitunganLimasan = {
                     luas_atap: data.luas_atap,
                     starting: data.starting,
@@ -505,6 +492,7 @@ function hitungAtapLimasan() {
         btn.disabled = false;
     });
 }
+
 function resetFormLimasan() {
     document.getElementById('panjang_limasan').value = '';
     document.getElementById('lebar_limasan').value = '';
@@ -523,47 +511,45 @@ function lanjutKeBOQ() {
         return;
     }
     
-    // Ambil data dari hasil perhitungan
     let hasil = window.hasilPerhitunganLimasan || {};
     let luasAtap = hasil.luas_atap || 0;
     let sudut = hasil.sudut || 0;
     let panjangStarter = hasil.starting || 0;
     let panjangFlashing = hasil.flashing || 0;
-    
-    // Untuk PALMEX: pakai panjang_nok dan panjang_jurai
     let panjangNokJurai = hasil.panjang_nok || hasil.nok_jurai || 0;
     let panjangJurai = hasil.panjang_jurai || 0;
     
-    // Mapping URL untuk setiap brand
     const controllerMap = {
         'iko-atap': '/boq/iko-atap',
         'skyshield': '/boq/skyshield',
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/limasan',
+        'tape-roof': '/boq/taperoof/limasan',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
     
-    // Kirim parameter sesuai brand
     if (brandSlug === 'iko-insulasi') {
         window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
     } else if (brandSlug === 'palmex') {
-        // PALMEX kirim nok dan jurai terpisah
         window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok=${panjangNokJurai}&panjang_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     } else {
         window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
     }
 }
 
+function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', function() {
-    // Tunggu modal terbuka baru init Three.js
     setTimeout(function() {
         initThreeJS();
     }, 500);
 });
 
-// Inisialisasi ulang saat modal dibuka
 var modalObserver = new MutationObserver(function() {
     var modal = document.getElementById('modalLimasan');
     if (modal && !modal.classList.contains('hidden')) {

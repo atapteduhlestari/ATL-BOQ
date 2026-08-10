@@ -564,10 +564,12 @@ function lanjutKeBOQPelana3Arah() {
     let d = hasilPelana3Arah.details;
     let total = hasilPelana3Arah.total;
     
+    // MAPPING URL - TAMBAHKAN TAPE ROOF
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/pelana-3-arah',
         'skyshield': '/boq/atap-kombinasi-skyshield/pelana-3-arah',
         'palmex': '/boq/palmex/atap-kombinasi/pelana-3-arah',
+        'tape-roof': '/boq/taperoof/pelana-3-arah',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-3-arah';
@@ -595,14 +597,20 @@ function lanjutKeBOQPelana3Arah() {
         url += `&jurai_2=0&nok_atas_2=${d[1]?.nok_atas||0}`;
         url += `&total_jurai=${total?.panjang_jurai||0}`;
         url += `&total_nok_atas=${total?.panjang_nok_atas||0}`;
+    } else if (brandSlug === 'tape-roof') {
+        // TAPE ROOF: pakai total nok_jurai (digabung)
+        url += `&total_nok_jurai=${total?.panjang_nok_jurai||0}`;
+        url += `&nok_1=${d[0]?.nok_jurai||0}`;
+        url += `&nok_2=${d[1]?.nok_jurai||0}`;
     } else {
+        // IKO/SKYSHIELD
         url += `&nok_1=${d[0]?.nok_jurai||0}`;
         url += `&nok_2=${d[1]?.nok_jurai||0}`;
     }
     
+    console.log('Final URL:', url);
     window.location.href = url;
 }
-
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {

@@ -461,10 +461,10 @@
                 <span><strong>Hal yang perlu diperhatikan:</strong></span>
             </li>
             <li style="padding-left: 28px;">
-                <span>• Jarak usuk per <strong>60 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
+                <span>• Jarak usuk per <strong>61 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
             </li>
             <li style="padding-left: 28px;">
-                <span>• Jarak usuk per <strong>40 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
+                <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
             </li>
             <li style="padding-left: 32px;">
                 <span>• Pemakaian underlayer <strong>self adhesives</strong> direkomendasikan</span>

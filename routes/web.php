@@ -5,6 +5,8 @@ use App\Http\Controllers\AtapKombinasiController;
 use App\Http\Controllers\IkoAtapController;
 use App\Http\Controllers\SkyshieldStandarController;
 use App\Http\Controllers\PalmexController;
+use App\Http\Controllers\TaperoofController;
+use App\Http\Controllers\TaperoofKombinasiController;
 use App\Http\Controllers\PalmexKombinasiController;
 use App\Http\Controllers\IkoInsulasiController;
 use App\Http\Controllers\IkoAtapKombinasiController;
@@ -180,6 +182,81 @@ Route::post('/boq/palmex/atap-kombinasi/lengkung-2-sisi/hitung',
 Route::post('/boq/palmex/atap-kombinasi/pelana-dinding/hitung', [PalmexKombinasiController::class, 'hitungPelanaDinding'])->name('boq.palmex.atap-kombinasi.pelana-dinding.hitung');
     Route::post('/boq/palmex/atap-kombinasi/{jenis}/export-pdf', [PalmexKombinasiController::class, 'exportPdf'])
     ->name('boq.palmex.kombinasi.export-pdf');
+
+    Route::prefix('boq/taperoof')->group(function () {
+    Route::get('/{model}', [TaperoofController::class, 'index'])->name('boq.taperoof.index');
+    Route::post('/{model}/hitung', [TaperoofController::class, 'hitung'])->name('boq.taperoof.hitung');
+    Route::post('/{model}/export-pdf', [TaperoofController::class, 'exportPdf'])->name('boq.taperoof.export-pdf');
+});
+
+Route::get('/boq/taperoof/atap-kombinasi/gergaji', [TaperoofKombinasiController::class, 'gergaji'])
+    ->name('boq.taperoof.gergaji');
+Route::post('/boq/taperoof/atap-kombinasi/gergaji/hitung', [TaperoofKombinasiController::class, 'hitungGergaji'])
+    ->name('boq.taperoof.gergaji.hitung');
+Route::post('/boq/taperoof/atap-kombinasi/gergaji/export-pdf', [TaperoofKombinasiController::class, 'exportPdfGergaji'])
+    ->name('boq.taperoof.gergaji.export-pdf');
+    Route::get('/boq/taperoof/lengkung-2-sisi', [TaperoofKombinasiController::class, 'lengkung2Sisi'])
+    ->name('boq.taperoof.lengkung-2-sisi');
+Route::post('/boq/taperoof/lengkung-2-sisi/hitung', [TaperoofKombinasiController::class, 'hitungLengkung2Sisi'])
+    ->name('boq.taperoof.lengkung-2-sisi.hitung');
+Route::post('/boq/taperoof/lengkung-2-sisi/export-pdf', [TaperoofKombinasiController::class, 'exportPdfLengkung2Sisi'])
+    ->name('boq.taperoof.lengkung-2-sisi.export-pdf');
+
+    Route::get('/boq/taperoof/limas-pelana', [TaperoofKombinasiController::class, 'limasPelana'])
+    ->name('boq.taperoof.limas-pelana');
+Route::post('/boq/taperoof/limas-pelana/hitung', [TaperoofKombinasiController::class, 'hitungLimasPelana'])
+    ->name('boq.taperoof.limas-pelana.hitung');
+Route::post('/boq/taperoof/limas-pelana/export-pdf', [TaperoofKombinasiController::class, 'exportPdfLimasPelana'])
+    ->name('boq.taperoof.limas-pelana.export-pdf');
+
+    Route::get('/boq/taperoof/limasan-limasan', [TaperoofKombinasiController::class, 'limasanLimasan'])
+    ->name('boq.taperoof.limasan-limasan');
+Route::post('/boq/taperoof/limasan-limasan/hitung', [TaperoofKombinasiController::class, 'hitungLimasanLimasan'])
+    ->name('boq.taperoof.limasan-limasan.hitung');
+Route::post('/boq/taperoof/limasan-limasan/export-pdf', [TaperoofKombinasiController::class, 'exportPdfLimasanLimasan'])
+    ->name('boq.taperoof.limasan-limasan.export-pdf');
+
+    Route::get('/boq/taperoof/limasan-trapesium', [TaperoofKombinasiController::class, 'limasanTrapesium'])
+    ->name('boq.taperoof.limasan-trapesium');
+Route::post('/boq/taperoof/limasan-trapesium/hitung', [TaperoofKombinasiController::class, 'hitungLimasanTrapesium'])
+    ->name('boq.taperoof.limasan-trapesium.hitung');
+Route::post('/boq/taperoof/limasan-trapesium/export-pdf', [TaperoofKombinasiController::class, 'exportPdfLimasanTrapesium'])
+    ->name('boq.taperoof.limasan-trapesium.export-pdf');
+
+    Route::get('/boq/taperoof/limasan-x', [TaperoofKombinasiController::class, 'limasanX'])
+    ->name('boq.taperoof.limasan-x');
+Route::post('/boq/taperoof/limasan-x/hitung', [TaperoofKombinasiController::class, 'hitungLimasanX'])
+    ->name('boq.taperoof.limasan-x.hitung');
+Route::post('/boq/taperoof/limasan-x/export-pdf', [TaperoofKombinasiController::class, 'exportPdfLimasanX'])
+    ->name('boq.taperoof.limasan-x.export-pdf');
+
+    Route::get('/boq/taperoof/pelana-2-kemiringan', [TaperoofKombinasiController::class, 'pelana2Kemiringan'])
+    ->name('boq.taperoof.pelana-2-kemiringan');
+Route::post('/boq/taperoof/pelana-2-kemiringan/hitung', [TaperoofKombinasiController::class, 'hitungPelana2Kemiringan'])
+    ->name('boq.taperoof.pelana-2-kemiringan.hitung');
+Route::post('/boq/taperoof/pelana-2-kemiringan/export-pdf', [TaperoofKombinasiController::class, 'exportPdfPelana2Kemiringan'])
+    ->name('boq.taperoof.pelana-2-kemiringan.export-pdf');
+
+    Route::get('/boq/taperoof/pelana-2-sisi', [TaperoofKombinasiController::class, 'pelana2Sisi'])
+    ->name('boq.taperoof.pelana-2-sisi');
+Route::post('/boq/taperoof/pelana-2-sisi/hitung', [TaperoofKombinasiController::class, 'hitungPelana2Sisi'])
+    ->name('boq.taperoof.pelana-2-sisi.hitung');
+Route::post('/boq/taperoof/pelana-2-sisi/export-pdf', [TaperoofKombinasiController::class, 'exportPdfPelana2Sisi'])
+    ->name('boq.taperoof.pelana-2-sisi.export-pdf');
+
+    Route::get('/boq/taperoof/pelana-2trapesium', [TaperoofKombinasiController::class, 'pelana2Trapesium'])
+    ->name('boq.taperoof.pelana-2trapesium');
+Route::post('/boq/taperoof/pelana-2trapesium/hitung', [TaperoofKombinasiController::class, 'hitungPelana2Trapesium'])
+    ->name('boq.taperoof.pelana-2trapesium.hitung');
+Route::post('/boq/taperoof/pelana-2trapesium/export-pdf', [TaperoofKombinasiController::class, 'exportPdfPelana2Trapesium'])
+    ->name('boq.taperoof.pelana-2trapesium.export-pdf');
+
+    Route::get('/boq/taperoof/pelana-3-arah', [TaperoofKombinasiController::class, 'pelana3Arah'])
+    ->name('boq.taperoof.pelana-3-arah');
+Route::post('/boq/taperoof/pelana-3-arah/hitung', [TaperoofKombinasiController::class, 'hitungPelana3Arah'])
+    ->name('boq.taperoof.pelana-3-arah.hitung');
+Route::post('/boq/taperoof/pelana-3-arah/export-pdf', [TaperoofKombinasiController::class, 'exportPdfPelana3Arah'])
+    ->name('boq.taperoof.pelana-3-arah.export-pdf');
 // ==================== JENDELA ====================
 
 // Halaman utama jendela
@@ -195,6 +272,11 @@ Route::post('/jendela/export-pdf', [JendelaController::class, 'exportPdf'])->nam
 Route::post('/boq/jendela/mati1/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati1'])->name('boq.jendela.mati1.export-pdf');
 Route::post('/boq/jendela/mati2/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati2'])->name('boq.jendela.mati2.export-pdf');
 Route::post('/boq/jendela/mati3/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati3'])->name('boq.jendela.mati3.export-pdf');
+Route::post('/boq/jendela/bouven1/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfBouven1'])->name('boq.jendela.bouven1.export-pdf');
+Route::post('/boq/jendela/bouven2/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfBouven2'])->name('boq.jendela.bouven2.export-pdf');
+Route::post('/boq/jendela/bouven3/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfBouven3'])->name('boq.jendela.bouven3.export-pdf');
+Route::post('/boq/jendela/bouven4/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfBouven4'])->name('boq.jendela.bouven4.export-pdf');
+Route::post('/boq/jendela/bouvensilang/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfBouvenSilang'])->name('boq.jendela.bouvensilang.export-pdf');
 Route::post('/boq/jendela/mati1mullion/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati1Mullion'])->name('boq.jendela.mati1mullion.export-pdf');
 Route::post('/boq/jendela/mati2mullion/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati2Mullion'])->name('boq.jendela.mati2mullion.export-pdf');
 Route::post('/boq/jendela/mati3mullion/export-pdf', [App\Http\Controllers\JendelaController::class, 'exportPdfMati3Mullion'])->name('boq.jendela.mati3mullion.export-pdf');
@@ -227,6 +309,11 @@ Route::post('/boq/jendela/mati2mullion2vertikalhorizontal/export-pdf', [App\Http
 Route::post('/boq/jendela/mati1/hitung', [JendelaController::class, 'hitungMati1'])->name('boq.jendela.mati1.hitung');
 Route::post('/boq/jendela/mati2/hitung', [JendelaController::class, 'hitungMati2'])->name('boq.jendela.mati2.hitung');
 Route::post('/boq/jendela/mati3/hitung', [JendelaController::class, 'hitungMati3'])->name('boq.jendela.mati3.hitung');
+Route::post('/boq/jendela/bouven1/hitung', [JendelaController::class, 'hitungBouven1'])->name('boq.jendela.bouven1.hitung');
+Route::post('/boq/jendela/bouven2/hitung', [JendelaController::class, 'hitungBouven2'])->name('boq.jendela.bouven2.hitung');
+Route::post('/boq/jendela/bouven3/hitung', [JendelaController::class, 'hitungBouven3'])->name('boq.jendela.bouven3.hitung');
+Route::post('/boq/jendela/bouven4/hitung', [JendelaController::class, 'hitungBouven4'])->name('boq.jendela.bouven4.hitung');
+Route::post('/boq/jendela/bouvensilang/hitung', [JendelaController::class, 'hitungBouvenSilang'])->name('boq.jendela.bouvensilang.hitung');
 Route::post('/boq/jendela/mati1mullion/hitung', [JendelaController::class, 'hitungMati1Mullion'])->name('boq.jendela.mati1mullion.hitung');
 Route::post('/boq/jendela/mati2mullion/hitung', [JendelaController::class, 'hitungMati2Mullion'])->name('boq.jendela.mati2mullion.hitung');
 Route::post('/boq/jendela/mati3mullion/hitung', [JendelaController::class, 'hitungMati3Mullion'])->name('boq.jendela.mati3mullion.hitung');
@@ -281,7 +368,7 @@ Route::post('/boq/store', [BoqController::class, 'storeBoq'])->name('boq.store')
 
 // Get BOQ
 Route::get('/boq', [BoqController::class, 'index'])->name('boq.index');
-Route::get('/boq/{id}', [BoqController::class, 'show'])->name('boq.show');
+// Route::get('/boq/{id}', [BoqController::class, 'show'])->name('boq.show');
 
 
 Route::prefix('dinding')->group(function () {

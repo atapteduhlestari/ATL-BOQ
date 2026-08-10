@@ -350,11 +350,12 @@ function lanjutKeBOQPelana2Kemiringan() {
     let d = hasilPelana2Kemiringan.details;
     let total = hasilPelana2Kemiringan.total;
     
-    // Mapping URL berdasarkan brand
+    // MAPPING URL - TAMBAHKAN TAPE ROOF
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/pelana-2-kemiringan',
         'skyshield': '/boq/atap-kombinasi-skyshield/pelana-2-kemiringan',
         'palmex': '/boq/palmex/atap-kombinasi/pelana-2-kemiringan',
+        'tape-roof': '/boq/taperoof/pelana-2-kemiringan',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-2-kemiringan';
@@ -380,22 +381,25 @@ function lanjutKeBOQPelana2Kemiringan() {
     
     // ===== BEDAKAN BRAND =====
     if (brandSlug === 'palmex') {
-        // PALMEX: jurai & nok_atas terpisah
-        // Kiri: jurai=0, nok_atas=0
-        // Tengah (Pelana): jurai=0, nok_atas ada
-        // Kanan: jurai=0, nok_atas=0
         url += `&jurai_1=0&nok_atas_1=0`;
         url += `&jurai_2=0&nok_atas_2=${d[1]?.nok_atas||0}`;
         url += `&jurai_3=0&nok_atas_3=0`;
         url += `&total_jurai=${total?.panjang_jurai||0}`;
         url += `&total_nok_atas=${total?.panjang_nok_atas||0}`;
+    } else if (brandSlug === 'tape-roof') {
+        // TAPE ROOF: pakai total nok_jurai (digabung)
+        url += `&total_nok_jurai=${total?.panjang_nok_jurai||0}`;
+        url += `&nok_1=${d[0]?.nok_jurai||0}`;
+        url += `&nok_2=${d[1]?.nok_jurai||0}`;
+        url += `&nok_3=${d[2]?.nok_jurai||0}`;
     } else {
-        // IKO/SKYSHIELD: nok_jurai digabung
+        // IKO/SKYSHIELD
         url += `&nok_1=${d[0]?.nok_jurai||0}`;
         url += `&nok_2=${d[1]?.nok_jurai||0}`;
         url += `&nok_3=${d[2]?.nok_jurai||0}`;
     }
     
+    console.log('Final URL:', url);
     window.location.href = url;
 }
 </script>

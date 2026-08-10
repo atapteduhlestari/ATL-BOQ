@@ -254,28 +254,26 @@ function lanjutKeBOQDome() {
     let luasAtap = hasil.luas_atap || 0;
     let panjangStarter = hasil.starting || 0;
     let panjangFlashing = hasil.flashing || 0;
-    
-    // Dome hanya punya Jurai (tanpa Nok)
     let panjangJurai = hasil.panjang_jurai || hasil.nok_jurai || 0;
     
-    // Mapping URL untuk setiap brand
+    // MAPPING URL - TAMBAHKAN TAPE ROOF
     const controllerMap = {
         'iko-atap': '/boq/iko-atap',
         'skyshield': '/boq/skyshield',
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/dome',
+        'tape-roof': '/boq/taperoof/dome',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
     
-    // Kirim parameter sesuai brand
     if (brandSlug === 'iko-insulasi') {
         window.location.href = `${url}?luas=${luasAtap}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     } else if (brandSlug === 'palmex') {
-        // PALMEX Dome: kirim panjang_jurai (tanpa nok)
         window.location.href = `${url}?luas_atap=${luasAtap}&panjang_starter=${panjangStarter}&panjang_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     } else {
-        window.location.href = `${url}?luas_atap=${luasAtap}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
+        // TAPE ROOF dan lainnya pake ini
+        window.location.href = `${url}?luas_atap=${luasAtap}&panjang_starter=${panjangStarter}&panjang_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     }
 }
 </script>

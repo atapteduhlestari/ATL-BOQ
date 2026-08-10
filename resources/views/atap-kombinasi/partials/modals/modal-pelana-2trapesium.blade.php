@@ -429,11 +429,12 @@ function lanjutKeBOQPelana2Trapesium() {
     let sudutA = parseFloat(document.getElementById('sudut_a').value) || 0;
     let sudutB = parseFloat(document.getElementById('sudut_b').value) || 0;
     
-    // Mapping URL berdasarkan brand
+    // MAPPING URL - TAMBAHKAN TAPE ROOF
     const controllerMap = {
         'iko-atap': '/boq/atap-kombinasi/pelana-2trapesium',
         'skyshield': '/boq/atap-kombinasi-skyshield/pelana-2trapesium',
         'palmex': '/boq/palmex/atap-kombinasi/pelana-2trapesium',
+        'tape-roof': '/boq/taperoof/pelana-2trapesium',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-2trapesium';
@@ -460,27 +461,28 @@ function lanjutKeBOQPelana2Trapesium() {
     
     // ===== BEDAKAN BRAND =====
     if (brandSlug === 'palmex') {
-        // PALMEX: jurai & nok_atas terpisah
-        // Pelana: ada nok_atas, jurai = 0
-        // Trapesium: ada jurai, nok_atas = 0
         url += `&jurai_1=0`;
         url += `&nok_atas_1=${details[0]?.nok_atas||0}`;
-        
         url += `&jurai_2=${details[1]?.jurai||0}`;
         url += `&nok_atas_2=0`;
-        
         url += `&jurai_3=${details[2]?.jurai||0}`;
         url += `&nok_atas_3=0`;
-        
         url += `&total_jurai=${total?.panjang_jurai||0}`;
         url += `&total_nok_atas=${total?.panjang_nok_atas||0}`;
+    } else if (brandSlug === 'tape-roof') {
+        // TAPE ROOF: pakai total nok_jurai (digabung)
+        url += `&total_nok_jurai=${total?.panjang_nok_jurai||0}`;
+        url += `&nok_1=${details[0]?.nok_jurai||0}`;
+        url += `&nok_2=${details[1]?.nok_jurai||0}`;
+        url += `&nok_3=${details[2]?.nok_jurai||0}`;
     } else {
-        // IKO/SKYSHIELD: nok_jurai digabung
+        // IKO/SKYSHIELD
         url += `&nok_1=${details[0]?.nok_jurai||0}`;
         url += `&nok_2=${details[1]?.nok_jurai||0}`;
         url += `&nok_3=${details[2]?.nok_jurai||0}`;
     }
     
+    console.log('Final URL:', url);
     window.location.href = url;
 }
 </script>

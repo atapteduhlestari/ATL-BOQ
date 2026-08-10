@@ -237,7 +237,6 @@ function resetFormPelana() {
     document.getElementById('hasilPerhitunganPelana').classList.add('hidden');
     hasilPerhitunganPelana = null;
 }
-
 function lanjutKeBOQPelana() {
     let brandSlug = document.getElementById('brand_boq_pelana').value;
     
@@ -257,16 +256,17 @@ function lanjutKeBOQPelana() {
         'iko-atap': '/boq/iko-atap',
         'skyshield': '/boq/skyshield',
         'iko-insulasi': '/boq/iko-insulasi',
+        'palmex': '/boq/palmex/pelana',
+        'tape-roof': '/boq/taperoof/pelana',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
     
-    // Khusus PALMEX: tambahkan model ke URL
-    if (brandSlug === 'palmex') {
-        url = '/boq/palmex/pelana';
-    }
-    
-    if (brandSlug === 'iko-insulasi') {
+    // Khusus TAPERROOF - tanpa sistem pemasangan
+    // Khusus TAPER ROOF
+if (brandSlug === 'tape-roof') {  // <-- PAKAI 'tape-roof'
+    window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+} else if (brandSlug === 'iko-insulasi') {
         window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
     } else if (brandSlug === 'skyshield') {
         window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;

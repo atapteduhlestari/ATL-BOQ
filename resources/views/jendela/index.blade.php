@@ -149,7 +149,7 @@
             margin-bottom: 16px;
         }
         .card-image {
-            height: 160px !important;
+            height: 200px !important;
         }
         .card-body {
             padding: 10px 14px 14px;
@@ -363,7 +363,7 @@
             width: 100%;
             border-radius: 16px 16px 0 0;
             min-height: 180px;
-            height: 180px;
+            height: 300px;
         }
     }
 
@@ -748,7 +748,7 @@
             </div>
         </div>
 
-        <!-- Card: Jendela Mati 2 Kaca -->
+         <!-- Card: Jendela Mati 2 Kaca -->
         <div class="card-item" data-type="mati">
             <div class="card-image">
                 <img src="{{ asset('images/jendela/jendela-2-kaca.png') }}" alt="Jendela Mati 2 Kaca">
@@ -760,7 +760,7 @@
             </div>
         </div>
 
-        <!-- Card: Jendela Mati 3 Kaca -->
+         <!-- Card: Jendela Mati 3 Kaca -->
         <div class="card-item" data-type="mati">
             <div class="card-image">
                 <img src="{{ asset('images/jendela/jendela-3-kaca.png') }}" alt="Jendela Mati 3 Kaca">
@@ -772,7 +772,7 @@
             </div>
         </div>
 
-        <!-- Card: Jendela Mati 1 Kaca Mullion -->
+         <!-- Card: Jendela Mati 1 Kaca Mullion -->
         <div class="card-item" data-type="mati">
             <div class="card-image">
                 <img src="{{ asset('images/jendela/jendela-1-kaca_mullion.png') }}" alt="Jendela Mati 1 Kaca Mullion">
@@ -797,7 +797,6 @@
         </div>
 
         <!-- Card: Jendela Mati 3 Kaca Mullion -->
-        
         <div class="card-item" data-type="mati">
             <div class="card-image">
                 <img src="{{ asset('images/jendela/jendela-3-kaca_mullion.png') }}" alt="Jendela Mati 3 Kaca Mullion">
@@ -808,27 +807,8 @@
                 <button class="card-btn" onclick="openModal('modalJendelaMati3KacaMullion')">Hitung Kebutuhan →</button>
             </div>
         </div>
-<div class="card-item" data-type="mati">
-            <div class="card-image">
-                <img src="{{ asset('images/jendela/jendela-1-mullion-horizontal.png') }}" alt="Jendela Mati 3 Kaca Mullion">
-            </div>
-            <div class="card-body">
-                <div class="card-name">Jendela Mati 1 Daun 2 Mullion Horizontal</div>
-                <p class="card-desc">Jendela Mati 1 Kaca dengan 2 Mullion Horizontal</p>
-                <button class="card-btn" onclick="openModal('modalJendelaMati1Kaca2MullionHorizontal')">Hitung Kebutuhan →</button>
-            </div>
-        </div>
-<div class="card-item" data-type="mati">
-            <div class="card-image">
-                <img src="{{ asset('images/jendela/jendela-3-kaca-2-mullion-vertikal-1-mullion-horizontal.png') }}" alt="Jendela Mati 3 Kaca Mullion">
-            </div>
-            <div class="card-body">
-                <div class="card-name">Jendela Mati 3 Daun 2 Mullion Vertikal 1 Mullion Horizontal</div>
-                <p class="card-desc">Jendela Mati 1 Kaca dengan 2 Mullion Horizontal</p>
-                <button class="card-btn" onclick="openModal('modalJendelaMati3Kaca2MullionVertikal1MullionHorizontal')">Hitung Kebutuhan →</button>
-            </div>
-        </div>
-<div class="card-item" data-type="mati">
+
+        <div class="card-item" data-type="mati">
             <div class="card-image">
                 <img src="{{ asset('images/jendela/jendela-1-kaca-1-mullion-vertikal-dan-horizontal.png') }}" alt="Jendela Mati 3 Kaca Mullion">
             </div>
@@ -838,7 +818,8 @@
                 <button class="card-btn" onclick="openModal('modalJendelaMati1Kaca1MullionVertikalHorizontal')">Hitung Kebutuhan →</button>
             </div>
         </div>
-<div class="card-item" data-type="mati">
+
+        <div class="card-item" data-type="mati">
             <div class="card-image">
                 <img src="{{ asset('images/jendela/jendela-2-kaca-2-mullion-vertikal.png') }}" alt="Jendela Mati 3 Kaca Mullion">
             </div>
@@ -848,6 +829,84 @@
                 <button class="card-btn" onclick="openModal('modalJendelaMati2Kaca2MullionVertikalHorizontal')">Hitung Kebutuhan →</button>
             </div>
         </div>
+
+        <div class="card-item" data-type="mati">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-3-kaca-2-mullion-vertikal-1-mullion-horizontal.png') }}" alt="Jendela Mati 3 Kaca Mullion">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Mati 3 Daun 2 Mullion Vertikal 1 Mullion Horizontal</div>
+                <p class="card-desc">Jendela Mati 1 Kaca dengan 2 Mullion Horizontal</p>
+                <button class="card-btn" onclick="openModal('modalJendelaMati3Kaca2MullionVertikal1MullionHorizontal')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+        <div class="card-item" data-type="mati">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-1-mullion-horizontal.png') }}" alt="Jendela Mati 3 Kaca Mullion">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Mati 1 Daun 2 Mullion Horizontal</div>
+                <p class="card-desc">Jendela Mati 1 Kaca dengan 2 Mullion Horizontal</p>
+                <button class="card-btn" onclick="openModal('modalJendelaMati1Kaca2MullionHorizontal')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+          <div class="card-item" data-type="mati">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-bouven-1-kaca.png') }}" alt="Jendela Mati 1 Kaca">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Bouven 1 Kaca</div>
+                <p class="card-desc">Jendela tetap / non-opening, 1 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaBouven1Kaca')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+        <div class="card-item" data-type="mati">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-bouven-2-kaca.png') }}" alt="Jendela Mati 1 Kaca">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Bouven 2 Kaca</div>
+                <p class="card-desc">Jendela tetap / non-opening, 1 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaBouven2Kaca')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+        <div class="card-item" data-type="mati">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-bouven-3-kaca.png') }}" alt="Jendela Mati 1 Kaca">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Bouven 3 Kaca</div>
+                <p class="card-desc">Jendela tetap / non-opening, 1 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaBouven3Kaca')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+        <div class="card-item" data-type="mati">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-bouven-4-kaca.png') }}" alt="Jendela Mati 1 Kaca">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Bouven 4 Kaca</div>
+                <p class="card-desc">Jendela tetap / non-opening, 1 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaBouven4Kaca')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+         <div class="card-item" data-type="mati">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-bouven-silang.png') }}" alt="Jendela Mati 1 Kaca">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Bouven Silang</div>
+                <p class="card-desc">Jendela tetap / non-opening, 1 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaBouvenSilang')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
         <!-- Card: Jendela Swing 1 Daun -->
         <div class="card-item" data-type="swing">
             <div class="card-image">
@@ -894,7 +953,6 @@
             </div>
         </div>
 
-
         <!-- Card: Jendela Swing 2 Daun -->
         <div class="card-item" data-type="swing">
             <div class="card-image">
@@ -918,7 +976,7 @@
                 <button class="card-btn" onclick="openModal('modalJendelaSwing2Daun2MullionVertikal1MullionHorizontal')">Hitung Kebutuhan →</button>
             </div>
         </div>
- <!-- Card: Jendela Swing 2 Daun -->
+        <!-- Card: Jendela Swing 2 Daun -->
         <div class="card-item" data-type="swing">
             <div class="card-image">
                 <img src="{{ asset('images/jendela/jendela-swing-2-2-mullion-vertikal-2-mullion-horizontal.png') }}" alt="Jendela Swing 2 Daun">
@@ -952,6 +1010,42 @@
             </div>
         </div>
 
+             <!-- Card: Jendela Jungkit 1 Daun -->
+        <div class="card-item" data-type="jungkit">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-jungkit-1-kaca-1-mullion-vertikal-horizontal.png') }}" alt="Jendela Jungkit 1 Daun">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Jungkit 1 Daun 1 Mullion Vertikal 1 Mullion Horizontal</div>
+                <p class="card-desc">Jendela buka dengan engsel, 1 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaJungkit1MullionVertikal1MullionHorizontal')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+           <!-- Card: Jendela Jungkit 1 Daun -->
+        <div class="card-item" data-type="jungkit">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-jungkit-1-mullion-vertikal-2-horizontal.png') }}" alt="Jendela Jungkit 1 Daun">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Jungkit 1 Daun 1 Mullion Vertikal 2 Mullion Horizontal</div>
+                <p class="card-desc">Jendela buka dengan engsel, 1 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaJungkit1MullionVertikal2MullionHorizontal')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+           <!-- Card: Jendela Jungkit 1 Daun Mullion -->
+        <div class="card-item" data-type="jungkit">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-jungkit-1-mullion.png') }}" alt="Jendela Jungkit 1 Daun Mullion">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Jungkit 1 Daun Mullion</div>
+                <p class="card-desc">Jendela buka dengan engsel, 1 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaJungkit1DaunMullion')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
         <!-- Card: Jendela Jungkit 2 Daun Coupling -->
         <div class="card-item" data-type="jungkit">
             <div class="card-image">
@@ -964,43 +1058,7 @@
             </div>
         </div>
 
-        <!-- Card: Jendela Jungkit 1 Daun Mullion -->
-        <div class="card-item" data-type="jungkit">
-            <div class="card-image">
-                <img src="{{ asset('images/jendela/jendela-jungkit-1-mullion.png') }}" alt="Jendela Jungkit 1 Daun Mullion">
-            </div>
-            <div class="card-body">
-                <div class="card-name">Jendela Jungkit 1 Daun Mullion</div>
-                <p class="card-desc">Jendela buka dengan engsel, 1 panel kaca</p>
-                <button class="card-btn" onclick="openModal('modalJendelaJungkit1DaunMullion')">Hitung Kebutuhan →</button>
-            </div>
-        </div>
-
-         <!-- Card: Jendela Jungkit 1 Daun -->
-        <div class="card-item" data-type="jungkit">
-            <div class="card-image">
-                <img src="{{ asset('images/jendela/jendela-jungkit-1-kaca-1-mullion-vertikal-horizontal.png') }}" alt="Jendela Jungkit 1 Daun">
-            </div>
-            <div class="card-body">
-                <div class="card-name">Jendela Jungkit 1 Daun 1 Mullion Vertikal 1 Mullion Horizontal</div>
-                <p class="card-desc">Jendela buka dengan engsel, 1 panel kaca</p>
-                <button class="card-btn" onclick="openModal('modalJendelaJungkit1MullionVertikal1MullionHorizontal')">Hitung Kebutuhan →</button>
-            </div>
-        </div>
-         <!-- Card: Jendela Jungkit 1 Daun -->
-        <div class="card-item" data-type="jungkit">
-            <div class="card-image">
-                <img src="{{ asset('images/jendela/jendela-jungkit-1-mullion-vertikal-2-horizontal.png') }}" alt="Jendela Jungkit 1 Daun">
-            </div>
-            <div class="card-body">
-                <div class="card-name">Jendela Jungkit 1 Daun 1 Mullion Vertikal 2 Mullion Horizontal</div>
-                <p class="card-desc">Jendela buka dengan engsel, 1 panel kaca</p>
-                <button class="card-btn" onclick="openModal('modalJendelaJungkit1MullionVertikal2MullionHorizontal')">Hitung Kebutuhan →</button>
-            </div>
-        </div>
-
-
-        <!-- Card: Jendela Jungkit 2 Daun Mullion -->
+         <!-- Card: Jendela Jungkit 2 Daun Mullion -->
         <div class="card-item" data-type="jungkit">
             <div class="card-image">
                 <img src="{{ asset('images/jendela/jendela-jungkit-2-mullion-vertikal-1-mullion-horizontal.png') }}" alt="Jendela Jungkit 2 Daun Mullion">
@@ -1011,17 +1069,7 @@
                 <button class="card-btn" onclick="openModal('modalJendelaJungkit2Daun2MullionVertikal2MullionHorizontal')">Hitung Kebutuhan →</button>
             </div>
         </div>
-        <!-- Card: Jendela Jungkit 2 Daun Mullion -->
-        <div class="card-item" data-type="jungkit">
-            <div class="card-image">
-                <img src="{{ asset('images/jendela/jendela-jungkit-2-mullion-vertikal-3-mullion-horizontal.png') }}" alt="Jendela Jungkit 2 Daun Mullion">
-            </div>
-            <div class="card-body">
-                <div class="card-name">Jendela Jungkit 2 Daun 2 Mullion Vertikal 3 Mullion Horizontal</div>
-                <p class="card-desc">Jendela buka dengan engsel, 2 panel kaca</p>
-                <button class="card-btn" onclick="openModal('modalJendelaJungkit2Daun2MullionVertikal3MullionHorizontal')">Hitung Kebutuhan →</button>
-            </div>
-        </div>
+
         <div class="card-item" data-type="jungkit">
             <div class="card-image">
                 <img src="{{ asset('images/jendela/jendela-jungkit-2-mullion.png') }}" alt="Jendela Jungkit 2 Daun Mullion">
@@ -1032,6 +1080,40 @@
                 <button class="card-btn" onclick="openModal('modalJendelaJungkit2DaunMullion')">Hitung Kebutuhan →</button>
             </div>
         </div>
+
+          <!-- Card: Jendela Jungkit 2 Daun Mullion -->
+        <div class="card-item" data-type="jungkit">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-jungkit-2-mullion-vertikal-3-mullion-horizontal.png') }}" alt="Jendela Jungkit 2 Daun Mullion">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Jungkit 2 Daun 2 Mullion Vertikal 3 Mullion Horizontal</div>
+                <p class="card-desc">Jendela buka dengan engsel, 2 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaJungkit2Daun2MullionVertikal3MullionHorizontal')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+         <!-- Card: Jendela Jungkit 2 Daun Bouven -->
+        <div class="card-item" data-type="jungkit">
+            <div class="card-image">
+                <img src="{{ asset('images/jendela/jendela-2-bouven.png') }}" alt="Jendela Jungkit 2 Daun Bouven">
+            </div>
+            <div class="card-body">
+                <div class="card-name">Jendela Jungkit 2 Daun Bouven</div>
+                <p class="card-desc">Jendela buka dengan engsel, 2 panel kaca</p>
+                <button class="card-btn" onclick="openModal('modalJendelaJungkit2DaunBouven')">Hitung Kebutuhan →</button>
+            </div>
+        </div>
+
+     
+
+    
+      
+
+
+       
+      
+        
 
         <!-- Card: Jendela Jungkit 4 Daun Bouven -->
         <div class="card-item" data-type="jungkit">
@@ -1045,17 +1127,7 @@
             </div>
         </div>
 
-        <!-- Card: Jendela Jungkit 2 Daun Bouven -->
-        <div class="card-item" data-type="jungkit">
-            <div class="card-image">
-                <img src="{{ asset('images/jendela/jendela-2-bouven.png') }}" alt="Jendela Jungkit 2 Daun Bouven">
-            </div>
-            <div class="card-body">
-                <div class="card-name">Jendela Jungkit 2 Daun Bouven</div>
-                <p class="card-desc">Jendela buka dengan engsel, 2 panel kaca</p>
-                <button class="card-btn" onclick="openModal('modalJendelaJungkit2DaunBouven')">Hitung Kebutuhan →</button>
-            </div>
-        </div>
+       
 
         <!-- Card: Jendela Jungkit 12 Daun Bouven -->
         <div class="card-item" data-type="jungkit">
@@ -1091,6 +1163,7 @@
             
             <div class="modal-body">
                 <h2 class="guide-title-main">📘 Panduan Pengguna</h2>
+                <img src="{{ asset('images/jendela/bagian-jendela.png') }}" style="width:50%" alt=""  class="mx-auto block">
                 <p class="guide-subtitle">Cara menghitung kebutuhan material jendela</p>
                 
                 <div class="modal-guide-content">
@@ -1188,6 +1261,11 @@
 
 <!-- ===== MODALS ===== -->
 @include('jendela.partials.modals.modal-jendela-mati-1-kaca')
+@include('jendela.partials.modals.modal-jendela-bouven-1-kaca')
+@include('jendela.partials.modals.modal-jendela-bouven-2-kaca')
+@include('jendela.partials.modals.modal-jendela-bouven-3-kaca')
+@include('jendela.partials.modals.modal-jendela-bouven-4-kaca')
+@include('jendela.partials.modals.modal-jendela-bouven-silang')
 @include('jendela.partials.modals.modal-jendela-mati-1-kaca-1-mullion-vertikal-horizontal')
 @include('jendela.partials.modals.modal-jendela-mati-1-kaca-2-mullion-horizontal')
 @include('jendela.partials.modals.modal-jendela-mati-2-kaca-2-mullion-vertikal-horizontal') 

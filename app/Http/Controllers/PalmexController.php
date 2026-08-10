@@ -268,7 +268,7 @@ class PalmexController extends Controller
  */
 private function hitungPelana($request)
 {
-    Log::info('=== PalmexController: hitungPelana() ===');
+   Log::info('=== PalmexController: hitungPelana() ===');
     
     // 1. AMBIL PARAMETER
     $luasAtap = $request->luas_atap ?? 0;
@@ -286,6 +286,13 @@ private function hitungPelana($request)
     $lantaiKerja = $request->lantai_kerja ?? 'Plywood 9 mm';
     $sistemPemasangan = $request->sistem_pemasangan ?? 'expose';
     
+    // ===== VALIDASI SUDUT =====
+    // Jika sudut < 30°, paksa ke non-expose
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
+    
     $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
     $brandId = $brand->id ?? 1;
     
@@ -296,7 +303,8 @@ private function hitungPelana($request)
         'panjangFlashing' => $panjangFlashing,
         'sudut' => $sudut,
         'opsiDinding' => $opsiDinding,
-        'opsiKaca' => $opsiKaca
+        'opsiKaca' => $opsiKaca,
+        'sistemPemasangan' => $sistemPemasangan
     ]);
     
     $results = [];
@@ -308,23 +316,26 @@ private function hitungPelana($request)
     if ($produkAtapId) {
         $produkAtap = Product::with(['unit', 'accessories.unit', 'accessories.area'])->find($produkAtapId);
         
-        if ($produkAtap) {
-         // 1a. ATAP UTAMA
-$satuan = $produkAtap->satuan_terkecil ?? 1;
-
-// Hitung luas dengan waste terlebih dahulu
-$luasDenganWaste = $luasAtap + ($luasAtap * $waste);
-
-if ($sistemPemasangan == 'expose') {
-    // Expose: Luas (dengan waste) × 9
-    $qty = ceil($luasDenganWaste * 9);
-} else {
-    // Non-Expose: Luas (dengan waste) / Satuan Terkecil
-    $qty = ceil($luasDenganWaste * $satuan);
-}
-
-$results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-$processedProductIds[] = $produkAtap->id;
+      if ($produkAtap) {
+    // 1a. ATAP UTAMA
+    $satuan = $produkAtap->satuan_terkecil ?? 1;
+    $coverage = $request->coverage ?? 9; // Ambil coverage dari request
+    
+    // Hitung luas dengan waste terlebih dahulu
+    $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
+    
+    if ($sistemPemasangan == 'expose') {
+        // Expose: Luas (dengan waste) × Coverage
+        $qty = ceil($luasDenganWaste * $coverage);
+    } else {
+        // Non-Expose: Luas (dengan waste) × Coverage
+        // Atau tetap pakai satuan terkecil? Tergantung logic bisnis
+        // Saya asumsikan pakai coverage juga karena sudah ada dropdown coverage
+        $qty = ceil($luasDenganWaste * $coverage);
+    }
+    
+    $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+    $processedProductIds[] = $produkAtap->id;
             // 1b. LOOP SEMUA AKSESORIS DARI PRODUCT
             foreach ($produkAtap->accessories as $aksesoris) {
                 if (in_array($aksesoris->id, $processedProductIds)) {
@@ -541,6 +552,13 @@ private function hitungLimasan($request)
     $rangka = $request->rangka ?? 'Baja Ringan';
     $lantaiKerja = $request->lantai_kerja ?? 'Plywood 9 mm';
     $sistemPemasangan = $request->sistem_pemasangan ?? 'expose';
+    $coverage = $request->coverage ?? 9; // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
     $brandId = $brand->id ?? 1;
@@ -556,7 +574,9 @@ private function hitungLimasan($request)
         'opsiKaca' => $opsiKaca,
         'juraiId' => $juraiId,
         'nokAtasId' => $nokAtasId,
-        'rangka' => $rangka
+        'rangka' => $rangka,
+        'sistemPemasangan' => $sistemPemasangan,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -587,11 +607,18 @@ private function hitungLimasan($request)
             $satuan = $produkAtap->satuan_terkecil ?? 1;
             $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
             
-            if ($sistemPemasangan == 'expose') {
-                $qty = ceil($luasDenganWaste * 9);
-            } else {
-                $qty = ceil($luasDenganWaste * $satuan);
-            }
+            // ===== PAKAI COVERAGE =====
+            // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+            $qty = ceil($luasDenganWaste * $coverage);
+            
+            Log::info('HITUNG ATAP UTAMA LIMASAN:', [
+                'luasAtap' => $luasAtap,
+                'waste' => $waste,
+                'luasDenganWaste' => $luasDenganWaste,
+                'coverage' => $coverage,
+                'sistemPemasangan' => $sistemPemasangan,
+                'qty' => $qty
+            ]);
             
             $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
             $processedProductIds[] = $produkAtap->id;
@@ -689,8 +716,10 @@ private function hitungLimasan($request)
                     }
                     
                     if ($sistemPemasangan == 'expose') {
-                        $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                        // Expose: (Luas × Coverage) + (Jumlah Jurai × 2) + (Nok × 8)
+                        $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                     } else {
+                        // Non-Expose: (Luas × 21) + (Jumlah Jurai × 2) + (Nok × 8)
                         $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                     }
                     $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -725,8 +754,10 @@ private function hitungLimasan($request)
                 // ============================================================
                 elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                     if ($sistemPemasangan == 'expose') {
-                        $qtyRaw = $luasAtap * $satuanAksesoris;
+                        // Expose: Luas × Coverage
+                        $qtyRaw = $luasAtap * $coverage;
                     } else {
+                        // Non-Expose: Luas × 4
                         $qtyRaw = $luasAtap * 4;
                     }
                     $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -863,7 +894,8 @@ private function hitungLimasan($request)
         'total_items' => count($results),
         'grand_total' => $grandTotal,
         'sistem_pemasangan' => $sistemPemasangan,
-        'rangka' => $rangka
+        'rangka' => $rangka,
+        'coverage_used' => $coverage
     ]);
     
     return response()->json([
@@ -872,7 +904,6 @@ private function hitungLimasan($request)
         'grand_total' => $grandTotal
     ]);
 }
-
 /**
  * ============================================================
  * HITUNG ATAP PIRAMID - PALMEX
@@ -901,6 +932,13 @@ private function hitungPiramid($request)
     $rangka = $request->rangka ?? 'Baja Ringan';
     $lantaiKerja = $request->lantai_kerja ?? 'Plywood 9 mm';
     $sistemPemasangan = $request->sistem_pemasangan ?? 'expose';
+    $coverage = $request->coverage ?? 9; // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
     $brandId = $brand->id ?? 1;
@@ -915,7 +953,9 @@ private function hitungPiramid($request)
         'opsiKaca' => $opsiKaca,
         'juraiId' => $juraiId,
         'nokBulatId' => $nokBulatId,
-        'rangka' => $rangka
+        'rangka' => $rangka,
+        'sistemPemasangan' => $sistemPemasangan,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -946,11 +986,18 @@ private function hitungPiramid($request)
             $satuan = $produkAtap->satuan_terkecil ?? 1;
             $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
             
-            if ($sistemPemasangan == 'expose') {
-                $qty = ceil($luasDenganWaste * 9);
-            } else {
-                $qty = ceil($luasDenganWaste * $satuan);
-            }
+            // ===== PAKAI COVERAGE =====
+            // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+            $qty = ceil($luasDenganWaste * $coverage);
+            
+            Log::info('HITUNG ATAP UTAMA PIRAMID:', [
+                'luasAtap' => $luasAtap,
+                'waste' => $waste,
+                'luasDenganWaste' => $luasDenganWaste,
+                'coverage' => $coverage,
+                'sistemPemasangan' => $sistemPemasangan,
+                'qty' => $qty
+            ]);
             
             $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
             $processedProductIds[] = $produkAtap->id;
@@ -1040,8 +1087,10 @@ private function hitungPiramid($request)
                     $jumlahJuraiDalam = ceil($jumlahJuraiDalam);
                     
                     if ($sistemPemasangan == 'expose') {
-                        $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2);
+                        // Expose: (Luas × Coverage) + (Jumlah Jurai × 2)
+                        $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2);
                     } else {
+                        // Non-Expose: (Luas × 21) + (Jumlah Jurai × 2)
                         $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2);
                     }
                     $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -1076,8 +1125,10 @@ private function hitungPiramid($request)
                 // ============================================================
                 elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                     if ($sistemPemasangan == 'expose') {
-                        $qtyRaw = $luasAtap * $satuanAksesoris;
+                        // Expose: Luas × Coverage
+                        $qtyRaw = $luasAtap * $coverage;
                     } else {
+                        // Non-Expose: Luas × 4
                         $qtyRaw = $luasAtap * 4;
                     }
                     $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -1226,7 +1277,8 @@ private function hitungPiramid($request)
         'total_items' => count($results),
         'grand_total' => $grandTotal,
         'sistem_pemasangan' => $sistemPemasangan,
-        'rangka' => $rangka
+        'rangka' => $rangka,
+        'coverage_used' => $coverage
     ]);
     
     return response()->json([
@@ -1235,7 +1287,6 @@ private function hitungPiramid($request)
         'grand_total' => $grandTotal
     ]);
 }
-
 /**
  * ============================================================
  * HITUNG ATAP KERUCUT - PALMEX
@@ -1584,6 +1635,13 @@ private function hitungSatuKemiringan($request)
     $rangka = $request->rangka ?? 'Baja Ringan';
     $lantaiKerja = $request->lantai_kerja ?? 'Plywood 9 mm';
     $sistemPemasangan = $request->sistem_pemasangan ?? 'expose';
+    $coverage = $request->coverage ?? 9; // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
     $brandId = $brand->id ?? 1;
@@ -1595,7 +1653,9 @@ private function hitungSatuKemiringan($request)
         'sudut' => $sudut,
         'opsiDinding' => $opsiDinding,
         'opsiKaca' => $opsiKaca,
-        'rangka' => $rangka
+        'rangka' => $rangka,
+        'sistemPemasangan' => $sistemPemasangan,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     $results = [];
@@ -1612,11 +1672,18 @@ private function hitungSatuKemiringan($request)
             $satuan = $produkAtap->satuan_terkecil ?? 1;
             $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
             
-            if ($sistemPemasangan == 'expose') {
-                $qty = ceil($luasDenganWaste * 9);
-            } else {
-                $qty = ceil($luasDenganWaste * $satuan);
-            }
+            // ===== PAKAI COVERAGE =====
+            // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+            $qty = ceil($luasDenganWaste * $coverage);
+            
+            Log::info('HITUNG ATAP UTAMA SATU KEMIRINGAN:', [
+                'luasAtap' => $luasAtap,
+                'waste' => $waste,
+                'luasDenganWaste' => $luasDenganWaste,
+                'coverage' => $coverage,
+                'sistemPemasangan' => $sistemPemasangan,
+                'qty' => $qty
+            ]);
             
             $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
             $processedProductIds[] = $produkAtap->id;
@@ -1688,10 +1755,12 @@ private function hitungSatuKemiringan($request)
                 // SCREW (Satu Kemiringan tidak ada jurai & nok)
                 // ============================================================
                 elseif ($areaSlug == 'palmex-screw' || $areaName == 'Screw') {
-                    // Satu Kemiringan: (Luas × Satuan Terkecil) atau (Luas × 21)
+                    // Satu Kemiringan
                     if ($sistemPemasangan == 'expose') {
-                        $qtyRaw = $luasAtap * $satuanAksesoris;
+                        // Expose: Luas × Coverage
+                        $qtyRaw = $luasAtap * $coverage;
                     } else {
+                        // Non-Expose: Luas × 21
                         $qtyRaw = $luasAtap * 21;
                     }
                     $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -1726,8 +1795,10 @@ private function hitungSatuKemiringan($request)
                 // ============================================================
                 elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                     if ($sistemPemasangan == 'expose') {
-                        $qtyRaw = $luasAtap * $satuanAksesoris;
+                        // Expose: Luas × Coverage
+                        $qtyRaw = $luasAtap * $coverage;
                     } else {
+                        // Non-Expose: Luas × 4
                         $qtyRaw = $luasAtap * 4;
                     }
                     $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -1838,7 +1909,8 @@ private function hitungSatuKemiringan($request)
         'total_items' => count($results),
         'grand_total' => $grandTotal,
         'sistem_pemasangan' => $sistemPemasangan,
-        'rangka' => $rangka
+        'rangka' => $rangka,
+        'coverage_used' => $coverage
     ]);
     
     return response()->json([

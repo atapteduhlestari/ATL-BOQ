@@ -28329,4 +28329,2240 @@ public function exportPdfSwing2MullionVertikal3MullionHorizontal(Request $reques
 
     return view('boq.jendela.pdf-jendela-swing-2-mullion-vertikal-3-mullion-horizontal', compact('data'));
 }
+
+ public function hitungBouvenSilang(Request $request)
+{
+    $request->validate([
+        'panjang' => 'required|numeric|min:1',
+        'lebar' => 'required|numeric|min:1',
+        'tebal_kaca' => 'required|numeric|min:1',
+        'jumlah' => 'required|numeric|min:1',
+        'warna' => 'required|string',
+        'type_kaca' => 'required|string',
+    ]);
+
+    // Ambil data dari form
+    $panjang = $request->panjang; // cm
+    $lebar = $request->lebar; // cm
+    $tebalKaca = $request->tebal_kaca; // mm
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $typeKaca = $request->type_kaca;
+
+    // Ambil produk utama (Jendela Mati 1 Kaca) dari database
+    $produkUtama = Product::find(265);
+    
+    if (!$produkUtama) {
+        return back()->with('error', 'Produk Jendela Mati 1 Kaca tidak ditemukan!');
+    }
+
+    // Ambil aksesoris dari tabel product_accessories dengan relasi area
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 265)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    
+    // Konversi ke meter
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    $tebalKacaM = $tebalKaca / 1000;
+
+    // 1. Luas Kaca (m²)
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10; // Round up ke 1 desimal
+
+    // 2. Keliling Profile (meter)
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // 3. Keliling Kaca (meter) - untuk perhitungan lem
+    $kelilingKacaPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingKacaTotal = $kelilingKacaPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    
+    $variableA = $jumlah * $satuanTerkecilVertikal;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    
+    $variableB = $jumlah * $satuanTerkecilHorizontal;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    // Reinforcement = total batang (vertikal + horizontal)
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN LEM / SEALANT ===
+    // Lem dihitung berdasarkan keliling kaca total (dalam meter)
+    // Dikalikan dengan koefisien lem (misal 0.5 kg per meter)
+    $koefisienLem = 0.5; // kg per meter (sesuaikan dengan kebutuhan)
+    $lemQty = $kelilingKacaTotal * $koefisienLem;
+    $lemQty = ceil($lemQty * 10) / 10; // Round up ke 1 desimal
+
+    // === PERHITUNGAN SCREW ===
+    // Screw = qty reinforcement / satuan_terkecil screw
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 0;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === PERHITUNGAN QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        // Tentukan qty berdasarkan area slug
+        if ($areaSlug == 'profile-vertikal' ) {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal' ) {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'lem') {
+            $qty = $lemQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Data untuk view
+    $data = [
+        'produk' => $produkUtama,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebalKaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $typeKaca,
+        
+        // Perhitungan dasar
+        'luas_kaca_per_unit' => $luasKacaPerUnit,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_per_unit' => $kelilingPerUnit,
+        'keliling_total' => $kelilingTotal,
+        'keliling_kaca_per_unit' => $kelilingKacaPerUnit,
+        'keliling_kaca_total' => $kelilingKacaTotal,
+        
+        // Perhitungan Profile Vertikal
+        'profile_vertikal' => $profileVertikal,
+        'satuan_terkecil_vertikal' => $satuanTerkecilVertikal,
+        'variable_a' => $variableA,
+        'frame_vertikal' => $frameVertikal,
+        'batang_vertikal' => $batangVertikal,
+        
+        // Perhitungan Profile Horizontal
+        'profile_horizontal' => $profileHorizontal,
+        'satuan_terkecil_horizontal' => $satuanTerkecilHorizontal,
+        'variable_b' => $variableB,
+        'frame_horizontal' => $frameHorizontal,
+        'batang_horizontal' => $batangHorizontal,
+        
+        // Perhitungan Reinforcement
+        'total_batang' => $totalBatang,
+        'reinforcement_qty' => $reinforcementQty,
+        
+        // Perhitungan Lem
+        'koefisien_lem' => $koefisienLem,
+        'lem_qty' => $lemQty,
+        
+        // Perhitungan Screw
+        'satuan_terkecil_screw' => $satuanTerkecilScrew,
+        'screw_qty' => $screwQty,
+        
+        // Data aksesoris dengan qty
+        'aksesoris' => $aksesoris,
+    ];
+
+    return view('boq.jendela.jendela-bouven-silang', $data);
+}
+public function exportPdfBouvenSilang(Request $request)
+{
+    $panjang = $request->panjang;
+    $lebar = $request->lebar;
+    $tebal_kaca = $request->tebal_kaca;
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $type_kaca = $request->type_kaca;
+    $judul = $request->judul ?? 'BOQ - Jendela Mati 1 Kaca';
+
+    // Ambil data aksesoris
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 265)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10;
+
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    $variableA = $jumlah * $satuanTerkecilVertikal;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    $variableB = $jumlah * $satuanTerkecilHorizontal;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SCREW ===
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 1;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === PERHITUNGAN SETTING BLOCK ===
+    $settingBlockItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'setting-block';
+    })->first();
+    
+    $satuanTerkecilSettingBlock = $settingBlockItem ? (float)$settingBlockItem->satuan_terkecil : 0;
+    
+    // variable c = 1 x satuan terkecil
+    $variableC = 1 * $satuanTerkecilSettingBlock;
+    
+    // variable d = variable c x jumlah
+    $variableD = $variableC * $jumlah;
+    
+    // variable e = variable d x 25
+    $variableE = $variableD * 25;
+    
+    // variable f = variable e / 1000
+    $variableF = $variableE / 1000;
+    
+    // variable g -> qty = ROUNDUP(variable e, 0)
+    $settingBlockQty = ceil($variableF);
+
+    // === HITUNG QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        }  elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'setting-block') {
+            $qty = $settingBlockQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Kelompokkan berdasarkan area
+    $grouped = [];
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : 'lainnya';
+        if (str_starts_with($areaSlug, 'profile')) {
+            $groupKey = 'profile';
+        } else {
+            $groupKey = $areaSlug;
+        }
+        if (!isset($grouped[$groupKey])) {
+            $grouped[$groupKey] = [];
+        }
+        $grouped[$groupKey][] = $item;
+    }
+
+    $areaLabels = [
+        'profile' => 'PROFILE',
+        'reinforcement' => 'REINFORCEMENT',
+        'kaca' => 'KACA',
+        'screw' => 'SCREW',
+        'setting-block' => 'SETTING BLOCK',
+    ];
+
+    // ============ GENERATE NOMOR BOQ ============
+    $nomorBoq = Boq::generateNomorBoq();
+
+    // ============ STORE BOQ ============
+    try {
+        $allResults = [];
+        
+        // Kumpulkan semua hasil dari aksesoris
+        foreach ($aksesoris as $item) {
+            if ($item->qty > 0) {
+                $allResults[] = [
+                    'produk_id' => $item->id,
+                    'qty' => $item->qty,
+                    'nama_produk' => $item->nama_produk,
+                ];
+            }
+        }
+        
+        // Filter duplikat berdasarkan produk_id
+        $uniqueResults = [];
+        $seenIds = [];
+        
+        foreach ($allResults as $item) {
+            $produkId = $item['produk_id'] ?? null;
+            
+            if (!$produkId) {
+                continue;
+            }
+            
+            if (in_array($produkId, $seenIds)) {
+                continue;
+            }
+            
+            $seenIds[] = $produkId;
+            $uniqueResults[] = $item;
+        }
+        
+        // Simpan ke database
+        if (count($uniqueResults) > 0) {
+            $boq = new Boq();
+            $boq->nomor_boq = $nomorBoq;
+            $boq->tanggal_boq = now();
+            $boq->save();
+            
+            foreach ($uniqueResults as $item) {
+                $produkId = $item['produk_id'] ?? null;
+                $qty = (int)($item['qty'] ?? 0);
+                
+                if ($produkId && $qty > 0) {
+                    $produk = Product::find($produkId);
+                    
+                    \DB::table('detail_boq')->insert([
+                        'boq_id' => $boq->id,
+                        'produk_id' => $produkId,
+                        'kode_produk' => $produk ? $produk->kode_produk : null,
+                        'qty' => $qty,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+            
+            \Log::info('BOQ SAVED JENDELA MATI 1:', [
+                'boq_id' => $boq->id,
+                'nomor_boq' => $nomorBoq,
+                'total' => count($uniqueResults)
+            ]);
+        }
+        
+    } catch (\Exception $e) {
+        \Log::error('Error saving BOQ Jendela Mati 1: ' . $e->getMessage());
+        \Log::error($e->getTraceAsString());
+    }
+
+    $data = [
+        'judul' => $judul,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebal_kaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $type_kaca,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_total' => $kelilingTotal,
+        'batang_vertikal' => $batangVertikal,
+        'batang_horizontal' => $batangHorizontal,
+        'reinforcement_qty' => $reinforcementQty,
+        'screw_qty' => $screwQty,
+        'setting_block_qty' => $settingBlockQty,
+        'grouped' => $grouped,
+        'areaLabels' => $areaLabels,
+        'nomor_boq' => $nomorBoq,
+    ];
+
+    // Return view PDF (bukan stream/download)
+    return view('boq.jendela.pdf-jendela-bouven-silang', compact('data'));
+}
+
+ public function hitungBouven1(Request $request)
+{
+    $request->validate([
+        'panjang' => 'required|numeric|min:1',
+        'lebar' => 'required|numeric|min:1',
+        'tebal_kaca' => 'required|numeric|min:1',
+        'jumlah' => 'required|numeric|min:1',
+        'warna' => 'required|string',
+        'type_kaca' => 'required|string',
+    ]);
+
+    // Ambil data dari form
+    $panjang = $request->panjang; // cm
+    $lebar = $request->lebar; // cm
+    $tebalKaca = $request->tebal_kaca; // mm
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $typeKaca = $request->type_kaca;
+
+    // Ambil produk utama (Jendela Mati 1 Kaca) dari database
+    $produkUtama = Product::find(266);
+    
+    if (!$produkUtama) {
+        return back()->with('error', 'Produk Jendela Mati 1 Kaca tidak ditemukan!');
+    }
+
+    // Ambil aksesoris dari tabel product_accessories dengan relasi area
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 266)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    
+    // Konversi ke meter
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    $tebalKacaM = $tebalKaca / 1000;
+
+    // 1. Luas Kaca (m²)
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10; // Round up ke 1 desimal
+
+    // 2. Keliling Profile (meter)
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    
+    $variableA = $jumlah * 2;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    
+    $variableB = $jumlah * 2;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    // Reinforcement = total batang (vertikal + horizontal)
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SETTING BLOCK ===
+    $settingBlockItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'setting-block';
+    })->first();
+    
+    $satuanTerkecilSettingBlock = $settingBlockItem ? (float)$settingBlockItem->satuan_terkecil : 0;
+    
+    // variable c = 1 x satuan terkecil
+    $variableC = 1 * $satuanTerkecilSettingBlock;
+    
+    // variable d = variable c x jumlah
+    $variableD = $variableC * $jumlah;
+    
+    // variable e = variable d x 25
+    $variableE = $variableD * 25;
+    
+    // variable f = variable e / 1000
+    $variableF = $variableE / 1000;
+    
+    // variable g -> qty = ROUNDUP(variable e, 0)
+    $settingBlockQty = ceil($variableF);
+
+    // === PERHITUNGAN SCREW ===
+    // Screw = qty reinforcement / satuan_terkecil screw
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 0;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === PERHITUNGAN QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        // Tentukan qty berdasarkan area slug
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'setting-block') {
+            $qty = $settingBlockQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Data untuk view
+    $data = [
+        'produk' => $produkUtama,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebalKaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $typeKaca,
+        
+        // Perhitungan dasar
+        'luas_kaca_per_unit' => $luasKacaPerUnit,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_per_unit' => $kelilingPerUnit,
+        'keliling_total' => $kelilingTotal,
+        
+        // Perhitungan Profile Vertikal
+        'profile_vertikal' => $profileVertikal,
+        'satuan_terkecil_vertikal' => $satuanTerkecilVertikal,
+        'variable_a' => $variableA,
+        'frame_vertikal' => $frameVertikal,
+        'batang_vertikal' => $batangVertikal,
+        
+        // Perhitungan Profile Horizontal
+        'profile_horizontal' => $profileHorizontal,
+        'satuan_terkecil_horizontal' => $satuanTerkecilHorizontal,
+        'variable_b' => $variableB,
+        'frame_horizontal' => $frameHorizontal,
+        'batang_horizontal' => $batangHorizontal,
+        
+        // Perhitungan Reinforcement
+        'total_batang' => $totalBatang,
+        'reinforcement_qty' => $reinforcementQty,
+        
+        // Perhitungan Setting Block
+        'setting_block_item' => $settingBlockItem,
+        'satuan_terkecil_setting_block' => $satuanTerkecilSettingBlock,
+        'variable_c' => $variableC,
+        'variable_d' => $variableD,
+        'variable_e' => $variableE,
+        'variable_f' => $variableF,
+        'setting_block_qty' => $settingBlockQty,
+        
+        // Perhitungan Screw
+        'satuan_terkecil_screw' => $satuanTerkecilScrew,
+        'screw_qty' => $screwQty,
+        
+        // Data aksesoris dengan qty
+        'aksesoris' => $aksesoris,
+    ];
+
+    return view('boq.jendela.jendela-bouven-1-kaca', $data);
+}
+
+public function exportPdfBouven1(Request $request)
+{
+    // Ambil data dari request
+    $panjang = $request->panjang;
+    $lebar = $request->lebar;
+    $tebal_kaca = $request->tebal_kaca;
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $type_kaca = $request->type_kaca;
+    $judul = $request->judul ?? 'BOQ - Jendela Bouven 1 Kaca';
+
+    // Ambil data aksesoris
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 266)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10;
+
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    
+    $variableA = $jumlah * 2;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    
+    $variableB = $jumlah * 2;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SETTING BLOCK ===
+    $settingBlockItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'setting-block';
+    })->first();
+    
+    $satuanTerkecilSettingBlock = $settingBlockItem ? (float)$settingBlockItem->satuan_terkecil : 0;
+    
+    $variableC = 1 * $satuanTerkecilSettingBlock;
+    $variableD = $variableC * $jumlah;
+    $variableE = $variableD * 25;
+    $variableF = $variableE / 1000;
+    $settingBlockQty = ceil($variableF);
+
+    // === PERHITUNGAN SCREW ===
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 0;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === HITUNG QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'setting-block') {
+            $qty = $settingBlockQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Kelompokkan berdasarkan area
+    $grouped = [];
+    foreach ($aksesoris as $item) {
+        // Skip item dengan qty 0
+        if ($item->qty <= 0) {
+            continue;
+        }
+        
+        $areaSlug = $item->area ? $item->area->slug : 'lainnya';
+        
+        if (str_starts_with($areaSlug, 'profile')) {
+            $groupKey = 'profile';
+        } elseif ($areaSlug == 'setting-block') {
+            $groupKey = 'kaca';
+        } elseif ($areaSlug == 'reinforcement') {
+            $groupKey = 'reinforcement';
+        } elseif ($areaSlug == 'kaca') {
+            $groupKey = 'kaca';
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $groupKey = 'screw';
+        } else {
+            $groupKey = $areaSlug;
+        }
+        
+        if (!isset($grouped[$groupKey])) {
+            $grouped[$groupKey] = [];
+        }
+        $grouped[$groupKey][] = $item;
+    }
+
+    $areaLabels = [
+        'profile' => 'PROFILE',
+        'reinforcement' => 'REINFORCEMENT',
+        'kaca' => 'KACA',
+        'screw' => 'SCREW',
+    ];
+
+    // ============ GENERATE NOMOR BOQ ============
+    $nomorBoq = Boq::generateNomorBoq();
+
+    // ============ STORE BOQ ============
+    try {
+        $allResults = [];
+        
+        foreach ($aksesoris as $item) {
+            if ($item->qty > 0) {
+                $allResults[] = [
+                    'produk_id' => $item->id,
+                    'qty' => $item->qty,
+                    'nama_produk' => $item->nama_produk,
+                ];
+            }
+        }
+        
+        $uniqueResults = [];
+        $seenIds = [];
+        
+        foreach ($allResults as $item) {
+            $produkId = $item['produk_id'] ?? null;
+            
+            if (!$produkId) {
+                continue;
+            }
+            
+            if (in_array($produkId, $seenIds)) {
+                continue;
+            }
+            
+            $seenIds[] = $produkId;
+            $uniqueResults[] = $item;
+        }
+        
+        if (count($uniqueResults) > 0) {
+            $boq = new Boq();
+            $boq->nomor_boq = $nomorBoq;
+            $boq->tanggal_boq = now();
+            $boq->save();
+            
+            foreach ($uniqueResults as $item) {
+                $produkId = $item['produk_id'] ?? null;
+                $qty = (int)($item['qty'] ?? 0);
+                
+                if ($produkId && $qty > 0) {
+                    $produk = Product::find($produkId);
+                    
+                    \DB::table('detail_boq')->insert([
+                        'boq_id' => $boq->id,
+                        'produk_id' => $produkId,
+                        'kode_produk' => $produk ? $produk->kode_produk : null,
+                        'qty' => $qty,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+            
+            \Log::info('BOQ SAVED JENDELA BOUVEN 1 KACA:', [
+                'boq_id' => $boq->id,
+                'nomor_boq' => $nomorBoq,
+                'total' => count($uniqueResults)
+            ]);
+        }
+        
+    } catch (\Exception $e) {
+        \Log::error('Error saving BOQ Jendela Bouven 1 Kaca: ' . $e->getMessage());
+        \Log::error($e->getTraceAsString());
+    }
+
+    $data = [
+        'judul' => $judul,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebal_kaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $type_kaca,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_total' => $kelilingTotal,
+        'batang_vertikal' => $batangVertikal,
+        'batang_horizontal' => $batangHorizontal,
+        'reinforcement_qty' => $reinforcementQty,
+        'setting_block_qty' => $settingBlockQty,
+        'screw_qty' => $screwQty,
+        'grouped' => $grouped,
+        'areaLabels' => $areaLabels,
+        'nomor_boq' => $nomorBoq,
+    ];
+
+    return view('boq.jendela.pdf-jendela-bouven-1-kaca', compact('data'));
+}
+
+public function hitungBouven2(Request $request)
+{
+    $request->validate([
+        'panjang' => 'required|numeric|min:1',
+        'lebar' => 'required|numeric|min:1',
+        'tebal_kaca' => 'required|numeric|min:1',
+        'jumlah' => 'required|numeric|min:1',
+        'warna' => 'required|string',
+        'type_kaca' => 'required|string',
+    ]);
+
+    // Ambil data dari form
+    $panjang = $request->panjang; // cm
+    $lebar = $request->lebar; // cm
+    $tebalKaca = $request->tebal_kaca; // mm
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $typeKaca = $request->type_kaca;
+
+    // Ambil produk utama (Jendela Mati 1 Kaca) dari database
+    $produkUtama = Product::find(267);
+    
+    if (!$produkUtama) {
+        return back()->with('error', 'Produk Jendela Mati 1 Kaca tidak ditemukan!');
+    }
+
+    // Ambil aksesoris dari tabel product_accessories dengan relasi area
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 267)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    
+    // Konversi ke meter
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    $tebalKacaM = $tebalKaca / 1000;
+
+    // 1. Luas Kaca (m²)
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10; // Round up ke 1 desimal
+
+    // 2. Keliling Profile (meter)
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    
+    $variableA = $jumlah * 4;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    
+    $variableB = $jumlah * 2;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN PROFILE COUPLING VERTIKAL ===
+    $profileCouplingVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-coupling-vertikal';
+    })->first();
+    
+    $satuanTerkecilCoupling = $profileCouplingVertikal ? (float)$profileCouplingVertikal->satuan_terkecil : 0;
+    
+    // variable coupling a = satuan terkecil x jumlah x 2
+    $variableCouplingA = $satuanTerkecilCoupling * $jumlah * 2;
+    
+    // variable coupling b = variable coupling a x panjang
+    $variableCouplingB = $variableCouplingA * $panjang;
+    
+    // variable batang coupling = variable coupling b / 580
+    $batangCoupling = $variableCouplingB / 580;
+    
+    // qty = round up, 1 desimal
+    $batangCouplingQty = ceil($batangCoupling * 10) / 10;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    // Reinforcement = total batang (vertikal + horizontal)
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SETTING BLOCK ===
+    $settingBlockItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'setting-block';
+    })->first();
+    
+    $satuanTerkecilSettingBlock = $settingBlockItem ? (float)$settingBlockItem->satuan_terkecil : 0;
+    
+    // variable c = 1 x satuan terkecil
+    $variableC = 1 * $satuanTerkecilSettingBlock;
+    
+    // variable d = variable c x jumlah
+    $variableD = $variableC * $jumlah;
+    
+    // variable e = variable d x 25
+    $variableE = $variableD * 25;
+    
+    // variable f = variable e / 1000
+    $variableF = $variableE / 1000;
+    
+    // variable g -> qty = ROUNDUP(variable e, 0)
+    $settingBlockQty = ceil($variableF);
+
+    // === PERHITUNGAN SCREW ===
+    // Screw = qty reinforcement / satuan_terkecil screw
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 0;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === PERHITUNGAN QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        // Tentukan qty berdasarkan area slug
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'profile-coupling-vertikal') {
+            $qty = $batangCouplingQty;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'setting-block') {
+            $qty = $settingBlockQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Data untuk view
+    $data = [
+        'produk' => $produkUtama,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebalKaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $typeKaca,
+        
+        // Perhitungan dasar
+        'luas_kaca_per_unit' => $luasKacaPerUnit,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_per_unit' => $kelilingPerUnit,
+        'keliling_total' => $kelilingTotal,
+        
+        // Perhitungan Profile Vertikal
+        'profile_vertikal' => $profileVertikal,
+        'satuan_terkecil_vertikal' => $satuanTerkecilVertikal,
+        'variable_a' => $variableA,
+        'frame_vertikal' => $frameVertikal,
+        'batang_vertikal' => $batangVertikal,
+        
+        // Perhitungan Profile Horizontal
+        'profile_horizontal' => $profileHorizontal,
+        'satuan_terkecil_horizontal' => $satuanTerkecilHorizontal,
+        'variable_b' => $variableB,
+        'frame_horizontal' => $frameHorizontal,
+        'batang_horizontal' => $batangHorizontal,
+        
+        // Perhitungan Profile Coupling Vertikal
+        'profile_coupling_vertikal' => $profileCouplingVertikal,
+        'satuan_terkecil_coupling' => $satuanTerkecilCoupling,
+        'variable_coupling_a' => $variableCouplingA,
+        'variable_coupling_b' => $variableCouplingB,
+        'batang_coupling' => $batangCoupling,
+        'batang_coupling_qty' => $batangCouplingQty,
+        
+        // Perhitungan Reinforcement
+        'total_batang' => $totalBatang,
+        'reinforcement_qty' => $reinforcementQty,
+        
+        // Perhitungan Setting Block
+        'setting_block_item' => $settingBlockItem,
+        'satuan_terkecil_setting_block' => $satuanTerkecilSettingBlock,
+        'variable_c' => $variableC,
+        'variable_d' => $variableD,
+        'variable_e' => $variableE,
+        'variable_f' => $variableF,
+        'setting_block_qty' => $settingBlockQty,
+        
+        // Perhitungan Screw
+        'satuan_terkecil_screw' => $satuanTerkecilScrew,
+        'screw_qty' => $screwQty,
+        
+        // Data aksesoris dengan qty
+        'aksesoris' => $aksesoris,
+    ];
+
+    return view('boq.jendela.jendela-bouven-2-kaca', $data);
+}
+
+public function exportPdfBouven2(Request $request)
+{
+    // Ambil data dari request
+    $panjang = $request->panjang;
+    $lebar = $request->lebar;
+    $tebal_kaca = $request->tebal_kaca;
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $type_kaca = $request->type_kaca;
+    $judul = $request->judul ?? 'BOQ - Jendela Bouven 2 Kaca';
+
+    // Ambil data aksesoris
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 267)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10;
+
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    
+    $variableA = $jumlah * 4;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    
+    $variableB = $jumlah * 2;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN PROFILE COUPLING VERTIKAL ===
+    $profileCouplingVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-coupling-vertikal';
+    })->first();
+    
+    $satuanTerkecilCoupling = $profileCouplingVertikal ? (float)$profileCouplingVertikal->satuan_terkecil : 0;
+    
+    $variableCouplingA = $satuanTerkecilCoupling * $jumlah * 2;
+    $variableCouplingB = $variableCouplingA * $panjang;
+    $batangCoupling = $variableCouplingB / 580;
+    $batangCouplingQty = ceil($batangCoupling * 10) / 10;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SETTING BLOCK ===
+    $settingBlockItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'setting-block';
+    })->first();
+    
+    $satuanTerkecilSettingBlock = $settingBlockItem ? (float)$settingBlockItem->satuan_terkecil : 0;
+    
+    $variableC = 2 * $satuanTerkecilSettingBlock;
+    $variableD = $variableC * $jumlah;
+    $variableE = $variableD * 25;
+    $variableF = $variableE / 1000;
+    $settingBlockQty = ceil($variableF);
+
+    // === PERHITUNGAN SCREW ===
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 0;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === HITUNG QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'profile-coupling-vertikal') {
+            $qty = $batangCouplingQty;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'setting-block') {
+            $qty = $settingBlockQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Kelompokkan berdasarkan area
+    $grouped = [];
+    foreach ($aksesoris as $item) {
+        // Skip item dengan qty 0
+        if ($item->qty <= 0) {
+            continue;
+        }
+        
+        $areaSlug = $item->area ? $item->area->slug : 'lainnya';
+        
+        if (str_starts_with($areaSlug, 'profile')) {
+            $groupKey = 'profile';
+        } elseif ($areaSlug == 'setting-block') {
+            $groupKey = 'kaca';
+        } elseif ($areaSlug == 'reinforcement') {
+            $groupKey = 'reinforcement';
+        } elseif ($areaSlug == 'kaca') {
+            $groupKey = 'kaca';
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $groupKey = 'screw';
+        } else {
+            $groupKey = $areaSlug;
+        }
+        
+        if (!isset($grouped[$groupKey])) {
+            $grouped[$groupKey] = [];
+        }
+        $grouped[$groupKey][] = $item;
+    }
+
+    $areaLabels = [
+        'profile' => 'PROFILE',
+        'reinforcement' => 'REINFORCEMENT',
+        'kaca' => 'KACA',
+        'screw' => 'SCREW',
+    ];
+
+    // ============ GENERATE NOMOR BOQ ============
+    $nomorBoq = Boq::generateNomorBoq();
+
+    // ============ STORE BOQ ============
+    try {
+        $allResults = [];
+        
+        foreach ($aksesoris as $item) {
+            if ($item->qty > 0) {
+                $allResults[] = [
+                    'produk_id' => $item->id,
+                    'qty' => $item->qty,
+                    'nama_produk' => $item->nama_produk,
+                ];
+            }
+        }
+        
+        $uniqueResults = [];
+        $seenIds = [];
+        
+        foreach ($allResults as $item) {
+            $produkId = $item['produk_id'] ?? null;
+            
+            if (!$produkId) {
+                continue;
+            }
+            
+            if (in_array($produkId, $seenIds)) {
+                continue;
+            }
+            
+            $seenIds[] = $produkId;
+            $uniqueResults[] = $item;
+        }
+        
+        if (count($uniqueResults) > 0) {
+            $boq = new Boq();
+            $boq->nomor_boq = $nomorBoq;
+            $boq->tanggal_boq = now();
+            $boq->save();
+            
+            foreach ($uniqueResults as $item) {
+                $produkId = $item['produk_id'] ?? null;
+                $qty = (int)($item['qty'] ?? 0);
+                
+                if ($produkId && $qty > 0) {
+                    $produk = Product::find($produkId);
+                    
+                    \DB::table('detail_boq')->insert([
+                        'boq_id' => $boq->id,
+                        'produk_id' => $produkId,
+                        'kode_produk' => $produk ? $produk->kode_produk : null,
+                        'qty' => $qty,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+            
+            \Log::info('BOQ SAVED JENDELA BOUVEN 2 KACA:', [
+                'boq_id' => $boq->id,
+                'nomor_boq' => $nomorBoq,
+                'total' => count($uniqueResults)
+            ]);
+        }
+        
+    } catch (\Exception $e) {
+        \Log::error('Error saving BOQ Jendela Bouven 2 Kaca: ' . $e->getMessage());
+        \Log::error($e->getTraceAsString());
+    }
+
+    $data = [
+        'judul' => $judul,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebal_kaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $type_kaca,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_total' => $kelilingTotal,
+        'batang_vertikal' => $batangVertikal,
+        'batang_horizontal' => $batangHorizontal,
+        'batang_coupling_qty' => $batangCouplingQty,
+        'reinforcement_qty' => $reinforcementQty,
+        'setting_block_qty' => $settingBlockQty,
+        'screw_qty' => $screwQty,
+        'grouped' => $grouped,
+        'areaLabels' => $areaLabels,
+        'nomor_boq' => $nomorBoq,
+    ];
+
+    return view('boq.jendela.pdf-jendela-bouven-2-kaca', compact('data'));
+}
+
+public function hitungBouven3(Request $request)
+{
+    $request->validate([
+        'panjang' => 'required|numeric|min:1',
+        'lebar' => 'required|numeric|min:1',
+        'tebal_kaca' => 'required|numeric|min:1',
+        'jumlah' => 'required|numeric|min:1',
+        'warna' => 'required|string',
+        'type_kaca' => 'required|string',
+    ]);
+
+    // Ambil data dari form
+    $panjang = $request->panjang; // cm
+    $lebar = $request->lebar; // cm
+    $tebalKaca = $request->tebal_kaca; // mm
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $typeKaca = $request->type_kaca;
+
+    // Ambil produk utama (Jendela Mati 1 Kaca) dari database
+    $produkUtama = Product::find(267);
+    
+    if (!$produkUtama) {
+        return back()->with('error', 'Produk Jendela Mati 1 Kaca tidak ditemukan!');
+    }
+
+    // Ambil aksesoris dari tabel product_accessories dengan relasi area
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 267)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    
+    // Konversi ke meter
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    $tebalKacaM = $tebalKaca / 1000;
+
+    // 1. Luas Kaca (m²)
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10; // Round up ke 1 desimal
+
+    // 2. Keliling Profile (meter)
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    
+    $variableA = $jumlah * 6;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    
+    $variableB = $jumlah * 2;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN PROFILE COUPLING VERTIKAL ===
+    $profileCouplingVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-coupling-vertikal';
+    })->first();
+    
+    $satuanTerkecilCoupling = $profileCouplingVertikal ? (float)$profileCouplingVertikal->satuan_terkecil : 0;
+    
+    // variable coupling a = satuan terkecil x jumlah x 2
+    $variableCouplingA = 2 * $jumlah * 2;
+    
+    // variable coupling b = variable coupling a x panjang
+    $variableCouplingB = $variableCouplingA * $panjang;
+    
+    // variable batang coupling = variable coupling b / 580
+    $batangCoupling = $variableCouplingB / 580;
+    
+    // qty = round up, 1 desimal
+    $batangCouplingQty = ceil($batangCoupling * 10) / 10;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    // Reinforcement = total batang (vertikal + horizontal)
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SETTING BLOCK ===
+    $settingBlockItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'setting-block';
+    })->first();
+    
+    $satuanTerkecilSettingBlock = $settingBlockItem ? (float)$settingBlockItem->satuan_terkecil : 0;
+    
+    // variable c = 1 x satuan terkecil
+    $variableC = 1 * $satuanTerkecilSettingBlock;
+    
+    // variable d = variable c x jumlah
+    $variableD = $variableC * $jumlah;
+    
+    // variable e = variable d x 25
+    $variableE = $variableD * 25;
+    
+    // variable f = variable e / 1000
+    $variableF = $variableE / 1000;
+    
+    // variable g -> qty = ROUNDUP(variable e, 0)
+    $settingBlockQty = ceil($variableF);
+
+    // === PERHITUNGAN SCREW ===
+    // Screw = qty reinforcement / satuan_terkecil screw
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 0;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === PERHITUNGAN QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        // Tentukan qty berdasarkan area slug
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'profile-coupling-vertikal') {
+            $qty = $batangCouplingQty;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'setting-block') {
+            $qty = $settingBlockQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Data untuk view
+    $data = [
+        'produk' => $produkUtama,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebalKaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $typeKaca,
+        
+        // Perhitungan dasar
+        'luas_kaca_per_unit' => $luasKacaPerUnit,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_per_unit' => $kelilingPerUnit,
+        'keliling_total' => $kelilingTotal,
+        
+        // Perhitungan Profile Vertikal
+        'profile_vertikal' => $profileVertikal,
+        'satuan_terkecil_vertikal' => $satuanTerkecilVertikal,
+        'variable_a' => $variableA,
+        'frame_vertikal' => $frameVertikal,
+        'batang_vertikal' => $batangVertikal,
+        
+        // Perhitungan Profile Horizontal
+        'profile_horizontal' => $profileHorizontal,
+        'satuan_terkecil_horizontal' => $satuanTerkecilHorizontal,
+        'variable_b' => $variableB,
+        'frame_horizontal' => $frameHorizontal,
+        'batang_horizontal' => $batangHorizontal,
+        
+        // Perhitungan Profile Coupling Vertikal
+        'profile_coupling_vertikal' => $profileCouplingVertikal,
+        'satuan_terkecil_coupling' => $satuanTerkecilCoupling,
+        'variable_coupling_a' => $variableCouplingA,
+        'variable_coupling_b' => $variableCouplingB,
+        'batang_coupling' => $batangCoupling,
+        'batang_coupling_qty' => $batangCouplingQty,
+        
+        // Perhitungan Reinforcement
+        'total_batang' => $totalBatang,
+        'reinforcement_qty' => $reinforcementQty,
+        
+        // Perhitungan Setting Block
+        'setting_block_item' => $settingBlockItem,
+        'satuan_terkecil_setting_block' => $satuanTerkecilSettingBlock,
+        'variable_c' => $variableC,
+        'variable_d' => $variableD,
+        'variable_e' => $variableE,
+        'variable_f' => $variableF,
+        'setting_block_qty' => $settingBlockQty,
+        
+        // Perhitungan Screw
+        'satuan_terkecil_screw' => $satuanTerkecilScrew,
+        'screw_qty' => $screwQty,
+        
+        // Data aksesoris dengan qty
+        'aksesoris' => $aksesoris,
+    ];
+
+    return view('boq.jendela.jendela-bouven-3-kaca', $data);
+}
+
+public function exportPdfBouven3(Request $request)
+{
+    // Ambil data dari request
+    $panjang = $request->panjang;
+    $lebar = $request->lebar;
+    $tebal_kaca = $request->tebal_kaca;
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $type_kaca = $request->type_kaca;
+    $judul = $request->judul ?? 'BOQ - Jendela Bouven 3 Kaca';
+
+    // Ambil data aksesoris
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 267)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10;
+
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    
+    $variableA = $jumlah * 6;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    
+    $variableB = $jumlah * 2;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN PROFILE COUPLING VERTIKAL ===
+    $profileCouplingVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-coupling-vertikal';
+    })->first();
+    
+    $satuanTerkecilCoupling = $profileCouplingVertikal ? (float)$profileCouplingVertikal->satuan_terkecil : 0;
+    
+    $variableCouplingA = 2 * $jumlah * 2;
+    $variableCouplingB = $variableCouplingA * $panjang;
+    $batangCoupling = $variableCouplingB / 580;
+    $batangCouplingQty = ceil($batangCoupling * 10) / 10;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SETTING BLOCK ===
+    $settingBlockItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'setting-block';
+    })->first();
+    
+    $satuanTerkecilSettingBlock = $settingBlockItem ? (float)$settingBlockItem->satuan_terkecil : 0;
+    
+    $variableC = 1 * $satuanTerkecilSettingBlock;
+    $variableD = $variableC * $jumlah;
+    $variableE = $variableD * 25;
+    $variableF = $variableE / 1000;
+    $settingBlockQty = ceil($variableF);
+
+    // === PERHITUNGAN SCREW ===
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 0;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === HITUNG QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'profile-coupling-vertikal') {
+            $qty = $batangCouplingQty;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'setting-block') {
+            $qty = $settingBlockQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Kelompokkan berdasarkan area
+    $grouped = [];
+    foreach ($aksesoris as $item) {
+        // Skip item dengan qty 0
+        if ($item->qty <= 0) {
+            continue;
+        }
+        
+        $areaSlug = $item->area ? $item->area->slug : 'lainnya';
+        
+        if (str_starts_with($areaSlug, 'profile')) {
+            $groupKey = 'profile';
+        } elseif ($areaSlug == 'setting-block') {
+            $groupKey = 'kaca';
+        } elseif ($areaSlug == 'reinforcement') {
+            $groupKey = 'reinforcement';
+        } elseif ($areaSlug == 'kaca') {
+            $groupKey = 'kaca';
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $groupKey = 'screw';
+        } else {
+            $groupKey = $areaSlug;
+        }
+        
+        if (!isset($grouped[$groupKey])) {
+            $grouped[$groupKey] = [];
+        }
+        $grouped[$groupKey][] = $item;
+    }
+
+    $areaLabels = [
+        'profile' => 'PROFILE',
+        'reinforcement' => 'REINFORCEMENT',
+        'kaca' => 'KACA',
+        'screw' => 'SCREW',
+    ];
+
+    // ============ GENERATE NOMOR BOQ ============
+    $nomorBoq = Boq::generateNomorBoq();
+
+    // ============ STORE BOQ ============
+    try {
+        $allResults = [];
+        
+        foreach ($aksesoris as $item) {
+            if ($item->qty > 0) {
+                $allResults[] = [
+                    'produk_id' => $item->id,
+                    'qty' => $item->qty,
+                    'nama_produk' => $item->nama_produk,
+                ];
+            }
+        }
+        
+        $uniqueResults = [];
+        $seenIds = [];
+        
+        foreach ($allResults as $item) {
+            $produkId = $item['produk_id'] ?? null;
+            
+            if (!$produkId) {
+                continue;
+            }
+            
+            if (in_array($produkId, $seenIds)) {
+                continue;
+            }
+            
+            $seenIds[] = $produkId;
+            $uniqueResults[] = $item;
+        }
+        
+        if (count($uniqueResults) > 0) {
+            $boq = new Boq();
+            $boq->nomor_boq = $nomorBoq;
+            $boq->tanggal_boq = now();
+            $boq->save();
+            
+            foreach ($uniqueResults as $item) {
+                $produkId = $item['produk_id'] ?? null;
+                $qty = (int)($item['qty'] ?? 0);
+                
+                if ($produkId && $qty > 0) {
+                    $produk = Product::find($produkId);
+                    
+                    \DB::table('detail_boq')->insert([
+                        'boq_id' => $boq->id,
+                        'produk_id' => $produkId,
+                        'kode_produk' => $produk ? $produk->kode_produk : null,
+                        'qty' => $qty,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+            
+            \Log::info('BOQ SAVED JENDELA BOUVEN 3 KACA:', [
+                'boq_id' => $boq->id,
+                'nomor_boq' => $nomorBoq,
+                'total' => count($uniqueResults)
+            ]);
+        }
+        
+    } catch (\Exception $e) {
+        \Log::error('Error saving BOQ Jendela Bouven 3 Kaca: ' . $e->getMessage());
+        \Log::error($e->getTraceAsString());
+    }
+
+    $data = [
+        'judul' => $judul,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebal_kaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $type_kaca,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_total' => $kelilingTotal,
+        'batang_vertikal' => $batangVertikal,
+        'batang_horizontal' => $batangHorizontal,
+        'batang_coupling_qty' => $batangCouplingQty,
+        'reinforcement_qty' => $reinforcementQty,
+        'setting_block_qty' => $settingBlockQty,
+        'screw_qty' => $screwQty,
+        'grouped' => $grouped,
+        'areaLabels' => $areaLabels,
+        'nomor_boq' => $nomorBoq,
+    ];
+
+    return view('boq.jendela.pdf-jendela-bouven-3-kaca', compact('data'));
+}
+public function hitungBouven4(Request $request)
+{
+    $request->validate([
+        'panjang' => 'required|numeric|min:1',
+        'lebar' => 'required|numeric|min:1',
+        'tebal_kaca' => 'required|numeric|min:1',
+        'jumlah' => 'required|numeric|min:1',
+        'warna' => 'required|string',
+        'type_kaca' => 'required|string',
+    ]);
+
+    // Ambil data dari form
+    $panjang = $request->panjang; // cm
+    $lebar = $request->lebar; // cm
+    $tebalKaca = $request->tebal_kaca; // mm
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $typeKaca = $request->type_kaca;
+
+    // Ambil produk utama (Jendela Mati 1 Kaca) dari database
+    $produkUtama = Product::find(267);
+    
+    if (!$produkUtama) {
+        return back()->with('error', 'Produk Jendela Mati 1 Kaca tidak ditemukan!');
+    }
+
+    // Ambil aksesoris dari tabel product_accessories dengan relasi area
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 267)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    
+    // Konversi ke meter
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    $tebalKacaM = $tebalKaca / 1000;
+
+    // 1. Luas Kaca (m²)
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10; // Round up ke 1 desimal
+
+    // 2. Keliling Profile (meter)
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    
+    $variableA = $jumlah * 8;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    
+    $variableB = $jumlah * 2;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN PROFILE COUPLING VERTIKAL ===
+    $profileCouplingVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-coupling-vertikal';
+    })->first();
+    
+    $satuanTerkecilCoupling = $profileCouplingVertikal ? (float)$profileCouplingVertikal->satuan_terkecil : 0;
+    
+    // variable coupling a = satuan terkecil x jumlah x 2
+    $variableCouplingA = 3 * $jumlah * 2;
+    
+    // variable coupling b = variable coupling a x panjang
+    $variableCouplingB = $variableCouplingA * $panjang;
+    
+    // variable batang coupling = variable coupling b / 580
+    $batangCoupling = $variableCouplingB / 580;
+    
+    // qty = round up, 1 desimal
+    $batangCouplingQty = ceil($batangCoupling * 10) / 10;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    // Reinforcement = total batang (vertikal + horizontal)
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SETTING BLOCK ===
+    $settingBlockItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'setting-block';
+    })->first();
+    
+    $satuanTerkecilSettingBlock = $settingBlockItem ? (float)$settingBlockItem->satuan_terkecil : 0;
+    
+    // variable c = 1 x satuan terkecil
+    $variableC = 1 * $satuanTerkecilSettingBlock;
+    
+    // variable d = variable c x jumlah
+    $variableD = $variableC * $jumlah;
+    
+    // variable e = variable d x 25
+    $variableE = $variableD * 25;
+    
+    // variable f = variable e / 1000
+    $variableF = $variableE / 1000;
+    
+    // variable g -> qty = ROUNDUP(variable e, 0)
+    $settingBlockQty = ceil($variableF);
+
+    // === PERHITUNGAN SCREW ===
+    // Screw = qty reinforcement / satuan_terkecil screw
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 0;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === PERHITUNGAN QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        // Tentukan qty berdasarkan area slug
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'profile-coupling-vertikal') {
+            $qty = $batangCouplingQty;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'setting-block') {
+            $qty = $settingBlockQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Data untuk view
+    $data = [
+        'produk' => $produkUtama,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebalKaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $typeKaca,
+        
+        // Perhitungan dasar
+        'luas_kaca_per_unit' => $luasKacaPerUnit,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_per_unit' => $kelilingPerUnit,
+        'keliling_total' => $kelilingTotal,
+        
+        // Perhitungan Profile Vertikal
+        'profile_vertikal' => $profileVertikal,
+        'satuan_terkecil_vertikal' => $satuanTerkecilVertikal,
+        'variable_a' => $variableA,
+        'frame_vertikal' => $frameVertikal,
+        'batang_vertikal' => $batangVertikal,
+        
+        // Perhitungan Profile Horizontal
+        'profile_horizontal' => $profileHorizontal,
+        'satuan_terkecil_horizontal' => $satuanTerkecilHorizontal,
+        'variable_b' => $variableB,
+        'frame_horizontal' => $frameHorizontal,
+        'batang_horizontal' => $batangHorizontal,
+        
+        // Perhitungan Profile Coupling Vertikal
+        'profile_coupling_vertikal' => $profileCouplingVertikal,
+        'satuan_terkecil_coupling' => $satuanTerkecilCoupling,
+        'variable_coupling_a' => $variableCouplingA,
+        'variable_coupling_b' => $variableCouplingB,
+        'batang_coupling' => $batangCoupling,
+        'batang_coupling_qty' => $batangCouplingQty,
+        
+        // Perhitungan Reinforcement
+        'total_batang' => $totalBatang,
+        'reinforcement_qty' => $reinforcementQty,
+        
+        // Perhitungan Setting Block
+        'setting_block_item' => $settingBlockItem,
+        'satuan_terkecil_setting_block' => $satuanTerkecilSettingBlock,
+        'variable_c' => $variableC,
+        'variable_d' => $variableD,
+        'variable_e' => $variableE,
+        'variable_f' => $variableF,
+        'setting_block_qty' => $settingBlockQty,
+        
+        // Perhitungan Screw
+        'satuan_terkecil_screw' => $satuanTerkecilScrew,
+        'screw_qty' => $screwQty,
+        
+        // Data aksesoris dengan qty
+        'aksesoris' => $aksesoris,
+    ];
+
+    return view('boq.jendela.jendela-bouven-4-kaca', $data);
+}
+
+public function exportPdfBouven4(Request $request)
+{
+    // Ambil data dari request
+    $panjang = $request->panjang;
+    $lebar = $request->lebar;
+    $tebal_kaca = $request->tebal_kaca;
+    $jumlah = $request->jumlah;
+    $warna = $request->warna;
+    $type_kaca = $request->type_kaca;
+    $judul = $request->judul ?? 'BOQ - Jendela Bouven 4 Kaca';
+
+    // Ambil data aksesoris
+    $aksesorisIds = ProductAccessories::where('parent_product_id', 267)->pluck('accessory_id');
+    $aksesoris = Product::with('area', 'unit')
+        ->whereIn('id', $aksesorisIds)
+        ->get();
+
+    // === PERHITUNGAN DASAR ===
+    $panjangM = $panjang / 100;
+    $lebarM = $lebar / 100;
+    
+    $luasKacaPerUnit = $panjangM * $lebarM;
+    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
+    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10;
+
+    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
+    $kelilingTotal = $kelilingPerUnit * $jumlah;
+
+    // === PERHITUNGAN PROFILE VERTIKAL ===
+    $profileVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-vertikal';
+    })->first();
+    
+    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
+    
+    $variableA = $jumlah * 8;
+    $frameVertikal = $variableA * $panjang;
+    $batangVertikal = $frameVertikal / 580;
+    $batangVertikal = ceil($batangVertikal * 10) / 10;
+    $totalPanjang = $panjang * $variableA;
+
+    // === PERHITUNGAN PROFILE HORIZONTAL ===
+    $profileHorizontal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-horizontal';
+    })->first();
+    
+    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
+    
+    $variableB = $jumlah * 2;
+    $frameHorizontal = $variableB * $lebar;
+    $batangHorizontal = $frameHorizontal / 580;
+    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
+    $totalLebar = $lebar * $variableB;
+
+    // === PERHITUNGAN PROFILE COUPLING VERTIKAL ===
+    $profileCouplingVertikal = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'profile-coupling-vertikal';
+    })->first();
+    
+    $satuanTerkecilCoupling = $profileCouplingVertikal ? (float)$profileCouplingVertikal->satuan_terkecil : 0;
+    
+    $variableCouplingA = 3 * $jumlah * 2;
+    $variableCouplingB = $variableCouplingA * $panjang;
+    $batangCoupling = $variableCouplingB / 580;
+    $batangCouplingQty = ceil($batangCoupling * 10) / 10;
+
+    // === PERHITUNGAN REINFORCEMENT ===
+    $totalBatang = $batangVertikal + $batangHorizontal;
+    $reinforcementQty = ceil($totalBatang * 10) / 10;
+
+    // === PERHITUNGAN SETTING BLOCK ===
+    $settingBlockItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'setting-block';
+    })->first();
+    
+    $satuanTerkecilSettingBlock = $settingBlockItem ? (float)$settingBlockItem->satuan_terkecil : 0;
+    
+    $variableC = 1 * $satuanTerkecilSettingBlock;
+    $variableD = $variableC * $jumlah;
+    $variableE = $variableD * 25;
+    $variableF = $variableE / 1000;
+    $settingBlockQty = ceil($variableF);
+
+    // === PERHITUNGAN SCREW ===
+    $screwItem = $aksesoris->filter(function($item) {
+        return $item->area && $item->area->slug == 'screw-reinforcement';
+    })->first();
+    
+    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 0;
+    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
+    $screwQty = ceil($screwQty * 10);
+
+    // === HITUNG QTY PER AKSESORIS ===
+    foreach ($aksesoris as $item) {
+        $areaSlug = $item->area ? $item->area->slug : '';
+        $qty = 0;
+        
+        if ($areaSlug == 'profile-vertikal') {
+            $qty = $batangVertikal;
+        } elseif ($areaSlug == 'profile-horizontal') {
+            $qty = $batangHorizontal;
+        } elseif ($areaSlug == 'profile-coupling-vertikal') {
+            $qty = $batangCouplingQty;
+        } elseif ($areaSlug == 'reinforcement') {
+            $qty = $reinforcementQty;
+        } elseif ($areaSlug == 'kaca') {
+            $qty = $luasKacaTotal;
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $qty = $screwQty;
+        } elseif ($areaSlug == 'setting-block') {
+            $qty = $settingBlockQty;
+        } else {
+            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+        }
+        
+        $item->qty = $qty;
+    }
+
+    // Kelompokkan berdasarkan area
+    $grouped = [];
+    foreach ($aksesoris as $item) {
+        // Skip item dengan qty 0
+        if ($item->qty <= 0) {
+            continue;
+        }
+        
+        $areaSlug = $item->area ? $item->area->slug : 'lainnya';
+        
+        if (str_starts_with($areaSlug, 'profile')) {
+            $groupKey = 'profile';
+        } elseif ($areaSlug == 'setting-block') {
+            $groupKey = 'kaca';
+        } elseif ($areaSlug == 'reinforcement') {
+            $groupKey = 'reinforcement';
+        } elseif ($areaSlug == 'kaca') {
+            $groupKey = 'kaca';
+        } elseif ($areaSlug == 'screw-reinforcement') {
+            $groupKey = 'screw';
+        } else {
+            $groupKey = $areaSlug;
+        }
+        
+        if (!isset($grouped[$groupKey])) {
+            $grouped[$groupKey] = [];
+        }
+        $grouped[$groupKey][] = $item;
+    }
+
+    $areaLabels = [
+        'profile' => 'PROFILE',
+        'reinforcement' => 'REINFORCEMENT',
+        'kaca' => 'KACA',
+        'screw' => 'SCREW',
+    ];
+
+    // ============ GENERATE NOMOR BOQ ============
+    $nomorBoq = Boq::generateNomorBoq();
+
+    // ============ STORE BOQ ============
+    try {
+        $allResults = [];
+        
+        foreach ($aksesoris as $item) {
+            if ($item->qty > 0) {
+                $allResults[] = [
+                    'produk_id' => $item->id,
+                    'qty' => $item->qty,
+                    'nama_produk' => $item->nama_produk,
+                ];
+            }
+        }
+        
+        $uniqueResults = [];
+        $seenIds = [];
+        
+        foreach ($allResults as $item) {
+            $produkId = $item['produk_id'] ?? null;
+            
+            if (!$produkId) {
+                continue;
+            }
+            
+            if (in_array($produkId, $seenIds)) {
+                continue;
+            }
+            
+            $seenIds[] = $produkId;
+            $uniqueResults[] = $item;
+        }
+        
+        if (count($uniqueResults) > 0) {
+            $boq = new Boq();
+            $boq->nomor_boq = $nomorBoq;
+            $boq->tanggal_boq = now();
+            $boq->save();
+            
+            foreach ($uniqueResults as $item) {
+                $produkId = $item['produk_id'] ?? null;
+                $qty = (int)($item['qty'] ?? 0);
+                
+                if ($produkId && $qty > 0) {
+                    $produk = Product::find($produkId);
+                    
+                    \DB::table('detail_boq')->insert([
+                        'boq_id' => $boq->id,
+                        'produk_id' => $produkId,
+                        'kode_produk' => $produk ? $produk->kode_produk : null,
+                        'qty' => $qty,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+            
+            \Log::info('BOQ SAVED JENDELA BOUVEN 4 KACA:', [
+                'boq_id' => $boq->id,
+                'nomor_boq' => $nomorBoq,
+                'total' => count($uniqueResults)
+            ]);
+        }
+        
+    } catch (\Exception $e) {
+        \Log::error('Error saving BOQ Jendela Bouven 4 Kaca: ' . $e->getMessage());
+        \Log::error($e->getTraceAsString());
+    }
+
+    $data = [
+        'judul' => $judul,
+        'panjang' => $panjang,
+        'lebar' => $lebar,
+        'tebal_kaca' => $tebal_kaca,
+        'jumlah' => $jumlah,
+        'warna' => $warna,
+        'type_kaca' => $type_kaca,
+        'luas_kaca_total' => $luasKacaTotal,
+        'keliling_total' => $kelilingTotal,
+        'batang_vertikal' => $batangVertikal,
+        'batang_horizontal' => $batangHorizontal,
+        'batang_coupling_qty' => $batangCouplingQty,
+        'reinforcement_qty' => $reinforcementQty,
+        'setting_block_qty' => $settingBlockQty,
+        'screw_qty' => $screwQty,
+        'grouped' => $grouped,
+        'areaLabels' => $areaLabels,
+        'nomor_boq' => $nomorBoq,
+    ];
+
+    return view('boq.jendela.pdf-jendela-bouven-4-kaca', compact('data'));
+}
 }

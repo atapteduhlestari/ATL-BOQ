@@ -1,4 +1,4 @@
-<!-- Modal Jendela Jungkit 2 Daun Mullion -->
+<!-- Modal Jendela Jungkit 2 Daun 2 Mullion Vertikal 3 Mullion Horizontal -->
 <div id="modalJendelaJungkit2Daun2MullionVertikal3MullionHorizontal" class="modal-overlay">
     <div class="modal-wrapper">
         <div class="modal-container">
@@ -7,9 +7,112 @@
 
             <!-- Modal Content -->
             <div class="modal-grid">
-                <!-- Image Section -->
-                <div class="modal-image">
-                    <img src="{{ asset('images/jendela/jendela-jungkit-2-mullion-vertikal-3-mullion-horizontal.png') }}" alt="Jendela Jungkit 2 Daun Mullion">
+                <!-- Image/Animation Section -->
+                <div class="modal-image" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                    <!-- Canvas untuk animasi jendela -->
+                    <div id="jendelaContainer_Jungkit2V3H" style="position:relative;border:3px solid #333;border-radius:8px;background:#e8f0fe;min-width:200px;min-height:150px;display:flex;align-items:center;justify-content:center;transition:all 0.3s;">
+                        
+                        <!-- Kusen Luar -->
+                        <div id="kusen_Jungkit2V3H" style="position:relative;border:8px solid #555;border-radius:4px;background:#87CEEB;transition:all 0.5s ease;">
+
+                            <!-- COUPLING TENGAH -->
+                            <div id="couplingTengah_Jungkit2V3H" style="position:absolute;top:0;bottom:0;width:4px;background:#555;transition:all 0.5s ease;z-index:2;"></div>
+
+                            <!-- WRAPPER DAUN KIRI -->
+                            <div id="daunWrapperKiri_Jungkit2V3H" style="position:absolute;transform-origin:top center;transition:transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);perspective:800px;z-index:1;">
+                                <!-- KACA UTUH DAUN KIRI -->
+                                <div id="daunKacaKiri_Jungkit2V3H" style="position:absolute;background:rgba(135,206,235,0.3);border:2px solid rgba(0,0,0,0.1);z-index:0;"></div>
+                                <!-- PANEL KIRI BARIS 1 -->
+                                <div id="daunKiri1_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KANAN BARIS 1 -->
+                                <div id="daunKanan1_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KIRI BARIS 2 -->
+                                <div id="daunKiri2_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KANAN BARIS 2 -->
+                                <div id="daunKanan2_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KIRI BARIS 3 -->
+                                <div id="daunKiri3_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KANAN BARIS 3 -->
+                                <div id="daunKanan3_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KIRI BARIS 4 -->
+                                <div id="daunKiri4_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KANAN BARIS 4 -->
+                                <div id="daunKanan4_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- MULLION VERTIKAL KIRI -->
+                                <div id="mullionVertikalKiri_Jungkit2V3H" style="position:absolute;top:0;bottom:0;width:4px;background:#555;transition:all 0.5s ease;z-index:2;"></div>
+                                <!-- MULLION HORIZONTAL KIRI 1 -->
+                                <div id="mullionH1Kiri_Jungkit2V3H" style="position:absolute;left:0;right:0;height:4px;background:#555;transition:all 0.5s ease;z-index:2;"></div>
+                                <!-- MULLION HORIZONTAL KIRI 2 -->
+                                <div id="mullionH2Kiri_Jungkit2V3H" style="position:absolute;left:0;right:0;height:4px;background:#555;transition:all 0.5s ease;z-index:2;"></div>
+                                <!-- MULLION HORIZONTAL KIRI 3 -->
+                                <div id="mullionH3Kiri_Jungkit2V3H" style="position:absolute;left:0;right:0;height:4px;background:#555;transition:all 0.5s ease;z-index:2;"></div>
+                                <!-- ENGSEL ATAS KIRI -->
+                                <div id="engselAtasKiri_Jungkit2V3H" style="position:absolute;left:0;right:0;height:0;border-top:3px dashed #aaa;z-index:2;display:none;"></div>
+                            </div>
+
+                            <!-- WRAPPER DAUN KANAN -->
+                            <div id="daunWrapperKanan_Jungkit2V3H" style="position:absolute;transform-origin:top center;transition:transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);perspective:800px;z-index:1;">
+                                <!-- KACA UTUH DAUN KANAN -->
+                                <div id="daunKacaKanan_Jungkit2V3H" style="position:absolute;background:rgba(135,206,235,0.3);border:2px solid rgba(0,0,0,0.1);z-index:0;"></div>
+                                <!-- PANEL KIRI BARIS 1 -->
+                                <div id="daunKiri1Kanan_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KANAN BARIS 1 -->
+                                <div id="daunKanan1Kanan_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KIRI BARIS 2 -->
+                                <div id="daunKiri2Kanan_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KANAN BARIS 2 -->
+                                <div id="daunKanan2Kanan_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KIRI BARIS 3 -->
+                                <div id="daunKiri3Kanan_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KANAN BARIS 3 -->
+                                <div id="daunKanan3Kanan_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KIRI BARIS 4 -->
+                                <div id="daunKiri4Kanan_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- PANEL KANAN BARIS 4 -->
+                                <div id="daunKanan4Kanan_Jungkit2V3H" style="position:absolute;border:2px solid transparent;background:transparent;transition:all 0.5s ease;display:flex;align-items:center;justify-content:center;z-index:1;"></div>
+                                <!-- MULLION VERTIKAL KANAN -->
+                                <div id="mullionVertikalKanan_Jungkit2V3H" style="position:absolute;top:0;bottom:0;width:4px;background:#555;transition:all 0.5s ease;z-index:2;"></div>
+                                <!-- MULLION HORIZONTAL KANAN 1 -->
+                                <div id="mullionH1Kanan_Jungkit2V3H" style="position:absolute;left:0;right:0;height:4px;background:#555;transition:all 0.5s ease;z-index:2;"></div>
+                                <!-- MULLION HORIZONTAL KANAN 2 -->
+                                <div id="mullionH2Kanan_Jungkit2V3H" style="position:absolute;left:0;right:0;height:4px;background:#555;transition:all 0.5s ease;z-index:2;"></div>
+                                <!-- MULLION HORIZONTAL KANAN 3 -->
+                                <div id="mullionH3Kanan_Jungkit2V3H" style="position:absolute;left:0;right:0;height:4px;background:#555;transition:all 0.5s ease;z-index:2;"></div>
+                                <!-- ENGSEL ATAS KANAN -->
+                                <div id="engselAtasKanan_Jungkit2V3H" style="position:absolute;left:0;right:0;height:0;border-top:3px dashed #aaa;z-index:2;display:none;"></div>
+                            </div>
+                            
+                        </div>
+                        
+                        <!-- Label LEBAR -->
+                        <div style="position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:bold;background:#fff;color:#333;padding:2px 10px;border-radius:4px;border:1px solid #333;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,0.1);display:flex;align-items:center;gap:4px;">
+                            <span>⬅➡</span> LEBAR
+                        </div>
+
+                        <!-- ANGKA TINGGI -->
+                        <div id="tinggiWrapper_Jungkit2V3H" style="position:absolute;top:50%;left:-75px;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;">
+                            <div style="font-size:11px;font-weight:bold;background:#fff;color:#333;padding:2px 8px;border-radius:4px;border:1px solid #333;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+                                ⬆ TINGGI
+                            </div>
+                            <div id="angkaTinggi_Jungkit2V3H" style="font-size:13px;font-weight:bold;color:#333;background:rgba(255,255,255,0.9);padding:2px 6px;border-radius:4px;border:1px solid #999;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+                                100 cm
+                            </div>
+                        </div>
+
+                        <!-- ANGKA LEBAR -->
+                        <div id="angkaLebar_Jungkit2V3H" style="position:absolute;bottom:-55px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:bold;color:#333;background:rgba(255,255,255,0.9);padding:2px 6px;border-radius:4px;border:1px solid #999;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+                            80 cm
+                        </div>
+                        
+                    </div>
+
+                    <!-- TOMBOL BUKA / TUTUP -->
+                    <div id="tombolWrapper_Jungkit2V3H" style="margin-top:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+                        <button id="toggleJungkitBtn_Jungkit2V3H" class="btn-primary" style="padding:6px 20px;font-size:14px;cursor:pointer;width:auto;" onclick="toggleJungkit_Jungkit2V3H()">
+                            🔓 Buka Jendela
+                        </button>
+                        <span id="statusJungkit_Jungkit2V3H" style="font-size:13px;font-weight:bold;color:#555;">Tertutup</span>
+                    </div>
                 </div>
 
                 <!-- Form Section -->
@@ -17,7 +120,7 @@
                     <h2 class="modal-form-title">Jendela Jungkit 2 Daun 2 Mullion Vertikal 3 Mullion Horizontal</h2>
                     <p class="modal-form-sub">Hitung kebutuhan material</p>
 
-                    <!-- Notes / Informasi -->
+                    <!-- Notes -->
                     <div class="modal-note">
                         <div class="note-title">
                             <span class="icon">📋</span>
@@ -59,18 +162,18 @@
                         </ul>
                     </div>
 
-                    <!-- Form Input - Kirim ke Controller -->
+                    <!-- Form Input - Kirim ke Controller (ID UNIK) -->
                     <form action="{{ route('boq.jendela.jungkit2mullionvertikal3mullionhorizontal.hitung') }}" method="POST">
                         @csrf
                         
                         <div style="margin-bottom: 10px;">
                             <label class="input-label">Panjang (cm)</label>
-                            <input type="number" class="input-field" name="panjang" placeholder="Contoh: 120" required min="1">
+                            <input type="number" class="input-field" name="panjang" id="inputPanjang_Jungkit2V3H" placeholder="Contoh: 120" required min="1" oninput="hitungJungkit_Jungkit2V3H()">
                         </div>
 
                         <div style="margin-bottom: 10px;">
                             <label class="input-label">Lebar (cm)</label>
-                            <input type="number" class="input-field" name="lebar" placeholder="Contoh: 80" required min="1">
+                            <input type="number" class="input-field" name="lebar" id="inputLebar_Jungkit2V3H" placeholder="Contoh: 80" required min="1" oninput="hitungJungkit_Jungkit2V3H()">
                         </div>
 
                         <div style="margin-bottom: 10px;">
@@ -81,19 +184,19 @@
                         <!-- INPUT JUMLAH UNIT -->
                         <div style="margin-bottom: 10px;">
                             <label class="input-label">Jumlah Unit</label>
-                            <input type="number" class="input-field" name="jumlah" placeholder="Contoh: 2" value="1" min="1" required>
+                            <input type="number" class="input-field" name="jumlah" id="inputJumlah_Jungkit2V3H" placeholder="Contoh: 2" value="1" min="1" required oninput="hitungJungkit_Jungkit2V3H()">
                         </div>
 
                         <div style="margin-bottom: 10px;">
                             <label class="input-label">Warna Profile</label>
-                            <select class="input-field" name="warna">
+                            <select class="input-field" name="warna" id="selectWarna_Jungkit2V3H" onchange="updateWarna_Jungkit2V3H()">
                                 <option value="Hitam">Hitam</option>
                                 <option value="Putih">Putih</option>
                                 <option value="Walnut">Walnut</option>
                             </select>
                         </div>
 
-                        <div style="margin-bottom: 10px;">
+                        <div style="margin-bottom: 14px;">
                             <label class="input-label">Type Kaca</label>
                             <select class="input-field" name="type_kaca">
                                 <option value="Clear">Clear (Bening)</option>
@@ -110,3 +213,237 @@
         </div>
     </div>
 </div>
+
+<script>
+let isJungkitOpen_Jungkit2V3H = false;
+
+function toggleJungkit_Jungkit2V3H() {
+    isJungkitOpen_Jungkit2V3H = !isJungkitOpen_Jungkit2V3H;
+    let wrapperKiri = document.getElementById('daunWrapperKiri_Jungkit2V3H');
+    let wrapperKanan = document.getElementById('daunWrapperKanan_Jungkit2V3H');
+    let btn = document.getElementById('toggleJungkitBtn_Jungkit2V3H');
+    let status = document.getElementById('statusJungkit_Jungkit2V3H');
+
+    if (!wrapperKiri || !wrapperKanan || !btn || !status) return;
+
+    if (isJungkitOpen_Jungkit2V3H) {
+        wrapperKiri.style.transform = 'rotateX(-70deg)';
+        wrapperKanan.style.transform = 'rotateX(-70deg)';
+        btn.innerHTML = '🔒 Tutup Jendela';
+        status.textContent = 'Terbuka';
+        status.style.color = '#28a745';
+    } else {
+        wrapperKiri.style.transform = 'rotateX(0deg)';
+        wrapperKanan.style.transform = 'rotateX(0deg)';
+        btn.innerHTML = '🔓 Buka Jendela';
+        status.textContent = 'Tertutup';
+        status.style.color = '#555';
+    }
+}
+
+function hitungJungkit_Jungkit2V3H() {
+    let inputTinggi = document.getElementById('inputPanjang_Jungkit2V3H');
+    let inputLebar = document.getElementById('inputLebar_Jungkit2V3H');
+
+    if (!inputTinggi || !inputLebar) return;
+
+    let tinggi = parseInt(inputTinggi.value) || 0;
+    let lebar = parseInt(inputLebar.value) || 0;
+    
+    let angkaTinggi = document.getElementById('angkaTinggi_Jungkit2V3H');
+    let angkaLebar = document.getElementById('angkaLebar_Jungkit2V3H');
+    
+    if (angkaTinggi) angkaTinggi.textContent = (tinggi > 0 ? tinggi : 0) + ' cm';
+    if (angkaLebar) angkaLebar.textContent = (lebar > 0 ? lebar : 0) + ' cm';
+    
+    if (tinggi > 0 && lebar > 0) {
+        let container = document.getElementById('jendelaContainer_Jungkit2V3H');
+        if (!container) return;
+
+        let maxSize = 400;
+        let scale = Math.min(1, maxSize / Math.max(tinggi, lebar));
+        let displayWidth = lebar * scale;
+        let displayHeight = tinggi * scale;
+        
+        container.style.width = (displayWidth + 40) + 'px';
+        container.style.height = (displayHeight + 60) + 'px';
+        container.style.minWidth = '200px';
+        container.style.minHeight = '150px';
+        
+        let kusen = document.getElementById('kusen_Jungkit2V3H');
+        if (!kusen) return;
+        kusen.style.width = displayWidth + 'px';
+        kusen.style.height = displayHeight + 'px';
+        let borderThick = Math.max(4, Math.min(12, Math.floor(displayWidth * 0.04)));
+        kusen.style.borderWidth = borderThick + 'px';
+        
+        let gap = 4; 
+        let kacaWidth = displayWidth - (borderThick * 2) - (gap * 2);
+        let kacaHeight = displayHeight - (borderThick * 2) - (gap * 2);
+        
+        let lebarSatuDaun = kacaWidth / 2;
+        let lebarPanel = (lebarSatuDaun - 4) / 2;
+        let tinggiPanel = (kacaHeight - 12) / 4;
+        
+        let wrapperKiri = document.getElementById('daunWrapperKiri_Jungkit2V3H');
+        let wrapperKanan = document.getElementById('daunWrapperKanan_Jungkit2V3H');
+        let couplingTengah = document.getElementById('couplingTengah_Jungkit2V3H');
+        let engselKiri = document.getElementById('engselAtasKiri_Jungkit2V3H');
+        let engselKanan = document.getElementById('engselAtasKanan_Jungkit2V3H');
+        
+        if (!wrapperKiri || !wrapperKanan) return;
+        
+        if (couplingTengah) {
+            couplingTengah.style.left = (displayWidth / 2) - 10 + 'px';
+            couplingTengah.style.top = '0px';
+            couplingTengah.style.height = displayHeight;
+        }
+        
+        // DAUN KIRI
+        wrapperKiri.style.width = lebarSatuDaun + 'px';
+        wrapperKiri.style.height = kacaHeight + 'px';
+        wrapperKiri.style.top = gap + 'px';
+        wrapperKiri.style.left = gap + 'px';
+        wrapperKiri.style.transformOrigin = 'top center';
+        document.getElementById('daunKacaKiri_Jungkit2V3H').style.width = lebarSatuDaun + 'px';
+        document.getElementById('daunKacaKiri_Jungkit2V3H').style.height = kacaHeight + 'px';
+        
+        let kiri1 = document.getElementById('daunKiri1_Jungkit2V3H');
+        let kiri2 = document.getElementById('daunKiri2_Jungkit2V3H');
+        let kiri3 = document.getElementById('daunKiri3_Jungkit2V3H');
+        let kiri4 = document.getElementById('daunKiri4_Jungkit2V3H');
+        let kanan1 = document.getElementById('daunKanan1_Jungkit2V3H');
+        let kanan2 = document.getElementById('daunKanan2_Jungkit2V3H');
+        let kanan3 = document.getElementById('daunKanan3_Jungkit2V3H');
+        let kanan4 = document.getElementById('daunKanan4_Jungkit2V3H');
+        
+        kiri1.style.width = lebarPanel + 'px'; kiri1.style.height = tinggiPanel + 'px'; kiri1.style.top = '0px'; kiri1.style.left = '0px';
+        kiri2.style.width = lebarPanel + 'px'; kiri2.style.height = tinggiPanel + 'px'; kiri2.style.top = (tinggiPanel + 4) + 'px'; kiri2.style.left = '0px';
+        kiri3.style.width = lebarPanel + 'px'; kiri3.style.height = tinggiPanel + 'px'; kiri3.style.top = (tinggiPanel + 4 + tinggiPanel + 4) + 'px'; kiri3.style.left = '0px';
+        kiri4.style.width = lebarPanel + 'px'; kiri4.style.height = tinggiPanel + 'px'; kiri4.style.top = (tinggiPanel + 4 + tinggiPanel + 4 + tinggiPanel + 4) + 'px'; kiri4.style.left = '0px';
+        
+        kanan1.style.width = lebarPanel + 'px'; kanan1.style.height = tinggiPanel + 'px'; kanan1.style.top = '0px'; kanan1.style.left = (lebarPanel + 4) + 'px';
+        kanan2.style.width = lebarPanel + 'px'; kanan2.style.height = tinggiPanel + 'px'; kanan2.style.top = (tinggiPanel + 4) + 'px'; kanan2.style.left = (lebarPanel + 4) + 'px';
+        kanan3.style.width = lebarPanel + 'px'; kanan3.style.height = tinggiPanel + 'px'; kanan3.style.top = (tinggiPanel + 4 + tinggiPanel + 4) + 'px'; kanan3.style.left = (lebarPanel + 4) + 'px';
+        kanan4.style.width = lebarPanel + 'px'; kanan4.style.height = tinggiPanel + 'px'; kanan4.style.top = (tinggiPanel + 4 + tinggiPanel + 4 + tinggiPanel + 4) + 'px'; kanan4.style.left = (lebarPanel + 4) + 'px';
+        
+        let mVKiri = document.getElementById('mullionVertikalKiri_Jungkit2V3H');
+        mVKiri.style.left = (lebarSatuDaun / 2) - 2 + 'px';
+        mVKiri.style.top = '0px';
+        mVKiri.style.height = kacaHeight + 'px';
+        
+        let mH1Kiri = document.getElementById('mullionH1Kiri_Jungkit2V3H');
+        let mH2Kiri = document.getElementById('mullionH2Kiri_Jungkit2V3H');
+        let mH3Kiri = document.getElementById('mullionH3Kiri_Jungkit2V3H');
+        mH1Kiri.style.top = (tinggiPanel) + 'px'; mH1Kiri.style.left = '0px'; mH1Kiri.style.width = lebarSatuDaun + 'px';
+        mH2Kiri.style.top = (tinggiPanel + 4 + tinggiPanel) + 'px'; mH2Kiri.style.left = '0px'; mH2Kiri.style.width = lebarSatuDaun + 'px';
+        mH3Kiri.style.top = (tinggiPanel + 4 + tinggiPanel + 4 + tinggiPanel) + 'px'; mH3Kiri.style.left = '0px'; mH3Kiri.style.width = lebarSatuDaun + 'px';
+        
+        engselKiri.style.display = 'block';
+        engselKiri.style.top = gap + 'px';
+        engselKiri.style.left = gap + 'px';
+        engselKiri.style.width = lebarSatuDaun + 'px';
+        
+        // DAUN KANAN
+        wrapperKanan.style.width = lebarSatuDaun + 'px';
+        wrapperKanan.style.height = kacaHeight + 'px';
+        wrapperKanan.style.top = gap + 'px';
+        wrapperKanan.style.left = (gap + lebarSatuDaun) + 'px';
+        wrapperKanan.style.transformOrigin = 'top center';
+        document.getElementById('daunKacaKanan_Jungkit2V3H').style.width = lebarSatuDaun + 'px';
+        document.getElementById('daunKacaKanan_Jungkit2V3H').style.height = kacaHeight + 'px';
+        
+        let kiri1Kanan = document.getElementById('daunKiri1Kanan_Jungkit2V3H');
+        let kiri2Kanan = document.getElementById('daunKiri2Kanan_Jungkit2V3H');
+        let kiri3Kanan = document.getElementById('daunKiri3Kanan_Jungkit2V3H');
+        let kiri4Kanan = document.getElementById('daunKiri4Kanan_Jungkit2V3H');
+        let kanan1Kanan = document.getElementById('daunKanan1Kanan_Jungkit2V3H');
+        let kanan2Kanan = document.getElementById('daunKanan2Kanan_Jungkit2V3H');
+        let kanan3Kanan = document.getElementById('daunKanan3Kanan_Jungkit2V3H');
+        let kanan4Kanan = document.getElementById('daunKanan4Kanan_Jungkit2V3H');
+        
+        kiri1Kanan.style.width = lebarPanel + 'px'; kiri1Kanan.style.height = tinggiPanel + 'px'; kiri1Kanan.style.top = '0px'; kiri1Kanan.style.left = '0px';
+        kiri2Kanan.style.width = lebarPanel + 'px'; kiri2Kanan.style.height = tinggiPanel + 'px'; kiri2Kanan.style.top = (tinggiPanel + 4) + 'px'; kiri2Kanan.style.left = '0px';
+        kiri3Kanan.style.width = lebarPanel + 'px'; kiri3Kanan.style.height = tinggiPanel + 'px'; kiri3Kanan.style.top = (tinggiPanel + 4 + tinggiPanel + 4) + 'px'; kiri3Kanan.style.left = '0px';
+        kiri4Kanan.style.width = lebarPanel + 'px'; kiri4Kanan.style.height = tinggiPanel + 'px'; kiri4Kanan.style.top = (tinggiPanel + 4 + tinggiPanel + 4 + tinggiPanel + 4) + 'px'; kiri4Kanan.style.left = '0px';
+        
+        kanan1Kanan.style.width = lebarPanel + 'px'; kanan1Kanan.style.height = tinggiPanel + 'px'; kanan1Kanan.style.top = '0px'; kanan1Kanan.style.left = (lebarPanel + 4) + 'px';
+        kanan2Kanan.style.width = lebarPanel + 'px'; kanan2Kanan.style.height = tinggiPanel + 'px'; kanan2Kanan.style.top = (tinggiPanel + 4) + 'px'; kanan2Kanan.style.left = (lebarPanel + 4) + 'px';
+        kanan3Kanan.style.width = lebarPanel + 'px'; kanan3Kanan.style.height = tinggiPanel + 'px'; kanan3Kanan.style.top = (tinggiPanel + 4 + tinggiPanel + 4) + 'px'; kanan3Kanan.style.left = (lebarPanel + 4) + 'px';
+        kanan4Kanan.style.width = lebarPanel + 'px'; kanan4Kanan.style.height = tinggiPanel + 'px'; kanan4Kanan.style.top = (tinggiPanel + 4 + tinggiPanel + 4 + tinggiPanel + 4) + 'px'; kanan4Kanan.style.left = (lebarPanel + 4) + 'px';
+        
+        let mVKanan = document.getElementById('mullionVertikalKanan_Jungkit2V3H');
+        mVKanan.style.left = (lebarSatuDaun / 2) - 2 + 'px';
+        mVKanan.style.top = '0px';
+        mVKanan.style.height = kacaHeight + 'px';
+        
+        let mH1Kanan = document.getElementById('mullionH1Kanan_Jungkit2V3H');
+        let mH2Kanan = document.getElementById('mullionH2Kanan_Jungkit2V3H');
+        let mH3Kanan = document.getElementById('mullionH3Kanan_Jungkit2V3H');
+        mH1Kanan.style.top = (tinggiPanel) + 'px'; mH1Kanan.style.left = '0px'; mH1Kanan.style.width = lebarSatuDaun + 'px';
+        mH2Kanan.style.top = (tinggiPanel + 4 + tinggiPanel) + 'px'; mH2Kanan.style.left = '0px'; mH2Kanan.style.width = lebarSatuDaun + 'px';
+        mH3Kanan.style.top = (tinggiPanel + 4 + tinggiPanel + 4 + tinggiPanel) + 'px'; mH3Kanan.style.left = '0px'; mH3Kanan.style.width = lebarSatuDaun + 'px';
+        
+        engselKanan.style.display = 'block';
+        engselKanan.style.top = gap + 'px';
+        engselKanan.style.left = (gap + lebarSatuDaun - 100) + 'px';
+        engselKanan.style.width = lebarSatuDaun;
+    }
+}
+
+window.addEventListener('resize', function() {
+    hitungJungkit_Jungkit2V3H();
+});
+
+function updateWarna_Jungkit2V3H() {
+    let warna = document.getElementById('selectWarna_Jungkit2V3H').value;
+    let kusen = document.getElementById('kusen_Jungkit2V3H');
+    let warnaMap = {
+        'Hitam': '#333',
+        'Putih': '#f0f0f0',
+        'Walnut': '#8B7355'
+    };
+    let warnaKusen = warnaMap[warna] || '#555';
+    if (kusen) kusen.style.borderColor = warnaKusen;
+}
+
+function initJendelaJungkit_Jungkit2V3H() {
+    setTimeout(hitungJungkit_Jungkit2V3H, 100);
+}
+
+const originalCloseModal_Jungkit2V3H = window.closeModal;
+window.closeModal = function(modalId) {
+    if (typeof originalCloseModal_Jungkit2V3H === 'function') {
+        originalCloseModal_Jungkit2V3H(modalId);
+    }
+    if (modalId === 'modalJendelaJungkit2Daun2MullionVertikal3MullionHorizontal') {
+        let inputTinggi = document.getElementById('inputPanjang_Jungkit2V3H');
+        let inputLebar = document.getElementById('inputLebar_Jungkit2V3H');
+        let inputJumlah = document.getElementById('inputJumlah_Jungkit2V3H');
+        if (inputTinggi) inputTinggi.value = '';
+        if (inputLebar) inputLebar.value = '';
+        if (inputJumlah) inputJumlah.value = 1;
+        hitungJungkit_Jungkit2V3H();
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                let modal = document.getElementById('modalJendelaJungkit2Daun2MullionVertikal3MullionHorizontal');
+                if (modal && modal.style.display !== 'none' && modal.style.display !== '') {
+                    setTimeout(hitungJungkit_Jungkit2V3H, 200);
+                }
+            }
+        });
+    });
+    
+    let modal = document.getElementById('modalJendelaJungkit2Daun2MullionVertikal3MullionHorizontal');
+    if (modal) {
+        observer.observe(modal, { attributes: true });
+    }
+    
+    hitungJungkit_Jungkit2V3H();
+});
+</script>

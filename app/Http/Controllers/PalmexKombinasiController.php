@@ -141,6 +141,13 @@ public function hitungLimasanTrapesium(Request $request)
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
     $jenis = $request->input('jenis', 'limasan');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -156,7 +163,8 @@ public function hitungLimasanTrapesium(Request $request)
         'sistemPemasangan' => $sistemPemasangan,
         'jenis' => $jenis,
         'juraiId' => $juraiId,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -199,21 +207,21 @@ public function hitungLimasanTrapesium(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA LIMASAN+TRAPESIUM dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP JURAI & NOK ATAS)
@@ -299,8 +307,10 @@ public function hitungLimasanTrapesium(Request $request)
                 
                 // Hitung qty screw
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -348,8 +358,10 @@ public function hitungLimasanTrapesium(Request $request)
             // ============================================================
             elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -601,6 +613,7 @@ public function hitungLimasanTrapesium(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -735,6 +748,13 @@ public function hitungLimasPelana(Request $request)
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
     $jenis = $request->input('jenis', 'limasan');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -750,7 +770,8 @@ public function hitungLimasPelana(Request $request)
         'sistemPemasangan' => $sistemPemasangan,
         'jenis' => $jenis,
         'juraiId' => $juraiId,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI =====
@@ -802,21 +823,21 @@ public function hitungLimasPelana(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA LIMAS+PELANA dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP JURAI & NOK ATAS)
@@ -902,8 +923,10 @@ public function hitungLimasPelana(Request $request)
                 
                 // Hitung qty screw
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -951,8 +974,10 @@ public function hitungLimasPelana(Request $request)
             // ============================================================
             elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -1197,6 +1222,7 @@ public function hitungLimasPelana(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -1355,6 +1381,13 @@ public function hitungPelana2Trapesium(Request $request)
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
     $jenis = $request->input('jenis', 'pelana');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -1370,7 +1403,8 @@ public function hitungPelana2Trapesium(Request $request)
         'sistemPemasangan' => $sistemPemasangan,
         'jenis' => $jenis,
         'juraiId' => $juraiId,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -1416,21 +1450,21 @@ public function hitungPelana2Trapesium(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA PELANA 2 TRAPESIUM dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP JURAI & NOK ATAS)
@@ -1516,8 +1550,10 @@ public function hitungPelana2Trapesium(Request $request)
                 
                 // Hitung qty screw
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -1565,8 +1601,10 @@ public function hitungPelana2Trapesium(Request $request)
             // ============================================================
             elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -1811,6 +1849,7 @@ public function hitungPelana2Trapesium(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -1818,7 +1857,6 @@ public function hitungPelana2Trapesium(Request $request)
         'grand_total' => $grandTotal
     ]);
 }
-
 public function limasanLimasan(Request $request)
 {
     $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
@@ -1949,6 +1987,13 @@ public function hitungLimasanLimasan(Request $request)
     $rangka = $request->input('rangka', 'Baja Ringan');
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -1963,7 +2008,8 @@ public function hitungLimasanLimasan(Request $request)
         'sudut' => $sudut,
         'sistemPemasangan' => $sistemPemasangan,
         'juraiId' => $juraiId,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -2006,21 +2052,21 @@ public function hitungLimasanLimasan(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA LIMASAN+LIMASAN dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP JURAI & NOK ATAS)
@@ -2106,8 +2152,10 @@ public function hitungLimasanLimasan(Request $request)
                 
                 // Hitung qty screw
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -2155,8 +2203,10 @@ public function hitungLimasanLimasan(Request $request)
             // ============================================================
             elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -2403,13 +2453,14 @@ public function hitungLimasanLimasan(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
         'results' => $results,
         'grand_total' => $grandTotal
     ]);
-}
+}   
 
 public function pelana2Kemiringan(Request $request)
 {
@@ -2554,6 +2605,13 @@ public function hitungPelana2Kemiringan(Request $request)
     $rangka = $request->input('rangka', 'Baja Ringan');
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -2567,7 +2625,8 @@ public function hitungPelana2Kemiringan(Request $request)
         'panjangFlashing' => $panjangFlashing,
         'sudut' => $sudut,
         'sistemPemasangan' => $sistemPemasangan,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -2604,21 +2663,21 @@ public function hitungPelana2Kemiringan(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA PELANA 2 KEMIRINGAN dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP NOK ATAS)
@@ -2700,8 +2759,10 @@ public function hitungPelana2Kemiringan(Request $request)
                 
                 // Hitung qty screw
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -2748,8 +2809,10 @@ public function hitungPelana2Kemiringan(Request $request)
             // ============================================================
             elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -2972,6 +3035,7 @@ public function hitungPelana2Kemiringan(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -3677,6 +3741,13 @@ public function hitungPelana3Arah(Request $request)
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
     $jenis = $request->input('jenis', 'depan');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -3691,7 +3762,8 @@ public function hitungPelana3Arah(Request $request)
         'sudut' => $sudut,
         'sistemPemasangan' => $sistemPemasangan,
         'jenis' => $jenis,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -3728,21 +3800,21 @@ public function hitungPelana3Arah(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA PELANA 3 ARAH dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP JURAI & NOK ATAS)
@@ -3824,8 +3896,10 @@ public function hitungPelana3Arah(Request $request)
                 
                 // Hitung qty screw
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -3872,8 +3946,10 @@ public function hitungPelana3Arah(Request $request)
             // ============================================================
             elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -4096,6 +4172,7 @@ public function hitungPelana3Arah(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -4240,6 +4317,14 @@ public function hitungPelanaX(Request $request)
     $rangka = $request->input('rangka', 'Baja Ringan');
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
+    $jenis = $request->input('jenis', 'pelana-x');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -4253,7 +4338,9 @@ public function hitungPelanaX(Request $request)
         'panjangFlashing' => $panjangFlashing,
         'sudut' => $sudut,
         'sistemPemasangan' => $sistemPemasangan,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'jenis' => $jenis,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -4290,21 +4377,21 @@ public function hitungPelanaX(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA PELANA X dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP JURAI & NOK ATAS)
@@ -4386,8 +4473,10 @@ public function hitungPelanaX(Request $request)
                 
                 // Hitung qty screw
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -4434,8 +4523,10 @@ public function hitungPelanaX(Request $request)
             // ============================================================
             elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -4550,6 +4641,19 @@ public function hitungPelanaX(Request $request)
                     'qty' => $qty
                 ]);
             }
+        } else {
+            Log::info('Wall Flashing tidak ditemukan di database');
+            $results[] = [
+                'product_id' => null,
+                'produk_id' => null,
+                'nama_produk' => 'Wall Flashing',
+                'area' => 'Wall Flashing',
+                'qty' => ceil($panjangWallFlashing),
+                'satuan' => 'm',
+                'harga_satuan' => 0,
+                'total_harga' => 0,
+                'parameter' => $panjangWallFlashing . ' m'
+            ];
         }
     }
     
@@ -4658,6 +4762,7 @@ public function hitungPelanaX(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -4817,6 +4922,13 @@ public function hitungLimasanX(Request $request)
     $rangka = $request->input('rangka', 'Baja Ringan');
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -4831,7 +4943,8 @@ public function hitungLimasanX(Request $request)
         'sudut' => $sudut,
         'sistemPemasangan' => $sistemPemasangan,
         'juraiId' => $juraiId,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -4874,21 +4987,21 @@ public function hitungLimasanX(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA LIMASAN X dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP JURAI & NOK ATAS)
@@ -4974,8 +5087,10 @@ public function hitungLimasanX(Request $request)
                 
                 // Hitung qty screw
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -5023,8 +5138,10 @@ public function hitungLimasanX(Request $request)
             // ============================================================
             elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -5269,6 +5386,7 @@ public function hitungLimasanX(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -5367,6 +5485,13 @@ public function hitungGergaji(Request $request)
     $rangka = $request->input('rangka', 'Baja Ringan');
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -5380,7 +5505,8 @@ public function hitungGergaji(Request $request)
         'panjangTalangJurai' => $panjangTalangJurai,
         'sudut' => $sudut,
         'sistemPemasangan' => $sistemPemasangan,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ============================================================
@@ -5409,21 +5535,21 @@ public function hitungGergaji(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA GERGAJI dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP Nok Atas)
@@ -5501,8 +5627,10 @@ public function hitungGergaji(Request $request)
                 $jumlahJuraiDalam = 0; // Gergaji tidak ada jurai dalam
                 
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -5544,8 +5672,10 @@ public function hitungGergaji(Request $request)
             elseif (stripos($areaSlug, 'wind') !== false || 
                     stripos($areaName, 'Wind') !== false) {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -5820,6 +5950,7 @@ public function hitungGergaji(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -5968,12 +6099,19 @@ public function hitungLengkung2Sisi(Request $request)
     $waste = $request->input('waste', 5) / 100;
     
     $produkAtapId = $request->input('produk_atap_id');
-    $nokAtasId = $request->input('nok_atas_id'); // ← TAMBAHKAN
+    $nokAtasId = $request->input('nok_atas_id');
     $underlayerId = $request->input('underlayer_id');
     $rangka = $request->input('rangka', 'Baja Ringan');
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
     $jenis = $request->input('jenis', 'pelana');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -5988,7 +6126,8 @@ public function hitungLengkung2Sisi(Request $request)
         'sudut' => $sudut,
         'sistemPemasangan' => $sistemPemasangan,
         'jenis' => $jenis,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB UNTUK LENGKUNG =====
@@ -6025,21 +6164,21 @@ public function hitungLengkung2Sisi(Request $request)
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
         
-        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
-        $processedProductIds[] = $produkAtap->id;
-        
-        Log::info('Atap Utama dihitung:', [
+        Log::info('ATAP UTAMA LENGKUNG 2 SISI dihitung:', [
             'luasAtap' => $luasAtap,
-            'satuan' => $satuan,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
             'sistemPemasangan' => $sistemPemasangan,
             'qty' => $qty
         ]);
+        
+        $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
+        $processedProductIds[] = $produkAtap->id;
         
         // ============================================================
         // 1b. LOOP AKSESORIS (SKIP NOK ATAS)
@@ -6118,8 +6257,10 @@ public function hitungLengkung2Sisi(Request $request)
                 }
                 
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -6166,8 +6307,10 @@ public function hitungLengkung2Sisi(Request $request)
             // ============================================================
             elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
@@ -6392,6 +6535,7 @@ public function hitungLengkung2Sisi(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -6497,6 +6641,14 @@ public function hitungPelanaDinding(Request $request)
     $rangka = $request->input('rangka', 'Baja Ringan');
     $lantaiKerja = $request->input('lantai_kerja', 'Plywood 9 mm');
     $sistemPemasangan = $request->input('sistem_pemasangan', 'expose');
+    $jenis = $request->input('jenis', 'atap');
+    $coverage = $request->input('coverage', 9); // <-- AMBIL COVERAGE
+    
+    // ===== VALIDASI SUDUT =====
+    if ($sudut < 30) {
+        $sistemPemasangan = 'non-expose';
+        Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
+    }
     
     $results = [];
     $processedProductIds = [];
@@ -6512,7 +6664,9 @@ public function hitungPelanaDinding(Request $request)
         'sudut' => $sudut,
         'sistemPemasangan' => $sistemPemasangan,
         'juraiId' => $juraiId,
-        'nokAtasId' => $nokAtasId
+        'nokAtasId' => $nokAtasId,
+        'jenis' => $jenis,
+        'coverage' => $coverage // <-- LOG COVERAGE
     ]);
     
     // ===== VALIDASI WAJIB =====
@@ -6536,30 +6690,59 @@ public function hitungPelanaDinding(Request $request)
         $produkAtap = Product::with(['unit', 'area', 'accessories.unit', 'accessories.area'])->find($produkAtapId);
         
         if (!$produkAtap) {
+            Log::error('Produk atap tidak ditemukan: ' . $produkAtapId);
             return response()->json([
                 'success' => false,
                 'message' => 'Produk atap tidak ditemukan'
             ]);
         }
         
+        Log::info('Produk Atap PALMEX ditemukan:', [
+            'id' => $produkAtap->id,
+            'nama' => $produkAtap->nama_produk,
+            'satuan_terkecil' => $produkAtap->satuan_terkecil
+        ]);
+        
+        // ============================================================
+        // 1a. ATAP UTAMA
+        // ============================================================
         $satuan = $produkAtap->satuan_terkecil ?? 1;
         $luasDenganWaste = $luasAtap + ($luasAtap * $waste);
         
-        if ($sistemPemasangan == 'expose') {
-            $qty = ceil($luasDenganWaste * 9);
-        } else {
-            $qty = ceil($luasDenganWaste * $satuan);
-        }
+        // ===== PAKAI COVERAGE =====
+        // Coverage sudah didapat dari dropdown, nilainya 6, 7, atau 8
+        $qty = ceil($luasDenganWaste * $coverage);
+        
+        Log::info('ATAP UTAMA PELANA + DINDING dihitung:', [
+            'luasAtap' => $luasAtap,
+            'waste' => $waste,
+            'luasDenganWaste' => $luasDenganWaste,
+            'coverage' => $coverage,
+            'sistemPemasangan' => $sistemPemasangan,
+            'qty' => $qty
+        ]);
         
         $results[] = $this->formatResult($produkAtap, $qty, 'Atap Utama', $luasAtap);
         $processedProductIds[] = $produkAtap->id;
         
+        // ============================================================
+        // 1b. LOOP AKSESORIS (SKIP JURAI & NOK ATAS)
+        // ============================================================
         foreach ($produkAtap->accessories as $aksesoris) {
             $areaName = $aksesoris->area->nama_area;
             $areaSlug = $aksesoris->area->slug ?? '';
             $satuanAksesoris = $aksesoris->satuan_terkecil;
             
+            Log::info('Aksesoris ditemukan:', [
+                'nama' => $aksesoris->nama_produk,
+                'area' => $areaName,
+                'slug' => $areaSlug,
+                'satuan_terkecil' => $satuanAksesoris
+            ]);
+            
+            // SKIP yang dihitung terpisah
             if (in_array($areaName, ['Underlayer', 'Talang Jurai', 'Wall Flashing'])) {
+                Log::info('Skip ' . $areaName . ' (dihitung terpisah)');
                 continue;
             }
             
@@ -6583,14 +6766,22 @@ public function hitungPelanaDinding(Request $request)
             $parameter = '-';
             $displayArea = $areaName;
             
+            // ============================================================
+            // STARTER
+            // ============================================================
             if ($areaSlug == 'palmex-starter' || $areaName == 'Starter') {
                 if ($panjangStarter > 0 && $satuanAksesoris > 0) {
                     $qtyRaw = $panjangStarter / $satuanAksesoris;
                     $qty = ceil($qtyRaw);
                     $parameter = $panjangStarter;
                     $displayArea = 'Starter';
+                    Log::info('Starter dihitung:', ['qty' => $qty]);
                 }
-            } elseif ($areaSlug == 'palmex-screw' || $areaName == 'Palmex Screw' || stripos($areaName, 'Screw') !== false) {
+            }
+            // ============================================================
+            // PALMEX SCREW
+            // ============================================================
+            elseif ($areaSlug == 'palmex-screw' || $areaName == 'Palmex Screw' || stripos($areaName, 'Screw') !== false) {
                 $jarakJurai = ($sistemPemasangan == 'expose') ? 0.125 : 0.143;
                 $step1Jurai = $panjangJurai - (0.25 * 4);
                 $step2Jurai = $step1Jurai / $jarakJurai;
@@ -6605,58 +6796,122 @@ public function hitungPelanaDinding(Request $request)
                     }
                 }
                 
+                // Cari qty Starter dari results
+                $qtyStarter = 0;
+                foreach ($results as $result) {
+                    if ($result['area'] == 'Starter') {
+                        $qtyStarter = $result['qty'];
+                        break;
+                    }
+                }
+                
+                // Hitung qty screw
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = ($luasAtap * $satuanAksesoris) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
+                    // Expose: (Luas × Coverage) + (Jurai × 2) + (Nok × 8)
+                    $qtyRaw = ($luasAtap * $coverage) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 } else {
+                    // Non-Expose: (Luas × 21) + (Jurai × 2) + (Nok × 8)
                     $qtyRaw = ($luasAtap * 21) + ($jumlahJuraiDalam * 2) + ($qtyNokAtas * 8);
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
                 $parameter = $luasAtap;
                 $displayArea = 'Screw';
-            } elseif ($areaSlug == 'palmex-rail' || $areaName == 'Rail') {
+                
+                Log::info('Palmex Screw:', [
+                    'jumlahJuraiDalam' => $jumlahJuraiDalam,
+                    'qtyNokAtas' => $qtyNokAtas,
+                    'qtyStarter' => $qtyStarter,
+                    'qty' => $qty
+                ]);
+            }
+            // ============================================================
+            // RAIL
+            // ============================================================
+            elseif ($areaSlug == 'palmex-rail' || $areaName == 'Rail') {
                 $qtyStarter = 0;
                 $qtyAtapUtama = 0;
+                
                 foreach ($results as $result) {
-                    if ($result['area'] == 'Starter') $qtyStarter = $result['qty'];
-                    if ($result['area'] == 'Atap Utama') $qtyAtapUtama = $result['qty'];
+                    if ($result['area'] == 'Starter') {
+                        $qtyStarter = $result['qty'];
+                    }
+                    if ($result['area'] == 'Atap Utama') {
+                        $qtyAtapUtama = $result['qty'];
+                    }
                 }
+                
                 if (($qtyStarter + $qtyAtapUtama) > 0) {
                     $qtyRaw = ($qtyStarter + $qtyAtapUtama) / 3;
                     $qty = ceil($qtyRaw);
                     $parameter = $panjangStarter;
                     $displayArea = 'Rail';
+                    Log::info('Rail dihitung:', [
+                        'qtyStarter' => $qtyStarter,
+                        'qtyAtapUtama' => $qtyAtapUtama,
+                        'qty' => $qty
+                    ]);
                 }
-            } elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
+            }
+            // ============================================================
+            // WIND
+            // ============================================================
+            elseif ($areaSlug == 'palmex-wind' || $areaName == 'Wind') {
                 if ($sistemPemasangan == 'expose') {
-                    $qtyRaw = $luasAtap * $satuanAksesoris;
+                    // Expose: Luas × Coverage
+                    $qtyRaw = $luasAtap * $coverage;
                 } else {
+                    // Non-Expose: Luas × 4
                     $qtyRaw = $luasAtap * 4;
                 }
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
                 $parameter = $luasAtap;
                 $displayArea = 'Wind';
-            } elseif ($areaSlug == 'palmex-metal-flashing' || $areaName == 'Metal Flashing' && $sistemPemasangan == 'non-expose') {
+                Log::info('Wind dihitung:', ['qty' => $qty]);
+            }
+            // ============================================================
+            // METAL FLASHING
+            // ============================================================
+            elseif ($areaSlug == 'palmex-metal-flashing' || $areaName == 'Metal Flashing' && $sistemPemasangan == 'non-expose') {
                 if ($panjangFlashing > 0 && $satuanAksesoris > 0) {
                     $qtyRaw = $panjangFlashing / $satuanAksesoris;
                     $qty = ceil($qtyRaw + ($qtyRaw * $waste));
                     $parameter = $panjangFlashing;
                     $displayArea = 'Metal Flashing';
+                    Log::info('Metal Flashing dihitung:', ['qty' => $qty]);
                 }
-            } elseif ($areaSlug == 'flashing-kaca' || $areaName == 'Flashing Kaca') {
+            }
+            // ============================================================
+            // FLASHING KACA
+            // ============================================================
+            elseif ($areaSlug == 'flashing-kaca' || $areaName == 'Flashing Kaca') {
                 if ($opsiKaca > 0 && $satuanAksesoris > 0) {
                     $qtyRaw = $opsiKaca / $satuanAksesoris;
                     $qty = ceil($qtyRaw + ($qtyRaw * $waste));
                     $parameter = $opsiKaca;
                     $displayArea = 'Flashing Kaca';
+                    Log::info('Flashing Kaca dihitung:', [
+                        'opsiKaca' => $opsiKaca,
+                        'satuan_terkecil' => $satuanAksesoris,
+                        'qty' => $qty
+                    ]);
+                } else {
+                    Log::info('Flashing Kaca dilewati (opsiKaca = 0)');
                 }
-            } else {
+            }
+            // ============================================================
+            // AREA LAINNYA
+            // ============================================================
+            else {
+                Log::info('⚠️ AREA TIDAK TERDETEKSI, pakai hitungQtyByArea(): ' . $areaName);
                 $qty = $this->hitungQtyByArea($areaName, $aksesoris, $luasAtap, $panjangStarter, 0, $panjangFlashing, 0, $panjangWallFlashing, $waste, $sudut);
                 $displayArea = $areaName;
+                Log::info('📊 hitungQtyByArea return: ' . $qty);
             }
             
             if ($qty > 0) {
                 $results[] = $this->formatResult($aksesoris, $qty, $displayArea, $parameter);
                 $processedProductIds[] = $aksesoris->id;
+                Log::info('Ditambahkan ke results: ' . $aksesoris->nama_produk . ' | Qty: ' . $qty);
             }
         }
     }
@@ -6701,7 +6956,7 @@ public function hitungPelanaDinding(Request $request)
     }
     
     // ============================================================
-    // 4. UNDERLAYER (HANYA UNTUK NON-EXPOSE)
+    // 4. UNDERLAYER (dari dropdown) - HANYA UNTUK NON-EXPOSE
     // ============================================================
     if ($sistemPemasangan == 'non-expose' && $underlayerId) {
         $underlayer = Product::with('unit')->find($underlayerId);
@@ -6710,6 +6965,10 @@ public function hitungPelanaDinding(Request $request)
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
             $results[] = $this->formatResult($underlayer, $qty, 'Underlayer', $luasAtap);
             $processedProductIds[] = $underlayer->id;
+            Log::info('Underlayer PALMEX ditambahkan:', [
+                'nama' => $underlayer->nama_produk,
+                'qty' => $qty
+            ]);
         }
     }
     
@@ -6718,17 +6977,50 @@ public function hitungPelanaDinding(Request $request)
     // ============================================================
     
     // ============================================================
-    // 6. WALL FLASHING - PALMEX TIDAK PAKAI
+    // 6. WALL FLASHING (conditional)
     // ============================================================
+    if ($opsiDinding > 0) {
+        $wallFlashing = Product::where('brand_id', $brandId)
+            ->whereHas('area', function($q) {
+                $q->where('nama_area', 'Wall Flashing');
+            })
+            ->first();
+            
+        if ($wallFlashing) {
+            if (!in_array($wallFlashing->id, $processedProductIds)) {
+                $qtyRaw = $opsiDinding / $wallFlashing->satuan_terkecil;
+                $qty = ceil($qtyRaw + ($qtyRaw * $waste));
+                $results[] = $this->formatResult($wallFlashing, $qty, 'Wall Flashing', $opsiDinding);
+                $processedProductIds[] = $wallFlashing->id;
+                Log::info('Wall Flashing PALMEX ditambahkan:', [
+                    'nama' => $wallFlashing->nama_produk,
+                    'qty' => $qty
+                ]);
+            }
+        } else {
+            Log::info('Wall Flashing tidak ditemukan di database');
+            $results[] = [
+                'product_id' => null,
+                'produk_id' => null,
+                'nama_produk' => 'Wall Flashing',
+                'area' => 'Wall Flashing',
+                'qty' => ceil($opsiDinding),
+                'satuan' => 'm',
+                'harga_satuan' => 0,
+                'total_harga' => 0,
+                'parameter' => $opsiDinding . ' m'
+            ];
+        }
+    }
     
     // ============================================================
-    // 7. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
+    // 7. LANTAI KERJA (HANYA UNTUK NON-EXPOSE) - termasuk DINDING
     // ============================================================
     $qtyPlywood = 0;
     
     if ($sistemPemasangan == 'non-expose') {
-        $luasPerLembar = 2.88;
         $totalLuas = $luasAtap + $luasDinding;
+        $luasPerLembar = 2.88;
         
         $plywoodProduct = Product::where('brand_id', $brandId)
             ->where('nama_produk', 'LIKE', '%' . $lantaiKerja . '%')
@@ -6740,6 +7032,10 @@ public function hitungPelanaDinding(Request $request)
                 $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
                 $results[] = $this->formatResult($plywoodProduct, $qtyPlywood, 'Lantai Kerja', $totalLuas);
                 $processedProductIds[] = $plywoodProduct->id;
+                Log::info('Lantai Kerja PALMEX dari database ditambahkan:', [
+                    'nama' => $plywoodProduct->nama_produk,
+                    'qty' => $qtyPlywood
+                ]);
             }
         } else {
             $qtyRaw = $totalLuas / $luasPerLembar;
@@ -6755,15 +7051,24 @@ public function hitungPelanaDinding(Request $request)
                 'total_harga' => 0,
                 'parameter' => $totalLuas . ' m²'
             ];
+            Log::info('Lantai Kerja PALMEX hardcode ditambahkan:', [
+                'nama' => $lantaiKerja,
+                'qty' => $qtyPlywood
+            ]);
         }
+    } else {
+        Log::info('Sistem Expose: Lantai Kerja TIDAK digunakan');
     }
     
     // ============================================================
-    // 8. PAKU & SCREW (HANYA UNTUK NON-EXPOSE)
+    // 8. PAKU & SCREW (LANTAI KERJA) - HANYA UNTUK NON-EXPOSE
     // ============================================================
     if ($sistemPemasangan == 'non-expose' && $qtyPlywood > 0) {
         $totalLuas = $luasAtap + $luasDinding;
         $satuanPaku = ($sudut < 45) ? 20 : 13.4;
+        $qtyRawPaku = $totalLuas / $satuanPaku;
+        $qtyPaku = ceil($qtyRawPaku + ($qtyRawPaku * $waste));
+        
         $qtyScrew = $qtyPlywood * 40;
         
         if ($rangka == 'Kayu' || $rangka == 'Baja Ringan') {
@@ -6782,6 +7087,10 @@ public function hitungPelanaDinding(Request $request)
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
                 $results[] = $this->formatResult($screwProduct, $qty, 'Paku & Screw', $qtyPlywood . ' lembar');
                 $processedProductIds[] = $screwProduct->id;
+                Log::info('Screw Plywood ditambahkan:', [
+                    'nama' => $screwProduct->nama_produk,
+                    'qty' => $qty
+                ]);
             }
         } else {
             $results[] = [
@@ -6795,7 +7104,13 @@ public function hitungPelanaDinding(Request $request)
                 'total_harga' => 0,
                 'parameter' => $qtyPlywood . ' lembar plywood'
             ];
+            Log::info('Screw Plywood hardcode ditambahkan:', [
+                'nama' => $screwName,
+                'qty' => $qtyScrew
+            ]);
         }
+    } else {
+        Log::info('Sistem Expose: Paku & Screw untuk plywood TIDAK digunakan');
     }
     
     // ============================================================
@@ -6805,6 +7120,7 @@ public function hitungPelanaDinding(Request $request)
     
     Log::info('Total hasil: ' . count($results) . ' item');
     Log::info('Grand Total: Rp ' . number_format($grandTotal, 0, ',', '.'));
+    Log::info('Coverage used: ' . $coverage);
     
     return response()->json([
         'success' => true,
@@ -6813,147 +7129,98 @@ public function hitungPelanaDinding(Request $request)
     ]);
 }
 
-   public function exportPdfMati1(Request $request)
+     public function exportPdf(Request $request, $jenis)
 {
-    $panjang = $request->panjang;
-    $lebar = $request->lebar;
-    $tebal_kaca = $request->tebal_kaca;
-    $jumlah = $request->jumlah;
-    $warna = $request->warna;
-    $type_kaca = $request->type_kaca;
-    $judul = $request->judul ?? 'BOQ - Jendela Mati 1 Kaca';
-
-    // Ambil data aksesoris
-    $aksesorisIds = ProductAccessories::where('parent_product_id', 145)->pluck('accessory_id');
-    $aksesoris = Product::with('area', 'unit')
-        ->whereIn('id', $aksesorisIds)
-        ->get();
-
-    // === PERHITUNGAN DASAR ===
-    $panjangM = $panjang / 100;
-    $lebarM = $lebar / 100;
+    Log::info('=== PalmexKombinasiController: exportPdf() === Jenis: ' . $jenis);
     
-    $luasKacaPerUnit = $panjangM * $lebarM;
-    $luasKacaTotal = $luasKacaPerUnit * $jumlah;
-    $luasKacaTotal = ceil($luasKacaTotal * 10) / 10;
-
-    $kelilingPerUnit = 2 * ($panjangM + $lebarM);
-    $kelilingTotal = $kelilingPerUnit * $jumlah;
-
-    // === PERHITUNGAN PROFILE VERTIKAL ===
-    $profileVertikal = $aksesoris->filter(function($item) {
-        return $item->area && $item->area->slug == 'profile-vertikal';
-    })->first();
+    $data = $request->all();
     
-    $satuanTerkecilVertikal = $profileVertikal ? (float)$profileVertikal->satuan_terkecil : 0;
-    $variableA = $jumlah * $satuanTerkecilVertikal;
-    $frameVertikal = $variableA * $panjang;
-    $batangVertikal = $frameVertikal / 580;
-    $batangVertikal = ceil($batangVertikal * 10) / 10;
-    $totalPanjang = $panjang * $variableA;
-
-    // === PERHITUNGAN PROFILE HORIZONTAL ===
-    $profileHorizontal = $aksesoris->filter(function($item) {
-        return $item->area && $item->area->slug == 'profile-horizontal';
-    })->first();
+    Log::info('DATA MENTAH DARI REQUEST PALMEX KOMBINASI:', [
+        'jenis' => $jenis,
+        'data' => $data
+    ]);
     
-    $satuanTerkecilHorizontal = $profileHorizontal ? (float)$profileHorizontal->satuan_terkecil : 0;
-    $variableB = $jumlah * $satuanTerkecilHorizontal;
-    $frameHorizontal = $variableB * $lebar;
-    $batangHorizontal = $frameHorizontal / 580;
-    $batangHorizontal = ceil($batangHorizontal * 10) / 10;
-    $totalLebar = $lebar * $variableB;
-
-    // === PERHITUNGAN REINFORCEMENT ===
-    $totalBatang = $batangVertikal + $batangHorizontal;
-    $reinforcementQty = ceil($totalBatang * 10) / 10;
-
-    // === PERHITUNGAN SCREW ===
-    $screwItem = $aksesoris->filter(function($item) {
-        return $item->area && $item->area->slug == 'screw-reinforcement';
-    })->first();
-    $satuanTerkecilScrew = $screwItem ? (float)$screwItem->satuan_terkecil : 1;
-    $screwQty = ($totalLebar + $totalPanjang) / $satuanTerkecilScrew;
-    $screwQty = ceil($screwQty * 10);
-
-    // === HITUNG QTY PER AKSESORIS ===
-    foreach ($aksesoris as $item) {
-        $areaSlug = $item->area ? $item->area->slug : '';
-        $qty = 0;
-        
-        if ($areaSlug == 'profile-vertikal') {
-            $qty = $batangVertikal;
-        } elseif ($areaSlug == 'profile-horizontal') {
-            $qty = $batangHorizontal;
-        } elseif ($areaSlug == 'glaze-bead-vertical') {
-            $qty = ($panjang / 100) * $jumlah;
-        } elseif ($areaSlug == 'glaze-bead-horizontal') {
-            $qty = ($lebar / 100) * $jumlah;
-        } elseif ($areaSlug == 'reinforcement') {
-            $qty = $reinforcementQty;
-        } elseif ($areaSlug == 'kaca') {
-            $qty = $luasKacaTotal;
-        } elseif ($areaSlug == 'screw-reinforcement') {
-            $qty = $screwQty;
-        } else {
-            $qty = $jumlah * ($item->satuan_terkecil ?? 1);
+    // ============ DECODE HASIL YANG MUNGKIN JSON STRING ============
+    $bagianKeys = ['bagian1', 'bagian2', 'bagian3', 'bagian4', 'total'];
+    for ($i = 0; $i < count($bagianKeys); $i++) {
+        $key = $bagianKeys[$i];
+        if (isset($data[$key]['hasil'])) {
+            if (is_string($data[$key]['hasil'])) {
+                $decoded = json_decode($data[$key]['hasil'], true);
+                if (is_array($decoded)) {
+                    $data[$key]['hasil'] = $decoded;
+                } else {
+                    $data[$key]['hasil'] = [];
+                }
+            }
         }
-        
-        $item->qty = $qty;
     }
-
-    // Kelompokkan berdasarkan area
-    $grouped = [];
-    foreach ($aksesoris as $item) {
-        $areaSlug = $item->area ? $item->area->slug : 'lainnya';
-        if (str_starts_with($areaSlug, 'profile')) {
-            $groupKey = 'profile';
+    
+    // Decode detail_results juga
+    if (isset($data['detail_results']) && is_string($data['detail_results'])) {
+        $decoded = json_decode($data['detail_results'], true);
+        if (is_array($decoded)) {
+            $data['detail_results'] = $decoded;
         } else {
-            $groupKey = $areaSlug;
+            $data['detail_results'] = [];
         }
-        if (!isset($grouped[$groupKey])) {
-            $grouped[$groupKey] = [];
-        }
-        $grouped[$groupKey][] = $item;
     }
-
-    $areaLabels = [
-        'profile' => 'PROFILE',
-        'reinforcement' => 'REINFORCEMENT',
-        'kaca' => 'KACA',
-        'screw' => 'SCREW',
-    ];
-
+    
     // ============ GENERATE NOMOR BOQ ============
     $nomorBoq = Boq::generateNomorBoq();
-
+    $data['nomor_boq'] = $nomorBoq;
+    $data['jenis'] = $jenis;
+    
     // ============ STORE BOQ ============
     try {
         $allResults = [];
         
-        // Kumpulkan semua hasil dari aksesoris
-        foreach ($aksesoris as $item) {
-            if ($item->qty > 0) {
-                $allResults[] = [
-                    'produk_id' => $item->id,
-                    'qty' => $item->qty,
-                    'nama_produk' => $item->nama_produk,
-                ];
+        // Kumpulkan semua hasil dari semua bagian - menggunakan for
+        for ($i = 0; $i < count($bagianKeys); $i++) {
+            $key = $bagianKeys[$i];
+            if (isset($data[$key]['hasil']) && is_array($data[$key]['hasil'])) {
+                $hasilCount = count($data[$key]['hasil']);
+                for ($j = 0; $j < $hasilCount; $j++) {
+                    $allResults[] = $data[$key]['hasil'][$j];
+                }
             }
         }
         
-        // Filter duplikat berdasarkan produk_id
+        // Jika ada detail_results
+        if (isset($data['detail_results']) && is_array($data['detail_results'])) {
+            $detailCount = count($data['detail_results']);
+            for ($i = 0; $i < $detailCount; $i++) {
+                $allResults[] = $data['detail_results'][$i];
+            }
+        }
+        
+        Log::info('TOTAL RESULTS SEBELUM FILTER: ' . count($allResults));
+        
+        // Filter duplikat berdasarkan produk_id - menggunakan for
         $uniqueResults = [];
         $seenIds = [];
         
-        foreach ($allResults as $item) {
-            $produkId = $item['produk_id'] ?? null;
+        $totalAll = count($allResults);
+        for ($i = 0; $i < $totalAll; $i++) {
+            $item = $allResults[$i];
+            $produkId = $item['produk_id'] ?? $item['id'] ?? $item['product_id'] ?? null;
             
             if (!$produkId) {
                 continue;
             }
             
-            if (in_array($produkId, $seenIds)) {
+            // Cek apakah sudah ada di seenIds - menggunakan for
+            $isDuplicate = false;
+            $seenCount = count($seenIds);
+            for ($j = 0; $j < $seenCount; $j++) {
+                if ($seenIds[$j] == $produkId) {
+                    $isDuplicate = true;
+                    Log::warning("DUPLIKAT SKIP:", ['id' => $produkId]);
+                    break;
+                }
+            }
+            
+            if ($isDuplicate) {
                 continue;
             }
             
@@ -6961,15 +7228,21 @@ public function hitungPelanaDinding(Request $request)
             $uniqueResults[] = $item;
         }
         
-        // Simpan ke database
+        Log::info('UNIQUE RESULTS:', [
+            'total' => count($uniqueResults),
+        ]);
+        
+        // Simpan ke database - menggunakan for
         if (count($uniqueResults) > 0) {
             $boq = new Boq();
             $boq->nomor_boq = $nomorBoq;
             $boq->tanggal_boq = now();
             $boq->save();
             
-            foreach ($uniqueResults as $item) {
-                $produkId = $item['produk_id'] ?? null;
+            $uniqueCount = count($uniqueResults);
+            for ($i = 0; $i < $uniqueCount; $i++) {
+                $item = $uniqueResults[$i];
+                $produkId = $item['produk_id'] ?? $item['id'] ?? $item['product_id'] ?? null;
                 $qty = (int)($item['qty'] ?? 0);
                 
                 if ($produkId && $qty > 0) {
@@ -6986,39 +7259,47 @@ public function hitungPelanaDinding(Request $request)
                 }
             }
             
-            \Log::info('BOQ SAVED JENDELA MATI 1:', [
+            Log::info('BOQ SAVED:', [
                 'boq_id' => $boq->id,
-                'nomor_boq' => $nomorBoq,
                 'total' => count($uniqueResults)
             ]);
         }
         
     } catch (\Exception $e) {
-        \Log::error('Error saving BOQ Jendela Mati 1: ' . $e->getMessage());
-        \Log::error($e->getTraceAsString());
+        Log::error('Error saving BOQ: ' . $e->getMessage());
+        Log::error($e->getTraceAsString());
     }
-
-    $data = [
-        'judul' => $judul,
-        'panjang' => $panjang,
-        'lebar' => $lebar,
-        'tebal_kaca' => $tebal_kaca,
-        'jumlah' => $jumlah,
-        'warna' => $warna,
-        'type_kaca' => $type_kaca,
-        'luas_kaca_total' => $luasKacaTotal,
-        'keliling_total' => $kelilingTotal,
-        'batang_vertikal' => $batangVertikal,
-        'batang_horizontal' => $batangHorizontal,
-        'reinforcement_qty' => $reinforcementQty,
-        'screw_qty' => $screwQty,
-        'grouped' => $grouped,
-        'areaLabels' => $areaLabels,
-        'nomor_boq' => $nomorBoq,
+    
+    // ============ PILIH VIEW BERDASARKAN JENIS ============
+    $viewMap = [
+        // Limasan + ...
+        'limas-pelana' => 'boq.palmex.atap-kombinasi.pdf-palmex-limasan-pelana',
+        'limasan-x' => 'boq.palmex.atap-kombinasi.pdf-palmex-limasan-x',
+        'limasan-limasan' => 'boq.palmex.atap-kombinasi.pdf-palmex-limasan-limasan',
+        'limasan-trapesium' => 'boq.palmex.atap-kombinasi.pdf-palmex-limasan-trapesium',
+        
+        // Pelana + ...
+        'pelana-2-kemiringan' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-2-kemiringan',
+        'pelana-2-sisi' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-2-sisi',
+        'pelana-2trapesium' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-2trapesium',
+        'pelana-3-arah' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-3-arah',
+        'pelana-dinding' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-dinding',
+        
+        // Pelana X
+        'pelana-x' => 'boq.palmex.atap-kombinasi.pdf-palmex-pelana-x',
+        
+        // Gergaji
+        'gergaji' => 'boq.palmex.atap-kombinasi.pdf-palmex-gergaji',
+        
+        // Lengkung
+        'lengkung-2-sisi' => 'boq.palmex.atap-kombinasi.pdf-palmex-lengkung-2-sisi',
     ];
-
-    // Return view PDF (bukan stream/download)
-    return view('boq.jendela.pdf-jendela-mati-1-kaca', compact('data'));
+    
+    $view = $viewMap[$jenis] ?? 'boq.palmex.pdf-palmex-pelana';
+    
+    Log::info('VIEW SELECTED: ' . $view);
+    
+    return view($view, compact('data'));
 }
     // ============================================================
     // FUNGSI BANTUAN (helper functions)

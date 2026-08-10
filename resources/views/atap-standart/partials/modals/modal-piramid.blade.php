@@ -292,27 +292,26 @@ function lanjutPiramid() {
     let panjangFlashing = parseFloat(dataPiramid.flashing) || 0;
     let sudut = parseFloat(dataPiramid.sudut) || 0;
     
-    // Cek apakah ada panjang_jurai (PALMEX) atau nok_jurai (default)
-    let panjangNokJurai = dataPiramid.panjang_jurai || dataPiramid.nok_jurai || 0;
+    let panjangJurai = dataPiramid.panjang_jurai || dataPiramid.nok_jurai || 0;
     
-    // Mapping URL untuk setiap brand
+    // MAPPING URL - TAMBAHKAN TAPE ROOF
     const controllerMap = {
         'iko-atap': '/boq/iko-atap',
         'skyshield': '/boq/skyshield',
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/piramid',
+        'tape-roof': '/boq/taperoof/piramid',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
     
-    // Kirim parameter sesuai brand
     if (brandSlug === 'iko-insulasi') {
-        window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+        window.location.href = `${url}?luas=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     } else if (brandSlug === 'palmex') {
-        // PALMEX Piramid: kirim panjang_jurai (tanpa nok)
-        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     } else {
-        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_nok_jurai=${panjangNokJurai}&panjang_flashing=${panjangFlashing}`;
+        // TAPE ROOF dan lainnya pake ini
+        window.location.href = `${url}?luas_atap=${luasAtap}&sudut=${sudut}&panjang_starter=${panjangStarter}&panjang_jurai=${panjangJurai}&panjang_flashing=${panjangFlashing}`;
     }
 }
 </script>

@@ -354,6 +354,7 @@ function lanjutKeBOQLengkung2Sisi() {
         'iko-atap': '/boq/atap-kombinasi/lengkung-2-sisi',
         'skyshield': '/boq/atap-kombinasi-skyshield/lengkung-2-sisi',
         'palmex': '/boq/palmex/atap-kombinasi/lengkung-2-sisi',
+        'tape-roof': '/boq/taperoof/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/lengkung-2-sisi';
@@ -370,7 +371,7 @@ function lanjutKeBOQLengkung2Sisi() {
     url += `&starter_2=${d[1]?.starter||0}`;
     url += `&flashing_2=${d[1]?.flashing||0}`;
     url += `&tinggi=${document.getElementById('lengkung_tinggi').value}`;
-    url += `&panjang_b=${document.getElementById('lengkung_panjang_b').value}`; // TAMBAHKAN INI
+    url += `&panjang_b=${document.getElementById('lengkung_panjang_b').value}`;
     
     // ===== BAGIAN 3 (KANAN) =====
     url += `&luas_atap_3=${d[2]?.luas_atap||0}`;
@@ -380,20 +381,27 @@ function lanjutKeBOQLengkung2Sisi() {
     
     // ===== BEDAKAN BRAND =====
     if (brandSlug === 'palmex') {
-        // PALMEX: semua bagian tidak punya jurai, nok hanya di bagian tengah
-        let nokAtas2 = document.getElementById('lengkung_panjang_b').value || 0; // Nok = panjang_b
+        // PALMEX
+        let nokAtas2 = document.getElementById('lengkung_panjang_b').value || 0;
         url += `&jurai_1=0&nok_atas_1=0`;
         url += `&jurai_2=0&nok_atas_2=${nokAtas2}`;
         url += `&jurai_3=0&nok_atas_3=0`;
         url += `&total_jurai=${total?.panjang_jurai||0}`;
         url += `&total_nok_atas=${total?.panjang_nok_atas||0}`;
+    } else if (brandSlug === 'tape-roof') {
+        // TAPE ROOF: pakai total nok_jurai (digabung)
+        url += `&total_nok_jurai=${total?.panjang_nok_jurai||0}`;
+        url += `&nok_1=${d[0]?.nok_jurai||0}`;
+        url += `&nok_2=${d[1]?.nok_jurai||0}`;
+        url += `&nok_3=${d[2]?.nok_jurai||0}`;
     } else {
-        // IKO/SKYSHIELD: nok_jurai digabung
+        // IKO/SKYSHIELD
         url += `&nok_1=${d[0]?.nok_jurai||0}`;
         url += `&nok_2=${d[1]?.nok_jurai||0}`;
         url += `&nok_3=${d[2]?.nok_jurai||0}`;
     }
     
+    console.log('Final URL:', url);
     window.location.href = url;
 }
 </script>

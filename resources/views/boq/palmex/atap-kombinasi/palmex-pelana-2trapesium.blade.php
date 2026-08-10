@@ -572,6 +572,111 @@
         letter-spacing: 0.5px;
         text-transform: uppercase;
     }
+
+    /* NOTIFICATION TOAST */
+    .notification-toast {
+        animation: slideDown 0.3s ease-out;
+        z-index: 9999;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* SISTEM WARNING */
+    .sistem_warning {
+        transition: all 0.3s ease;
+        font-size: 11px;
+    }
+
+    .sistem_warning .warning-icon {
+        font-size: 14px;
+    }
+
+    /* DISABLED SELECT STYLE */
+    select:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: #f7fafc !important;
+    }
+
+    /* FORCED NON-EXPOSE BADGE */
+    .forced-badge {
+        display: inline-block;
+        background: #dc2626;
+        color: white;
+        font-size: 9px;
+        font-weight: 600;
+        padding: 2px 10px;
+        border-radius: 10px;
+        margin-left: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .sistem-label-wrapper {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    /* COVERAGE INFO */
+    .coverage-info {
+        font-size: 10px;
+        color: #6b7280;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .coverage-info .badge {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 10px;
+        font-size: 9px;
+        font-weight: 600;
+    }
+
+    .coverage-info .badge.expose {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .coverage-info .badge.non-expose {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .coverage-info .badge.auto {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    /* REKOMENDASI COVERAGE */
+    .coverage-recommendation {
+        font-size: 10px;
+        color: #6b7280;
+        margin-top: 4px;
+        padding: 4px 10px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 6px;
+        display: inline-block;
+    }
+
+    .coverage-recommendation strong {
+        color: #16a34a;
+    }
 </style>
 
 <div class="space-y-6">
@@ -610,6 +715,23 @@
                 </li>
                 <li>
                     <span class="bullet">•</span>
+                    <span><strong style="color: #dc2626;">⚠️ PERHATIAN PENTING:</strong> Jika sudut atap < 30°, sistem akan <strong style="color: #dc2626;">OTOMATIS</strong> menggunakan <strong style="color: #dc2626;">NON-EXPOSE</strong> dan TIDAK BISA diubah ke EXPOSE</span>
+                </li>
+                <li>
+                    <span class="bullet">•</span>
+                    <span><strong>Coverage (daun/m²) dapat dipilih sendiri:</strong></span>
+                </li>
+                <li style="padding-left: 28px;">
+                    <span>• Untuk Expose, disarankan pilih <strong>7 atau 8 daun/m²</strong></span>
+                </li>
+                <li style="padding-left: 28px;">
+                    <span>• Untuk Non-Expose, disarankan pilih <strong>7 daun/m²</strong></span>
+                </li>
+                <li style="padding-left: 28px;">
+                    <span>• Jika sudut > 40° Non-Expose, bisa pilih <strong>6 atau 7 daun/m²</strong></span>
+                </li>
+                <li>
+                    <span class="bullet">•</span>
                     <span>Cek lebih detail apakah ada atap yang bertemu langsung dengan <strong>dinding</strong> atau <strong>kaca</strong>.</span>
                 </li>
                 <li>
@@ -621,10 +743,10 @@
                     <span><strong>Hal yang perlu diperhatikan:</strong></span>
                 </li>
                 <li style="padding-left: 28px;">
-                    <span>• Jarak usuk per <strong>60 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
+                    <span>• Jarak usuk per <strong>61 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
                 </li>
                 <li style="padding-left: 28px;">
-                    <span>• Jarak usuk per <strong>40 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
+                    <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
                 </li>
                 <li style="padding-left: 28px;">
                     <span>• Pemakaian underlayer <strong>self adhesive</strong> (IKO Stormshield)</span>
@@ -652,6 +774,45 @@
                 </div>
             </div>
             <div class="section-body">
+                <!-- ===== SISTEM PEMASANGAN BAGIAN 1 ===== -->
+                <div class="mb-4">
+                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">
+                        <span class="sistem-label-wrapper">
+                            Sistem Pemasangan
+                            <span id="forced_badge_1" class="forced-badge hidden">FORCED NON-EXPOSE</span>
+                        </span>
+                    </label>
+                    <select id="sistem_pemasangan_1" class="input-field" onchange="toggleFields(1)">
+                        <option value="expose">Expose</option>
+                        <option value="non-expose">Non-Expose</option>
+                    </select>
+                    <!-- ===== WARNING SISTEM ===== -->
+                    <div id="sistem_warning_1" class="hidden mt-2 bg-yellow-50 border border-yellow-300 rounded-lg px-3 py-2 text-xs text-yellow-800 flex items-center gap-2">
+                        <span id="sistem_warning_text_1">Sudut atap < 30°, sistem otomatis NON-EXPOSE (tidak bisa diubah)</span>
+                    </div>
+                </div>
+
+                <!-- ===== COVERAGE BAGIAN 1 ===== -->
+                <div class="mb-4">
+                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
+                        COVERAGE <span class="required-star">*</span>
+                        <span id="coverage_info_text_1" class="font-normal text-gray-400 text-[9px]"></span>
+                    </label>
+                    <select id="coverage_1" class="input-field" required>
+                        <option value="">Pilih Coverage</option>
+                        <option value="8">8 daun / m²</option>
+                        <option value="7">7 daun / m²</option>
+                        <option value="6">6 daun / m²</option>
+                    </select>
+                    <div class="coverage-info">
+                        <span id="coverage_status_1" class="badge">✎ Bebas</span>
+                        <span id="coverage_description_1" class="text-gray-500">Pilih sesuai kebutuhan</span>
+                    </div>
+                    <div id="coverage_recommendation_1" class="coverage-recommendation hidden">
+                        💡 Rekomendasi: <strong id="recommendation_text_1">7 daun/m²</strong>
+                    </div>
+                </div>
+
                 <!-- Data Perhitungan -->
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
                     <div class="data-box">
@@ -726,15 +887,6 @@
                                value="{{ $opsiKaca1 ?? 0 }}">
                         <span class="opsi-satuan">meter</span>
                     </div>
-                </div>
-
-                <!-- ===== SISTEM PEMASANGAN ===== -->
-                <div class="mt-4">
-                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Sistem Pemasangan</label>
-                    <select id="sistem_pemasangan_1" class="input-field" onchange="toggleFields(1)">
-                        <option value="expose">Expose</option>
-                        <option value="non-expose">Non-Expose</option>
-                    </select>
                 </div>
 
                 <!-- Pilihan Material Bagian 1 -->
@@ -830,6 +982,45 @@
                 </div>
             </div>
             <div class="section-body">
+                <!-- ===== SISTEM PEMASANGAN BAGIAN 2 ===== -->
+                <div class="mb-4">
+                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">
+                        <span class="sistem-label-wrapper">
+                            Sistem Pemasangan
+                            <span id="forced_badge_2" class="forced-badge hidden">FORCED NON-EXPOSE</span>
+                        </span>
+                    </label>
+                    <select id="sistem_pemasangan_2" class="input-field" onchange="toggleFields(2)">
+                        <option value="expose">Expose</option>
+                        <option value="non-expose">Non-Expose</option>
+                    </select>
+                    <!-- ===== WARNING SISTEM ===== -->
+                    <div id="sistem_warning_2" class="hidden mt-2 bg-yellow-50 border border-yellow-300 rounded-lg px-3 py-2 text-xs text-yellow-800 flex items-center gap-2">
+                        <span id="sistem_warning_text_2">Sudut atap < 30°, sistem otomatis NON-EXPOSE (tidak bisa diubah)</span>
+                    </div>
+                </div>
+
+                <!-- ===== COVERAGE BAGIAN 2 ===== -->
+                <div class="mb-4">
+                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
+                        COVERAGE <span class="required-star">*</span>
+                        <span id="coverage_info_text_2" class="font-normal text-gray-400 text-[9px]"></span>
+                    </label>
+                    <select id="coverage_2" class="input-field" required>
+                        <option value="">Pilih Coverage</option>
+                        <option value="8">8 daun / m²</option>
+                        <option value="7">7 daun / m²</option>
+                        <option value="6">6 daun / m²</option>
+                    </select>
+                    <div class="coverage-info">
+                        <span id="coverage_status_2" class="badge">✎ Bebas</span>
+                        <span id="coverage_description_2" class="text-gray-500">Pilih sesuai kebutuhan</span>
+                    </div>
+                    <div id="coverage_recommendation_2" class="coverage-recommendation hidden">
+                        💡 Rekomendasi: <strong id="recommendation_text_2">7 daun/m²</strong>
+                    </div>
+                </div>
+
                 <!-- Data Perhitungan -->
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
                     <div class="data-box">
@@ -904,15 +1095,6 @@
                                value="{{ $opsiKaca2 ?? 0 }}">
                         <span class="opsi-satuan">meter</span>
                     </div>
-                </div>
-
-                <!-- ===== SISTEM PEMASANGAN ===== -->
-                <div class="mt-4">
-                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Sistem Pemasangan</label>
-                    <select id="sistem_pemasangan_2" class="input-field" onchange="toggleFields(2)">
-                        <option value="expose">Expose</option>
-                        <option value="non-expose">Non-Expose</option>
-                    </select>
                 </div>
 
                 <!-- Pilihan Material Bagian 2 -->
@@ -1005,6 +1187,45 @@
                 </div>
             </div>
             <div class="section-body">
+                <!-- ===== SISTEM PEMASANGAN BAGIAN 3 ===== -->
+                <div class="mb-4">
+                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">
+                        <span class="sistem-label-wrapper">
+                            Sistem Pemasangan
+                            <span id="forced_badge_3" class="forced-badge hidden">FORCED NON-EXPOSE</span>
+                        </span>
+                    </label>
+                    <select id="sistem_pemasangan_3" class="input-field" onchange="toggleFields(3)">
+                        <option value="expose">Expose</option>
+                        <option value="non-expose">Non-Expose</option>
+                    </select>
+                    <!-- ===== WARNING SISTEM ===== -->
+                    <div id="sistem_warning_3" class="hidden mt-2 bg-yellow-50 border border-yellow-300 rounded-lg px-3 py-2 text-xs text-yellow-800 flex items-center gap-2">
+                        <span id="sistem_warning_text_3">Sudut atap < 30°, sistem otomatis NON-EXPOSE (tidak bisa diubah)</span>
+                    </div>
+                </div>
+
+                <!-- ===== COVERAGE BAGIAN 3 ===== -->
+                <div class="mb-4">
+                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
+                        COVERAGE <span class="required-star">*</span>
+                        <span id="coverage_info_text_3" class="font-normal text-gray-400 text-[9px]"></span>
+                    </label>
+                    <select id="coverage_3" class="input-field" required>
+                        <option value="">Pilih Coverage</option>
+                        <option value="8">8 daun / m²</option>
+                        <option value="7">7 daun / m²</option>
+                        <option value="6">6 daun / m²</option>
+                    </select>
+                    <div class="coverage-info">
+                        <span id="coverage_status_3" class="badge">✎ Bebas</span>
+                        <span id="coverage_description_3" class="text-gray-500">Pilih sesuai kebutuhan</span>
+                    </div>
+                    <div id="coverage_recommendation_3" class="coverage-recommendation hidden">
+                        💡 Rekomendasi: <strong id="recommendation_text_3">7 daun/m²</strong>
+                    </div>
+                </div>
+
                 <!-- Data Perhitungan -->
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
                     <div class="data-box">
@@ -1079,15 +1300,6 @@
                                value="{{ $opsiKaca3 ?? 0 }}">
                         <span class="opsi-satuan">meter</span>
                     </div>
-                </div>
-
-                <!-- ===== SISTEM PEMASANGAN ===== -->
-                <div class="mt-4">
-                    <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Sistem Pemasangan</label>
-                    <select id="sistem_pemasangan_3" class="input-field" onchange="toggleFields(3)">
-                        <option value="expose">Expose</option>
-                        <option value="non-expose">Non-Expose</option>
-                    </select>
                 </div>
 
                 <!-- Pilihan Material Bagian 3 -->
@@ -1202,6 +1414,7 @@
             <input type="hidden" name="bagian1[opsi][dinding]" id="pdf_opsi_dinding_1">
             <input type="hidden" name="bagian1[opsi][kaca]" id="pdf_opsi_kaca_1">
             <input type="hidden" name="bagian1[nok_atas_id]" id="pdf_nok_atas_id_1">
+            <input type="hidden" name="bagian1[coverage]" id="pdf_coverage_1">
             
             <!-- BAGIAN 2 (TRAPESIUM A) -->
             <input type="hidden" name="bagian2[data_perhitungan][luas_atap]" id="pdf_luas_2">
@@ -1214,6 +1427,7 @@
             <input type="hidden" name="bagian2[opsi][dinding]" id="pdf_opsi_dinding_2">
             <input type="hidden" name="bagian2[opsi][kaca]" id="pdf_opsi_kaca_2">
             <input type="hidden" name="bagian2[jurai_id]" id="pdf_jurai_id_2">
+            <input type="hidden" name="bagian2[coverage]" id="pdf_coverage_2">
             
             <!-- BAGIAN 3 (TRAPESIUM B) -->
             <input type="hidden" name="bagian3[data_perhitungan][luas_atap]" id="pdf_luas_3">
@@ -1226,6 +1440,7 @@
             <input type="hidden" name="bagian3[opsi][dinding]" id="pdf_opsi_dinding_3">
             <input type="hidden" name="bagian3[opsi][kaca]" id="pdf_opsi_kaca_3">
             <input type="hidden" name="bagian3[jurai_id]" id="pdf_jurai_id_3">
+            <input type="hidden" name="bagian3[coverage]" id="pdf_coverage_3">
             
             <input type="hidden" name="grand_total" id="pdf_grand_total">
             <input type="hidden" name="tanggal" id="pdf_tanggal">
@@ -1241,10 +1456,160 @@
 <script>
 let results1 = [], results2 = [], results3 = [];
 
+function showNotification(message, type = 'info') {
+    let existing = document.querySelector('.notification-toast');
+    if (existing) existing.remove();
+    
+    let toast = document.createElement('div');
+    toast.className = 'notification-toast fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-md';
+    
+    if (type === 'warning') {
+        toast.className += ' bg-yellow-50 border border-yellow-400 text-yellow-800';
+    } else if (type === 'error') {
+        toast.className += ' bg-red-50 border border-red-400 text-red-800';
+    } else {
+        toast.className += ' bg-blue-50 border border-blue-400 text-blue-800';
+    }
+    
+    toast.innerHTML = `
+        <div class="flex items-start gap-3">
+            <span class="text-lg">${type === 'warning' ? '⚠️' : type === 'error' ? '❌' : 'ℹ️'}</span>
+            <div class="flex-1">
+                <p class="text-sm font-medium">${message}</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                ✕
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        if (toast.parentElement) toast.remove();
+    }, 5000);
+}
+
+// ===== FUNGSI UPDATE COVERAGE (HANYA REKOMENDASI, TIDAK LOCK) =====
+function updateCoverage(bagian) {
+    let sudut = parseFloat(document.getElementById(`sudut_${bagian}`)?.value) || 0;
+    let sistem = document.getElementById(`sistem_pemasangan_${bagian}`)?.value || '';
+    let coverageSelect = document.getElementById(`coverage_${bagian}`);
+    let coverageStatus = document.getElementById(`coverage_status_${bagian}`);
+    let coverageDesc = document.getElementById(`coverage_description_${bagian}`);
+    let coverageInfoText = document.getElementById(`coverage_info_text_${bagian}`);
+    let recommendationEl = document.getElementById(`coverage_recommendation_${bagian}`);
+    let recommendationText = document.getElementById(`recommendation_text_${bagian}`);
+    
+    let recommendedValue = null;
+    let descText = '';
+    let infoText = '';
+    
+    // Tentukan rekomendasi berdasarkan sudut & sistem (tapi tidak memaksa)
+    if (sistem === 'expose') {
+        if (sudut >= 30 && sudut <= 31) {
+            recommendedValue = '8';
+            descText = 'Rekomendasi: 8 daun/m² (Expose 30°)';
+            infoText = ' (Expose 30° → disarankan 8 daun/m²)';
+        } else if (sudut > 30) {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Expose >30°)';
+            infoText = ' (Expose >30° → disarankan 7 daun/m²)';
+        } else {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Sudut < 30° → Non-Expose)';
+            infoText = ' (Sudut < 30° → disarankan 7 daun/m²)';
+        }
+    } else if (sistem === 'non-expose') {
+        if (sudut > 30 && sudut <= 40) {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Non-Expose 31-40°)';
+            infoText = ' (Non-Expose 31-40° → disarankan 7 daun/m²)';
+        } else if (sudut > 40) {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Non-Expose >40°, bisa pilih 6 atau 7)';
+            infoText = ' (Non-Expose >40° → bisa pilih 6 atau 7)';
+        } else if (sudut >= 15 && sudut <= 30) {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Non-Expose 15-30°)';
+            infoText = ' (Non-Expose 15-30° → disarankan 7 daun/m²)';
+        } else {
+            recommendedValue = '7';
+            descText = 'Rekomendasi: 7 daun/m² (Sudut < 15°)';
+            infoText = ' (Sudut < 15° → disarankan 7 daun/m²)';
+        }
+    } else {
+        recommendedValue = null;
+        descText = 'Pilih sistem pemasangan terlebih dahulu';
+        infoText = '';
+    }
+    
+    // Update status - TIDAK MEMAKSA/MELOCK nilai
+    if (coverageStatus) {
+        coverageStatus.className = 'badge';
+        coverageStatus.textContent = '✎ Bebas';
+    }
+    if (coverageDesc) {
+        coverageDesc.textContent = descText || 'Pilih sesuai kebutuhan';
+    }
+    if (coverageInfoText) {
+        coverageInfoText.textContent = infoText || '';
+    }
+    
+    // Tampilkan rekomendasi (tapi tidak memaksa)
+    if (recommendedValue && recommendationEl) {
+        recommendationEl.classList.remove('hidden');
+        if (recommendationText) {
+            recommendationText.textContent = recommendedValue + ' daun/m²';
+        }
+    } else if (recommendationEl) {
+        recommendationEl.classList.add('hidden');
+    }
+}
+
 function toggleFields(bagian) {
     let sistem = document.getElementById(`sistem_pemasangan_${bagian}`).value;
+    let sudut = parseFloat(document.getElementById(`sudut_${bagian}`)?.value) || 0;
     let underlayerContainer = document.getElementById(`underlayer_container_${bagian}`);
     let lantaiKerjaContainer = document.getElementById(`lantai_kerja_container_${bagian}`);
+    let warningEl = document.getElementById(`sistem_warning_${bagian}`);
+    let warningText = document.getElementById(`sistem_warning_text_${bagian}`);
+    let sistemSelect = document.getElementById(`sistem_pemasangan_${bagian}`);
+    let forcedBadge = document.getElementById(`forced_badge_${bagian}`);
+    
+    if (sudut < 30) {
+        sistemSelect.value = 'non-expose';
+        sistem = 'non-expose';
+        
+        if (warningEl) {
+            warningEl.classList.remove('hidden');
+            if (warningText) {
+                warningText.textContent = '⚠️ Sudut atap ' + sudut + '° (< 30°), sistem otomatis NON-EXPOSE (tidak bisa diubah)';
+            }
+        }
+        
+        if (forcedBadge) {
+            forcedBadge.classList.remove('hidden');
+        }
+        
+        sistemSelect.disabled = true;
+        sistemSelect.style.cursor = 'not-allowed';
+        sistemSelect.style.opacity = '0.7';
+        sistemSelect.style.backgroundColor = '#f7fafc';
+    } else {
+        if (warningEl) {
+            warningEl.classList.add('hidden');
+        }
+        
+        if (forcedBadge) {
+            forcedBadge.classList.add('hidden');
+        }
+        
+        sistemSelect.disabled = false;
+        sistemSelect.style.cursor = 'default';
+        sistemSelect.style.opacity = '1';
+        sistemSelect.style.backgroundColor = 'white';
+    }
     
     if (sistem === 'expose') {
         if (underlayerContainer) underlayerContainer.style.display = 'none';
@@ -1253,6 +1618,8 @@ function toggleFields(bagian) {
         if (underlayerContainer) underlayerContainer.style.display = 'block';
         if (lantaiKerjaContainer) lantaiKerjaContainer.style.display = 'block';
     }
+    
+    updateCoverage(bagian);
 }
 
 window.onload = function() {
@@ -1290,6 +1657,39 @@ window.onload = function() {
     toggleFields(1);
     toggleFields(2);
     toggleFields(3);
+    
+    // Event listeners
+    document.getElementById('sistem_pemasangan_1').addEventListener('change', function() {
+        toggleFields(1);
+    });
+    document.getElementById('sistem_pemasangan_2').addEventListener('change', function() {
+        toggleFields(2);
+    });
+    document.getElementById('sistem_pemasangan_3').addEventListener('change', function() {
+        toggleFields(3);
+    });
+    
+    document.getElementById('coverage_1').addEventListener('change', function() {
+        let coverageStatus = document.getElementById('coverage_status_1');
+        if (coverageStatus && coverageStatus.textContent !== '✎ Manual') {
+            coverageStatus.className = 'badge non-expose';
+            coverageStatus.textContent = '✎ Manual';
+        }
+    });
+    document.getElementById('coverage_2').addEventListener('change', function() {
+        let coverageStatus = document.getElementById('coverage_status_2');
+        if (coverageStatus && coverageStatus.textContent !== '✎ Manual') {
+            coverageStatus.className = 'badge non-expose';
+            coverageStatus.textContent = '✎ Manual';
+        }
+    });
+    document.getElementById('coverage_3').addEventListener('change', function() {
+        let coverageStatus = document.getElementById('coverage_status_3');
+        if (coverageStatus && coverageStatus.textContent !== '✎ Manual') {
+            coverageStatus.className = 'badge non-expose';
+            coverageStatus.textContent = '✎ Manual';
+        }
+    });
     
     updatePdfData();
 };
@@ -1378,13 +1778,30 @@ function hitungBagian(bagian) {
     let isBagian1 = (bagian === 1);
     let isBagian2 = (bagian === 2);
     let wasteValue = parseFloat(document.getElementById(`waste_${bagian}`).value) || 5;
+    let coverage = parseFloat(document.getElementById(`coverage_${bagian}`).value) || 0;
     
     let opsiDinding = parseFloat(document.getElementById(`opsi_dinding_${bagian}`).value) || 0;
     let opsiKaca = parseFloat(document.getElementById(`opsi_kaca_${bagian}`).value) || 0;
     
+    let sudut = parseFloat(document.getElementById(`sudut_${bagian}`).value) || 0;
     let sistemPemasangan = document.getElementById(`sistem_pemasangan_${bagian}`).value || 'expose';
     let rangka = document.getElementById(`rangka_${bagian}`)?.value || 'Baja Ringan';
     let lantaiKerja = document.getElementById(`lantai_kerja_${bagian}`)?.value || 'Plywood 9 mm';
+    
+    // ===== VALIDASI SUDUT =====
+    if (sudut < 30 && sistemPemasangan === 'expose') {
+        sistemPemasangan = 'non-expose';
+        document.getElementById(`sistem_pemasangan_${bagian}`).value = 'non-expose';
+        toggleFields(bagian);
+        showNotification('⚠️ Sudut ' + sudut + '° < 30°, sistem dipaksa NON-EXPOSE', 'warning');
+    }
+    
+    // ===== VALIDASI COVERAGE =====
+    if (!coverage || coverage <= 0) {
+        alert('⚠️ Pilih Coverage (daun/m²) terlebih dahulu!');
+        document.getElementById(`coverage_${bagian}`).focus();
+        return;
+    }
     
     // ===== AMBIL DARI DROPDOWN =====
     let nokAtasId = '';
@@ -1412,7 +1829,7 @@ function hitungBagian(bagian) {
     
     let data = {
         luas_atap: parseFloat(document.getElementById(`luas_atap_${bagian}`).value) || 0,
-        sudut: parseFloat(document.getElementById(`sudut_${bagian}`).value) || 0,
+        sudut: sudut,
         panjang_starter: parseFloat(document.getElementById(`starter_${bagian}`).value) || 0,
         panjang_flashing: parseFloat(document.getElementById(`flashing_${bagian}`).value) || 0,
         panjang_talang_jurai: 0,
@@ -1422,6 +1839,7 @@ function hitungBagian(bagian) {
         rangka: rangka,
         lantai_kerja: lantaiKerja,
         waste: wasteValue,
+        coverage: coverage,
         opsi_dinding: opsiDinding,
         opsi_kaca: opsiKaca,
         sistem_pemasangan: sistemPemasangan
@@ -1519,6 +1937,7 @@ function updatePdfData() {
     document.getElementById('pdf_opsi_dinding_1').value = document.getElementById('opsi_dinding_1').value || 0;
     document.getElementById('pdf_opsi_kaca_1').value = document.getElementById('opsi_kaca_1').value || 0;
     document.getElementById('pdf_nok_atas_id_1').value = document.getElementById('nok_atas_dropdown_1').value || '';
+    document.getElementById('pdf_coverage_1').value = document.getElementById('coverage_1').value || '';
     
     document.getElementById('pdf_luas_2').value = document.getElementById('luas_atap_2').value;
     document.getElementById('pdf_sudut_2').value = document.getElementById('sudut_2').value;
@@ -1530,6 +1949,7 @@ function updatePdfData() {
     document.getElementById('pdf_opsi_dinding_2').value = document.getElementById('opsi_dinding_2').value || 0;
     document.getElementById('pdf_opsi_kaca_2').value = document.getElementById('opsi_kaca_2').value || 0;
     document.getElementById('pdf_jurai_id_2').value = document.getElementById('jurai_dropdown_2').value || '';
+    document.getElementById('pdf_coverage_2').value = document.getElementById('coverage_2').value || '';
     
     document.getElementById('pdf_luas_3').value = document.getElementById('luas_atap_3').value;
     document.getElementById('pdf_sudut_3').value = document.getElementById('sudut_3').value;
@@ -1541,6 +1961,7 @@ function updatePdfData() {
     document.getElementById('pdf_opsi_dinding_3').value = document.getElementById('opsi_dinding_3').value || 0;
     document.getElementById('pdf_opsi_kaca_3').value = document.getElementById('opsi_kaca_3').value || 0;
     document.getElementById('pdf_jurai_id_3').value = document.getElementById('jurai_dropdown_3').value || '';
+    document.getElementById('pdf_coverage_3').value = document.getElementById('coverage_3').value || '';
     
     document.getElementById('pdf_grand_total').value = document.getElementById('totalKeseluruhan').innerText;
     document.getElementById('pdf_tanggal').value = new Date().toLocaleDateString('id-ID');
