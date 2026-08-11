@@ -414,9 +414,6 @@
             <li style="padding-left: 28px;">
                 <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
             </li>
-            <li style="padding-left: 28px;">
-                <span>• Pemakaian underlayer <strong>self adhesive</strong> direkomendasikan</span>
-            </li>
         </ul>
     </div>
 
@@ -435,12 +432,19 @@
             <!-- Bagian 1: Depan -->
             <div class="bg-gray-50 rounded-lg p-3 mb-3">
                 <div class="text-xs font-semibold text-gray-600 mb-2">Bagian 1 - Depan (Pelana)</div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
                     <div class="data-box">
                         <label>Luas Atap</label>
                         <div class="value">
                             <input type="number" id="luas_atap_1" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
                             <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m²</span>
+                        </div>
+                    </div>
+                    <div class="data-box">
+                        <label>Sudut</label>
+                        <div class="value">
+                            <input type="number" id="sudut_1" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
+                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">°</span>
                         </div>
                     </div>
                     <div class="data-box">
@@ -470,12 +474,19 @@
             <!-- Bagian 2: Belakang -->
             <div class="bg-gray-50 rounded-lg p-3">
                 <div class="text-xs font-semibold text-gray-600 mb-2">Bagian 2 - Belakang (Pelana)</div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
                     <div class="data-box">
                         <label>Luas Atap</label>
                         <div class="value">
                             <input type="number" id="luas_atap_2" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
                             <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m²</span>
+                        </div>
+                    </div>
+                    <div class="data-box">
+                        <label>Sudut</label>
+                        <div class="value">
+                            <input type="number" id="sudut_2" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
+                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">°</span>
                         </div>
                     </div>
                     <div class="data-box">
@@ -701,11 +712,13 @@
             <input type="hidden" name="starter_1" id="pdf_starter_1">
             <input type="hidden" name="flashing_1" id="pdf_flashing_1">
             <input type="hidden" name="nok_1" id="pdf_nok_1">
+            <input type="hidden" name="sudut_1" id="pdf_sudut_1">
             
             <input type="hidden" name="luas_atap_2" id="pdf_luas_atap_2">
             <input type="hidden" name="starter_2" id="pdf_starter_2">
             <input type="hidden" name="flashing_2" id="pdf_flashing_2">
             <input type="hidden" name="nok_2" id="pdf_nok_2">
+            <input type="hidden" name="sudut_2" id="pdf_sudut_2">
             
             <button type="submit" class="btn-pdf">
                 📄 Export PDF
@@ -718,40 +731,55 @@
 let results = [];
 
 window.onload = function() {
-    const urlParams = new URLSearchParams(window.location.search);
+    // GUNakan data dari PHP LANGSUNG
+    const luasAtap1 = {{ $luasAtap1 ?? 0 }};
+    const starter1 = {{ $starter1 ?? 0 }};
+    const flashing1 = {{ $flashing1 ?? 0 }};
+    const nok1 = {{ $nok1 ?? 0 }};
+    const sudut1 = {{ $sudut1 ?? 0 }};
+    
+    const luasAtap2 = {{ $luasAtap2 ?? 0 }};
+    const starter2 = {{ $starter2 ?? 0 }};
+    const flashing2 = {{ $flashing2 ?? 0 }};
+    const nok2 = {{ $nok2 ?? 0 }};
+    const sudut2 = {{ $sudut2 ?? 0 }};
+    
+    const totalNokJurai = {{ $totalNokJurai ?? 0 }};
+    
+    console.log('Data dari PHP:', {
+        luasAtap1, starter1, flashing1, nok1, sudut1,
+        luasAtap2, starter2, flashing2, nok2, sudut2,
+        totalNokJurai
+    });
     
     // Bagian 1 (Depan)
-    document.getElementById('luas_atap_1').value = parseFloat(urlParams.get('luas_atap_1') || 0).toFixed(2);
-    document.getElementById('starter_1').value = parseFloat(urlParams.get('starter_1') || 0).toFixed(2);
-    document.getElementById('flashing_1').value = parseFloat(urlParams.get('flashing_1') || 0).toFixed(2);
-    document.getElementById('nok_1').value = parseFloat(urlParams.get('nok_1') || 0).toFixed(2);
+    document.getElementById('luas_atap_1').value = luasAtap1.toFixed(2);
+    document.getElementById('starter_1').value = starter1.toFixed(2);
+    document.getElementById('flashing_1').value = flashing1.toFixed(2);
+    document.getElementById('nok_1').value = nok1.toFixed(2);
+    document.getElementById('sudut_1').value = sudut1.toFixed(2);
     
     // Bagian 2 (Belakang)
-    document.getElementById('luas_atap_2').value = parseFloat(urlParams.get('luas_atap_2') || 0).toFixed(2);
-    document.getElementById('starter_2').value = parseFloat(urlParams.get('starter_2') || 0).toFixed(2);
-    document.getElementById('flashing_2').value = parseFloat(urlParams.get('flashing_2') || 0).toFixed(2);
-    document.getElementById('nok_2').value = parseFloat(urlParams.get('nok_2') || 0).toFixed(2);
+    document.getElementById('luas_atap_2').value = luasAtap2.toFixed(2);
+    document.getElementById('starter_2').value = starter2.toFixed(2);
+    document.getElementById('flashing_2').value = flashing2.toFixed(2);
+    document.getElementById('nok_2').value = nok2.toFixed(2);
+    document.getElementById('sudut_2').value = sudut2.toFixed(2);
     
     // Total
-    let totalLuas = parseFloat(document.getElementById('luas_atap_1').value) + 
-                     parseFloat(document.getElementById('luas_atap_2').value);
+    let totalLuas = luasAtap1 + luasAtap2;
+    let totalStarter = starter1 + starter2;
+    let totalFlashing = flashing1 + flashing2;
+    let totalNok = nok1 + nok2;
+    
     document.getElementById('total_luas_atap').value = totalLuas.toFixed(2);
-    
-    let totalStarter = parseFloat(document.getElementById('starter_1').value) + 
-                       parseFloat(document.getElementById('starter_2').value);
     document.getElementById('total_starter').value = totalStarter.toFixed(2);
-    
-    let totalFlashing = parseFloat(document.getElementById('flashing_1').value) + 
-                        parseFloat(document.getElementById('flashing_2').value);
     document.getElementById('total_flashing').value = totalFlashing.toFixed(2);
-    
-    let totalNok = parseFloat(document.getElementById('nok_1').value) + 
-                   parseFloat(document.getElementById('nok_2').value);
     document.getElementById('total_nok_jurai').value = totalNok.toFixed(2);
     
-    document.getElementById('opsi_dinding').value = urlParams.get('opsi_dinding') || 0;
-    document.getElementById('opsi_cerobong').value = urlParams.get('opsi_cerobong') || 0;
-    document.getElementById('opsi_penangkal').value = urlParams.get('opsi_penangkal') || 0;
+    document.getElementById('opsi_dinding').value = {{ $opsiDinding ?? 0 }};
+    document.getElementById('opsi_cerobong').value = {{ $opsiCerobong ?? 0 }};
+    document.getElementById('opsi_penangkal').value = {{ $opsiPenangkal ?? 0 }};
     
     updatePdfData();
 };
@@ -795,8 +823,7 @@ function hitungMaterial() {
         nok_id: nokId,
         rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
         lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
-        waste: wasteValue
-    };
+        waste: wasteValue    };
     
     fetch('{{ route("boq.taperoof.pelana-3-arah.hitung") }}', {
         method: 'POST',
@@ -963,11 +990,13 @@ function updatePdfData() {
     document.getElementById('pdf_starter_1').value = document.getElementById('starter_1').value;
     document.getElementById('pdf_flashing_1').value = document.getElementById('flashing_1').value;
     document.getElementById('pdf_nok_1').value = document.getElementById('nok_1').value;
+    document.getElementById('pdf_sudut_1').value = document.getElementById('sudut_1').value;
     
     document.getElementById('pdf_luas_atap_2').value = document.getElementById('luas_atap_2').value;
     document.getElementById('pdf_starter_2').value = document.getElementById('starter_2').value;
     document.getElementById('pdf_flashing_2').value = document.getElementById('flashing_2').value;
     document.getElementById('pdf_nok_2').value = document.getElementById('nok_2').value;
+    document.getElementById('pdf_sudut_2').value = document.getElementById('sudut_2').value;
 }
 </script>
 @endsection

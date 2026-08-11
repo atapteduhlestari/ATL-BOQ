@@ -163,6 +163,14 @@
                                     <span class="text-gray-500">Panjang Flashing</span>
                                     <span id="totalFlashingX" class="font-medium text-gray-900">- m</span>
                                 </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500">Talang Jurai</span>
+                                    <span id="totalTalangJuraiX" class="font-medium text-gray-900">- m</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500">Wall Flashing</span>
+                                    <span id="totalWallFlashingX" class="font-medium text-gray-900">- m</span>
+                                </div>
                             </div>
                             <div id="detailBagianPelanaX" class="mt-3 space-y-2"></div>
                         </div>
@@ -225,6 +233,9 @@ function hitungPelanaX() {
     }
     
     let btn = event.target;
+    if (btn.tagName !== 'BUTTON') {
+        btn = btn.closest('button');
+    }
     let originalText = btn.innerHTML;
     btn.innerHTML = 'Menghitung...';
     btn.disabled = true;
@@ -255,6 +266,10 @@ function hitungPelanaX() {
             document.getElementById('totalStarterX').innerHTML = total.panjang_starter + ' m';
             document.getElementById('totalFlashingX').innerHTML = total.panjang_flashing + ' m';
             
+            // ===== TAMPILKAN TALANG JURAI & WALL FLASHING =====
+            document.getElementById('totalTalangJuraiX').innerHTML = (total.talang_jurai || 0) + ' m';
+            document.getElementById('totalWallFlashingX').innerHTML = (total.wall_flashing || 0) + ' m';
+            
             // ===== TAMPILKAN NOK & JURAI =====
             let labelElement = document.getElementById('labelNokJuraiX');
             let valueElement = document.getElementById('totalNokJuraiX');
@@ -267,7 +282,7 @@ function hitungPelanaX() {
                         'Jurai: ' + total.panjang_jurai + ' m | Nok Atas: ' + total.panjang_nok_atas + ' m';
                 }
             } else {
-                // IKO/SKYSHIELD: Nok & Jurai digabung
+                // IKO/SKYSHIELD/MAHAFLAT/TAPE ROOF: Nok & Jurai digabung
                 if (labelElement) labelElement.textContent = 'Panjang Nok & Jurai';
                 if (valueElement) {
                     valueElement.innerHTML = total.panjang_nok_jurai + ' m';
@@ -276,7 +291,9 @@ function hitungPelanaX() {
             
             // ===== DETAIL PER BAGIAN =====
             let detailHtml = '<div class="text-xs font-medium text-gray-600 mb-1">Detail Per Bagian</div>';
-            resData.details.forEach(item => {
+            resData.details.forEach((item, index) => {
+                let bagianLabel = index === 0 ? 'Pelana A (Atas)' : 
+                                 index === 1 ? 'Pelana B (Tengah)' : 'Pelana C (Bawah)';
                 detailHtml += `<div class="bg-white border border-gray-200 rounded-lg p-2 text-xs">
                     <div class="font-medium text-gray-800">${item.bagian}</div>
                     <div class="grid grid-cols-2 gap-1 mt-1 text-gray-500">`;
@@ -291,7 +308,7 @@ function hitungPelanaX() {
                         <div>Flashing: ${item.flashing} m</div>
                     `;
                 } else {
-                    // IKO/SKYSHIELD: Nok & Jurai digabung
+                    // IKO/SKYSHIELD/MAHAFLAT/TAPE ROOF: Nok & Jurai digabung
                     detailHtml += `
                         <div>Luas: ${item.luas_atap} m²</div>
                         <div>Starter: ${item.starter} m</div>
@@ -353,57 +370,65 @@ function lanjutKeBOQPelanaX() {
         'iko-atap': '/boq/atap-kombinasi/pelana-x',
         'skyshield': '/boq/atap-kombinasi-skyshield/pelana-x',
         'palmex': '/boq/palmex/atap-kombinasi/pelana-x',
+        'tape-roof': '/boq/taperoof/atap-kombinasi/pelana-x',
+        'mahaflat': '/boq/mahaflat/atap-kombinasi/pelana-x',
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-x';
     let url = `${baseUrl}?brand_slug=${brandSlug}`;
     
     // ===== BAGIAN 1 (PELANA A - ATAS) =====
-    url += `&luas_atap_1=${d[0]?.luas_atap||0}`;
+    url += `&luas_atap_1=${d[0]?.luas_atap || 0}`;
     url += `&sudut_1=${document.getElementById('sudut_x_a').value}`;
-    url += `&starter_1=${d[0]?.starter||0}`;
-    url += `&flashing_1=${d[0]?.flashing||0}`;
-    url += `&lebar_1=${document.getElementById('lebar_x_a').value}`;
+    url += `&starter_1=${d[0]?.starter || 0}`;
+    url += `&flashing_1=${d[0]?.flashing || 0}`;
+    url += `&panjang_a=${document.getElementById('panjang_x_a').value}`;
+    url += `&lebar_a=${document.getElementById('lebar_x_a').value}`;
+    url += `&nok_1=${d[0]?.nok_jurai || 0}`; // <-- TAMBAHKAN
     
     // ===== BAGIAN 2 (PELANA B - TENGAH) =====
-    url += `&luas_atap_2=${d[1]?.luas_atap||0}`;
+    url += `&luas_atap_2=${d[1]?.luas_atap || 0}`;
     url += `&sudut_2=${document.getElementById('sudut_x_b').value}`;
-    url += `&starter_2=${d[1]?.starter||0}`;
-    url += `&flashing_2=${d[1]?.flashing||0}`;
-    url += `&lebar_2=${document.getElementById('lebar_x_b').value}`;
+    url += `&starter_2=${d[1]?.starter || 0}`;
+    url += `&flashing_2=${d[1]?.flashing || 0}`;
+    url += `&panjang_b=${document.getElementById('panjang_x_b').value}`;
+    url += `&lebar_b=${document.getElementById('lebar_x_b').value}`;
+    url += `&nok_2=${d[1]?.nok_jurai || 0}`; // <-- TAMBAHKAN
     
     // ===== BAGIAN 3 (PELANA C - BAWAH) =====
-    url += `&luas_atap_3=${d[2]?.luas_atap||0}`;
+    url += `&luas_atap_3=${d[2]?.luas_atap || 0}`;
     url += `&sudut_3=${document.getElementById('sudut_x_c').value}`;
-    url += `&starter_3=${d[2]?.starter||0}`;
-    url += `&flashing_3=${d[2]?.flashing||0}`;
-    url += `&lebar_3=${document.getElementById('lebar_x_c').value}`;
+    url += `&starter_3=${d[2]?.starter || 0}`;
+    url += `&flashing_3=${d[2]?.flashing || 0}`;
+    url += `&panjang_c=${document.getElementById('panjang_x_c').value}`;
+    url += `&lebar_c=${document.getElementById('lebar_x_c').value}`;
+    url += `&nok_3=${d[2]?.nok_jurai || 0}`; // <-- TAMBAHKAN
+    
+    // ===== TOTAL NOK JURAI =====
+    let totalNokJurai = (d[0]?.nok_jurai || 0) + (d[1]?.nok_jurai || 0) + (d[2]?.nok_jurai || 0);
+    url += `&total_nok_jurai=${totalNokJurai}`;
     
     // ===== TALANG JURAI & WALL FLASHING =====
-    url += `&talang_jurai=${total?.talang_jurai||0}`;
-    url += `&wall_flashing=${total?.wall_flashing||0}`;
+    url += `&talang_jurai=${total?.talang_jurai || 0}`;
+    url += `&wall_flashing=${total?.wall_flashing || 0}`;
     
     // ===== BEDAKAN BRAND =====
     if (brandSlug === 'palmex') {
         // PALMEX: Pelana A & C punya jurai, Pelana B tidak punya jurai
-        url += `&jurai_1=${d[0]?.jurai||0}`;          // Pelana A: ada jurai
-        url += `&nok_atas_1=${d[0]?.nok_atas||0}`;
-        
-        url += `&jurai_2=0`;                          // Pelana B: tidak punya jurai
-        url += `&nok_atas_2=${d[1]?.nok_atas||0}`;
-        
-        url += `&jurai_3=${d[2]?.jurai||0}`;          // Pelana C: ada jurai
-        url += `&nok_atas_3=${d[2]?.nok_atas||0}`;
-        
-        url += `&total_jurai=${total?.panjang_jurai||0}`;
-        url += `&total_nok_atas=${total?.panjang_nok_atas||0}`;
+        url += `&jurai_1=${d[0]?.jurai || 0}`;
+        url += `&nok_atas_1=${d[0]?.nok_atas || 0}`;
+        url += `&jurai_2=0`;
+        url += `&nok_atas_2=${d[1]?.nok_atas || 0}`;
+        url += `&jurai_3=${d[2]?.jurai || 0}`;
+        url += `&nok_atas_3=${d[2]?.nok_atas || 0}`;
+        url += `&total_jurai=${total?.panjang_jurai || 0}`;
+        url += `&total_nok_atas=${total?.panjang_nok_atas || 0}`;
     } else {
-        // IKO/SKYSHIELD: nok_jurai digabung
-        url += `&nok_1=${d[0]?.nok_jurai||0}`;
-        url += `&nok_2=${d[1]?.nok_jurai||0}`;
-        url += `&nok_3=${d[2]?.nok_jurai||0}`;
+        // IKO/SKYSHIELD/MAHAFLAT/TAPE ROOF: nok_jurai digabung
+        url += `&total_nok_jurai=${totalNokJurai}`;
     }
     
+    console.log('Final URL:', url);
     window.location.href = url;
 }
 </script>

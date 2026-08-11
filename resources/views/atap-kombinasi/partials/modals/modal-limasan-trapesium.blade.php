@@ -376,7 +376,8 @@ function lanjutKeBOQLimasanTrapesium() {
         'iko-atap': '/boq/atap-kombinasi/limasan-trapesium',
         'skyshield': '/boq/atap-kombinasi-skyshield/limasan-trapesium',
         'palmex': '/boq/palmex/atap-kombinasi/limasan-trapesium',
-        'tape-roof': '/boq/taperoof/limasan-trapesium',  // <-- TAMBAHKAN
+        'tape-roof': '/boq/taperoof/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
+        'mahaflat': '/boq/mahaflat/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limasan-trapesium';
@@ -393,7 +394,12 @@ function lanjutKeBOQLimasanTrapesium() {
         // TAPE ROOF: pakai total nok_jurai (digabung)
         url += `&total_nok_jurai=${total?.panjang_nok_jurai||0}`;
         url += `&nok_1=${details[0]?.nok_jurai||0}&nok_2=${details[1]?.nok_jurai||0}`;
-    } else {
+    }  else if (brandSlug === 'mahaflat') {
+        // TAPE ROOF: pakai total nok_jurai (digabung)
+        url += `&total_nok_jurai=${total?.panjang_nok_jurai||0}`;
+        url += `&nok_1=${details[0]?.nok_jurai||0}&nok_2=${details[1]?.nok_jurai||0}`;
+    }
+     else {
         url += `&nok_1=${details[0]?.nok_jurai||0}&nok_2=${details[1]?.nok_jurai||0}`;
     }
     

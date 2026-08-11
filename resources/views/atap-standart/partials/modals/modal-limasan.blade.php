@@ -525,6 +525,7 @@ function lanjutKeBOQ() {
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/limasan',
         'tape-roof': '/boq/taperoof/limasan',
+        'mahaflat': '/boq/mahaflat/limasan',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

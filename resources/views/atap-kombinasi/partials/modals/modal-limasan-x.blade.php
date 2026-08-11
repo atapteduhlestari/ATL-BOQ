@@ -353,7 +353,8 @@ function lanjutKeBOQLimasanX() {
         'iko-atap': '/boq/atap-kombinasi/limasan-x',
         'skyshield': '/boq/atap-kombinasi-skyshield/limasan-x',
         'palmex': '/boq/palmex/atap-kombinasi/limasan-x',
-        'tape-roof': '/boq/taperoof/limasan-x',  // <-- TAMBAHKAN
+        'tape-roof': '/boq/taperoof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
+        'mahaflat': '/boq/mahaflat/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limasan-x';
@@ -400,7 +401,14 @@ function lanjutKeBOQLimasanX() {
         url += `&nok_1=${d[0]?.nok_jurai||0}`;
         url += `&nok_2=${d[1]?.nok_jurai||0}`;
         url += `&nok_3=${d[2]?.nok_jurai||0}`;
-    } else {
+    }  else if (brandSlug === 'mahaflat') {
+        // TAPE ROOF: pakai total nok_jurai (digabung)
+        url += `&total_nok_jurai=${total?.panjang_nok_jurai||0}`;
+        url += `&nok_1=${d[0]?.nok_jurai||0}`;
+        url += `&nok_2=${d[1]?.nok_jurai||0}`;
+        url += `&nok_3=${d[2]?.nok_jurai||0}`;
+    } 
+    else {
         // IKO/SKYSHIELD
         url += `&nok_1=${d[0]?.nok_jurai||0}`;
         url += `&nok_2=${d[1]?.nok_jurai||0}`;

@@ -306,6 +306,7 @@ function lanjutKeBOQ() {
         'skyshield': '/boq/atap-kombinasi-skyshield/gergaji',
         'palmex': '/boq/palmex/atap-kombinasi/gergaji',
         'tape-roof': '/boq/taperoof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
+        'mahaflat': '/boq/mahaflat/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/gergaji';

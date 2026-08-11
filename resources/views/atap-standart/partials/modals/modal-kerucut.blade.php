@@ -285,6 +285,7 @@ function lanjutKeBOQKerucut() {
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/kerucut',
         'tape-roof': '/boq/taperoof/kerucut',  // <-- INI DITAMBAH
+        'mahaflat': '/boq/mahaflat/kerucut',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

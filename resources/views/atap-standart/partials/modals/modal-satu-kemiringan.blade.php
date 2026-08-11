@@ -304,6 +304,7 @@ function lanjutKeBOQSatu() {
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/satu-kemiringan',
         'tape-roof': '/boq/taperoof/satu-kemiringan',  // <-- INI DITAMBAH
+        'mahaflat': '/boq/mahaflat/satu-kemiringan',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

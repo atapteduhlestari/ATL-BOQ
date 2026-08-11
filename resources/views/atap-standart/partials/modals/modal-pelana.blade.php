@@ -258,6 +258,7 @@ function lanjutKeBOQPelana() {
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/pelana',
         'tape-roof': '/boq/taperoof/pelana',
+        'mahaflat': '/boq/mahaflat/pelana',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

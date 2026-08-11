@@ -263,6 +263,7 @@ function lanjutKeBOQDome() {
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/dome',
         'tape-roof': '/boq/taperoof/dome',  // <-- INI DITAMBAH
+        'mahaflat': '/boq/mahaflat/dome',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

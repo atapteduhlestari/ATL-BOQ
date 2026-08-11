@@ -301,6 +301,7 @@ function lanjutPiramid() {
         'iko-insulasi': '/boq/iko-insulasi',
         'palmex': '/boq/palmex/piramid',
         'tape-roof': '/boq/taperoof/piramid',  // <-- INI DITAMBAH
+        'mahaflat': '/boq/mahaflat/piramid',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;
