@@ -340,6 +340,42 @@
             grid-template-columns: 1fr;
         }
     }
+
+    /* Style untuk auto-select nok */
+    .nok-auto-select {
+        background: #f0fdf4 !important;
+        border-color: #86efac !important;
+    }
+    
+    .nok-auto-select:focus {
+        border-color: #22c55e !important;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1) !important;
+    }
+    
+    .nok-type-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 12px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .nok-type-indicator.u {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .nok-type-indicator.v {
+        background: #fce7f3;
+        color: #9d174d;
+    }
+
+    .nok-type-indicator.bulat {
+        background: #fef3c7;
+        color: #92400e;
+    }
 </style>
 
 <div class="space-y-6">
@@ -369,46 +405,7 @@
             </li>
             <li>
                 <span class="bullet">•</span>
-                <span><strong>Area yang dihitung:</strong></span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Atap Utama</strong> - otomatis menggunakan TAPE ROOF</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Starter</strong> - otomatis dari aksesoris TAPE ROOF</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>TAPE ROOF NOK & JURAI</strong> - pilih dari dropdown (wajib)</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>NOK TUTUP</strong> - otomatis dari database - 4 pcs</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>NOK 4 ARAH</strong> - otomatis dari database - 1 pcs</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Underlayer</strong> - otomatis jika tersedia</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Metal Flashing</strong> - otomatis dari input Panjang Flashing</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Wall Flashing</strong> - dari opsi Dinding</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Cerobong Asap</strong> - dari opsi Cerobong Asap</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Penangkal Petir</strong> - dari opsi Penangkal Petir</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Lantai Kerja</strong> - pilih dari dropdown</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Paku & Screw</strong> - otomatis dihitung (masuk aksesoris)</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Screw Plywood</strong> - otomatis dihitung (masuk sistem pendukung)</span>
+                <span>Pilih jenis <strong>Nok</strong> (U / V / Bulat), maka <strong>Nok Tutup</strong> akan otomatis menyesuaikan.</span>
             </li>
         </ul>
     </div>
@@ -486,13 +483,35 @@
                             <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
                                 TAPE ROOF NOK & JURAI <span class="required-star">*</span>
                             </label>
-                            <select id="nok_dropdown" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white" required>
-                                <option value="">Pilih Tape Roof Nok</option>
+                            <select id="nok_dropdown" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white" required onchange="updateNokOptions()">
+                                <option value="">Pilih Jenis Nok</option>
                                 @foreach($nokOptions ?? [] as $nok)
-                                    <option value="{{ $nok->id }}">{{ $nok->nama_produk }}</option>
+                                    <option value="{{ $nok->id }}" data-tipe="{{ $nok->productTipe->kode_tipe ?? 'U' }}">
+                                        {{ $nok->nama_produk }} 
+                                    </option>
                                 @endforeach
                             </select>
-                            <p class="text-[9px] text-gray-400 mt-1">* Nok Tutup & Nok 4 Arah dihitung otomatis</p>
+                            <div id="nok_selected_info" class="text-[9px] text-gray-400 mt-1">
+                                <span class="nok-type-indicator u" id="nok_type_badge" style="display:none;">Tipe: U</span>
+                                <span class="text-gray-400">* Nok Tutup otomatis menyesuaikan</span>
+                            </div>
+                        </div>
+
+                        <!-- TAMPILAN NOK TUTUP (READONLY / AUTO) -->
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
+                                NOK TUTUP
+                            </label>
+                            <div>
+                                <input type="text" id="nok_tutup_display" 
+                                    class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 nok-auto-select" 
+                                    readonly 
+                                    placeholder="Pilih Nok terlebih dahulu">
+                                <input type="hidden" id="nok_tutup_id" value="">
+                            </div>
+                            <p class="text-[9px] text-gray-400 mt-1">
+                                <span id="nok_tutup_status">⏳ Menunggu pemilihan Nok</span>
+                            </p>
                         </div>
 
                         <!-- STRUKTUR RANGKA -->
@@ -555,210 +574,280 @@
 </div>
 
 <script>
-let currentResults = [];
+    // Data mapping dari server
+    const nokMapping = @json($nokMapping ?? []);
 
-function renderTable() {
-    let container = document.getElementById('boqResultContainer');
-    if (!container) return;
-    
-    if (!currentResults || currentResults.length === 0) {
-        container.innerHTML = `<div class="empty-state">Belum ada data material</div>`;
-        return;
-    }
-    
-    const groups = {
-        'Atap Utama': { label: 'ATAP UTAMA', items: [] },
-        'Aksesoris': { label: 'AKSESORIS', items: [] },
-        'Additional': { label: 'TAMBAHAN', items: [] },
-        'Sistem Pendukung': { label: 'SISTEM PENDUKUNG', items: [] }
-    };
-    
-    const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
-    const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
-    const aksesorisAreas = ['Starter', 'Tape Roof Nok', 'Tape Roof Nok & Jurai', 'Jurai', 'Nok Tutup', 'Nok 4 Arah', 'Metal Flashing', 'Paku & Screw'];
-    
-    currentResults.forEach(item => {
-        if (item.area === 'Atap Utama') {
-            groups['Atap Utama'].items.push(item);
-        } else if (additionalAreas.includes(item.area)) {
-            groups['Additional'].items.push(item);
-        } else if (systemAreas.includes(item.area)) {
-            groups['Sistem Pendukung'].items.push(item);
-        } else if (aksesorisAreas.includes(item.area)) {
-            groups['Aksesoris'].items.push(item);
-        } else {
-            groups['Aksesoris'].items.push(item);
+    // Fungsi untuk update Nok options
+    function updateNokOptions() {
+        const nokDropdown = document.getElementById('nok_dropdown');
+        const selectedOption = nokDropdown.options[nokDropdown.selectedIndex];
+        const nokId = nokDropdown.value;
+        
+        const nokTutupDisplay = document.getElementById('nok_tutup_display');
+        const nokTutupId = document.getElementById('nok_tutup_id');
+        const nokTutupStatus = document.getElementById('nok_tutup_status');
+        const nokTypeBadge = document.getElementById('nok_type_badge');
+        
+        if (!nokId || !nokMapping[nokId]) {
+            // Reset semua
+            nokTutupDisplay.value = '';
+            nokTutupId.value = '';
+            nokTutupStatus.innerHTML = '⏳ Menunggu pemilihan Nok';
+            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700';
+            nokTypeBadge.style.display = 'none';
+            return;
         }
+        
+        const data = nokMapping[nokId];
+        const tipe = data.tipe || 'U';
+        
+        // Update badge tipe
+        nokTypeBadge.textContent = 'Tipe: ' + tipe;
+        nokTypeBadge.className = 'nok-type-indicator ' + tipe.toLowerCase();
+        nokTypeBadge.style.display = 'inline-block';
+        
+        // Update Nok Tutup
+        if (data.nokTutupId) {
+            nokTutupDisplay.value = data.nokTutupName + ' (Auto - Tipe ' + tipe + ')';
+            nokTutupId.value = data.nokTutupId;
+            nokTutupStatus.innerHTML = '✅ <span class="text-green-600">Otomatis terpilih</span>';
+            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-green-300 rounded-lg bg-green-50 text-gray-700 nok-auto-select';
+        } else {
+            nokTutupDisplay.value = '❌ Tidak tersedia untuk tipe ' + tipe;
+            nokTutupId.value = '';
+            nokTutupStatus.innerHTML = '❌ <span class="text-red-600">Tidak tersedia</span>';
+            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-red-300 rounded-lg bg-red-50 text-gray-700';
+        }
+    }
+
+    // Jalankan saat halaman load
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(updateNokOptions, 200);
     });
-    
-    let html = '';
-    let grandTotal = 0;
-    const groupKeys = ['Atap Utama', 'Aksesoris', 'Additional', 'Sistem Pendukung'];
-    
-    groupKeys.forEach(key => {
-        const group = groups[key];
-        if (group.items.length === 0) return;
+
+    // ============================================================
+    // FUNGSI HITUNG BOQ
+    // ============================================================
+    let currentResults = [];
+
+    function renderTable() {
+        let container = document.getElementById('boqResultContainer');
+        if (!container) return;
         
-        const groupTotal = group.items.reduce((sum, item) => sum + (item.total_harga || 0), 0);
-        grandTotal += groupTotal;
+        if (!currentResults || currentResults.length === 0) {
+            container.innerHTML = `<div class="empty-state">Belum ada data material</div>`;
+            return;
+        }
         
-        html += `<div class="result-section">`;
-        html += `<div class="section-label">${group.label}</div>`;
-        html += `<table class="result-table">
-            <thead>
-                <tr>
-                    <th style="width:35%;">Nama Produk</th>
-                    <th style="width:20%;">Area</th>
-                    <th style="width:15%;text-align:center;">Qty</th>
-                    <th style="width:15%;">Satuan</th>
-                    <th style="width:20%;text-align:right;">Total</th>
-                </tr>
-            </thead>
-            <tbody>`;
+        const groups = {
+            'Atap Utama': { label: 'ATAP UTAMA', items: [] },
+            'Aksesoris': { label: 'AKSESORIS', items: [] },
+            'Additional': { label: 'TAMBAHAN', items: [] },
+            'Sistem Pendukung': { label: 'SISTEM PENDUKUNG', items: [] }
+        };
         
-        group.items.forEach(item => {
-            let totalDisplay = item.total_harga > 0 ? 
-                `<span class="total">Rp ${item.total_harga.toLocaleString()}</span>` : 
-                `<span class="total-empty">-</span>`;
-            
-            html += `<tr>
-                <td class="product-name">${item.nama_produk || '-'}</td>
-                <td><span class="area-tag">${item.area || '-'}</span></td>
-                <td class="qty text-center">${(item.qty || 0).toLocaleString()}</td>
-                <td class="unit">${item.satuan || '-'}</td>
-                <td class="text-right">${totalDisplay}</td>
-            </tr>`;
+        const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
+        const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
+        const aksesorisAreas = ['Starter', 'Tape Roof Nok', 'Tape Roof Nok & Jurai', 'Jurai', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
+        
+        currentResults.forEach(item => {
+            if (item.area === 'Atap Utama') {
+                groups['Atap Utama'].items.push(item);
+            } else if (additionalAreas.includes(item.area)) {
+                groups['Additional'].items.push(item);
+            } else if (systemAreas.includes(item.area)) {
+                groups['Sistem Pendukung'].items.push(item);
+            } else if (aksesorisAreas.includes(item.area)) {
+                groups['Aksesoris'].items.push(item);
+            } else {
+                groups['Aksesoris'].items.push(item);
+            }
         });
         
-        html += `</tbody></table></div>`;
-    });
-    
-    html += `<div class="grand-total-minimal">
-        <span class="label">Grand Total</span>
-        <span class="amount">Rp ${grandTotal.toLocaleString()}</span>
-    </div>`;
-    
-    container.innerHTML = html;
-}
+        let html = '';
+        let grandTotal = 0;
+        const groupKeys = ['Atap Utama', 'Aksesoris', 'Additional', 'Sistem Pendukung'];
+        
+        groupKeys.forEach(key => {
+            const group = groups[key];
+            if (group.items.length === 0) return;
+            
+            const groupTotal = group.items.reduce((sum, item) => sum + (item.total_harga || 0), 0);
+            grandTotal += groupTotal;
+            
+            html += `<div class="result-section">`;
+            html += `<div class="section-label">${group.label}</div>`;
+            html += `<table class="result-table">
+                <thead>
+                    <tr>
+                        <th style="width:35%;">Nama Produk</th>
+                        <th style="width:20%;">Area</th>
+                        <th style="width:15%;text-align:center;">Qty</th>
+                        <th style="width:15%;">Satuan</th>
+                        <th style="width:20%;text-align:right;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+            
+            group.items.forEach(item => {
+                let totalDisplay = item.total_harga > 0 ? 
+                    `<span class="total">Rp ${item.total_harga.toLocaleString()}</span>` : 
+                    `<span class="total-empty">-</span>`;
+                
+                html += `<tr>
+                    <td class="product-name">${item.nama_produk || '-'}</td>
+                    <td><span class="area-tag">${item.area || '-'}</span></td>
+                    <td class="qty text-center">${(item.qty || 0).toLocaleString()}</td>
+                    <td class="unit">${item.satuan || '-'}</td>
+                    <td class="text-right">${totalDisplay}</td>
+                </tr>`;
+            });
+            
+            html += `</tbody></table></div>`;
+        });
+        
+        html += `<div class="grand-total-minimal">
+            <span class="label">Grand Total</span>
+            <span class="amount">Rp ${grandTotal.toLocaleString()}</span>
+        </div>`;
+        
+        container.innerHTML = html;
+    }
 
-function hitungBOQ() {
-    let btn = event.target;
-    let originalText = btn.innerHTML;
-    btn.innerHTML = 'Memproses...';
-    btn.disabled = true;
-    
-    let nokDropdown = document.getElementById('nok_dropdown');
-    let nokId = nokDropdown ? nokDropdown.value : '';
-    
-    if (!nokId) {
-        alert('⚠️ Pilih Tape Roof Nok terlebih dahulu!');
-        document.getElementById('nok_dropdown').focus();
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-    }
-    
-    let data = {
-        luas_atap: parseFloat(document.getElementById('luas_atap')?.value) || 0,
-        sudut: parseFloat(document.getElementById('sudut')?.value) || 0,
-        panjang_starter: parseFloat(document.getElementById('panjang_starter')?.value) || 0,
-        panjang_jurai: parseFloat(document.getElementById('panjang_jurai')?.value) || 0,
-        panjang_flashing: parseFloat(document.getElementById('panjang_flashing')?.value) || 0,
-        opsi_dinding: parseFloat(document.getElementById('opsi_dinding')?.value) || 0,
-        opsi_cerobong: parseFloat(document.getElementById('opsi_cerobong')?.value) || 0,
-        opsi_penangkal: parseFloat(document.getElementById('opsi_penangkal')?.value) || 0,
-        nok_id: nokId,
-        rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-        lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
-        waste: parseFloat(document.getElementById('waste')?.value) || 5
-    };
-    
-    console.log('DATA DIKIRIM:', data);
-    
-    if (data.luas_atap <= 0) {
-        alert('Data luas atap tidak valid! Silakan hitung ulang dari halaman sebelumnya.');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-    }
-    
-    fetch('{{ route("boq.taperoof.hitung", ["model" => "piramid"]) }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            currentResults = data.results;
-            renderTable();
-            document.getElementById('hasilBOQ').classList.remove('hidden');
-            document.getElementById('btnPDF').classList.remove('hidden');
-            document.getElementById('hasilBOQ').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else {
-            alert('Error: ' + (data.message || 'Unknown error'));
+    function hitungBOQ() {
+        let btn = event.target;
+        let originalText = btn.innerHTML;
+        btn.innerHTML = 'Memproses...';
+        btn.disabled = true;
+        
+        let nokDropdown = document.getElementById('nok_dropdown');
+        let nokId = nokDropdown ? nokDropdown.value : '';
+        let nokTutupId = document.getElementById('nok_tutup_id')?.value || '';
+        
+        if (!nokId) {
+            alert('⚠️ Pilih Tape Roof Nok terlebih dahulu!');
+            document.getElementById('nok_dropdown').focus();
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
         }
-    })
-    .catch(error => {
-        alert('Error: ' + error.message);
-    })
-    .finally(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    });
-}
+        
+        if (!nokTutupId) {
+            alert('⚠️ Nok Tutup tidak tersedia untuk tipe yang dipilih! Silakan pilih Nok lain.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        let data = {
+            luas_atap: parseFloat(document.getElementById('luas_atap')?.value) || 0,
+            sudut: parseFloat(document.getElementById('sudut')?.value) || 0,
+            panjang_starter: parseFloat(document.getElementById('panjang_starter')?.value) || 0,
+            panjang_jurai: parseFloat(document.getElementById('panjang_jurai')?.value) || 0,
+            panjang_flashing: parseFloat(document.getElementById('panjang_flashing')?.value) || 0,
+            opsi_dinding: parseFloat(document.getElementById('opsi_dinding')?.value) || 0,
+            opsi_cerobong: parseFloat(document.getElementById('opsi_cerobong')?.value) || 0,
+            opsi_penangkal: parseFloat(document.getElementById('opsi_penangkal')?.value) || 0,
+            nok_id: nokId,
+            nok_tutup_id: nokTutupId,
+            rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            waste: parseFloat(document.getElementById('waste')?.value) || 5
+        };
+        
+        console.log('DATA DIKIRIM:', data);
+        
+        if (data.luas_atap <= 0) {
+            alert('Data luas atap tidak valid! Silakan hitung ulang dari halaman sebelumnya.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        fetch('{{ route("boq.taperoof.hitung", ["model" => "piramid"]) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                currentResults = data.results;
+                renderTable();
+                document.getElementById('hasilBOQ').classList.remove('hidden');
+                document.getElementById('btnPDF').classList.remove('hidden');
+                document.getElementById('hasilBOQ').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                alert('Error: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            alert('Error: ' + error.message);
+        })
+        .finally(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+    }
 
-function exportToPDF() {
-    let data = {
-        luas_atap: document.getElementById('luas_atap')?.value || 0,
-        sudut: document.getElementById('sudut')?.value || 0,
-        panjang_starter: document.getElementById('panjang_starter')?.value || 0,
-        panjang_jurai: document.getElementById('panjang_jurai')?.value || 0,
-        panjang_flashing: document.getElementById('panjang_flashing')?.value || 0,
-        waste: document.getElementById('waste')?.value || 5,
-        nok_atas: document.getElementById('nok_dropdown')?.selectedOptions[0]?.text || '',
-        rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-        lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
-        grand_total: document.querySelector('.grand-total-minimal .amount')?.innerText || 'Rp 0',
-        opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
-        opsi_cerobong: document.getElementById('opsi_cerobong')?.value || 0,
-        opsi_penangkal: document.getElementById('opsi_penangkal')?.value || 0,
-        results: currentResults
+    function exportToPDF() {
+        let data = {
+            luas_atap: document.getElementById('luas_atap')?.value || 0,
+            sudut: document.getElementById('sudut')?.value || 0,
+            panjang_starter: document.getElementById('panjang_starter')?.value || 0,
+            panjang_jurai: document.getElementById('panjang_jurai')?.value || 0,
+            panjang_flashing: document.getElementById('panjang_flashing')?.value || 0,
+            waste: document.getElementById('waste')?.value || 5,
+            nok_atas: document.getElementById('nok_dropdown')?.selectedOptions[0]?.text || '',
+            nok_tutup: document.getElementById('nok_tutup_display')?.value || '',
+            rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            grand_total: document.querySelector('.grand-total-minimal .amount')?.innerText || 'Rp 0',
+            opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
+            opsi_cerobong: document.getElementById('opsi_cerobong')?.value || 0,
+            opsi_penangkal: document.getElementById('opsi_penangkal')?.value || 0,
+            results: currentResults
+        };
+        
+        fetch('{{ route("boq.taperoof.export-pdf", ["model" => "piramid"]) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.text())
+        .then(html => {
+            let win = window.open();
+            win.document.write(html);
+            win.document.close();
+        })
+        .catch(error => {
+            alert('Gagal export PDF: ' + error.message);
+        });
+    }
+
+    // ============================================================
+    // LOAD DATA DARI URL PARAMS
+    // ============================================================
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        document.getElementById('luas_atap').value = urlParams.get('luas_atap') || 0;
+        document.getElementById('sudut').value = urlParams.get('sudut') || 0;
+        document.getElementById('panjang_starter').value = urlParams.get('panjang_starter') || 0;
+        document.getElementById('panjang_jurai').value = urlParams.get('panjang_jurai') || 0;
+        document.getElementById('panjang_flashing').value = urlParams.get('panjang_flashing') || 0;
+        document.getElementById('opsi_dinding').value = urlParams.get('dinding') || 0;
+        document.getElementById('opsi_cerobong').value = urlParams.get('cerobong') || 0;
+        document.getElementById('opsi_penangkal').value = urlParams.get('penangkal') || 0;
+        
+        // Update Nok options setelah data terisi
+        setTimeout(updateNokOptions, 300);
     };
-    
-    fetch('{{ route("boq.taperoof.export-pdf", ["model" => "piramid"]) }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.text())
-    .then(html => {
-        let win = window.open();
-        win.document.write(html);
-        win.document.close();
-    })
-    .catch(error => {
-        alert('Gagal export PDF: ' + error.message);
-    });
-}
-
-window.onload = function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    document.getElementById('luas_atap').value = urlParams.get('luas_atap') || 0;
-    document.getElementById('sudut').value = urlParams.get('sudut') || 0;
-    document.getElementById('panjang_starter').value = urlParams.get('panjang_starter') || 0;
-    document.getElementById('panjang_jurai').value = urlParams.get('panjang_jurai') || 0;
-    document.getElementById('panjang_flashing').value = urlParams.get('panjang_flashing') || 0;
-    document.getElementById('opsi_dinding').value = urlParams.get('dinding') || 0;
-    document.getElementById('opsi_cerobong').value = urlParams.get('cerobong') || 0;
-    document.getElementById('opsi_penangkal').value = urlParams.get('penangkal') || 0;
-};
 </script>
 @endsection

@@ -436,6 +436,8 @@ function lanjutKeBOQPelana2Trapesium() {
         'palmex': '/boq/palmex/atap-kombinasi/pelana-2trapesium',
         'tape-roof': '/boq/taperoof/atap-kombinasi/pelana-2trapesium',  // <-- TAMBAHKAN
         'mahaflat': '/boq/mahaflat/atap-kombinasi/pelana-2trapesium',  // <-- TAMBAHKAN
+        'flexi-roof': '/boq/flexiroof/atap-kombinasi/pelana-2trapesium',  // <-- TAMBAHKAN
+        'eco-roof': '/boq/ecoroof/atap-kombinasi/pelana-2trapesium',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-2trapesium';

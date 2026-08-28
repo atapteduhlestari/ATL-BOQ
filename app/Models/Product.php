@@ -14,6 +14,7 @@ class Product extends Model
     protected $fillable = [
         'kode_produk',
         'nama_produk',
+        'product_tipe_id',
         'slug',
         'kategori_id',
         'unit_id',
@@ -82,5 +83,10 @@ class Product extends Model
     public function scopeByBrand($query, $brandId)
     {
         return $query->where('brand_id', $brandId);
+    }
+
+     public function productTipe()
+    {
+        return $this->belongsTo(ProductTipe::class, 'product_tipe_id');
     }
 }

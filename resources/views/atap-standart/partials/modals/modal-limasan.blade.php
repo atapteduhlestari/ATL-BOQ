@@ -526,6 +526,8 @@ function lanjutKeBOQ() {
         'palmex': '/boq/palmex/limasan',
         'tape-roof': '/boq/taperoof/limasan',
         'mahaflat': '/boq/mahaflat/limasan',
+        'flexi-roof': '/boq/flexiroof/limasan',
+        'eco-roof': '/boq/ecoroof/limasan',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

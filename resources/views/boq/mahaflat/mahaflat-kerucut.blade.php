@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'BOQ TAPE ROOF - Kerucut')
+@section('title', 'BOQ MAHAFLAT ROOF - Kerucut')
 
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -175,8 +175,8 @@
         flex-shrink: 0;
     }
     
-    .header-brand .brand-icon.taperoof {
-        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    .header-brand .brand-icon.mahaflat {
+        background: linear-gradient(135deg, #7c3aed, #5b21b6);
     }
     
     .header-brand .brand-name {
@@ -340,6 +340,42 @@
             grid-template-columns: 1fr;
         }
     }
+
+    /* Style untuk auto-select nok */
+    .nok-auto-select {
+        background: #f0fdf4 !important;
+        border-color: #86efac !important;
+    }
+    
+    .nok-auto-select:focus {
+        border-color: #22c55e !important;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1) !important;
+    }
+    
+    .nok-type-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 12px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .nok-type-indicator.u {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .nok-type-indicator.v {
+        background: #fce7f3;
+        color: #9d174d;
+    }
+
+    .nok-type-indicator.bulat {
+        background: #fef3c7;
+        color: #92400e;
+    }
 </style>
 
 <div class="space-y-6">
@@ -347,7 +383,7 @@
     <div class="header-brand">
         <div class="flex items-center justify-between relative z-10">
             <div class="flex items-center gap-4">
-                <div class="brand-icon taperoof">T</div>
+                <div class="brand-icon mahaflat">M</div>
                 <div>
                     <div class="brand-name">BOQ - MAHAFLAT ROOF</div>
                     <div class="brand-sub">Hitung kebutuhan material atap MAHAFLAT ROOF Kerucut</div>
@@ -366,6 +402,10 @@
             <li>
                 <span class="bullet">•</span>
                 <span>Pastikan data luas atap, sudut kemiringan, dan panjang-panjang lainnya sudah benar.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Pilih jenis <strong>Nok</strong> (U / V / Bulat), maka <strong>Nok Tutup</strong> akan otomatis menyesuaikan.</span>
             </li>
         </ul>
     </div>
@@ -391,11 +431,6 @@
                         <div>
                             <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Tepi Bawah Atap</label>
                             <input type="number" id="panjang_starter" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" readonly placeholder="0 m">
-                        </div>
-                        <!-- PANJANG JURAI DIHIDE -->
-                        <div style="display: none;">
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Jurai</label>
-                            <input type="number" id="panjang_jurai" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" readonly placeholder="0 m">
                         </div>
                         <div>
                             <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Flashing</label>
@@ -439,6 +474,42 @@
                         <h3 class="text-base font-semibold text-gray-800">Pilihan Material</h3>
                     </div>
                     <div class="material-selection-grid">
+                        <!-- DROPDOWN: MAHAFLAT NOK -->
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
+                                MAHAFLAT NOK <span class="required-star">*</span>
+                            </label>
+                            <select id="nok_dropdown" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white" required onchange="updateNokOptions()">
+                                <option value="">Pilih Jenis Nok</option>
+                                @foreach($nokOptions ?? [] as $nok)
+                                    <option value="{{ $nok->id }}" data-tipe="{{ $nok->productTipe->kode_tipe ?? 'U' }}">
+                                        {{ $nok->nama_produk }} 
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div id="nok_selected_info" class="text-[9px] text-gray-400 mt-1">
+                                <span class="nok-type-indicator u" id="nok_type_badge" style="display:none;">Tipe: U</span>
+                                <span class="text-gray-400">* Nok Tutup otomatis menyesuaikan</span>
+                            </div>
+                        </div>
+
+                        <!-- TAMPILAN NOK TUTUP (READONLY / AUTO) -->
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
+                                NOK TUTUP
+                            </label>
+                            <div>
+                                <input type="text" id="nok_tutup_display" 
+                                    class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 nok-auto-select" 
+                                    readonly 
+                                    placeholder="Pilih Nok terlebih dahulu">
+                                <input type="hidden" id="nok_tutup_id" value="">
+                            </div>
+                            <p class="text-[9px] text-gray-400 mt-1">
+                                <span id="nok_tutup_status">⏳ Menunggu pemilihan Nok</span>
+                            </p>
+                        </div>
+
                         <!-- STRUKTUR RANGKA -->
                         <div>
                             <label class="block text-[10px] font-medium text-gray-500 mb-1.5">STRUKTUR RANGKA</label>
@@ -499,194 +570,271 @@
 </div>
 
 <script>
-let currentResults = [];
+    // Data mapping dari server
+    const nokMapping = @json($nokMapping ?? []);
 
-function renderTable() {
-    let container = document.getElementById('boqResultContainer');
-    if (!container) return;
-    
-    if (!currentResults || currentResults.length === 0) {
-        container.innerHTML = `<div class="empty-state">Belum ada data material</div>`;
-        return;
-    }
-    
-    const groups = {
-        'Atap Utama': { label: 'ATAP UTAMA', items: [] },
-        'Aksesoris': { label: 'AKSESORIS', items: [] },
-        'Additional': { label: 'TAMBAHAN', items: [] },
-        'Sistem Pendukung': { label: 'SISTEM PENDUKUNG', items: [] }
-    };
-    
-    const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
-    const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
-    const aksesorisAreas = ['Starter', 'Metal Flashing', 'Paku & Screw'];
-    
-    currentResults.forEach(item => {
-        if (item.area === 'Atap Utama') {
-            groups['Atap Utama'].items.push(item);
-        } else if (additionalAreas.includes(item.area)) {
-            groups['Additional'].items.push(item);
-        } else if (systemAreas.includes(item.area)) {
-            groups['Sistem Pendukung'].items.push(item);
-        } else if (aksesorisAreas.includes(item.area)) {
-            groups['Aksesoris'].items.push(item);
-        } else {
-            groups['Aksesoris'].items.push(item);
+    // Fungsi untuk update Nok options
+    function updateNokOptions() {
+        const nokDropdown = document.getElementById('nok_dropdown');
+        const selectedOption = nokDropdown.options[nokDropdown.selectedIndex];
+        const nokId = nokDropdown.value;
+        
+        const nokTutupDisplay = document.getElementById('nok_tutup_display');
+        const nokTutupId = document.getElementById('nok_tutup_id');
+        const nokTutupStatus = document.getElementById('nok_tutup_status');
+        const nokTypeBadge = document.getElementById('nok_type_badge');
+        
+        if (!nokId || !nokMapping[nokId]) {
+            // Reset semua
+            nokTutupDisplay.value = '';
+            nokTutupId.value = '';
+            nokTutupStatus.innerHTML = '⏳ Menunggu pemilihan Nok';
+            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700';
+            nokTypeBadge.style.display = 'none';
+            return;
         }
+        
+        const data = nokMapping[nokId];
+        const tipe = data.tipe || 'U';
+        
+        // Update badge tipe
+        nokTypeBadge.textContent = 'Tipe: ' + tipe;
+        nokTypeBadge.className = 'nok-type-indicator ' + tipe.toLowerCase();
+        nokTypeBadge.style.display = 'inline-block';
+        
+        // Update Nok Tutup
+        if (data.nokTutupId) {
+            nokTutupDisplay.value = data.nokTutupName;
+            nokTutupId.value = data.nokTutupId;
+            nokTutupStatus.innerHTML = '✅ <span class="text-green-600">Otomatis terpilih</span>';
+            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-green-300 rounded-lg bg-green-50 text-gray-700 nok-auto-select';
+        } else {
+            nokTutupDisplay.value = '❌ Tidak tersedia untuk tipe ' + tipe;
+            nokTutupId.value = '';
+            nokTutupStatus.innerHTML = '❌ <span class="text-red-600">Tidak tersedia</span>';
+            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-red-300 rounded-lg bg-red-50 text-gray-700';
+        }
+    }
+
+    // Jalankan saat halaman load
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(updateNokOptions, 200);
     });
-    
-    let html = '';
-    let grandTotal = 0;
-    const groupKeys = ['Atap Utama', 'Aksesoris', 'Additional', 'Sistem Pendukung'];
-    
-    groupKeys.forEach(key => {
-        const group = groups[key];
-        if (group.items.length === 0) return;
+
+    let currentResults = [];
+
+    function renderTable() {
+        let container = document.getElementById('boqResultContainer');
+        if (!container) return;
         
-        const groupTotal = group.items.reduce((sum, item) => sum + (item.total_harga || 0), 0);
-        grandTotal += groupTotal;
+        if (!currentResults || currentResults.length === 0) {
+            container.innerHTML = `<div class="empty-state">Belum ada data material</div>`;
+            return;
+        }
         
-        html += `<div class="result-section">`;
-        html += `<div class="section-label">${group.label}</div>`;
-        html += `<table class="result-table">
-            <thead>
-                <tr>
-                    <th style="width:35%;">Nama Produk</th>
-                    <th style="width:20%;">Area</th>
-                    <th style="width:15%;text-align:center;">Qty</th>
-                    <th style="width:15%;">Satuan</th>
-                    <th style="width:20%;text-align:right;">Total</th>
-                </tr>
-            </thead>
-            <tbody>`;
+        const groups = {
+            'Atap Utama': { label: 'ATAP UTAMA', items: [] },
+            'Aksesoris': { label: 'AKSESORIS', items: [] },
+            'Additional': { label: 'TAMBAHAN', items: [] },
+            'Sistem Pendukung': { label: 'SISTEM PENDUKUNG', items: [] }
+        };
         
-        group.items.forEach(item => {
-            let totalDisplay = item.total_harga > 0 ? 
-                `<span class="total">Rp ${item.total_harga.toLocaleString()}</span>` : 
-                `<span class="total-empty">-</span>`;
-            
-            html += `<tr>
-                <td class="product-name">${item.nama_produk || '-'}</td>
-                <td><span class="area-tag">${item.area || '-'}</span></td>
-                <td class="qty text-center">${(item.qty || 0).toLocaleString()}</td>
-                <td class="unit">${item.satuan || '-'}</td>
-                <td class="text-right">${totalDisplay}</td>
-            </tr>`;
+        const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
+        const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
+        const aksesorisAreas = ['Starter', 'Mahaflat Nok', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
+        
+        currentResults.forEach(item => {
+            if (item.area === 'Atap Utama') {
+                groups['Atap Utama'].items.push(item);
+            } else if (additionalAreas.includes(item.area)) {
+                groups['Additional'].items.push(item);
+            } else if (systemAreas.includes(item.area)) {
+                groups['Sistem Pendukung'].items.push(item);
+            } else if (aksesorisAreas.includes(item.area)) {
+                groups['Aksesoris'].items.push(item);
+            } else {
+                groups['Aksesoris'].items.push(item);
+            }
         });
         
-        html += `</tbody></table></div>`;
-    });
-    
-    html += `<div class="grand-total-minimal">
-        <span class="label">Grand Total</span>
-        <span class="amount">Rp ${grandTotal.toLocaleString()}</span>
-    </div>`;
-    
-    container.innerHTML = html;
-}
-
-function hitungBOQ() {
-    let btn = event.target;
-    let originalText = btn.innerHTML;
-    btn.innerHTML = 'Memproses...';
-    btn.disabled = true;
-    
-    let data = {
-        luas_atap: parseFloat(document.getElementById('luas_atap')?.value) || 0,
-        sudut: parseFloat(document.getElementById('sudut')?.value) || 0,
-        panjang_starter: parseFloat(document.getElementById('panjang_starter')?.value) || 0,
-        panjang_flashing: parseFloat(document.getElementById('panjang_flashing')?.value) || 0,
-        opsi_dinding: parseFloat(document.getElementById('opsi_dinding')?.value) || 0,
-        opsi_cerobong: parseFloat(document.getElementById('opsi_cerobong')?.value) || 0,
-        opsi_penangkal: parseFloat(document.getElementById('opsi_penangkal')?.value) || 0,
-        rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-        lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
-        waste: parseFloat(document.getElementById('waste')?.value) || 5
-    };
-    
-    console.log('DATA DIKIRIM:', data);
-    
-    if (data.luas_atap <= 0) {
-        alert('Data luas atap tidak valid! Silakan hitung ulang dari halaman sebelumnya.');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
+        let html = '';
+        let grandTotal = 0;
+        const groupKeys = ['Atap Utama', 'Aksesoris', 'Additional', 'Sistem Pendukung'];
+        
+        groupKeys.forEach(key => {
+            const group = groups[key];
+            if (group.items.length === 0) return;
+            
+            const groupTotal = group.items.reduce((sum, item) => sum + (item.total_harga || 0), 0);
+            grandTotal += groupTotal;
+            
+            html += `<div class="result-section">`;
+            html += `<div class="section-label">${group.label}</div>`;
+            html += `<table class="result-table">
+                <thead>
+                    <tr>
+                        <th style="width:35%;">Nama Produk</th>
+                        <th style="width:20%;">Area</th>
+                        <th style="width:15%;text-align:center;">Qty</th>
+                        <th style="width:15%;">Satuan</th>
+                        <th style="width:20%;text-align:right;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+            
+            group.items.forEach(item => {
+                let totalDisplay = item.total_harga > 0 ? 
+                    `<span class="total">Rp ${item.total_harga.toLocaleString()}</span>` : 
+                    `<span class="total-empty">-</span>`;
+                
+                html += `<tr>
+                    <td class="product-name">${item.nama_produk || '-'}</td>
+                    <td><span class="area-tag">${item.area || '-'}</span></td>
+                    <td class="qty text-center">${(item.qty || 0).toLocaleString()}</td>
+                    <td class="unit">${item.satuan || '-'}</td>
+                    <td class="text-right">${totalDisplay}</td>
+                </tr>`;
+            });
+            
+            html += `</tbody></table></div>`;
+        });
+        
+        html += `<div class="grand-total-minimal">
+            <span class="label">Grand Total</span>
+            <span class="amount">Rp ${grandTotal.toLocaleString()}</span>
+        </div>`;
+        
+        container.innerHTML = html;
     }
-    
-    fetch('{{ route("boq.mahaflat.hitung", ["model" => "kerucut"]) }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            currentResults = data.results;
-            renderTable();
-            document.getElementById('hasilBOQ').classList.remove('hidden');
-            document.getElementById('btnPDF').classList.remove('hidden');
-            document.getElementById('hasilBOQ').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else {
-            alert('Error: ' + (data.message || 'Unknown error'));
+
+    function hitungBOQ() {
+        let btn = event.target;
+        let originalText = btn.innerHTML;
+        btn.innerHTML = 'Memproses...';
+        btn.disabled = true;
+        
+        let nokDropdown = document.getElementById('nok_dropdown');
+        let nokId = nokDropdown ? nokDropdown.value : '';
+        let nokTutupId = document.getElementById('nok_tutup_id')?.value || '';
+        
+        if (!nokId) {
+            alert('⚠️ Pilih MAHAFLAT Nok terlebih dahulu!');
+            document.getElementById('nok_dropdown').focus();
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
         }
-    })
-    .catch(error => {
-        alert('Error: ' + error.message);
-    })
-    .finally(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    });
-}
+        
+        if (!nokTutupId) {
+            alert('⚠️ Nok Tutup tidak tersedia untuk tipe yang dipilih! Silakan pilih Nok lain.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        let data = {
+            luas_atap: parseFloat(document.getElementById('luas_atap')?.value) || 0,
+            sudut: parseFloat(document.getElementById('sudut')?.value) || 0,
+            panjang_starter: parseFloat(document.getElementById('panjang_starter')?.value) || 0,
+            panjang_flashing: parseFloat(document.getElementById('panjang_flashing')?.value) || 0,
+            opsi_dinding: parseFloat(document.getElementById('opsi_dinding')?.value) || 0,
+            opsi_cerobong: parseFloat(document.getElementById('opsi_cerobong')?.value) || 0,
+            opsi_penangkal: parseFloat(document.getElementById('opsi_penangkal')?.value) || 0,
+            nok_id: nokId,
+            nok_tutup_id: nokTutupId,
+            rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            waste: parseFloat(document.getElementById('waste')?.value) || 5
+        };
+        
+        console.log('DATA DIKIRIM:', data);
+        
+        if (data.luas_atap <= 0) {
+            alert('Data luas atap tidak valid! Silakan hitung ulang dari halaman sebelumnya.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        fetch('{{ route("boq.mahaflat.hitung", ["model" => "kerucut"]) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                currentResults = data.results;
+                renderTable();
+                document.getElementById('hasilBOQ').classList.remove('hidden');
+                document.getElementById('btnPDF').classList.remove('hidden');
+                document.getElementById('hasilBOQ').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                alert('Error: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            alert('Error: ' + error.message);
+        })
+        .finally(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+    }
 
-function exportToPDF() {
-    let data = {
-        luas_atap: document.getElementById('luas_atap')?.value || 0,
-        sudut: document.getElementById('sudut')?.value || 0,
-        panjang_starter: document.getElementById('panjang_starter')?.value || 0,
-        panjang_flashing: document.getElementById('panjang_flashing')?.value || 0,
-        waste: document.getElementById('waste')?.value || 5,
-        rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-        lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
-        grand_total: document.querySelector('.grand-total-minimal .amount')?.innerText || 'Rp 0',
-        opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
-        opsi_cerobong: document.getElementById('opsi_cerobong')?.value || 0,
-        opsi_penangkal: document.getElementById('opsi_penangkal')?.value || 0,
-        results: currentResults
+    function exportToPDF() {
+        let data = {
+            luas_atap: document.getElementById('luas_atap')?.value || 0,
+            sudut: document.getElementById('sudut')?.value || 0,
+            panjang_starter: document.getElementById('panjang_starter')?.value || 0,
+            panjang_flashing: document.getElementById('panjang_flashing')?.value || 0,
+            waste: document.getElementById('waste')?.value || 5,
+            nok_atas: document.getElementById('nok_dropdown')?.selectedOptions[0]?.text || '',
+            nok_tutup: document.getElementById('nok_tutup_display')?.value || '',
+            rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            grand_total: document.querySelector('.grand-total-minimal .amount')?.innerText || 'Rp 0',
+            opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
+            opsi_cerobong: document.getElementById('opsi_cerobong')?.value || 0,
+            opsi_penangkal: document.getElementById('opsi_penangkal')?.value || 0,
+            results: currentResults
+        };
+        
+        fetch('{{ route("boq.mahaflat.export-pdf", ["model" => "kerucut"]) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.text())
+        .then(html => {
+            let win = window.open();
+            win.document.write(html);
+            win.document.close();
+        })
+        .catch(error => {
+            alert('Gagal export PDF: ' + error.message);
+        });
+    }
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        document.getElementById('luas_atap').value = urlParams.get('luas_atap') || 0;
+        document.getElementById('sudut').value = urlParams.get('sudut') || 0;
+        document.getElementById('panjang_starter').value = urlParams.get('panjang_starter') || 0;
+        document.getElementById('panjang_flashing').value = urlParams.get('panjang_flashing') || 0;
+        document.getElementById('opsi_dinding').value = urlParams.get('dinding') || 0;
+        document.getElementById('opsi_cerobong').value = urlParams.get('cerobong') || 0;
+        document.getElementById('opsi_penangkal').value = urlParams.get('penangkal') || 0;
+        
+        // Update Nok options setelah data terisi
+        setTimeout(updateNokOptions, 300);
     };
-    
-    fetch('{{ route("boq.mahaflat.export-pdf", ["model" => "kerucut"]) }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.text())
-    .then(html => {
-        let win = window.open();
-        win.document.write(html);
-        win.document.close();
-    })
-    .catch(error => {
-        alert('Gagal export PDF: ' + error.message);
-    });
-}
-
-window.onload = function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    document.getElementById('luas_atap').value = urlParams.get('luas_atap') || 0;
-    document.getElementById('sudut').value = urlParams.get('sudut') || 0;
-    document.getElementById('panjang_starter').value = urlParams.get('panjang_starter') || 0;
-    document.getElementById('panjang_flashing').value = urlParams.get('panjang_flashing') || 0;
-    document.getElementById('opsi_dinding').value = urlParams.get('dinding') || 0;
-    document.getElementById('opsi_cerobong').value = urlParams.get('cerobong') || 0;
-    document.getElementById('opsi_penangkal').value = urlParams.get('penangkal') || 0;
-};
 </script>
 @endsection

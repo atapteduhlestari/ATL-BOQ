@@ -264,6 +264,8 @@ function lanjutKeBOQDome() {
         'palmex': '/boq/palmex/dome',
         'tape-roof': '/boq/taperoof/dome',  // <-- INI DITAMBAH
         'mahaflat': '/boq/mahaflat/dome',  // <-- INI DITAMBAH
+        'flexi-roof': '/boq/flexiroof/dome',  // <-- INI DITAMBAH
+        'eco-roof': '/boq/ecoroof/dome',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

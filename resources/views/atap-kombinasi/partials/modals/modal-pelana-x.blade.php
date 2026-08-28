@@ -372,6 +372,8 @@ function lanjutKeBOQPelanaX() {
         'palmex': '/boq/palmex/atap-kombinasi/pelana-x',
         'tape-roof': '/boq/taperoof/atap-kombinasi/pelana-x',
         'mahaflat': '/boq/mahaflat/atap-kombinasi/pelana-x',
+        'flexi-roof': '/boq/flexiroof/atap-kombinasi/pelana-x',
+        'eco-roof': '/boq/ecoroof/atap-kombinasi/pelana-x',
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-x';

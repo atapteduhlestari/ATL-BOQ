@@ -356,6 +356,8 @@ function lanjutKeBOQPelana2Sisi() {
         'palmex': '/boq/palmex/atap-kombinasi/pelana-2-sisi',
         'tape-roof': '/boq/taperoof/atap-kombinasi/pelana-2-sisi',  // <-- TAMBAHKAN
         'mahaflat': '/boq/mahaflat/atap-kombinasi/pelana-2-sisi',  // <-- TAMBAHKAN
+        'flexi-roof': '/boq/flexiroof/atap-kombinasi/pelana-2-sisi',  // <-- TAMBAHKAN
+        'eco-roof': '/boq/ecoroof/atap-kombinasi/pelana-2-sisi',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-2-sisi';

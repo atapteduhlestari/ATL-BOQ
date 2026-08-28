@@ -367,49 +367,6 @@
                 <span class="bullet">•</span>
                 <span>Pastikan data luas atap, sudut kemiringan, dan panjang-panjang lainnya sudah benar.</span>
             </li>
-            <li>
-                <span class="bullet">•</span>
-                <span><strong>Area yang dihitung:</strong></span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Atap Utama</strong> - otomatis menggunakan TAPE ROOF</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Starter</strong> - otomatis dari aksesoris TAPE ROOF</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Nok Tutup</strong> - TIDAK ADA di model Kerucut</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Jurai</strong> - TIDAK ADA di model Kerucut</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Nok Bulat</strong> - TIDAK ADA di model Kerucut</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Underlayer</strong> - otomatis jika tersedia</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Metal Flashing</strong> - otomatis dari input Panjang Flashing</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Wall Flashing</strong> - dari opsi Dinding</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Cerobong Asap</strong> - dari opsi Cerobong Asap</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Penangkal Petir</strong> - dari opsi Penangkal Petir</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Lantai Kerja</strong> - pilih dari dropdown</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Paku & Screw</strong> - otomatis dihitung (masuk aksesoris)</span>
-            </li>
-            <li style="padding-left: 28px;">
-                <span>• <strong>Screw Plywood</strong> - otomatis dihitung (masuk sistem pendukung)</span>
-            </li>
         </ul>
     </div>
     

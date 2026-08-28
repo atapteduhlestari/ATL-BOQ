@@ -6,6 +6,10 @@ use App\Http\Controllers\IkoAtapController;
 use App\Http\Controllers\SkyshieldStandarController;
 use App\Http\Controllers\PalmexController;
 use App\Http\Controllers\TaperoofController;
+use App\Http\Controllers\FlexiroofController;
+use App\Http\Controllers\EcoroofController;
+use App\Http\Controllers\EcoroofKombinasiController;
+use App\Http\Controllers\FlexiroofKombinasiController;
 use App\Http\Controllers\MahaflatController;
 use App\Http\Controllers\MahaflatKombinasiController;
 use App\Http\Controllers\TaperoofKombinasiController;
@@ -264,18 +268,18 @@ Route::post('/boq/taperoof/atap-kombinasi/pelana-3-arah/hitung', [TaperoofKombin
 Route::post('/boq/taperoof/atap-kombinasi/pelana-3-arah/export-pdf', [TaperoofKombinasiController::class, 'exportPdfPelana3Arah'])
     ->name('boq.taperoof.pelana-3-arah.export-pdf');
 
-    Route::get('/boq/taperoof/atap-kombinasi/pelana-x', [TaperoofKombinasiController::class, 'pelana3Arah'])
+    Route::get('/boq/taperoof/atap-kombinasi/pelana-x', [TaperoofKombinasiController::class, 'pelanaX'])
     ->name('boq.taperoof.pelana-x');
-Route::post('/boq/taperoof/atap-kombinasi/pelana-x/hitung', [TaperoofKombinasiController::class, 'hitungPelana3Arah'])
+Route::post('/boq/taperoof/atap-kombinasi/pelana-x/hitung', [TaperoofKombinasiController::class, 'hitungPelanaX'])
     ->name('boq.taperoof.pelana-x.hitung');
-Route::post('/boq/taperoof/atap-kombinasi/pelana-x/export-pdf', [TaperoofKombinasiController::class, 'exportPdfPelana3Arah'])
+Route::post('/boq/taperoof/atap-kombinasi/pelana-x/export-pdf', [TaperoofKombinasiController::class, 'exportPdfPelanaX'])
     ->name('boq.taperoof.pelana-x.export-pdf');
 
-        Route::get('/boq/taperoof/atap-kombinasi/pelana-dinding', [TaperoofKombinasiController::class, 'pelana3Arah'])
+        Route::get('/boq/taperoof/atap-kombinasi/pelana-dinding', [TaperoofKombinasiController::class, 'pelanaDinding'])
     ->name('boq.taperoof.pelana-dinding');
-Route::post('/boq/taperoof/atap-kombinasi/pelana-dinding/hitung', [TaperoofKombinasiController::class, 'hitungPelana3Arah'])
+Route::post('/boq/taperoof/atap-kombinasi/pelana-dinding/hitung', [TaperoofKombinasiController::class, 'hitungPelanaDinding'])
     ->name('boq.taperoof.pelana-dinding.hitung');
-Route::post('/boq/taperoof/atap-kombinasi/pelana-dinding/export-pdf', [TaperoofKombinasiController::class, 'exportPdfPelana3Arah'])
+Route::post('/boq/taperoof/atap-kombinasi/pelana-dinding/export-pdf', [TaperoofKombinasiController::class, 'exportPdfPelanaDinding'])
     ->name('boq.taperoof.pelana-dinding.export-pdf');
 // MAHA FLAT ROOF
 Route::prefix('boq/mahaflat')->group(function () {
@@ -367,6 +371,189 @@ Route::post('/boq/mahaflat/atap-kombinasi/pelana-dinding/hitung', [MahaflatKombi
     ->name('boq.mahaflat.pelana-dinding.hitung');
 Route::post('/boq/mahaflat/atap-kombinasi/pelana-dinding/export-pdf', [MahaflatKombinasiController::class, 'exportPdfPelanaDinding'])
     ->name('boq.mahaflat.pelana-dinding.export-pdf');
+
+    // FLEXIROOF
+        Route::prefix('boq/flexiroof')->group(function () {
+    Route::get('/{model}', [FlexiroofController::class, 'index'])->name('boq.flexiroof.index');
+    Route::post('/{model}/hitung', [FlexiroofController::class, 'hitung'])->name('boq.flexiroof.hitung');
+    Route::post('/{model}/export-pdf', [FlexiroofController::class, 'exportPdf'])->name('boq.flexiroof.export-pdf');
+});
+
+Route::get('/boq/flexiroof/atap-kombinasi/gergaji', [FlexiroofKombinasiController::class, 'gergaji'])
+    ->name('boq.flexiroof.gergaji');
+Route::post('/boq/flexiroof/atap-kombinasi/gergaji/hitung', [FlexiroofKombinasiController::class, 'hitungGergaji'])
+    ->name('boq.flexiroof.gergaji.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/gergaji/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfGergaji'])
+    ->name('boq.flexiroof.gergaji.export-pdf');
+
+        Route::get('/boq/flexiroof/atap-kombinasi/lengkung-2-sisi', [FlexiroofKombinasiController::class, 'lengkung2Sisi'])
+    ->name('boq.flexiroof.lengkung-2-sisi');
+Route::post('/boq/flexiroof/atap-kombinasi/lengkung-2-sisi/hitung', [FlexiroofKombinasiController::class, 'hitungLengkung2Sisi'])
+    ->name('boq.flexiroof.lengkung-2-sisi.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/lengkung-2-sisi/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfLengkung2Sisi'])
+    ->name('boq.flexiroof.lengkung-2-sisi.export-pdf');
+
+        Route::get('/boq/flexiroof/atap-kombinasi/limas-pelana', [FlexiroofKombinasiController::class, 'limasPelana'])
+    ->name('boq.flexiroof.limas-pelana');
+Route::post('/boq/flexiroof/atap-kombinasi/limas-pelana/hitung', [FlexiroofKombinasiController::class, 'hitungLimasPelana'])
+    ->name('boq.flexiroof.limas-pelana.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/limas-pelana/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfLimasPelana'])
+    ->name('boq.flexiroof.limas-pelana.export-pdf');
+
+            Route::get('/boq/flexiroof/atap-kombinasi/limasan-limasan', [FlexiroofKombinasiController::class, 'limasanLimasan'])
+    ->name('boq.flexiroof.limasan-limasan');
+Route::post('/boq/flexiroof/atap-kombinasi/limasan-limasan/hitung', [FlexiroofKombinasiController::class, 'hitungLimasanLimasan'])
+    ->name('boq.flexiroof.limasan-limasan.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/limasan-limasan/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfLimasanLimasan'])
+    ->name('boq.flexiroof.limasan-limasan.export-pdf');
+
+         Route::get('/boq/flexiroof/atap-kombinasi/limasan-trapesium', [FlexiroofKombinasiController::class, 'limasanTrapesium'])
+    ->name('boq.flexiroof.limasan-trapesium');
+Route::post('/boq/flexiroof/atap-kombinasi/limasan-trapesium/hitung', [FlexiroofKombinasiController::class, 'hitungLimasanTrapesium'])
+    ->name('boq.flexiroof.limasan-trapesium.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/limasan-trapesium/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfLimasanTrapesium'])
+    ->name('boq.flexiroof.limasan-trapesium.export-pdf');
+
+        Route::get('/boq/flexiroof/atap-kombinasi/limasan-x', [FlexiroofKombinasiController::class, 'limasanX'])
+    ->name('boq.flexiroof.limasan-x');
+Route::post('/boq/flexiroof/atap-kombinasi/limasan-x/hitung', [FlexiroofKombinasiController::class, 'hitungLimasanX'])
+    ->name('boq.flexiroof.limasan-x.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/limasan-x/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfLimasanX'])
+    ->name('boq.flexiroof.limasan-x.export-pdf');
+
+         Route::get('/boq/flexiroof/atap-kombinasi/pelana-2-kemiringan', [FlexiroofKombinasiController::class, 'pelana2Kemiringan'])
+    ->name('boq.flexiroof.pelana-2-kemiringan');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-2-kemiringan/hitung', [FlexiroofKombinasiController::class, 'hitungPelana2Kemiringan'])
+    ->name('boq.flexiroof.pelana-2-kemiringan.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-2-kemiringan/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfPelana2Kemiringan'])
+    ->name('boq.flexiroof.pelana-2-kemiringan.export-pdf');
+
+         Route::get('/boq/flexiroof/atap-kombinasi/pelana-2-sisi', [FlexiroofKombinasiController::class, 'pelana2Sisi'])
+    ->name('boq.flexiroof.pelana-2-sisi');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-2-sisi/hitung', [FlexiroofKombinasiController::class, 'hitungPelana2Sisi'])
+    ->name('boq.flexiroof.pelana-2-sisi.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-2-sisi/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfPelana2Sisi'])
+    ->name('boq.flexiroof.pelana-2-sisi.export-pdf');
+
+        Route::get('/boq/flexiroof/atap-kombinasi/pelana-2trapesium', [FlexiroofKombinasiController::class, 'pelana2Trapesium'])
+    ->name('boq.flexiroof.pelana-2trapesium');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-2trapesium/hitung', [FlexiroofKombinasiController::class, 'hitungPelana2Trapesium'])
+    ->name('boq.flexiroof.pelana-2trapesium.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-2trapesium/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfPelana2Trapesium'])
+    ->name('boq.flexiroof.pelana-2trapesium.export-pdf');
+
+         Route::get('/boq/flexiroof/atap-kombinasi/pelana-3-arah', [FlexiroofKombinasiController::class, 'pelana3Arah'])
+    ->name('boq.flexiroof.pelana-3-arah');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-3-arah/hitung', [FlexiroofKombinasiController::class, 'hitungPelana3Arah'])
+    ->name('boq.flexiroof.pelana-3-arah.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-3-arah/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfPelana3Arah'])
+    ->name('boq.flexiroof.pelana-3-arah.export-pdf');
+
+         Route::get('/boq/flexiroof/atap-kombinasi/pelana-dinding', [FlexiroofKombinasiController::class, 'pelanaDinding'])
+    ->name('boq.flexiroof.pelana-x');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-dinding/hitung', [FlexiroofKombinasiController::class, 'hitungPelanaDinding'])
+    ->name('boq.flexiroof.pelana-dinding.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-dinding/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfPelanaDinding'])
+    ->name('boq.flexiroof.pelana-dinding.export-pdf');
+
+         Route::get('/boq/flexiroof/atap-kombinasi/pelana-x', [FlexiroofKombinasiController::class, 'pelanaX'])
+    ->name('boq.flexiroof.pelana-x');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-x/hitung', [FlexiroofKombinasiController::class, 'hitungPelanaX'])
+    ->name('boq.flexiroof.pelana-x.hitung');
+Route::post('/boq/flexiroof/atap-kombinasi/pelana-x/export-pdf', [FlexiroofKombinasiController::class, 'exportPdfPelanaX'])
+    ->name('boq.flexiroof.pelana-x.export-pdf');
+
+    // ECOROOF
+            Route::prefix('boq/ecoroof')->group(function () {
+    Route::get('/{model}', [EcoroofController::class, 'index'])->name('boq.ecoroof.index');
+    Route::post('/{model}/hitung', [EcoroofController::class, 'hitung'])->name('boq.ecoroof.hitung');
+    Route::post('/{model}/export-pdf', [EcoroofController::class, 'exportPdf'])->name('boq.ecoroof.export-pdf');
+});
+
+Route::get('/boq/ecoroof/atap-kombinasi/gergaji', [EcoroofKombinasiController::class, 'gergaji'])
+    ->name('boq.ecoroof.gergaji');
+Route::post('/boq/ecoroof/atap-kombinasi/gergaji/hitung', [EcoroofKombinasiController::class, 'hitungGergaji'])
+    ->name('boq.ecoroof.gergaji.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/gergaji/export-pdf', [EcoroofKombinasiController::class, 'exportPdfGergaji'])
+    ->name('boq.ecoroof.gergaji.export-pdf');
+
+    
+        Route::get('/boq/ecoroof/atap-kombinasi/lengkung-2-sisi', [EcoroofKombinasiController::class, 'lengkung2Sisi'])
+    ->name('boq.ecoroof.lengkung-2-sisi');
+Route::post('/boq/ecoroof/atap-kombinasi/lengkung-2-sisi/hitung', [EcoroofKombinasiController::class, 'hitungLengkung2Sisi'])
+    ->name('boq.ecoroof.lengkung-2-sisi.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/lengkung-2-sisi/export-pdf', [EcoroofKombinasiController::class, 'exportPdfLengkung2Sisi'])
+    ->name('boq.ecoroof.lengkung-2-sisi.export-pdf');
+
+            Route::get('/boq/ecoroof/atap-kombinasi/limas-pelana', [EcoroofKombinasiController::class, 'limasPelana'])
+    ->name('boq.ecoroof.limas-pelana');
+Route::post('/boq/ecoroof/atap-kombinasi/limas-pelana/hitung', [EcoroofKombinasiController::class, 'hitungLimasPelana'])
+    ->name('boq.ecoroof.limas-pelana.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/limas-pelana/export-pdf', [EcoroofKombinasiController::class, 'exportPdfLimasPelana'])
+    ->name('boq.ecoroof.limas-pelana.export-pdf');
+
+                Route::get('/boq/ecoroof/atap-kombinasi/limasan-limasan', [EcoroofKombinasiController::class, 'limasanLimasan'])
+    ->name('boq.ecoroof.limasan-limasan');
+Route::post('/boq/ecoroof/atap-kombinasi/limasan-limasan/hitung', [EcoroofKombinasiController::class, 'hitungLimasanLimasan'])
+    ->name('boq.ecoroof.limasan-limasan.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/limasan-limasan/export-pdf', [EcoroofKombinasiController::class, 'exportPdfLimasanLimasan'])
+    ->name('boq.ecoroof.limasan-limasan.export-pdf');
+
+         Route::get('/boq/ecoroof/atap-kombinasi/limasan-trapesium', [EcoroofKombinasiController::class, 'limasanTrapesium'])
+    ->name('boq.ecoroof.limasan-trapesium');
+Route::post('/boq/ecoroof/atap-kombinasi/limasan-trapesium/hitung', [EcoroofKombinasiController::class, 'hitungLimasanTrapesium'])
+    ->name('boq.ecoroof.limasan-trapesium.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/limasan-trapesium/export-pdf', [EcoroofKombinasiController::class, 'exportPdfLimasanTrapesium'])
+    ->name('boq.ecoroof.limasan-trapesium.export-pdf');
+
+            Route::get('/boq/ecoroof/atap-kombinasi/limasan-x', [EcoroofKombinasiController::class, 'limasanX'])
+    ->name('boq.ecoroof.limasan-x');
+Route::post('/boq/ecoroof/atap-kombinasi/limasan-x/hitung', [EcoroofKombinasiController::class, 'hitungLimasanX'])
+    ->name('boq.ecoroof.limasan-x.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/limasan-x/export-pdf', [EcoroofKombinasiController::class, 'exportPdfLimasanX'])
+    ->name('boq.ecoroof.limasan-x.export-pdf');
+
+             Route::get('/boq/ecoroof/atap-kombinasi/pelana-2-kemiringan', [EcoroofKombinasiController::class, 'pelana2Kemiringan'])
+    ->name('boq.ecoroof.pelana-2-kemiringan');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-2-kemiringan/hitung', [EcoroofKombinasiController::class, 'hitungPelana2Kemiringan'])
+    ->name('boq.ecoroof.pelana-2-kemiringan.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-2-kemiringan/export-pdf', [EcoroofKombinasiController::class, 'exportPdfPelana2Kemiringan'])
+    ->name('boq.ecoroof.pelana-2-kemiringan.export-pdf');
+
+            Route::get('/boq/ecoroof/atap-kombinasi/pelana-2-sisi', [EcoroofKombinasiController::class, 'pelana2Sisi'])
+    ->name('boq.ecoroof.pelana-2-sisi');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-2-sisi/hitung', [EcoroofKombinasiController::class, 'hitungPelana2Sisi'])
+    ->name('boq.ecoroof.pelana-2-sisi.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-2-sisi/export-pdf', [EcoroofKombinasiController::class, 'exportPdfPelana2Sisi'])
+    ->name('boq.ecoroof.pelana-2-sisi.export-pdf');
+
+        Route::get('/boq/ecoroof/atap-kombinasi/pelana-2trapesium', [EcoroofKombinasiController::class, 'pelana2Trapesium'])
+    ->name('boq.ecoroof.pelana-2trapesium');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-2trapesium/hitung', [EcoroofKombinasiController::class, 'hitungPelana2Trapesium'])
+    ->name('boq.ecoroof.pelana-2trapesium.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-2trapesium/export-pdf', [EcoroofKombinasiController::class, 'exportPdfPelana2Trapesium'])
+    ->name('boq.ecoroof.pelana-2trapesium.export-pdf');
+
+         Route::get('/boq/ecoroof/atap-kombinasi/pelana-3-arah', [EcoroofKombinasiController::class, 'pelana3Arah'])
+    ->name('boq.ecoroof.pelana-3-arah');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-3-arah/hitung', [EcoroofKombinasiController::class, 'hitungPelana3Arah'])
+    ->name('boq.ecoroof.pelana-3-arah.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-3-arah/export-pdf', [EcoroofKombinasiController::class, 'exportPdfPelana3Arah'])
+    ->name('boq.ecoroof.pelana-3-arah.export-pdf');
+
+         Route::get('/boq/ecoroof/atap-kombinasi/pelana-dinding', [EcoroofKombinasiController::class, 'pelanaDinding'])
+    ->name('boq.ecoroof.pelana-x');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-dinding/hitung', [EcoroofKombinasiController::class, 'hitungPelanaDinding'])
+    ->name('boq.ecoroof.pelana-dinding.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-dinding/export-pdf', [EcoroofKombinasiController::class, 'exportPdfPelanaDinding'])
+    ->name('boq.ecoroof.pelana-dinding.export-pdf');
+
+         Route::get('/boq/ecoroof/atap-kombinasi/pelana-x', [EcoroofKombinasiController::class, 'pelanaX'])
+    ->name('boq.ecoroof.pelana-x');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-x/hitung', [EcoroofKombinasiController::class, 'hitungPelanaX'])
+    ->name('boq.ecoroof.pelana-x.hitung');
+Route::post('/boq/ecoroof/atap-kombinasi/pelana-x/export-pdf', [EcoroofKombinasiController::class, 'exportPdfPelanaX'])
+    ->name('boq.ecoroof.pelana-x.export-pdf');
 
 // ==================== JENDELA ====================
 

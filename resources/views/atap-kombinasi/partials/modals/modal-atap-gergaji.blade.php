@@ -307,6 +307,8 @@ function lanjutKeBOQ() {
         'palmex': '/boq/palmex/atap-kombinasi/gergaji',
         'tape-roof': '/boq/taperoof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
         'mahaflat': '/boq/mahaflat/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
+        'flexi-roof': '/boq/flexiroof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
+        'eco-roof': '/boq/ecoroof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/gergaji';

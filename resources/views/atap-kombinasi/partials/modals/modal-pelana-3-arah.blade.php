@@ -571,6 +571,8 @@ function lanjutKeBOQPelana3Arah() {
         'palmex': '/boq/palmex/atap-kombinasi/pelana-3-arah',
         'tape-roof': '/boq/taperoof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
         'mahaflat': '/boq/mahaflat/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
+        'flexi-roof': '/boq/flexiroof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
+        'eco-roof': '/boq/ecoroof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-3-arah';

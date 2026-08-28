@@ -378,6 +378,42 @@
         color: #a0aec0;
         font-size: 13px;
     }
+
+    /* Style untuk auto-select nok */
+    .nok-auto-select {
+        background: #f0fdf4 !important;
+        border-color: #86efac !important;
+    }
+    
+    .nok-auto-select:focus {
+        border-color: #22c55e !important;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1) !important;
+    }
+    
+    .nok-type-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 12px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .nok-type-indicator.u {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .nok-type-indicator.v {
+        background: #fce7f3;
+        color: #9d174d;
+    }
+
+    .nok-type-indicator.bulat {
+        background: #fef3c7;
+        color: #92400e;
+    }
 </style>
 
 <div class="space-y-6">
@@ -403,6 +439,10 @@
             <li>
                 <span class="bullet">•</span>
                 <span>Pastikan data luas atap dari setiap bagian sudah benar.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Pilih jenis <strong>Nok</strong> (U / V / Bulat), maka <strong>Nok Tutup</strong> akan otomatis menyesuaikan.</span>
             </li>
             <li>
                 <span class="bullet">•</span>
@@ -617,16 +657,40 @@
             </div>
         </div>
         <div class="section-body">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
                     <label class="block text-[10px] font-medium text-gray-500 mb-1.5">MAHAFLAT NOK <span class="text-red-500">*</span></label>
-                    <select id="nok_dropdown" class="input-field" required>
-                        <option value="">Pilih Mahaflat Nok</option>
+                    <select id="nok_dropdown" class="input-field" required onchange="updateNokOptions()">
+                        <option value="">Pilih Jenis Nok</option>
                         @foreach($nokOptions ?? [] as $nok)
-                            <option value="{{ $nok->id }}">{{ $nok->nama_produk }}</option>
+                            <option value="{{ $nok->id }}" data-tipe="{{ $nok->productTipe->kode_tipe ?? 'U' }}">
+                                {{ $nok->nama_produk }} 
+                            </option>
                         @endforeach
                     </select>
+                    <div id="nok_selected_info" class="text-[9px] text-gray-400 mt-1">
+                        <span class="nok-type-indicator u" id="nok_type_badge" style="display:none;">Tipe: U</span>
+                        <span class="text-gray-400">* Nok Tutup otomatis menyesuaikan</span>
+                    </div>
                 </div>
+
+                <!-- TAMPILAN NOK TUTUP (READONLY / AUTO) -->
+                <div>
+                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
+                        NOK TUTUP
+                    </label>
+                    <div>
+                        <input type="text" id="nok_tutup_display" 
+                            class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 nok-auto-select" 
+                            readonly 
+                            placeholder="Pilih Nok terlebih dahulu">
+                        <input type="hidden" id="nok_tutup_id" value="">
+                    </div>
+                    <p class="text-[9px] text-gray-400 mt-1">
+                        <span id="nok_tutup_status">⏳ Menunggu pemilihan Nok</span>
+                    </p>
+                </div>
+
                 <div>
                     <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Struktur Rangka</label>
                     <select id="rangka" class="input-field">
@@ -728,276 +792,338 @@
 </div>
 
 <script>
-let results = [];
+    // Data mapping dari server
+    const nokMapping = @json($nokMapping ?? []);
 
-window.onload = function() {
-    // GUNakan data dari PHP LANGSUNG
-    const luasAtap1 = {{ $luasAtap1 ?? 0 }};
-    const starter1 = {{ $starter1 ?? 0 }};
-    const flashing1 = {{ $flashing1 ?? 0 }};
-    const nok1 = {{ $nok1 ?? 0 }};
-    const sudut1 = {{ $sudut1 ?? 0 }};
-    
-    const luasAtap2 = {{ $luasAtap2 ?? 0 }};
-    const starter2 = {{ $starter2 ?? 0 }};
-    const flashing2 = {{ $flashing2 ?? 0 }};
-    const nok2 = {{ $nok2 ?? 0 }};
-    const sudut2 = {{ $sudut2 ?? 0 }};
-    
-    const totalNokJurai = {{ $totalNokJurai ?? 0 }};
-    
-    console.log('Data dari PHP:', {
-        luasAtap1, starter1, flashing1, nok1, sudut1,
-        luasAtap2, starter2, flashing2, nok2, sudut2,
-        totalNokJurai
-    });
-    
-    // Bagian 1 (Pelana)
-    document.getElementById('luas_atap_1').value = luasAtap1.toFixed(2);
-    document.getElementById('starter_1').value = starter1.toFixed(2);
-    document.getElementById('flashing_1').value = flashing1.toFixed(2);
-    document.getElementById('nok_1').value = nok1.toFixed(2);
-    document.getElementById('sudut_1').value = sudut1.toFixed(2);
-    
-    // Bagian 2 (Dinding)
-    document.getElementById('luas_atap_2').value = luasAtap2.toFixed(2);
-    document.getElementById('starter_2').value = starter2.toFixed(2);
-    document.getElementById('flashing_2').value = flashing2.toFixed(2);
-    document.getElementById('nok_2').value = nok2.toFixed(2);
-    document.getElementById('sudut_2').value = sudut2.toFixed(2);
-    
-    // Total
-    let totalLuas = luasAtap1 + luasAtap2;
-    let totalStarter = starter1 + starter2;
-    let totalFlashing = flashing1 + flashing2;
-    let totalNok = nok1 + nok2;
-    
-    document.getElementById('total_luas_atap').value = totalLuas.toFixed(2);
-    document.getElementById('total_starter').value = totalStarter.toFixed(2);
-    document.getElementById('total_flashing').value = totalFlashing.toFixed(2);
-    document.getElementById('total_nok_jurai').value = totalNok.toFixed(2);
-    
-    document.getElementById('opsi_dinding').value = {{ $opsiDinding ?? 0 }};
-    document.getElementById('opsi_cerobong').value = {{ $opsiCerobong ?? 0 }};
-    document.getElementById('opsi_penangkal').value = {{ $opsiPenangkal ?? 0 }};
-    
-    updatePdfData();
-};
-
-function hitungMaterial() {
-    let btn = event.target;
-    let originalText = btn.innerHTML;
-    btn.innerHTML = 'Menghitung...';
-    btn.disabled = true;
-    
-    let wasteValue = parseFloat(document.getElementById('waste').value) || 5;
-    
-    let opsiDinding = parseFloat(document.getElementById('opsi_dinding')?.value) || 0;
-    let opsiCerobong = parseFloat(document.getElementById('opsi_cerobong')?.value) || 0;
-    let opsiPenangkal = parseFloat(document.getElementById('opsi_penangkal')?.value) || 0;
-    
-    let nokDropdown = document.getElementById('nok_dropdown');
-    let nokId = nokDropdown ? nokDropdown.value : '';
-    
-    if (!nokId) {
-        alert('⚠️ Pilih Mahaflat Nok terlebih dahulu!');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-    }
-    
-    let totalLuas = parseFloat(document.getElementById('total_luas_atap').value) || 0;
-    let totalStarter = parseFloat(document.getElementById('total_starter').value) || 0;
-    let totalNokJurai = parseFloat(document.getElementById('total_nok_jurai').value) || 0;
-    let totalFlashing = parseFloat(document.getElementById('total_flashing').value) || 0;
-    
-    let data = {
-        luas_atap: totalLuas,
-        panjang_starter: totalStarter,
-        panjang_nok_jurai: totalNokJurai,
-        panjang_flashing: totalFlashing,
-        sudut: 30,
-        opsi_dinding: opsiDinding,
-        opsi_cerobong: opsiCerobong,
-        opsi_penangkal: opsiPenangkal,
-        nok_id: nokId,
-        rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-        lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
-        waste: wasteValue
-    };
-    
-    fetch('{{ route("boq.mahaflat.pelana-dinding.hitung") }}', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json', 
-            'X-CSRF-TOKEN': '{{ csrf_token() }}' 
-        },
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            results = data.results;
-            renderTable(results);
-            document.getElementById('hasilMaterial').classList.remove('hidden');
-            updatePdfData();
-        } else {
-            alert('Error: ' + (data.message || 'Unknown error'));
+    // Fungsi untuk update Nok options
+    function updateNokOptions() {
+        const nokDropdown = document.getElementById('nok_dropdown');
+        const selectedOption = nokDropdown.options[nokDropdown.selectedIndex];
+        const nokId = nokDropdown.value;
+        
+        const nokTutupDisplay = document.getElementById('nok_tutup_display');
+        const nokTutupId = document.getElementById('nok_tutup_id');
+        const nokTutupStatus = document.getElementById('nok_tutup_status');
+        const nokTypeBadge = document.getElementById('nok_type_badge');
+        
+        if (!nokId || !nokMapping[nokId]) {
+            // Reset semua
+            nokTutupDisplay.value = '';
+            nokTutupId.value = '';
+            nokTutupStatus.innerHTML = '⏳ Menunggu pemilihan Nok';
+            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700';
+            nokTypeBadge.style.display = 'none';
+            return;
         }
-    })
-    .catch(err => {
-        console.error(err);
-        alert('Terjadi kesalahan server: ' + err.message);
-    })
-    .finally(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    });
-}
+        
+        const data = nokMapping[nokId];
+        const tipe = data.tipe || 'U';
+        
+        // Update badge tipe
+        nokTypeBadge.textContent = 'Tipe: ' + tipe;
+        nokTypeBadge.className = 'nok-type-indicator ' + tipe.toLowerCase();
+        nokTypeBadge.style.display = 'inline-block';
+        
+        // Update Nok Tutup
+        if (data.nokTutupId) {
+            nokTutupDisplay.value = data.nokTutupName;
+            nokTutupId.value = data.nokTutupId;
+            nokTutupStatus.innerHTML = '✅ <span class="text-green-600">Otomatis terpilih</span>';
+            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-green-300 rounded-lg bg-green-50 text-gray-700 nok-auto-select';
+        } else {
+            nokTutupDisplay.value = '❌ Tidak tersedia untuk tipe ' + tipe;
+            nokTutupId.value = '';
+            nokTutupStatus.innerHTML = '❌ <span class="text-red-600">Tidak tersedia</span>';
+            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-red-300 rounded-lg bg-red-50 text-gray-700';
+        }
+    }
 
-function renderTable(results) {
-    let container = document.getElementById('tableMaterial');
-    
-    let kelompok = {
-        'Atap Utama': [],
-        'Aksesoris': [],
-        'Additional': [],
-        'Sistem Pendukung': []
+    // Jalankan saat halaman load
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(updateNokOptions, 200);
+    });
+
+    let results = [];
+
+    window.onload = function() {
+        // GUNakan data dari PHP LANGSUNG
+        const luasAtap1 = {{ $luasAtap1 ?? 0 }};
+        const starter1 = {{ $starter1 ?? 0 }};
+        const flashing1 = {{ $flashing1 ?? 0 }};
+        const nok1 = {{ $nok1 ?? 0 }};
+        const sudut1 = {{ $sudut1 ?? 0 }};
+        
+        const luasAtap2 = {{ $luasAtap2 ?? 0 }};
+        const starter2 = {{ $starter2 ?? 0 }};
+        const flashing2 = {{ $flashing2 ?? 0 }};
+        const nok2 = {{ $nok2 ?? 0 }};
+        const sudut2 = {{ $sudut2 ?? 0 }};
+        
+        const totalNokJurai = {{ $totalNokJurai ?? 0 }};
+        
+        console.log('Data dari PHP:', {
+            luasAtap1, starter1, flashing1, nok1, sudut1,
+            luasAtap2, starter2, flashing2, nok2, sudut2,
+            totalNokJurai
+        });
+        
+        // Bagian 1 (Pelana)
+        document.getElementById('luas_atap_1').value = luasAtap1.toFixed(2);
+        document.getElementById('starter_1').value = starter1.toFixed(2);
+        document.getElementById('flashing_1').value = flashing1.toFixed(2);
+        document.getElementById('nok_1').value = nok1.toFixed(2);
+        document.getElementById('sudut_1').value = sudut1.toFixed(2);
+        
+        // Bagian 2 (Dinding)
+        document.getElementById('luas_atap_2').value = luasAtap2.toFixed(2);
+        document.getElementById('starter_2').value = starter2.toFixed(2);
+        document.getElementById('flashing_2').value = flashing2.toFixed(2);
+        document.getElementById('nok_2').value = nok2.toFixed(2);
+        document.getElementById('sudut_2').value = sudut2.toFixed(2);
+        
+        // Total
+        let totalLuas = luasAtap1 + luasAtap2;
+        let totalStarter = starter1 + starter2;
+        let totalFlashing = flashing1 + flashing2;
+        let totalNok = nok1 + nok2;
+        
+        document.getElementById('total_luas_atap').value = totalLuas.toFixed(2);
+        document.getElementById('total_starter').value = totalStarter.toFixed(2);
+        document.getElementById('total_flashing').value = totalFlashing.toFixed(2);
+        document.getElementById('total_nok_jurai').value = totalNok.toFixed(2);
+        
+        document.getElementById('opsi_dinding').value = {{ $opsiDinding ?? 0 }};
+        document.getElementById('opsi_cerobong').value = {{ $opsiCerobong ?? 0 }};
+        document.getElementById('opsi_penangkal').value = {{ $opsiPenangkal ?? 0 }};
+        
+        updatePdfData();
     };
-    
-    const aksesorisAreas = ['Starter', 'Mahaflat Nok & Jurai', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
-    const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
-    const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
-    
-    results.forEach(item => {
-        let area = item.area || '';
-        if (area === 'Atap Utama') {
-            kelompok['Atap Utama'].push(item);
-        } else if (additionalAreas.includes(area)) {
-            if (item.qty > 0) {
-                kelompok['Additional'].push(item);
+
+    function hitungMaterial() {
+        let btn = event.target;
+        let originalText = btn.innerHTML;
+        btn.innerHTML = 'Menghitung...';
+        btn.disabled = true;
+        
+        let wasteValue = parseFloat(document.getElementById('waste').value) || 5;
+        
+        let opsiDinding = parseFloat(document.getElementById('opsi_dinding')?.value) || 0;
+        let opsiCerobong = parseFloat(document.getElementById('opsi_cerobong')?.value) || 0;
+        let opsiPenangkal = parseFloat(document.getElementById('opsi_penangkal')?.value) || 0;
+        
+        let nokDropdown = document.getElementById('nok_dropdown');
+        let nokId = nokDropdown ? nokDropdown.value : '';
+        let nokTutupId = document.getElementById('nok_tutup_id')?.value || '';
+        
+        if (!nokId) {
+            alert('⚠️ Pilih Mahaflat Nok terlebih dahulu!');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        if (!nokTutupId) {
+            alert('⚠️ Nok Tutup tidak tersedia untuk tipe yang dipilih! Silakan pilih Nok lain.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        let totalLuas = parseFloat(document.getElementById('total_luas_atap').value) || 0;
+        let totalStarter = parseFloat(document.getElementById('total_starter').value) || 0;
+        let totalNokJurai = parseFloat(document.getElementById('total_nok_jurai').value) || 0;
+        let totalFlashing = parseFloat(document.getElementById('total_flashing').value) || 0;
+        
+        let data = {
+            luas_atap: totalLuas,
+            panjang_starter: totalStarter,
+            panjang_nok_jurai: totalNokJurai,
+            panjang_flashing: totalFlashing,
+            sudut: 30,
+            opsi_dinding: opsiDinding,
+            opsi_cerobong: opsiCerobong,
+            opsi_penangkal: opsiPenangkal,
+            nok_id: nokId,
+            nok_tutup_id: nokTutupId,
+            rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            waste: wasteValue
+        };
+        
+        console.log('DATA DIKIRIM:', data);
+        
+        fetch('{{ route("boq.mahaflat.pelana-dinding.hitung") }}', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                results = data.results;
+                renderTable(results);
+                document.getElementById('hasilMaterial').classList.remove('hidden');
+                updatePdfData();
+            } else {
+                alert('Error: ' + (data.message || 'Unknown error'));
             }
-        } else if (systemAreas.includes(area)) {
-            kelompok['Sistem Pendukung'].push(item);
-        } else if (aksesorisAreas.includes(area)) {
-            kelompok['Aksesoris'].push(item);
-        } else {
-            kelompok['Aksesoris'].push(item);
-        }
-    });
-    
-    let html = '';
-    let grandTotal = 0;
-    
-    // ATAP UTAMA
-    if (kelompok['Atap Utama'].length > 0) {
-        html += `<div class="group-header group-header-atap">🏠 ATAP UTAMA</div>`;
-        html += `<table>`;
-        kelompok['Atap Utama'].forEach(item => {
-            grandTotal += item.total_harga || 0;
-            html += `<tr>
-                <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
-                <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
-                <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
-                <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
-                <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
-            </tr>`;
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan server: ' + err.message);
+        })
+        .finally(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         });
-        html += `</table>`;
     }
-    
-    // AKSESORIS
-    if (kelompok['Aksesoris'].length > 0) {
-        html += `<div class="group-header group-header-aksesoris">🔧 AKSESORIS</div>`;
-        html += `<table>`;
-        kelompok['Aksesoris'].forEach(item => {
-            grandTotal += item.total_harga || 0;
-            html += `<tr>
-                <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
-                <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
-                <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
-                <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
-                <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
-            </tr>`;
-        });
-        html += `</table>`;
-    }
-    
-    // ADDITIONAL
-    if (kelompok['Additional'].length > 0) {
-        html += `<div class="group-header group-header-additional">➕ ADDITIONAL</div>`;
-        html += `<table>`;
-        kelompok['Additional'].forEach(item => {
-            grandTotal += item.total_harga || 0;
-            html += `<tr>
-                <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
-                <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
-                <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
-                <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
-                <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
-            </tr>`;
-        });
-        html += `</table>`;
-    }
-    
-    // SISTEM PENDUKUNG
-    if (kelompok['Sistem Pendukung'].length > 0) {
-        html += `<div class="group-header group-header-aksesoris" style="border-left-color: #805ad5;">⚙️ SISTEM PENDUKUNG</div>`;
-        html += `<table>`;
-        kelompok['Sistem Pendukung'].forEach(item => {
-            grandTotal += item.total_harga || 0;
-            html += `<tr>
-                <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
-                <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
-                <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
-                <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
-                <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
-            </tr>`;
-        });
-        html += `</table>`;
-    }
-    
-    if (html === '') {
-        html = `<div class="empty-state">Belum ada data material</div>`;
-    }
-    
-    container.innerHTML = html;
-    document.getElementById('grandTotal').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
-    document.getElementById('totalKeseluruhan').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
-}
 
-function updatePdfData() {
-    document.getElementById('pdf_hasil').value = JSON.stringify(results);
-    document.getElementById('pdf_luas_atap').value = document.getElementById('total_luas_atap').value;
-    document.getElementById('pdf_starter').value = document.getElementById('total_starter').value;
-    document.getElementById('pdf_nok_jurai').value = document.getElementById('total_nok_jurai').value;
-    document.getElementById('pdf_flashing').value = document.getElementById('total_flashing').value;
-    document.getElementById('pdf_sudut').value = 30;
-    document.getElementById('pdf_waste').value = document.getElementById('waste').value;
-    document.getElementById('pdf_grand_total').value = document.getElementById('grandTotal').innerText;
-    
-    document.getElementById('pdf_opsi_dinding').value = document.getElementById('opsi_dinding')?.value || 0;
-    document.getElementById('pdf_opsi_cerobong').value = document.getElementById('opsi_cerobong')?.value || 0;
-    document.getElementById('pdf_opsi_penangkal').value = document.getElementById('opsi_penangkal')?.value || 0;
-    
-    document.getElementById('pdf_lantai_kerja').value = document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm';
-    document.getElementById('pdf_rangka').value = document.getElementById('rangka')?.value || 'Baja Ringan';
-    document.getElementById('pdf_detail_results').value = JSON.stringify(results);
-    
-    document.getElementById('pdf_tanggal').value = new Date().toLocaleDateString('id-ID');
-    document.getElementById('pdf_waktu').value = new Date().toLocaleTimeString('id-ID');
-    
-    document.getElementById('pdf_luas_atap_1').value = document.getElementById('luas_atap_1').value;
-    document.getElementById('pdf_starter_1').value = document.getElementById('starter_1').value;
-    document.getElementById('pdf_flashing_1').value = document.getElementById('flashing_1').value;
-    document.getElementById('pdf_nok_1').value = document.getElementById('nok_1').value;
-    document.getElementById('pdf_sudut_1').value = document.getElementById('sudut_1').value;
-    
-    document.getElementById('pdf_luas_atap_2').value = document.getElementById('luas_atap_2').value;
-    document.getElementById('pdf_starter_2').value = document.getElementById('starter_2').value;
-    document.getElementById('pdf_flashing_2').value = document.getElementById('flashing_2').value;
-    document.getElementById('pdf_nok_2').value = document.getElementById('nok_2').value;
-    document.getElementById('pdf_sudut_2').value = document.getElementById('sudut_2').value;
-}
+    function renderTable(results) {
+        let container = document.getElementById('tableMaterial');
+        
+        let kelompok = {
+            'Atap Utama': [],
+            'Aksesoris': [],
+            'Additional': [],
+            'Sistem Pendukung': []
+        };
+        
+        const aksesorisAreas = ['Starter', 'Mahaflat Nok & Jurai', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
+        const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
+        const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
+        
+        results.forEach(item => {
+            let area = item.area || '';
+            if (area === 'Atap Utama') {
+                kelompok['Atap Utama'].push(item);
+            } else if (additionalAreas.includes(area)) {
+                if (item.qty > 0) {
+                    kelompok['Additional'].push(item);
+                }
+            } else if (systemAreas.includes(area)) {
+                kelompok['Sistem Pendukung'].push(item);
+            } else if (aksesorisAreas.includes(area)) {
+                kelompok['Aksesoris'].push(item);
+            } else {
+                kelompok['Aksesoris'].push(item);
+            }
+        });
+        
+        let html = '';
+        let grandTotal = 0;
+        
+        // ATAP UTAMA
+        if (kelompok['Atap Utama'].length > 0) {
+            html += `<div class="group-header group-header-atap">🏠 ATAP UTAMA</div>`;
+            html += `<table>`;
+            kelompok['Atap Utama'].forEach(item => {
+                grandTotal += item.total_harga || 0;
+                html += `<tr>
+                    <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
+                    <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
+                    <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
+                    <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
+                    <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+                </tr>`;
+            });
+            html += `</table>`;
+        }
+        
+        // AKSESORIS
+        if (kelompok['Aksesoris'].length > 0) {
+            html += `<div class="group-header group-header-aksesoris">🔧 AKSESORIS</div>`;
+            html += `<table>`;
+            kelompok['Aksesoris'].forEach(item => {
+                grandTotal += item.total_harga || 0;
+                html += `<tr>
+                    <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
+                    <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
+                    <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
+                    <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
+                    <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+                </tr>`;
+            });
+            html += `</table>`;
+        }
+        
+        // ADDITIONAL
+        if (kelompok['Additional'].length > 0) {
+            html += `<div class="group-header group-header-additional">➕ ADDITIONAL</div>`;
+            html += `<table>`;
+            kelompok['Additional'].forEach(item => {
+                grandTotal += item.total_harga || 0;
+                html += `<tr>
+                    <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
+                    <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
+                    <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
+                    <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
+                    <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+                </tr>`;
+            });
+            html += `</table>`;
+        }
+        
+        // SISTEM PENDUKUNG
+        if (kelompok['Sistem Pendukung'].length > 0) {
+            html += `<div class="group-header group-header-aksesoris" style="border-left-color: #805ad5;">⚙️ SISTEM PENDUKUNG</div>`;
+            html += `<table>`;
+            kelompok['Sistem Pendukung'].forEach(item => {
+                grandTotal += item.total_harga || 0;
+                html += `<tr>
+                    <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
+                    <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
+                    <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
+                    <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
+                    <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+                </tr>`;
+            });
+            html += `</table>`;
+        }
+        
+        if (html === '') {
+            html = `<div class="empty-state">Belum ada data material</div>`;
+        }
+        
+        container.innerHTML = html;
+        document.getElementById('grandTotal').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
+        document.getElementById('totalKeseluruhan').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
+    }
+
+    function updatePdfData() {
+        document.getElementById('pdf_hasil').value = JSON.stringify(results);
+        document.getElementById('pdf_luas_atap').value = document.getElementById('total_luas_atap').value;
+        document.getElementById('pdf_starter').value = document.getElementById('total_starter').value;
+        document.getElementById('pdf_nok_jurai').value = document.getElementById('total_nok_jurai').value;
+        document.getElementById('pdf_flashing').value = document.getElementById('total_flashing').value;
+        document.getElementById('pdf_sudut').value = 30;
+        document.getElementById('pdf_waste').value = document.getElementById('waste').value;
+        document.getElementById('pdf_grand_total').value = document.getElementById('grandTotal').innerText;
+        
+        document.getElementById('pdf_opsi_dinding').value = document.getElementById('opsi_dinding')?.value || 0;
+        document.getElementById('pdf_opsi_cerobong').value = document.getElementById('opsi_cerobong')?.value || 0;
+        document.getElementById('pdf_opsi_penangkal').value = document.getElementById('opsi_penangkal')?.value || 0;
+        
+        document.getElementById('pdf_lantai_kerja').value = document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm';
+        document.getElementById('pdf_rangka').value = document.getElementById('rangka')?.value || 'Baja Ringan';
+        document.getElementById('pdf_detail_results').value = JSON.stringify(results);
+        
+        document.getElementById('pdf_tanggal').value = new Date().toLocaleDateString('id-ID');
+        document.getElementById('pdf_waktu').value = new Date().toLocaleTimeString('id-ID');
+        
+        document.getElementById('pdf_luas_atap_1').value = document.getElementById('luas_atap_1').value;
+        document.getElementById('pdf_starter_1').value = document.getElementById('starter_1').value;
+        document.getElementById('pdf_flashing_1').value = document.getElementById('flashing_1').value;
+        document.getElementById('pdf_nok_1').value = document.getElementById('nok_1').value;
+        document.getElementById('pdf_sudut_1').value = document.getElementById('sudut_1').value;
+        
+        document.getElementById('pdf_luas_atap_2').value = document.getElementById('luas_atap_2').value;
+        document.getElementById('pdf_starter_2').value = document.getElementById('starter_2').value;
+        document.getElementById('pdf_flashing_2').value = document.getElementById('flashing_2').value;
+        document.getElementById('pdf_nok_2').value = document.getElementById('nok_2').value;
+        document.getElementById('pdf_sudut_2').value = document.getElementById('sudut_2').value;
+    }
 </script>
 @endsection

@@ -356,6 +356,8 @@ function lanjutKeBOQLengkung2Sisi() {
         'palmex': '/boq/palmex/atap-kombinasi/lengkung-2-sisi',
         'tape-roof': '/boq/taperoof/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
         'mahaflat': '/boq/mahaflat/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
+        'flexi-roof': '/boq/flexiroof/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
+        'eco-roof': '/boq/ecoroof/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/lengkung-2-sisi';
