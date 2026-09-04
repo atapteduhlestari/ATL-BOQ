@@ -573,6 +573,9 @@ function lanjutKeBOQPelana3Arah() {
         'mahaflat': '/boq/mahaflat/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
         'flexi-roof': '/boq/flexiroof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
         'eco-roof': '/boq/ecoroof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
+        'emarin-roof': '/boq/emarinroof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
+        'master-roof': '/boq/masterroof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
+        'maha-roof': '/boq/maharoof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-3-arah';

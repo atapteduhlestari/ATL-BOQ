@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOQ - MAHAFLAT Kerucut</title>
+    <title>BOQ - MAHAFLAT ROOF Kerucut</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -78,16 +78,12 @@
             }
             
             .table-header th {
-                background-color: #1a3c6e !important;
+                background-color: #1a1a2e !important;
                 color: white !important;
             }
             
-            .info-grid {
-                background-color: #f8fafc !important;
-            }
-            
             .grand-total-box {
-                background: #1a3c6e !important;
+                background: #1a1a2e !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
@@ -96,6 +92,16 @@
                 background-color: #f8fafc !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+            }
+            
+            .group-title {
+                background-color: #f1f4f9 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .info-list .info-item {
+                border-bottom: 1px solid #f1f4f9 !important;
             }
         }
 
@@ -108,7 +114,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #1a3c6e;
+            border-bottom: 2px solid #1a1a2e;
             padding-bottom: 8px;
             margin-bottom: 14px;
             width: 100%;
@@ -145,7 +151,7 @@
         .title-section h1 {
             font-size: 13pt;
             font-weight: 700;
-            color: #1a3c6e;
+            color: #1a1a2e;
             margin-bottom: 2px;
             letter-spacing: 0.5px;
         }
@@ -167,7 +173,7 @@
         .nomor-boq {
             font-size: 10pt;
             font-weight: 600;
-            color: #1a3c6e;
+            color: #1a1a2e;
             background: #f1f4f9;
             padding: 4px 16px;
             border-radius: 4px;
@@ -177,7 +183,7 @@
         }
 
         .btn-copy-boq {
-            background: #1a3c6e;
+            background: #1a1a2e;
             color: white;
             border: none;
             padding: 4px 14px;
@@ -192,7 +198,7 @@
         }
 
         .btn-copy-boq:hover {
-            background: #2d5a8c;
+            background: #0f3460;
         }
 
         .btn-copy-boq.copied {
@@ -205,38 +211,35 @@
             }
         }
         
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px 12px;
+        /* LIST STYLE - Dengan Indent (sama dengan FLEXI ROOF) */
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
             margin-bottom: 14px;
-            background: #f8fafc;
-            padding: 10px 14px;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
+            padding: 0;
+            padding-left: 20px;
         }
         
-        .info-item {
+        .info-list .info-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0;
+            padding: 5px 0;
             border-bottom: 1px solid #f1f4f9;
         }
         
-        .info-item:last-child {
+        .info-list .info-item:last-child {
             border-bottom: none;
         }
         
-        .info-label {
-            font-size: 6.5pt;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+        .info-list .info-label {
+            font-size: 8pt;
+            font-weight: 500;
+            color: #4a5568;
         }
         
-        .info-value {
+        .info-list .info-value {
             font-size: 8pt;
             font-weight: 600;
             color: #1e293b;
@@ -245,23 +248,23 @@
         .section-title {
             font-size: 9pt;
             font-weight: 600;
-            color: #1a3c6e;
+            color: #1a1a2e;
             margin: 12px 0 6px 0;
             padding: 4px 10px;
             background: #f8fafc;
             border-radius: 3px;
-            border-left: 3px solid #1a3c6e;
+            border-left: 3px solid #1a1a2e;
         }
         
         .group-title {
             font-size: 8pt;
             font-weight: 500;
-            color: #1a3c6e;
+            color: #1a1a2e;
             margin: 10px 0 4px 0;
             padding: 3px 10px;
             background: #f1f4f9;
             border-radius: 3px;
-            border-left: 3px solid #64748b;
+            border-left: 3px solid #0f3460;
         }
         
         table {
@@ -278,7 +281,7 @@
         }
         
         .table-header th {
-            background-color: #1a3c6e;
+            background-color: #1a1a2e;
             color: white;
             font-weight: 500;
             text-transform: uppercase;
@@ -297,7 +300,7 @@
         }
         
         .grand-total-box {
-            background: #1a3c6e;
+            background: #1a1a2e;
             color: white;
             border-radius: 4px;
             padding: 14px 20px;
@@ -356,12 +359,12 @@
         }
         
         .btn-print {
-            background: #1a3c6e;
+            background: #1a1a2e;
             color: white;
         }
         
         .btn-print:hover {
-            background: #2d5a8c;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -376,12 +379,12 @@
         }
         
         .btn-copy-boq-global {
-            background: #1a3c6e;
+            background: #1a1a2e;
             color: white;
         }
         
         .btn-copy-boq-global:hover {
-            background: #2d5a8c;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -394,7 +397,7 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1a3c6e;
+            background: #1a1a2e;
             color: white;
             padding: 10px 24px;
             border-radius: 4px;
@@ -428,7 +431,7 @@
         return 'Rp ' . number_format((int)$angka, 0, ',', '.');
     }
     
-    $nomorBoq = $data['nomor_boq'] ?? 'BOQ-202606-0001';
+    $nomorBoq = $data['nomor_boq'] ?? 'BOQ-MAHA-202606-0001';
     $model = $data['model'] ?? 'kerucut';
     
     $modelNames = [
@@ -442,7 +445,6 @@
     
     $modelName = $modelNames[$model] ?? 'Kerucut';
     
-    // Hitung grand total dari results
     $grandTotal = 0;
     foreach($data['results'] ?? [] as $item) {
         $total = $item['total_harga'] ?? 0;
@@ -451,15 +453,14 @@
     
     $results = $data['results'] ?? [];
     
-    // Kelompokkan berdasarkan area
     $groups = [
-        'Atap Utama' => ['label' => 'KELOMPOK ATAP UTAMA', 'items' => []],
-        'Aksesoris' => ['label' => 'AKSESORIS ATAP', 'items' => []],
+        'Atap Utama' => ['label' => 'ATAP UTAMA', 'items' => []],
+        'Aksesoris' => ['label' => 'AKSESORIS', 'items' => []],
         'Additional' => ['label' => 'ADDITIONAL', 'items' => []],
         'Sistem Pendukung' => ['label' => 'SISTEM PENDUKUNG', 'items' => []]
     ];
     
-    $additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
+    $additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir', 'Flashing Kaca'];
     $systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
     $aksesorisAreas = ['Starter', 'Jurai', 'Metal Flashing', 'Paku & Screw'];
     
@@ -468,7 +469,9 @@
         if ($area === 'Atap Utama') {
             $groups['Atap Utama']['items'][] = $item;
         } elseif (in_array($area, $additionalAreas)) {
-            $groups['Additional']['items'][] = $item;
+            if (($item['qty'] ?? 0) > 0) {
+                $groups['Additional']['items'][] = $item;
+            }
         } elseif (in_array($area, $systemAreas)) {
             $groups['Sistem Pendukung']['items'][] = $item;
         } elseif (in_array($area, $aksesorisAreas)) {
@@ -476,6 +479,34 @@
         } else {
             $groups['Aksesoris']['items'][] = $item;
         }
+    }
+    
+    // Recalculate grand total
+    $grandTotal = 0;
+    foreach ($groups as $group) {
+        foreach ($group['items'] as $item) {
+            $grandTotal += $item['total_harga'] ?? 0;
+        }
+    }
+
+    // Cek opsi tambahan
+    $hasAdditional = false;
+    $additionalItems = [];
+    if (isset($data['opsi_kaca']) && $data['opsi_kaca'] > 0) {
+        $hasAdditional = true;
+        $additionalItems[] = ['label' => 'Flashing Kaca', 'value' => number_format((float)$data['opsi_kaca'], 2) . ' m'];
+    }
+    if (isset($data['opsi_dinding']) && $data['opsi_dinding'] > 0) {
+        $hasAdditional = true;
+        $additionalItems[] = ['label' => 'Dinding', 'value' => number_format((float)$data['opsi_dinding'], 2) . ' m'];
+    }
+    if (isset($data['opsi_cerobong']) && $data['opsi_cerobong'] > 0) {
+        $hasAdditional = true;
+        $additionalItems[] = ['label' => 'Cerobong Asap', 'value' => $data['opsi_cerobong'] . ' unit'];
+    }
+    if (isset($data['opsi_penangkal']) && $data['opsi_penangkal'] > 0) {
+        $hasAdditional = true;
+        $additionalItems[] = ['label' => 'Penangkal Petir', 'value' => number_format((float)$data['opsi_penangkal'], 2) . ' m'];
     }
 @endphp
 
@@ -497,7 +528,7 @@
 
     <div class="title-section">
         <h1>BILL OF QUANTITY</h1>
-        <p>MAHAFLAT {{ $modelName }}</p>
+        <p>MAHAFLAT ROOF</p>
         
         <div class="nomor-boq-wrapper">
             <span class="nomor-boq" id="nomorBoqText">
@@ -509,12 +540,12 @@
         </div>
     </div>
 
-    <!-- DATA PERHITUNGAN -->
+    <!-- DATA GEOMETRIK - LIST DENGAN INDENT (SAMA PERSIS FLEXI ROOF) -->
     <div class="section-title">
-        DATA PERHITUNGAN LUAS ATAP
+        DATA GEOMETRIK
     </div>
     
-    <div class="info-grid">
+    <div class="info-list">
         <div class="info-item">
             <span class="info-label">Luas Permukaan Atap</span>
             <span class="info-value">{{ number_format((float)($data['luas_atap'] ?? 0), 2) }} m²</span>
@@ -524,42 +555,52 @@
             <span class="info-value">{{ number_format((float)($data['sudut'] ?? 0), 2) }}°</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
-        </div>
-        <div class="info-item">
             <span class="info-label">Panjang Starter</span>
-            <span class="info-value">{{ number_format((float)($data['panjang_starter'] ?? 0), 2) }} m</span>
+            <span class="info-value">{{ number_format((float)($data['starter'] ?? 0), 2) }} m</span>
         </div>
         <div class="info-item">
             <span class="info-label">Panjang Flashing</span>
-            <span class="info-value">{{ number_format((float)($data['panjang_flashing'] ?? 0), 2) }} m</span>
+            <span class="info-value">{{ number_format((float)($data['flashing'] ?? 0), 2) }} m</span>
         </div>
-        @if(isset($data['opsi_dinding']) && $data['opsi_dinding'] > 0)
         <div class="info-item">
-            <span class="info-label">Panjang Dinding</span>
-            <span class="info-value">{{ number_format((float)($data['opsi_dinding']), 2) }} m</span>
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
         </div>
-        @endif
-        @if(isset($data['opsi_cerobong']) && $data['opsi_cerobong'] > 0)
+    </div>
+
+    <!-- OPSI TAMBAHAN (jika ada) - SAMA PERSIS FLEXI ROOF -->
+    @if($hasAdditional)
+    <div class="section-title">
+        OPSI TAMBAHAN
+    </div>
+    <div class="info-list">
+        @foreach($additionalItems as $item)
         <div class="info-item">
-            <span class="info-label">Cerobong Asap</span>
-            <span class="info-value">{{ $data['opsi_cerobong'] }} unit</span>
+            <span class="info-label">{{ $item['label'] }}</span>
+            <span class="info-value">{{ $item['value'] }}</span>
         </div>
-        @endif
-        @if(isset($data['opsi_penangkal']) && $data['opsi_penangkal'] > 0)
+        @endforeach
+    </div>
+    @endif
+
+    <!-- PILIHAN MATERIAL - LIST DENGAN INDENT -->
+    <!-- MAHAFLAT: TIDAK ADA TIPE ATAP DAN TIDAK ADA JENIS NOK (KERUCUT) -->
+    <div class="section-title">
+        PILIHAN MATERIAL
+    </div>
+
+    <div class="info-list">
         <div class="info-item">
-            <span class="info-label">Penangkal Petir</span>
-            <span class="info-value">{{ number_format((float)($data['opsi_penangkal']), 2) }} m</span>
-        </div>
-        @endif
-        <div class="info-item">
-            <span class="info-label">Rangka</span>
-            <span class="info-value">{{ $data['rangka'] ?? 'Baja Ringan' }}</span>
+            <span class="info-label">Struktur Rangka</span>
+            <span class="info-value">{{ $data['rangka'] ?? '-' }}</span>
         </div>
         <div class="info-item">
             <span class="info-label">Lantai Kerja</span>
-            <span class="info-value">{{ $data['lantai_kerja'] ?? 'Plywood 9 mm' }}</span>
+            <span class="info-value">{{ $data['lantai_kerja'] ?? '-' }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
         </div>
     </div>
 
@@ -571,66 +612,66 @@
     <div class="table-wrapper">
         @php
             $groupKeys = ['Atap Utama', 'Aksesoris', 'Additional', 'Sistem Pendukung'];
+            $hasAnyItems = false;
+            foreach ($groupKeys as $key) {
+                if (count($groups[$key]['items']) > 0) {
+                    $hasAnyItems = true;
+                    break;
+                }
+            }
         @endphp
         
-        @foreach($groupKeys as $key)
-            @php $group = $groups[$key]; @endphp
-            @if(count($group['items']) > 0)
-                <div class="group-title">
-                    {{ $group['label'] }}
-                </div>
-                <table>
-                    <thead class="table-header">
-                        <tr>
-                            <th width="5%">No</th>
-                            <th width="30%">Nama Produk</th>
-                            <th width="15%">Area</th>
-                            <th width="10%" class="text-right">Qty</th>
-                            <th width="10%" class="text-right">Satuan</th>
-                            <th width="15%" class="text-right">Harga</th>
-                            <th width="15%" class="text-right">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $no = 1; @endphp
-                        @foreach($group['items'] as $item)
-                        <tr>
-                            <td class="text-center">{{ $no++ }}</td>
-                            <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                            <td>{{ $item['area'] ?? '-' }}</td>
-                            <td class="text-right">{{ number_format($item['qty'] ?? 0, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
-                            <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
-                            <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
-        @endforeach
+        @if(!$hasAnyItems)
+            <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 9pt;">
+                Belum ada data material
+            </div>
+        @else
+            @foreach($groupKeys as $key)
+                @php $group = $groups[$key]; @endphp
+                @if(count($group['items']) > 0)
+                    <div class="group-title">
+                        {{ $group['label'] }}
+                    </div>
+                    <table>
+                        <thead class="table-header">
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="30%">Nama Produk</th>
+                                <th width="15%">Area</th>
+                                <th width="10%" class="text-right">Qty</th>
+                                <th width="10%" class="text-right">Satuan</th>
+                                <th width="15%" class="text-right">Harga</th>
+                                <th width="15%" class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1; @endphp
+                            @foreach($group['items'] as $item)
+                            <tr>
+                                <td class="text-center">{{ $no++ }}</td>
+                                <td>{{ $item['nama_produk'] ?? '-' }}</td>
+                                <td>{{ $item['area'] ?? '-' }}</td>
+                                <td class="text-right">{{ number_format($item['qty'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                                <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                                <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            @endforeach
+        @endif
     </div>
 
     <!-- GRAND TOTAL -->
     <div class="grand-total-box">
-        <span class="label">🏆 GRAND TOTAL</span>
+        <span class="label">GRAND TOTAL</span>
         <span class="value">{{ formatRp($grandTotal) }}</span>
     </div>
 
-    <!-- KETERANGAN TAMBAHAN -->
-    <div style="margin-top: 12px; padding: 8px 12px; background: #f0f7ff; border-radius: 4px; border-left: 3px solid #1a3c6e; font-size: 6.5pt; color: #475569;">
-        <strong style="color: #1a3c6e;">Keterangan:</strong>
-        <ul style="margin-top: 4px; padding-left: 16px; list-style: none;">
-            <li>• Perhitungan ini berdasarkan input luas atap dan parameter yang dimasukkan.</li>
-            <li>• Harga satuan berdasarkan price list MAHAFLAT yang berlaku.</li>
-            <li>• Waste material sudah termasuk dalam perhitungan ({{ $data['waste'] ?? 5 }}%).</li>
-            <li>• Model Kerucut menggunakan Jurai (tanpa Nok).</li>
-            <li>• Model Kerucut tidak menggunakan Nok Tutup.</li>
-            <li>• BoQ ini bersifat estimasi dan dapat berubah sesuai kondisi lapangan.</li>
-        </ul>
-    </div>
-
     <div class="footer">
-        <p>Dokumen ini dibuat oleh sistem BOQ MAHAFLAT | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
+        <p>Dokumen ini dibuat oleh sistem BOQ MAHAFLAT ROOF | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
     </div>
 </div>
 
@@ -638,12 +679,15 @@
     <button onclick="window.print()" class="btn-action btn-print">
         🖨️ Cetak
     </button>
-    <button onclick="downloadPDF()" class="btn-action btn-print" style="background: #2563eb;">
+    <button onclick="window.location.href='{{ route('boq.mahaflat.export-pdf', ['model' => 'kerucut']) }}'" class="btn-action btn-print" style="background: #2563eb;">
         ⬇️ Download PDF
     </button>
     <button onclick="copyNomorBoq()" class="btn-action btn-copy-boq-global" id="btnCopyBoqGlobal">
         📋 Copy Nomor BOQ
     </button>
+    <a href="{{ route('boq.mahaflat.index', ['model' => 'kerucut']) }}" class="btn-action btn-back">
+        ↩️ Kembali
+    </a>
 </div>
 
 <script>
@@ -716,10 +760,6 @@ function showToast(message) {
     toast._timeout = setTimeout(function() {
         toast.classList.remove('show');
     }, 3000);
-}
-
-function downloadPDF() {
-    window.location.href = window.location.href + '&action=download';
 }
 </script>
 

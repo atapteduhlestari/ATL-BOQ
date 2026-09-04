@@ -288,6 +288,9 @@ function lanjutKeBOQKerucut() {
         'mahaflat': '/boq/mahaflat/kerucut',  // <-- INI DITAMBAH
         'flexi-roof': '/boq/flexiroof/kerucut',  // <-- INI DITAMBAH
         'eco-roof': '/boq/ecoroof/kerucut',  // <-- INI DITAMBAH
+        'emarin-roof': '/boq/emarin/kerucut',  // <-- INI DITAMBAH
+        'master-roof': '/boq/masterroof/kerucut',  // <-- INI DITAMBAH
+        'maha-roof': '/boq/maharoof/kerucut',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

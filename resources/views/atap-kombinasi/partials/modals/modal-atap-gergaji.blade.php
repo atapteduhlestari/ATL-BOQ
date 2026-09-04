@@ -309,6 +309,9 @@ function lanjutKeBOQ() {
         'mahaflat': '/boq/mahaflat/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
         'flexi-roof': '/boq/flexiroof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
         'eco-roof': '/boq/ecoroof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
+        'emarin-roof': '/boq/emarinroof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
+        'master-roof': '/boq/masterroof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
+        'maha-roof': '/boq/maharoof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/gergaji';

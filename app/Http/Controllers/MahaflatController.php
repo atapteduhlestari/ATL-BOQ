@@ -9,7 +9,7 @@ use App\Models\ProductBrand;
 use App\Models\ProductArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
+ 
 class MahaflatController extends Controller
 {
     /**
@@ -309,7 +309,7 @@ class MahaflatController extends Controller
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNok / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok', $panjangNok);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNok);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -740,7 +740,7 @@ class MahaflatController extends Controller
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -1150,7 +1150,7 @@ class MahaflatController extends Controller
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangJurai);
             $processedProductIds[] = $nok->id;
         }
     }

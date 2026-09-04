@@ -78,16 +78,12 @@
             }
             
             .table-header th {
-                background-color: #0d9488 !important;
+                background-color: #1a1a2e !important;
                 color: white !important;
             }
             
-            .info-grid {
-                background-color: #f8fafc !important;
-            }
-            
             .grand-total-box {
-                background: #0d9488 !important;
+                background: #1a1a2e !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
@@ -103,6 +99,22 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
+            
+            .row-insulation {
+                background-color: #f0fdf4 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .row-insulation td {
+                background-color: #f0fdf4 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .info-list .info-item {
+                border-bottom: 1px solid #f1f4f9 !important;
+            }
         }
 
         .report-paper { 
@@ -114,7 +126,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #0d9488;
+            border-bottom: 2px solid #1a1a2e;
             padding-bottom: 8px;
             margin-bottom: 14px;
             width: 100%;
@@ -151,7 +163,7 @@
         .title-section h1 {
             font-size: 13pt;
             font-weight: 700;
-            color: #0d9488;
+            color: #1a1a2e;
             margin-bottom: 2px;
             letter-spacing: 0.5px;
         }
@@ -173,7 +185,7 @@
         .nomor-boq {
             font-size: 10pt;
             font-weight: 600;
-            color: #0d9488;
+            color: #1a1a2e;
             background: #f1f4f9;
             padding: 4px 16px;
             border-radius: 4px;
@@ -183,7 +195,7 @@
         }
 
         .btn-copy-boq {
-            background: #0d9488;
+            background: #1a1a2e;
             color: white;
             border: none;
             padding: 4px 14px;
@@ -198,7 +210,7 @@
         }
 
         .btn-copy-boq:hover {
-            background: #0f766e;
+            background: #0f3460;
         }
 
         .btn-copy-boq.copied {
@@ -211,38 +223,35 @@
             }
         }
         
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px 12px;
+        /* LIST STYLE - Dengan Indent */
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
             margin-bottom: 14px;
-            background: #f8fafc;
-            padding: 10px 14px;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
+            padding: 0;
+            padding-left: 20px;
         }
         
-        .info-item {
+        .info-list .info-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0;
+            padding: 5px 0;
             border-bottom: 1px solid #f1f4f9;
         }
         
-        .info-item:last-child {
+        .info-list .info-item:last-child {
             border-bottom: none;
         }
         
-        .info-label {
-            font-size: 6.5pt;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+        .info-list .info-label {
+            font-size: 8pt;
+            font-weight: 500;
+            color: #4a5568;
         }
         
-        .info-value {
+        .info-list .info-value {
             font-size: 8pt;
             font-weight: 600;
             color: #1e293b;
@@ -251,23 +260,23 @@
         .section-title {
             font-size: 9pt;
             font-weight: 600;
-            color: #0d9488;
+            color: #1a1a2e;
             margin: 12px 0 6px 0;
             padding: 4px 10px;
             background: #f8fafc;
             border-radius: 3px;
-            border-left: 3px solid #0d9488;
+            border-left: 3px solid #1a1a2e;
         }
         
         .group-title {
             font-size: 8pt;
             font-weight: 500;
-            color: #0d9488;
+            color: #1a1a2e;
             margin: 10px 0 4px 0;
             padding: 3px 10px;
             background: #f1f4f9;
             border-radius: 3px;
-            border-left: 3px solid #14b8a6;
+            border-left: 3px solid #0f3460;
         }
         
         table {
@@ -284,7 +293,7 @@
         }
         
         .table-header th {
-            background-color: #0d9488;
+            background-color: #1a1a2e;
             color: white;
             font-weight: 500;
             text-transform: uppercase;
@@ -303,7 +312,7 @@
         }
         
         .grand-total-box {
-            background: #0d9488;
+            background: #1a1a2e;
             color: white;
             border-radius: 4px;
             padding: 14px 20px;
@@ -362,12 +371,12 @@
         }
         
         .btn-print {
-            background: #0d9488;
+            background: #1a1a2e;
             color: white;
         }
         
         .btn-print:hover {
-            background: #0f766e;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -382,12 +391,12 @@
         }
         
         .btn-copy-boq-global {
-            background: #0d9488;
+            background: #1a1a2e;
             color: white;
         }
         
         .btn-copy-boq-global:hover {
-            background: #0f766e;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -400,7 +409,7 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #0d9488;
+            background: #1a1a2e;
             color: white;
             padding: 10px 24px;
             border-radius: 4px;
@@ -417,12 +426,34 @@
             opacity: 1;
         }
 
+        .row-insulation {
+            background-color: #f0fdf4 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .row-insulation td {
+            background-color: #f0fdf4 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
         @media print {
             .action-buttons {
                 display: none !important;
             }
             .toast-message {
                 display: none !important;
+            }
+            .row-insulation {
+                background-color: #f0fdf4 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .row-insulation td {
+                background-color: #f0fdf4 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
         }
     </style>
@@ -434,30 +465,10 @@
         return 'Rp ' . number_format((int)$angka, 0, ',', '.');
     }
     
-    $nomorBoq = $data['nomor_boq'] ?? 'BOQ-202606-0001';
-    $model = $data['model'] ?? 'pelana-dinding';
+    $nomorBoq = $data['nomor_boq'] ?? 'ECO-BOQ-202606-0012';
+    $model = $data['model'] ?? '';
     
-    $modelNames = [
-        'pelana' => 'Pelana',
-        'limasan' => 'Limasan',
-        'piramid' => 'Piramid',
-        'satu-kemiringan' => 'Satu Kemiringan',
-        'kerucut' => 'Kerucut',
-        'dome' => 'Dome',
-        'gergaji' => 'Gergaji / Sawtooth',
-        'lengkung-2-sisi' => 'Lengkung + 2 Sisi Miring',
-        'limas-pelana' => 'Limas + Pelana',
-        'limasan-limasan' => 'Limasan + Limasan',
-        'limasan-trapesium' => 'Limasan + Trapesium',
-        'limasan-x' => 'Limasan X',
-        'pelana-2-kemiringan' => 'Pelana 2 Kemiringan',
-        'pelana-2-sisi' => 'Pelana + 2 Sisi',
-        'pelana-2trapesium' => 'Pelana + 2 Trapesium',
-        'pelana-3-arah' => 'Pelana 3 Arah',
-        'pelana-dinding' => 'Pelana + Dinding'
-    ];
-    
-    $modelName = $modelNames[$model] ?? 'Pelana + Dinding';
+    $modelName = '';
     
     $grandTotal = 0;
     foreach($data['results'] ?? [] as $item) {
@@ -466,9 +477,10 @@
     }
     
     $results = $data['results'] ?? [];
+    $insulasiAktif = $data['insulasi'] ?? false;
     
     $groups = [
-        'Atap Utama' => ['label' => 'KELOMPOK ATAP UTAMA', 'items' => []],
+        'Atap Utama' => ['label' => 'ATAP UTAMA', 'items' => []],
         'Aksesoris' => ['label' => 'AKSESORIS', 'items' => []],
         'Additional' => ['label' => 'ADDITIONAL', 'items' => []],
         'Sistem Pendukung' => ['label' => 'SISTEM PENDUKUNG', 'items' => []]
@@ -476,7 +488,7 @@
     
     $additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir', 'Flashing Kaca'];
     $systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
-    $aksesorisAreas = ['Starter', 'Tape Roof Nok & Jurai', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
+    $aksesorisAreas = ['Starter', 'Tape Roof Nok & Jurai', 'Jurai', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
     
     foreach ($results as $item) {
         $area = $item['area'] ?? '';
@@ -490,6 +502,14 @@
             $groups['Aksesoris']['items'][] = $item;
         } else {
             $groups['Aksesoris']['items'][] = $item;
+        }
+    }
+    
+    $hasInsulation = false;
+    foreach ($results as $item) {
+        if (isset($item['nama_produk']) && stripos($item['nama_produk'], 'insulasi') !== false) {
+            $hasInsulation = true;
+            break;
         }
     }
 @endphp
@@ -512,7 +532,7 @@
 
     <div class="title-section">
         <h1>BILL OF QUANTITY</h1>
-        <p>ECOROOF {{ $modelName }}</p>
+        <p>ECO ROOF</p>
         
         <div class="nomor-boq-wrapper">
             <span class="nomor-boq" id="nomorBoqText">
@@ -524,118 +544,93 @@
         </div>
     </div>
 
-    <!-- DATA PERHITUNGAN -->
+    <!-- DATA GEOMETRIK - LIST DENGAN INDENT -->
     <div class="section-title">
-        DATA PERHITUNGAN LUAS ATAP
+        DATA GEOMETRIK
     </div>
     
-    <div class="info-grid">
+    <div class="info-list">
         <div class="info-item">
             <span class="info-label">Luas Permukaan Atap</span>
             <span class="info-value">{{ number_format((float)($data['luas_atap'] ?? 0), 2) }} m²</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
-        </div>
-        <div class="info-item">
             <span class="info-label">Panjang Starter</span>
-            <span class="info-value">{{ number_format((float)($data['starter'] ?? $data['panjang_starter'] ?? 0), 2) }} m</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Panjang Nok & Jurai</span>
-            <span class="info-value">{{ number_format((float)($data['nok_jurai'] ?? $data['panjang_nok_jurai'] ?? 0), 2) }} m</span>
+            <span class="info-value">{{ number_format((float)($data['starter'] ?? 0), 2) }} m</span>
         </div>
         <div class="info-item">
             <span class="info-label">Panjang Flashing</span>
-            <span class="info-value">{{ number_format((float)($data['flashing'] ?? $data['panjang_flashing'] ?? 0), 2) }} m</span>
+            <span class="info-value">{{ number_format((float)($data['flashing'] ?? 0), 2) }} m</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Sudut Kemiringan</span>
+            <span class="info-value">{{ number_format((float)($data['sudut'] ?? 0), 2) }}°</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Panjang Tape Roof Nok dan Jurai</span>
+            <span class="info-value">{{ number_format((float)($data['nok_jurai'] ?? 0), 2) }} m</span>
         </div>
     </div>
 
-    <!-- DETAIL PER BAGIAN -->
+    <!-- PILIHAN MATERIAL - LIST DENGAN INDENT (TIPE ATAP DIHAPUS) -->
     <div class="section-title">
-        DETAIL PER BAGIAN
+        PILIHAN MATERIAL
     </div>
-    
-    <div class="info-grid">
-        <!-- Bagian 1: Pelana -->
-        <div class="info-item" style="grid-column: 1 / -1; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 2px;">
-            <span class="info-label" style="font-weight: 700; color: #0d9488;">Bagian 1 - Pelana</span>
+
+    <div class="info-list">
+        <div class="info-item">
+            <span class="info-label">Jenis Tape Roof Nok</span>
+            <span class="info-value">{{ $data['nok_atas'] ?? '-' }}</span>
+        </div>
+       
+        <div class="info-item">
+            <span class="info-label">Struktur Rangka</span>
+            <span class="info-value">{{ $data['rangka'] ?? '-' }}</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Luas Atap</span>
-            <span class="info-value">{{ number_format((float)($data['luas_atap_1'] ?? 0), 2) }} m²</span>
+            <span class="info-label">Lantai Kerja</span>
+            <span class="info-value">{{ $data['lantai_kerja'] ?? '-' }}</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Starter</span>
-            <span class="info-value">{{ number_format((float)($data['starter_1'] ?? 0), 2) }} m</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Flashing</span>
-            <span class="info-value">{{ number_format((float)($data['flashing_1'] ?? 0), 2) }} m</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Nok & Jurai</span>
-            <span class="info-value">{{ number_format((float)($data['nok_1'] ?? 0), 2) }} m</span>
-        </div>
-        
-        <!-- Bagian 2: Dinding -->
-        <div class="info-item" style="grid-column: 1 / -1; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-top: 6px; margin-bottom: 2px;">
-            <span class="info-label" style="font-weight: 700; color: #0d9488;">Bagian 2 - Dinding</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Luas Atap</span>
-            <span class="info-value">{{ number_format((float)($data['luas_atap_2'] ?? 0), 2) }} m²</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Starter</span>
-            <span class="info-value">{{ number_format((float)($data['starter_2'] ?? 0), 2) }} m</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Flashing</span>
-            <span class="info-value">{{ number_format((float)($data['flashing_2'] ?? 0), 2) }} m</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Nok & Jurai</span>
-            <span class="info-value">{{ number_format((float)($data['nok_2'] ?? 0), 2) }} m</span>
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
         </div>
     </div>
 
-    <!-- OPSI TAMBAHAN -->
-    @if(
-        (isset($data['opsi_kaca']) && $data['opsi_kaca'] > 0) ||
-        (isset($data['opsi_dinding']) && $data['opsi_dinding'] > 0) ||
-        (isset($data['opsi_cerobong']) && $data['opsi_cerobong'] > 0) ||
-        (isset($data['opsi_penangkal']) && $data['opsi_penangkal'] > 0)
-    )
+    <!-- OPSI TAMBAHAN - HANYA TAMPIL JIKA ADA -->
+    @php
+        $hasAdditional = false;
+        $additionalItems = [];
+        if (isset($data['opsi_kaca']) && $data['opsi_kaca'] > 0) {
+            $hasAdditional = true;
+            $additionalItems[] = ['label' => 'Flashing Kaca', 'value' => number_format((float)$data['opsi_kaca'], 2) . ' m'];
+        }
+        if (isset($data['opsi_dinding']) && $data['opsi_dinding'] > 0) {
+            $hasAdditional = true;
+            $additionalItems[] = ['label' => 'Dinding', 'value' => number_format((float)$data['opsi_dinding'], 2) . ' m'];
+        }
+        if (isset($data['opsi_cerobong']) && $data['opsi_cerobong'] > 0) {
+            $hasAdditional = true;
+            $additionalItems[] = ['label' => 'Cerobong Asap', 'value' => $data['opsi_cerobong'] . ' unit'];
+        }
+        if (isset($data['opsi_penangkal']) && $data['opsi_penangkal'] > 0) {
+            $hasAdditional = true;
+            $additionalItems[] = ['label' => 'Penangkal Petir', 'value' => number_format((float)$data['opsi_penangkal'], 2) . ' m'];
+        }
+    @endphp
+
+    @if($hasAdditional)
     <div class="section-title">
         OPSI TAMBAHAN
     </div>
-    <div class="info-grid">
-        @if(isset($data['opsi_kaca']) && $data['opsi_kaca'] > 0)
+
+    <div class="info-list">
+        @foreach($additionalItems as $item)
         <div class="info-item">
-            <span class="info-label">Flashing Kaca</span>
-            <span class="info-value">{{ number_format((float)($data['opsi_kaca']), 2) }} m</span>
+            <span class="info-label">{{ $item['label'] }}</span>
+            <span class="info-value">{{ $item['value'] }}</span>
         </div>
-        @endif
-        @if(isset($data['opsi_dinding']) && $data['opsi_dinding'] > 0)
-        <div class="info-item">
-            <span class="info-label">Panjang Dinding</span>
-            <span class="info-value">{{ number_format((float)($data['opsi_dinding']), 2) }} m</span>
-        </div>
-        @endif
-        @if(isset($data['opsi_cerobong']) && $data['opsi_cerobong'] > 0)
-        <div class="info-item">
-            <span class="info-label">Cerobong Asap</span>
-            <span class="info-value">{{ $data['opsi_cerobong'] }} unit</span>
-        </div>
-        @endif
-        @if(isset($data['opsi_penangkal']) && $data['opsi_penangkal'] > 0)
-        <div class="info-item">
-            <span class="info-label">Penangkal Petir</span>
-            <span class="info-value">{{ number_format((float)($data['opsi_penangkal']), 2) }} m</span>
-        </div>
-        @endif
+        @endforeach
     </div>
     @endif
 
@@ -670,15 +665,19 @@
                     <tbody>
                         @php $no = 1; @endphp
                         @foreach($group['items'] as $item)
-                        <tr>
-                            <td class="text-center">{{ $no++ }}</td>
-                            <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                            <td>{{ $item['area'] ?? '-' }}</td>
-                            <td class="text-right">{{ number_format($item['qty'] ?? 0, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
-                            <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
-                            <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
-                        </tr>
+                            @php
+                                $isInsulation = isset($item['nama_produk']) && stripos($item['nama_produk'], 'insulasi') !== false;
+                                $rowClass = $isInsulation ? 'row-insulation' : '';
+                            @endphp
+                            <tr class="{{ $rowClass }}">
+                                <td class="text-center">{{ $no++ }}</td>
+                                <td>{{ $item['nama_produk'] ?? '-' }}</td>
+                                <td>{{ $item['area'] ?? '-' }}</td>
+                                <td class="text-right">{{ number_format($item['qty'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                                <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                                <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -688,12 +687,12 @@
 
     <!-- GRAND TOTAL -->
     <div class="grand-total-box">
-        <span class="label">🏆 GRAND TOTAL</span>
+        <span class="label">GRAND TOTAL</span>
         <span class="value">{{ formatRp($grandTotal) }}</span>
     </div>
 
     <div class="footer">
-        <p>Dokumen ini dibuat oleh sistem BOQ ECOROOF | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
+        <p>Dokumen ini dibuat oleh sistem BOQ ECOROOF - Pelana + Dinding | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
     </div>
 </div>
 
@@ -701,7 +700,7 @@
     <button onclick="window.print()" class="btn-action btn-print">
         🖨️ Cetak
     </button>
-    <button onclick="downloadPDF()" class="btn-action btn-print" style="background: #2563eb;">
+    <button onclick="window.location.href='{{ route('boq.ecoroof.pelana-dinding.export-pdf') }}'" class="btn-action btn-print" style="background: #2563eb;">
         ⬇️ Download PDF
     </button>
     <button onclick="copyNomorBoq()" class="btn-action btn-copy-boq-global" id="btnCopyBoqGlobal">
@@ -779,10 +778,6 @@ function showToast(message) {
     toast._timeout = setTimeout(function() {
         toast.classList.remove('show');
     }, 3000);
-}
-
-function downloadPDF() {
-    window.location.href = window.location.href + '&action=download';
 }
 </script>
 

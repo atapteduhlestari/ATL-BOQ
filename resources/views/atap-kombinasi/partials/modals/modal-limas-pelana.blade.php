@@ -371,6 +371,9 @@ function lanjutKeBOQLimasPelana() {
         'mahaflat': '/boq/mahaflat/atap-kombinasi/limas-pelana',  // <-- TAMBAHKAN
         'flexi-roof': '/boq/flexiroof/atap-kombinasi/limas-pelana',  // <-- TAMBAHKAN
         'eco-roof': '/boq/ecoroof/atap-kombinasi/limas-pelana',  // <-- TAMBAHKAN
+        'emarin-roof': '/boq/emarinroof/atap-kombinasi/limas-pelana',  // <-- TAMBAHKAN
+        'master-roof': '/boq/masterroof/atap-kombinasi/limas-pelana',  // <-- TAMBAHKAN
+        'maha-roof': '/boq/maharoof/atap-kombinasi/limas-pelana',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limas-pelana';

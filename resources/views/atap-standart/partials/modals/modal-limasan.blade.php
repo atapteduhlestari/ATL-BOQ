@@ -528,6 +528,9 @@ function lanjutKeBOQ() {
         'mahaflat': '/boq/mahaflat/limasan',
         'flexi-roof': '/boq/flexiroof/limasan',
         'eco-roof': '/boq/ecoroof/limasan',
+        'emarin-roof': '/boq/emarin/limasan',
+        'master-roof': '/boq/masterroof/limasan',
+        'maha-roof': '/boq/maharoof/limasan',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

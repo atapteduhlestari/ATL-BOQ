@@ -357,6 +357,9 @@ function lanjutKeBOQLimasanX() {
         'mahaflat': '/boq/mahaflat/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
         'flexi-roof': '/boq/flexiroof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
         'eco-roof': '/boq/ecoroof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
+        'emarin-roof': '/boq/emarinroof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
+        'master-roof': '/boq/masterroof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
+        'maha-roof': '/boq/maharoof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limasan-x';

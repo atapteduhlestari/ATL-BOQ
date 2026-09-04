@@ -255,7 +255,7 @@ public function hitungGergaji(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -622,7 +622,7 @@ public function hitungGergaji(Request $request)
             Log::error('Error export PDF Gergaji: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-gergaji';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-gergaji';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-gergaji';
@@ -880,7 +880,7 @@ public function hitungLengkung2Sisi(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -1230,7 +1230,7 @@ public function hitungLengkung2Sisi(Request $request)
             Log::error('Error export PDF Lengkung 2 Sisi: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-lengkung-2-sisi';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-lengkung-2-sisi';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-lengkung-2-sisi';
@@ -1476,7 +1476,7 @@ public function hitungLimasPelana(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -1826,7 +1826,7 @@ public function hitungLimasPelana(Request $request)
             Log::error('Error export PDF Limas Pelana: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-limas-pelana';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-limas-pelana';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-limas-pelana';
@@ -2072,7 +2072,7 @@ public function hitungLimasanLimasan(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -2422,7 +2422,7 @@ public function hitungLimasanLimasan(Request $request)
             Log::error('Error export PDF Limasan + Limasan: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-limasan-limasan';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-limasan-limasan';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-limasan-limasan';
@@ -2713,7 +2713,7 @@ public function hitungLimasanTrapesium(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -3089,7 +3089,7 @@ public function hitungLimasanTrapesium(Request $request)
             Log::error('Error export PDF Limasan + Trapesium: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-limasan-trapesium';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-limasan-trapesium';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-limasan-trapesium';
@@ -3351,7 +3351,7 @@ public function hitungLimasanX(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -3701,7 +3701,7 @@ public function hitungLimasanX(Request $request)
             Log::error('Error export PDF Limasan X: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-limasan-x';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-limasan-x';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-limasan-x';
@@ -3958,7 +3958,7 @@ public function hitungPelana2Kemiringan(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -4308,7 +4308,7 @@ public function hitungPelana2Kemiringan(Request $request)
             Log::error('Error export PDF Pelana 2 Kemiringan: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-pelana-2-kemiringan';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-pelana-2-kemiringan';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-pelana-2-kemiringan';
@@ -4565,7 +4565,7 @@ public function hitungPelana2Sisi(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok & Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -4914,7 +4914,7 @@ public function hitungPelana2Sisi(Request $request)
             Log::error('Error export PDF Pelana 2 Sisi: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-pelana-2-sisi';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-pelana-2-sisi';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-pelana-2-sisi';
@@ -5171,7 +5171,7 @@ public function hitungPelana2Trapesium(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -5521,7 +5521,7 @@ public function hitungPelana2Trapesium(Request $request)
             Log::error('Error export PDF Pelana 2 Trapesium: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-pelana-2trapesium';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-pelana-2-trapesium';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-pelana-2-trapesium';
@@ -5775,7 +5775,7 @@ public function hitungPelana3Arah(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -6124,7 +6124,7 @@ public function hitungPelana3Arah(Request $request)
             Log::error('Error export PDF Pelana 3 Arah: ' . $e->getMessage());
         }
         
-        $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-pelana-3-arah';
+        $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-pelana-3-arah';
         
         if (!view()->exists($view)) {
             $view = 'boq.taperoof.pdf-taperoof-pelana-3-arah';
@@ -6412,7 +6412,7 @@ public function hitungPelanaX(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -6802,7 +6802,7 @@ public function exportPdfPelanaX(Request $request)
         Log::error('Error export PDF Pelana X: ' . $e->getMessage());
     }
     
-    $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-pelana-x';
+    $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-pelana-x';
     
     if (!view()->exists($view)) {
         $view = 'boq.taperoof.pdf-taperoof-pelana-x';
@@ -7078,7 +7078,7 @@ public function hitungPelanaDinding(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -7463,7 +7463,7 @@ public function exportPdfPelanaDinding(Request $request)
         Log::error('Error export PDF Pelana + Dinding: ' . $e->getMessage());
     }
     
-    $view = 'boq.taperoof.atap-kombinasi.pdf-taperoof-pelana-dinding';
+    $view = 'boq.flexiroof.atap-kombinasi.pdf-flexiroof-pelana-dinding';
     
     if (!view()->exists($view)) {
         $view = 'boq.taperoof.pdf-taperoof-pelana-dinding';

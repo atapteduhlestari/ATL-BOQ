@@ -330,6 +330,9 @@ function lanjutKeBOQPelanaDinding() {
         'mahaflat': '/boq/mahaflat/atap-kombinasi/pelana-dinding',
         'flexi-roof': '/boq/flexiroof/atap-kombinasi/pelana-dinding',
         'eco-roof': '/boq/ecoroof/atap-kombinasi/pelana-dinding',
+        'emarin-roof': '/boq/emarinroof/atap-kombinasi/pelana-dinding',
+        'master-roof': '/boq/masterroof/atap-kombinasi/pelana-dinding',
+        'maha-roof': '/boq/maharoof/atap-kombinasi/pelana-dinding',
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-dinding';

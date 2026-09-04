@@ -359,6 +359,9 @@ function lanjutKeBOQPelana2Kemiringan() {
         'mahaflat': '/boq/mahaflat/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
         'flexi-roof': '/boq/flexiroof/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
         'eco-roof': '/boq/ecoroof/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
+        'emarin-roof': '/boq/emarinroof/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
+        'master-roof': '/boq/masterroof/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
+        'maha-roof': '/boq/maharoof/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-2-kemiringan';

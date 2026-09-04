@@ -250,7 +250,7 @@ public function hitungGergaji(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -866,7 +866,7 @@ public function hitungLengkung2Sisi(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -1448,7 +1448,7 @@ public function hitungLimasPelana(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -2092,7 +2092,7 @@ public function hitungLimasanLimasan(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -2704,7 +2704,7 @@ public function hitungLimasanTrapesium(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -3366,7 +3366,7 @@ public function exportPdfLimasanTrapesium(Request $request)
                 $satuan = $nok->satuan_terkecil ?? 1;
                 $qtyRaw = $panjangNokJurai / $satuan;
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-                $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+                $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
                 $processedProductIds[] = $nok->id;
             }
         }
@@ -4005,7 +4005,7 @@ public function hitungPelana2Kemiringan(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -4642,7 +4642,7 @@ public function exportPdfPelana2Kemiringan(Request $request)
                 $satuan = $nok->satuan_terkecil ?? 1;
                 $qtyRaw = $panjangNokJurai / $satuan;
                 $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-                $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+                $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
                 $processedProductIds[] = $nok->id;
             }
         }
@@ -5281,7 +5281,7 @@ public function hitungPelana2Trapesium(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -5910,7 +5910,7 @@ public function pelana3Arah(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -6554,7 +6554,7 @@ public function hitungPelanaX(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -7198,7 +7198,7 @@ public function hitungPelanaDinding(Request $request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Mahaflat Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }

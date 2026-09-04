@@ -380,6 +380,9 @@ function lanjutKeBOQLimasanTrapesium() {
         'mahaflat': '/boq/mahaflat/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
         'flexi-roof': '/boq/flexiroof/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
         'eco-roof': '/boq/ecoroof/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
+        'emarin-roof': '/boq/emarinroof/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
+        'master-roof': '/boq/masterroof/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
+        'maha-roof': '/boq/maharoof/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limasan-trapesium';

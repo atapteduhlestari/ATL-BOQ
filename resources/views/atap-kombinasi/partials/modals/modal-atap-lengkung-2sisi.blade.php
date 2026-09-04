@@ -358,6 +358,9 @@ function lanjutKeBOQLengkung2Sisi() {
         'mahaflat': '/boq/mahaflat/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
         'flexi-roof': '/boq/flexiroof/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
         'eco-roof': '/boq/ecoroof/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
+        'emarin-roof': '/boq/emarinroof/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
+        'master-roof': '/boq/masterroof/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
+        'maha-roof': '/boq/maharoof/atap-kombinasi/lengkung-2-sisi',  // <-- TAMBAHKAN TAPE ROOF
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/lengkung-2-sisi';

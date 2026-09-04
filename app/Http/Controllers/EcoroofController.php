@@ -9,7 +9,7 @@ use App\Models\ProductBrand;
 use App\Models\ProductArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
+ 
 class EcoroofController extends Controller
 {
     /**
@@ -257,7 +257,7 @@ private function hitungPelana($request)
         $satuan = $nok->satuan_terkecil ?? 1;
         $qtyRaw = $panjangNok / $satuan;
         $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-        $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok', $panjangNok);
+        $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNok);
         $processedProductIds[] = $nok->id;
     }
 }
@@ -714,7 +714,7 @@ private function hitungLimasan($request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
