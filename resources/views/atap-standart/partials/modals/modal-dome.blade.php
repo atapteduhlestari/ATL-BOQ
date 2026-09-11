@@ -269,6 +269,7 @@ function lanjutKeBOQDome() {
         'emarin-roof': '/boq/emarin/dome',  // <-- INI DITAMBAH
         'master-roof': '/boq/masterroof/dome',  // <-- INI DITAMBAH
         'maha-roof': '/boq/maharoof/dome',  // <-- INI DITAMBAH
+        'mahaspan-roof': '/boq/mahaspanroof/dome',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

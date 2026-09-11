@@ -531,6 +531,7 @@ function lanjutKeBOQ() {
         'emarin-roof': '/boq/emarin/limasan',
         'master-roof': '/boq/masterroof/limasan',
         'maha-roof': '/boq/maharoof/limasan',
+        'mahaspan-roof': '/boq/mahaspanroof/limasan',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

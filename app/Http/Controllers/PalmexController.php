@@ -2230,12 +2230,6 @@ public function exportPdf(Request $request, $model)
     
     $data = $request->all();
     
-    // LOG DATA MENTAH DARI REQUEST
-    Log::info('DATA MENTAH DARI REQUEST PALMEX:', [
-        'model' => $model,
-        'data' => $data
-    ]);
-    
     // ============ GENERATE NOMOR BOQ ============
     $nomorBoq = Boq::generateNomorBoq();
     $data['nomor_boq'] = $nomorBoq;
@@ -2247,44 +2241,22 @@ public function exportPdf(Request $request, $model)
         
         Log::info('TOTAL RESULTS: ' . count($results));
         
-        // Filter duplikat
-        $uniqueResults = [];
-        $seenIds = [];
+        // ============ HAPUS FILTER DUPLIKAT YANG MEMBUAT ITEM NULL HILANG ============
+        // Langsung gunakan semua results tanpa filter
+        $data['results'] = $results;
         
-        foreach ($results as $item) {
-            $produkId = $item['id'] ?? $item['product_id'] ?? null;
-            
-            if (!$produkId) {
-                continue;
-            }
-            
-            if (in_array($produkId, $seenIds)) {
-                Log::warning("DUPLIKAT SKIP:", ['id' => $produkId]);
-                continue;
-            }
-            
-            $seenIds[] = $produkId;
-            $uniqueResults[] = $item;
-        }
-        
-        Log::info('UNIQUE RESULTS:', [
-            'total' => count($uniqueResults),
-            'ids' => array_column($uniqueResults, 'id')
-        ]);
-        
-        $data['results'] = $uniqueResults;
-        
-        // Simpan ke database
-        if (!empty($uniqueResults)) {
+        // Simpan ke database (hanya yang memiliki product_id)
+        if (!empty($results)) {
             $boq = new Boq();
             $boq->nomor_boq = $nomorBoq;
             $boq->tanggal_boq = now();
             $boq->save();
             
-            foreach ($uniqueResults as $item) {
+            foreach ($results as $item) {
                 $produkId = $item['id'] ?? $item['product_id'] ?? null;
                 $qty = (int)($item['qty'] ?? 0);
                 
+                // Hanya simpan yang punya product_id dan qty > 0
                 if ($produkId && $qty > 0) {
                     $produk = \App\Models\Product::find($produkId);
                     
@@ -2301,7 +2273,7 @@ public function exportPdf(Request $request, $model)
             
             Log::info('BOQ SAVED:', [
                 'boq_id' => $boq->id,
-                'total' => count($uniqueResults)
+                'total' => count($results)
             ]);
         }
         

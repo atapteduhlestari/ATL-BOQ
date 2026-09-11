@@ -291,6 +291,7 @@ function lanjutKeBOQKerucut() {
         'emarin-roof': '/boq/emarin/kerucut',  // <-- INI DITAMBAH
         'master-roof': '/boq/masterroof/kerucut',  // <-- INI DITAMBAH
         'maha-roof': '/boq/maharoof/kerucut',  // <-- INI DITAMBAH
+        'mahaspan-roof': '/boq/mahaspanroof/kerucut',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

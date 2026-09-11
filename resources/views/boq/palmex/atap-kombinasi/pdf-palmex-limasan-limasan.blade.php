@@ -82,29 +82,31 @@
                 color: white !important;
             }
             
-            .info-grid {
-                background-color: #f8fafc !important;
-            }
-            
             .grand-total-box {
                 background: #1a1a2e !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
             
-            .badge {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-            
-            .subtotal-box {
-                background: #f8fafc !important;
-            }
-            
-            .detail-info-grid {
+            .section-title {
                 background-color: #f8fafc !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+            }
+            
+            .group-title {
+                background-color: #f1f4f9 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .info-list .info-item {
+                border-bottom: 1px solid #f1f4f9 !important;
+            }
+            
+            /* Page break sebelum rincian perbagian */
+            .page-break-rincian {
+                page-break-before: always;
             }
         }
 
@@ -201,7 +203,7 @@
         }
 
         .btn-copy-boq:hover {
-            background: #2d2d44;
+            background: #0f3460;
         }
 
         .btn-copy-boq.copied {
@@ -214,85 +216,70 @@
             }
         }
         
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 14px;
-            background: #f8fafc;
-            padding: 10px 12px;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .info-item {
+        /* LIST STYLE - Dengan Indent */
+        .info-list {
             display: flex;
             flex-direction: column;
+            gap: 0;
+            margin-bottom: 14px;
+            padding: 0;
+            padding-left: 20px;
         }
         
-        .info-label {
-            font-size: 6.5pt;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .info-list .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #f1f4f9;
         }
         
-        .info-value {
+        .info-list .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-list .info-label {
+            font-size: 8pt;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .info-list .info-value {
             font-size: 8pt;
             font-weight: 600;
             color: #1e293b;
-            margin-top: 2px;
-        }
-        
-        .detail-info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
-            background: #f8fafc;
-            padding: 8px 12px;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .detail-info-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .detail-info-label {
-            font-size: 6pt;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        
-        .detail-info-value {
-            font-size: 7.5pt;
-            font-weight: 600;
-            color: #1e293b;
-            margin-top: 1px;
         }
         
         .section-title {
-            font-size: 10pt;
-            font-weight: 700;
+            font-size: 9pt;
+            font-weight: 600;
             color: #1a1a2e;
-            margin: 14px 0 8px 0;
-            padding-bottom: 4px;
-            border-bottom: 2px solid #e2e8f0;
+            margin: 12px 0 6px 0;
+            padding: 4px 10px;
+            background: #f8fafc;
+            border-radius: 3px;
+            border-left: 3px solid #1a1a2e;
         }
         
-        .section-title .sub {
-            font-size: 7pt;
-            font-weight: 400;
-            color: #94a3b8;
-            margin-left: 8px;
+        .section-title-kiri {
+            border-left-color: #1e40af;
         }
         
-        .group-header {
+        .section-title-tengah {
+            border-left-color: #9d174d;
+        }
+        
+        .section-title-kanan {
+            border-left-color: #065f46;
+        }
+        
+        .section-title-center {
+            text-align: center;
+            border-left: none;
+            background: transparent;
+        }
+        
+        .group-title {
             font-size: 8pt;
             font-weight: 600;
             padding: 6px 10px;
@@ -300,29 +287,35 @@
             border-radius: 3px;
         }
         
-        .group-header-atap {
+        .group-title-atap {
             background: #e8edf5;
             color: #1a3a5c;
-            border-left: 3px solid #2b6cb0;
+            border-left: 3px solid #0f3460;
         }
         
-        .group-header-aksesoris {
+        .group-title-aksesoris {
             background: #e8f5ed;
             color: #1a5c3a;
             border-left: 3px solid #38a169;
         }
         
-        .group-header-additional {
-            background: #f5e8ed;
-            color: #5c1a3a;
-            border-left: 3px solid #e53e3e;
+        .group-title-additional {
+            background: #f5ede8;
+            color: #5c3a1a;
+            border-left: 3px solid #e67e22;
+        }
+        
+        .group-title-sistem {
+            background: #f3e8ff;
+            color: #4c1d95;
+            border-left: 3px solid #7c3aed;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 7pt;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         
         th, td {
@@ -350,31 +343,6 @@
             text-align: center;
         }
         
-        .badge {
-            display: inline-block;
-            padding: 1px 8px;
-            border-radius: 3px;
-            font-size: 6pt;
-            font-weight: 500;
-        }
-        .badge-blue { background: #e8edf5; color: #1a3a5c; }
-        .badge-green { background: #e8f5ed; color: #1a5c3a; }
-        .badge-orange { background: #f5ede8; color: #5c3a1a; }
-        .badge-purple { background: #ede8f5; color: #3a1a5c; }
-        .badge-red { background: #f5e8ed; color: #5c1a3a; }
-        .badge-gray { background: #f1f4f9; color: #4a5568; }
-        
-        .subtotal-box {
-            text-align: right;
-            font-weight: 600;
-            font-size: 8pt;
-            padding: 6px 12px;
-            background: #f8fafc;
-            border-radius: 4px;
-            margin-top: 4px;
-            border: 1px solid #e2e8f0;
-        }
-        
         .grand-total-box {
             background: #1a1a2e;
             color: white;
@@ -395,6 +363,18 @@
             font-size: 14pt;
             font-weight: 700;
             letter-spacing: 0.5px;
+        }
+        
+        .subtotal-box {
+            text-align: right;
+            font-weight: 600;
+            font-size: 8pt;
+            padding: 6px 12px;
+            background: #f8fafc;
+            border-radius: 4px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
         }
         
         .footer {
@@ -440,7 +420,7 @@
         }
         
         .btn-print:hover {
-            background: #2d2d44;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -460,7 +440,7 @@
         }
         
         .btn-copy-boq-global:hover {
-            background: #2d2d44;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -503,9 +483,9 @@
 <body>
 
 @php
- function formatRp($angka) {
-    return 'Rp ' . number_format((float) $angka, 0, ',', '.');
-}
+    function formatRp($angka) {
+        return 'Rp ' . number_format((float) $angka, 0, ',', '.');
+    }
     
     $badgeMap = [
         'Atap Utama' => 'badge-blue',
@@ -554,11 +534,13 @@
     $kelompok = [
         'Atap Utama' => [],
         'Aksesoris' => [],
-        'Additional' => []
+        'Additional' => [],
+        'Sistem Pendukung' => []
     ];
     
-    $aksesorisAreas = ['Starter', 'Nok Atas', 'Jurai', 'Underlayer', 'Flashing', 'Paku & Screw', 'Metal Flashing', 'Shingle Stick', 'Talang Jurai', 'Lantai Kerja', 'Screw Plywood'];
+    $aksesorisAreas = ['Starter', 'Nok Atas', 'Jurai', 'Flashing', 'Metal Flashing', 'Shingle Stick', 'Talang Jurai', 'Screw Plywood'];
     $additionalAreas = ['Wall Flashing', 'Flashing Kaca'];
+    $sistemPendukungAreas = ['Underlayer', 'Lantai Kerja', 'Paku & Screw'];
     
     // Proses hasil dari total
     foreach($allResults as $item) {
@@ -567,6 +549,8 @@
             $kelompok['Atap Utama'][] = $item;
         } elseif (in_array($area, $additionalAreas) && ($item['qty'] ?? 0) > 0) {
             $kelompok['Additional'][] = $item;
+        } elseif (in_array($area, $sistemPendukungAreas)) {
+            $kelompok['Sistem Pendukung'][] = $item;
         } elseif (in_array($area, $aksesorisAreas)) {
             $kelompok['Aksesoris'][] = $item;
         } else {
@@ -598,12 +582,14 @@
     $kelompok['Atap Utama'] = mergeItems($kelompok['Atap Utama']);
     $kelompok['Aksesoris'] = mergeItems($kelompok['Aksesoris']);
     $kelompok['Additional'] = mergeItems($kelompok['Additional']);
+    $kelompok['Sistem Pendukung'] = mergeItems($kelompok['Sistem Pendukung']);
     
     // Hitung total per kelompok
     $totalAtap = array_sum(array_column($kelompok['Atap Utama'], 'total_harga'));
     $totalAksesoris = array_sum(array_column($kelompok['Aksesoris'], 'total_harga'));
     $totalAdditional = array_sum(array_column($kelompok['Additional'], 'total_harga'));
-    $grandTotal = $totalAtap + $totalAksesoris + $totalAdditional;
+    $totalSistem = array_sum(array_column($kelompok['Sistem Pendukung'], 'total_harga'));
+    $grandTotal = $totalAtap + $totalAksesoris + $totalAdditional + $totalSistem;
     
     // Data per bagian
     $bagian1Luas = $data['bagian1']['data_perhitungan']['luas_atap'] ?? 0;
@@ -646,6 +632,15 @@
     
     $bagian1TotalClean = cleanRp($bagian1Total);
     $bagian2TotalClean = cleanRp($bagian2Total);
+    
+    // Cek apakah ada item yang tersisa untuk ditampilkan
+    $hasAnyItems = false;
+    foreach ($kelompok as $group) {
+        if (count($group) > 0) {
+            $hasAnyItems = true;
+            break;
+        }
+    }
 @endphp
 
 <div class="toast-message" id="toastMessage">Nomor BOQ berhasil disalin!</div>
@@ -666,7 +661,7 @@
 
     <div class="title-section">
         <h1>BILL OF QUANTITY</h1>
-        <p>{{ $data['judul'] ?? 'Limasan + Limasan' }} | {{ $data['brand'] ?? 'PALMEX' }}</p>
+        <p>{{ $data['brand'] ?? 'PALMEX' }}</p>
         
         <div class="nomor-boq-wrapper">
             <span class="nomor-boq" id="nomorBoqText">
@@ -678,211 +673,185 @@
         </div>
     </div>
 
-    <!-- DATA PERHITUNGAN TOTAL -->
-    <div class="info-grid">
-        <div class="info-item">
-            <span class="info-label">Total Luas Atap</span>
-            <span class="info-value">{{ number_format($totalLuas, 2) }} m²</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Sudut Kemiringan</span>
-            <span class="info-value">{{ number_format($bagian1Sudut, 2) }}° / {{ number_format($bagian2Sudut, 2) }}°</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Total Waste</span>
-            <span class="info-value">{{ $waste1 }}% / {{ $waste2 }}%</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Sistem Pemasangan</span>
-            <span class="info-value">{{ ucfirst($sistemPemasangan1) }} / {{ ucfirst($sistemPemasangan2) }}</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Jumlah Bagian</span>
-            <span class="info-value">2 Bagian (Limasan A + Limasan B)</span>
-        </div>
-    </div>
+   <!-- ============================================================ -->
+<!-- ===== 1. DATA GEOMETRIK ===== -->
+<!-- ============================================================ -->
+<div class="section-title">
+    DATA GEOMETRIK
+</div>
 
-    <!-- ===== RINCIAN MATERIAL - KELOMPOK ===== -->
+<div class="info-list">
+    <div class="info-item">
+        <span class="info-label">Total Luas Atap</span>
+        <span class="info-value">{{ number_format($totalLuas, 2) }} m²</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Total Panjang Starter</span>
+        <span class="info-value">{{ number_format($bagian1Starter + $bagian2Starter, 2) }} m</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Total Panjang Flashing</span>
+        <span class="info-value">{{ number_format($bagian1Flashing + $bagian2Flashing, 2) }} m</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Total Panjang Nok Atas</span>
+        <span class="info-value">{{ number_format($bagian1NokAtas + $bagian2NokAtas, 2) }} m</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Total Panjang Jurai</span>
+        <span class="info-value">{{ number_format($bagian1Jurai + $bagian2Jurai, 2) }} m</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Sudut Kemiringan</span>
+        <span class="info-value">{{ number_format($bagian1Sudut, 2) }}° / {{ number_format($bagian2Sudut, 2) }}°</span>
+    </div>
+</div>
+    <!-- ============================================================ -->
+    <!-- ===== 2. KEBUTUHAN MATERIAL KESELURUHAN ===== -->
+    <!-- ============================================================ -->
     <div class="section-title">
-        RINCIAN KEBUTUHAN MATERIAL
+        KEBUTUHAN MATERIAL KESELURUHAN
     </div>
-
-    <!-- ATAP UTAMA -->
-    @if(count($kelompok['Atap Utama']) > 0)
-    <div class="group-header group-header-atap">🏠 ATAP UTAMA</div>
+    
     <div class="table-wrapper">
-        <table>
-            <thead class="table-header">
-                <tr>
-                    <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $no = 1; @endphp
-                @foreach($kelompok['Atap Utama'] as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((int)($item['qty'] ?? 0), 0, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @if(!$hasAnyItems)
+            <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 9pt;">
+                Belum ada data material
+            </div>
+        @else
+            @php
+                $groupConfig = [
+                    ['key' => 'Atap Utama', 'label' => '📁 ATAP UTAMA', 'cls' => 'group-title-atap'],
+                    ['key' => 'Aksesoris', 'label' => '📁 AKSESORIS', 'cls' => 'group-title-aksesoris'],
+                    ['key' => 'Additional', 'label' => '📁 ADDITIONAL', 'cls' => 'group-title-additional'],
+                    ['key' => 'Sistem Pendukung', 'label' => '📁 SISTEM PENDUKUNG', 'cls' => 'group-title-sistem']
+                ];
+            @endphp
+            
+            @foreach($groupConfig as $config)
+                @php $items = $kelompok[$config['key']] ?? []; @endphp
+                @if(count($items) > 0)
+                    <div class="group-title {{ $config['cls'] }}">
+                        {{ $config['label'] }}
+                    </div>
+                    <table>
+                        <thead class="table-header">
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="30%">Nama Produk</th>
+                                <th width="15%">Area</th>
+                                <th width="10%" class="text-right">Qty</th>
+                                <th width="10%" class="text-right">Satuan</th>
+                                <th width="15%" class="text-right">Harga</th>
+                                <th width="15%" class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1; @endphp
+                            @foreach($items as $item)
+                            <tr>
+                                <td class="text-center">{{ $no++ }}</td>
+                                <td>{{ $item['nama_produk'] ?? '-' }}</td>
+                                <td>{{ $item['area'] ?? '-' }}</td>
+                                <td class="text-right">{{ number_format($item['qty'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                                <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                                <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            @endforeach
+        @endif
     </div>
-    <div class="subtotal-box">SUB TOTAL ATAP UTAMA: {{ formatRp($totalAtap) }}</div>
-    @endif
 
-    <!-- AKSESORIS -->
-    @if(count($kelompok['Aksesoris']) > 0)
-    <div class="group-header group-header-aksesoris">🔧 AKSESORIS</div>
-    <div class="table-wrapper">
-        <table>
-            <thead class="table-header">
-                <tr>
-                    <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $no = 1; @endphp
-                @foreach($kelompok['Aksesoris'] as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((int)($item['qty'] ?? 0), 0, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <div class="subtotal-box">SUB TOTAL AKSESORIS: {{ formatRp($totalAksesoris) }}</div>
-    @endif
-
-    <!-- ADDITIONAL (HANYA JIKA ADA) -->
-    @if(count($kelompok['Additional']) > 0)
-    <div class="group-header group-header-additional">➕ ADDITIONAL</div>
-    <div class="table-wrapper">
-        <table>
-            <thead class="table-header">
-                <tr>
-                    <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $no = 1; @endphp
-                @foreach($kelompok['Additional'] as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((int)($item['qty'] ?? 0), 0, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <div class="subtotal-box">SUB TOTAL ADDITIONAL: {{ formatRp($totalAdditional) }}</div>
-    @endif
-
-    <!-- GRAND TOTAL -->
+    <!-- ============================================================ -->
+    <!-- ===== 3. TOTAL KESELURUHAN ===== -->
+    <!-- ============================================================ -->
     <div class="grand-total-box">
-        <div>
-            <span class="label">🏆 GRAND TOTAL</span>
-            <div class="sub">Total Luas: {{ number_format($totalLuas, 2) }} m²</div>
-        </div>
+        <span class="label">Total Keseluruhan</span>
         <span class="value">{{ formatRp($grandTotal) }}</span>
     </div>
 
-    <!-- DETAIL BAGIAN 1: LIMASAN A -->
-    <div class="section-title">
-        DETAIL BAGIAN 1 - LIMASAN A
-        <span class="sub">Luas: {{ number_format($bagian1Luas, 2) }} m²</span>
+    <!-- ============================================================ -->
+    <!-- ===== 4. DETAIL PERBAGIAN (PAGE BREAK) ===== -->
+    <!-- ============================================================ -->
+    
+    <div class="page-break-rincian"></div>
+    
+    <div class="section-title section-title-center" style="margin-top:0;">
+        RINCIAN PERHITUNGAN PER BAGIAN
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== BAGIAN 1: LIMASAN A ===== -->
+    <!-- ============================================================ -->
+    <div class="section-title section-title-kiri" style="font-size:10pt;margin-top:12px;padding:6px 12px;">
+        PERHITUNGAN BAGIAN 1 - LIMASAN A
     </div>
     
-    <div class="detail-info-grid">
-        <div class="detail-info-item">
-            <span class="detail-info-label">Luas Atap</span>
-            <span class="detail-info-value">{{ number_format($bagian1Luas, 2) }} m²</span>
+    <div class="info-list" style="margin-bottom:8px;">
+        <div class="info-item">
+            <span class="info-label">Luas Atap</span>
+            <span class="info-value">{{ number_format($bagian1Luas, 2) }} m²</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Sudut</span>
-            <span class="detail-info-value">{{ number_format($bagian1Sudut, 2) }}°</span>
+        <div class="info-item">
+            <span class="info-label">Sudut Kemiringan</span>
+            <span class="info-value">{{ number_format($bagian1Sudut, 2) }}°</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Starter</span>
-            <span class="detail-info-value">{{ number_format($bagian1Starter, 2) }} m</span>
+        <div class="info-item">
+            <span class="info-label">Total Panjang Starter</span>
+            <span class="info-value">{{ number_format($bagian1Starter, 2) }} m</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Jurai</span>
-            <span class="detail-info-value">{{ number_format($bagian1Jurai, 2) }} m</span>
+        <div class="info-item">
+            <span class="info-label">Total Panjang Jurai</span>
+            <span class="info-value">{{ number_format($bagian1Jurai, 2) }} m</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Nok Atas</span>
-            <span class="detail-info-value">{{ number_format($bagian1NokAtas, 2) }} m</span>
+        <div class="info-item">
+            <span class="info-label">Total Panjang Nok Atas</span>
+            <span class="info-value">{{ number_format($bagian1NokAtas, 2) }} m</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Flashing</span>
-            <span class="detail-info-value">{{ number_format($bagian1Flashing, 2) }} m</span>
+        <div class="info-item">
+            <span class="info-label">Total Panjang Flashing</span>
+            <span class="info-value">{{ number_format($bagian1Flashing, 2) }} m</span>
         </div>
         @if($opsiDinding1 > 0 || $opsiKaca1 > 0)
-        <div class="detail-info-item">
-            <span class="detail-info-label">Opsi Tambahan</span>
-            <span class="detail-info-value">
+        <div class="info-item">
+            <span class="info-label">Opsi Tambahan</span>
+            <span class="info-value">
                 @if($opsiDinding1 > 0)Dinding: {{ number_format($opsiDinding1, 2) }}m @endif
                 @if($opsiDinding1 > 0 && $opsiKaca1 > 0) | @endif
                 @if($opsiKaca1 > 0)Kaca: {{ number_format($opsiKaca1, 2) }}m @endif
             </span>
         </div>
         @endif
-        <div class="detail-info-item">
-            <span class="detail-info-label">Waste</span>
-            <span class="detail-info-value">{{ $waste1 }}%</span>
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $waste1 }}%</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Sistem</span>
-            <span class="detail-info-value">{{ ucfirst($sistemPemasangan1) }}</span>
+        <div class="info-item">
+            <span class="info-label">Sistem Pemasangan</span>
+            <span class="info-value">{{ ucfirst($sistemPemasangan1) }}</span>
         </div>
     </div>
+
+    <div style="font-size:8pt;font-weight:600;margin:6px 0 4px 0;padding:4px 10px;background:#e8edf5;border-radius:3px;border-left:3px solid #1e40af;">
+        DETAIL KEBUTUHAN MATERIAL
+    </div>
     
+    @if(count($hasilBagian1) > 0)
     <div class="table-wrapper">
         <table>
             <thead class="table-header">
                 <tr>
                     <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
+                    <th width="30%">Nama Produk</th>
+                    <th width="15%">Area</th>
+                    <th width="10%" class="text-right">Qty</th>
+                    <th width="10%" class="text-right">Satuan</th>
+                    <th width="15%" class="text-right">Harga</th>
+                    <th width="15%" class="text-right">Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -891,80 +860,93 @@
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
                     <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((int)($item['qty'] ?? 0), 0, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
+                    <td>{{ $item['area'] ?? '-' }}</td>
+                    <td class="text-right">{{ number_format($item['qty'] ?? 0, 0, ',', '.') }}</td>
+                    <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                    <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                    <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
     <div class="subtotal-box">SUB TOTAL LIMASAN A: {{ formatRp($bagian1TotalClean) }}</div>
+    @else
+    <div style="text-align: center; padding: 10px; color: #94a3b8; font-size: 8pt;">
+        Belum ada data material untuk Limasan A
+    </div>
+    @endif
 
-    <!-- DETAIL BAGIAN 2: LIMASAN B -->
-    <div class="section-title">
-        DETAIL BAGIAN 2 - LIMASAN B
-        <span class="sub">Luas: {{ number_format($bagian2Luas, 2) }} m²</span>
+    <!-- ============================================================ -->
+    <!-- ===== BAGIAN 2: LIMASAN B ===== -->
+    <!-- ============================================================ -->
+    <div class="page-break-rincian"></div>
+    
+    <div class="section-title section-title-tengah" style="font-size:10pt;margin-top:12px;padding:6px 12px;">
+        PERHITUNGAN BAGIAN 2 - LIMASAN B
     </div>
     
-    <div class="detail-info-grid">
-        <div class="detail-info-item">
-            <span class="detail-info-label">Luas Atap</span>
-            <span class="detail-info-value">{{ number_format($bagian2Luas, 2) }} m²</span>
+    <div class="info-list" style="margin-bottom:8px;">
+        <div class="info-item">
+            <span class="info-label">Luas Atap</span>
+            <span class="info-value">{{ number_format($bagian2Luas, 2) }} m²</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Sudut</span>
-            <span class="detail-info-value">{{ number_format($bagian2Sudut, 2) }}°</span>
+        <div class="info-item">
+            <span class="info-label">Sudut Kemiringan</span>
+            <span class="info-value">{{ number_format($bagian2Sudut, 2) }}°</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Starter</span>
-            <span class="detail-info-value">{{ number_format($bagian2Starter, 2) }} m</span>
+        <div class="info-item">
+            <span class="info-label">Total Panjang Starter</span>
+            <span class="info-value">{{ number_format($bagian2Starter, 2) }} m</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Jurai</span>
-            <span class="detail-info-value">{{ number_format($bagian2Jurai, 2) }} m</span>
+        <div class="info-item">
+            <span class="info-label">Total Panjang Jurai</span>
+            <span class="info-value">{{ number_format($bagian2Jurai, 2) }} m</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Nok Atas</span>
-            <span class="detail-info-value">{{ number_format($bagian2NokAtas, 2) }} m</span>
+        <div class="info-item">
+            <span class="info-label">Total Panjang Nok Atas</span>
+            <span class="info-value">{{ number_format($bagian2NokAtas, 2) }} m</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Flashing</span>
-            <span class="detail-info-value">{{ number_format($bagian2Flashing, 2) }} m</span>
+        <div class="info-item">
+            <span class="info-label">Total Panjang Flashing</span>
+            <span class="info-value">{{ number_format($bagian2Flashing, 2) }} m</span>
         </div>
         @if($opsiDinding2 > 0 || $opsiKaca2 > 0)
-        <div class="detail-info-item">
-            <span class="detail-info-label">Opsi Tambahan</span>
-            <span class="detail-info-value">
+        <div class="info-item">
+            <span class="info-label">Opsi Tambahan</span>
+            <span class="info-value">
                 @if($opsiDinding2 > 0)Dinding: {{ number_format($opsiDinding2, 2) }}m @endif
                 @if($opsiDinding2 > 0 && $opsiKaca2 > 0) | @endif
                 @if($opsiKaca2 > 0)Kaca: {{ number_format($opsiKaca2, 2) }}m @endif
             </span>
         </div>
         @endif
-        <div class="detail-info-item">
-            <span class="detail-info-label">Waste</span>
-            <span class="detail-info-value">{{ $waste2 }}%</span>
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $waste2 }}%</span>
         </div>
-        <div class="detail-info-item">
-            <span class="detail-info-label">Sistem</span>
-            <span class="detail-info-value">{{ ucfirst($sistemPemasangan2) }}</span>
+        <div class="info-item">
+            <span class="info-label">Sistem Pemasangan</span>
+            <span class="info-value">{{ ucfirst($sistemPemasangan2) }}</span>
         </div>
     </div>
+
+    <div style="font-size:8pt;font-weight:600;margin:6px 0 4px 0;padding:4px 10px;background:#fce7f3;border-radius:3px;border-left:3px solid #9d174d;">
+        DETAIL KEBUTUHAN MATERIAL
+    </div>
     
+    @if(count($hasilBagian2) > 0)
     <div class="table-wrapper">
         <table>
             <thead class="table-header">
                 <tr>
                     <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
+                    <th width="30%">Nama Produk</th>
+                    <th width="15%">Area</th>
+                    <th width="10%" class="text-right">Qty</th>
+                    <th width="10%" class="text-right">Satuan</th>
+                    <th width="15%" class="text-right">Harga</th>
+                    <th width="15%" class="text-right">Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -973,20 +955,25 @@
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
                     <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((int)($item['qty'] ?? 0), 0, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
+                    <td>{{ $item['area'] ?? '-' }}</td>
+                    <td class="text-right">{{ number_format($item['qty'] ?? 0, 0, ',', '.') }}</td>
+                    <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                    <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                    <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
     <div class="subtotal-box">SUB TOTAL LIMASAN B: {{ formatRp($bagian2TotalClean) }}</div>
+    @else
+    <div style="text-align: center; padding: 10px; color: #94a3b8; font-size: 8pt;">
+        Belum ada data material untuk Limasan B
+    </div>
+    @endif
 
     <div class="footer">
-        <p>Dokumen ini dibuat oleh sistem BOQ | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
+        <p>Dokumen ini dibuat oleh sistem BOQ PALMEX - Limasan + Limasan | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
     </div>
 </div>
 

@@ -82,23 +82,26 @@
                 color: white !important;
             }
             
-            .info-grid {
-                background-color: #f8fafc !important;
-            }
-            
             .grand-total-box {
                 background: #1a1a2e !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
             
-            .badge {
+            .section-title {
+                background-color: #f8fafc !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
             
-            .subtotal-box {
-                background: #f8fafc !important;
+            .group-title {
+                background-color: #f1f4f9 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .info-list .info-item {
+                border-bottom: 1px solid #f1f4f9 !important;
             }
         }
 
@@ -195,7 +198,7 @@
         }
 
         .btn-copy-boq:hover {
-            background: #2d2d44;
+            background: #0f3460;
         }
 
         .btn-copy-boq.copied {
@@ -208,54 +211,52 @@
             }
         }
         
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 14px;
-            background: #f8fafc;
-            padding: 10px 12px;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .info-item {
+        /* LIST STYLE - Dengan Indent (sama dengan PALMEX) */
+        .info-list {
             display: flex;
             flex-direction: column;
+            gap: 0;
+            margin-bottom: 14px;
+            padding: 0;
+            padding-left: 20px;
         }
         
-        .info-label {
-            font-size: 6.5pt;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .info-list .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #f1f4f9;
         }
         
-        .info-value {
+        .info-list .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-list .info-label {
+            font-size: 8pt;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .info-list .info-value {
             font-size: 8pt;
             font-weight: 600;
             color: #1e293b;
-            margin-top: 2px;
         }
         
         .section-title {
-            font-size: 10pt;
-            font-weight: 700;
+            font-size: 9pt;
+            font-weight: 600;
             color: #1a1a2e;
-            margin: 14px 0 8px 0;
-            padding-bottom: 4px;
-            border-bottom: 2px solid #e2e8f0;
+            margin: 12px 0 6px 0;
+            padding: 4px 10px;
+            background: #f8fafc;
+            border-radius: 3px;
+            border-left: 3px solid #1a1a2e;
         }
         
-        .section-title .sub {
-            font-size: 7pt;
-            font-weight: 400;
-            color: #94a3b8;
-            margin-left: 8px;
-        }
-        
-        .group-header {
+        .group-title {
             font-size: 8pt;
             font-weight: 600;
             padding: 6px 10px;
@@ -263,29 +264,35 @@
             border-radius: 3px;
         }
         
-        .group-header-atap {
+        .group-title-atap {
             background: #e8edf5;
             color: #1a3a5c;
-            border-left: 3px solid #2b6cb0;
+            border-left: 3px solid #0f3460;
         }
         
-        .group-header-aksesoris {
+        .group-title-aksesoris {
             background: #e8f5ed;
             color: #1a5c3a;
             border-left: 3px solid #38a169;
         }
         
-        .group-header-additional {
-            background: #f5e8ed;
-            color: #5c1a3a;
-            border-left: 3px solid #e53e3e;
+        .group-title-additional {
+            background: #f5ede8;
+            color: #5c3a1a;
+            border-left: 3px solid #e67e22;
+        }
+        
+        .group-title-sistem {
+            background: #f3e8ff;
+            color: #4c1d95;
+            border-left: 3px solid #7c3aed;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 7pt;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         
         th, td {
@@ -311,31 +318,6 @@
         
         .text-center {
             text-align: center;
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 1px 8px;
-            border-radius: 3px;
-            font-size: 6pt;
-            font-weight: 500;
-        }
-        .badge-blue { background: #e8edf5; color: #1a3a5c; }
-        .badge-green { background: #e8f5ed; color: #1a5c3a; }
-        .badge-orange { background: #f5ede8; color: #5c3a1a; }
-        .badge-purple { background: #ede8f5; color: #3a1a5c; }
-        .badge-red { background: #f5e8ed; color: #5c1a3a; }
-        .badge-gray { background: #f1f4f9; color: #4a5568; }
-        
-        .subtotal-box {
-            text-align: right;
-            font-weight: 600;
-            font-size: 8pt;
-            padding: 6px 12px;
-            background: #f8fafc;
-            border-radius: 4px;
-            margin-top: 4px;
-            border: 1px solid #e2e8f0;
         }
         
         .grand-total-box {
@@ -367,13 +349,6 @@
             margin-top: 14px;
             padding-top: 8px;
             border-top: 1px solid #e2e8f0;
-        }
-        
-        .page-info {
-            text-align: right;
-            font-size: 6.5pt;
-            color: #94a3b8;
-            margin-top: 8px;
         }
 
         .table-wrapper {
@@ -410,7 +385,7 @@
         }
         
         .btn-print:hover {
-            background: #2d2d44;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -430,7 +405,7 @@
         }
         
         .btn-copy-boq-global:hover {
-            background: #2d2d44;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -477,78 +452,81 @@
         return 'Rp ' . number_format((int)$angka, 0, ',', '.');
     }
     
-    $badgeMap = [
-        'Atap Utama' => 'badge-blue',
-        'Underlayer' => 'badge-green',
-        'Starter' => 'badge-orange',
-        'Nok & Jurai' => 'badge-purple',
-        'Talang Jurai' => 'badge-purple',
-        'Flashing' => 'badge-gray',
-        'Metal Flashing' => 'badge-gray',
-        'Shingle Stick' => 'badge-gray',
-        'Paku & Screw' => 'badge-gray',
-        'Wall Flashing' => 'badge-red',
-        'Flashing Kaca' => 'badge-red',
-        'Penangkal Petir' => 'badge-red',
-        'Ventilasi Exhaust' => 'badge-red',
-    ];
+    $nomorBoq = $data['nomor_boq'] ?? 'BOQ-202606-0001';
+    $grandTotal = $data['grand_total'] ?? 0;
+    $results = $data['hasil'] ?? [];
+    
+    $totalLuas = $data['luas_atap'] ?? 0;
+    $starter = $data['starter'] ?? 0;
+    $nokJurai = $data['nok_jurai'] ?? 0;
+    $flashing = $data['flashing'] ?? 0;
+    $talangJurai = $data['talang_jurai'] ?? 0;
+    $wallFlashing = $data['wall_flashing'] ?? 0;
+    $waste = $data['waste'] ?? 5;
+    $panjangBangunan = $data['panjang_bangunan'] ?? 0;
+    $lebarBangunan = $data['lebar_bangunan'] ?? 0;
+    $jumlahGerigi = $data['jumlah_gerigi'] ?? 0;
+    $tinggiGerigi = $data['tinggi_gerigi'] ?? 0;
+    $rangkaNama = $data['rangka'] ?? 'Baja Ringan';
+    $lantaiKerjaNama = $data['lantai_kerja'] ?? '-';
+    
+    // ===== AMBIL NAMA PRODUK DARI HASIL =====
+    $produkAtapNama = '-';
+    $starterNama = '-';
+    $underlayerNama = '-';
+    
+    foreach ($results as $item) {
+        $area = $item['area'] ?? '';
+        if ($area === 'Atap Utama') {
+            $produkAtapNama = $item['nama_produk'] ?? '-';
+        }
+        if ($area === 'Starter') {
+            $starterNama = $item['nama_produk'] ?? '-';
+        }
+        if ($area === 'Underlayer') {
+            $underlayerNama = $item['nama_produk'] ?? '-';
+        }
+        // Cari Lantai Kerja dengan pengecekan yang lebih fleksibel
+        if (stripos($area, 'Lantai') !== false || stripos($area, 'Kerja') !== false) {
+            $lantaiKerjaNama = $item['nama_produk'] ?? $lantaiKerjaNama;
+        }
+    }
     
     // ===== KELOMPOKKAN HASIL =====
     $kelompok = [
-        'Atap Utama' => [],
-        'Aksesoris' => [],
-        'Additional' => []
+        'Atap Utama' => ['label' => 'ATAP UTAMA', 'cls' => 'group-title-atap', 'items' => []],
+        'Aksesoris' => ['label' => 'AKSESORIS', 'cls' => 'group-title-aksesoris', 'items' => []],
+        'Additional' => ['label' => 'ADDITIONAL', 'cls' => 'group-title-additional', 'items' => []],
+        'Sistem Pendukung' => ['label' => 'SISTEM PENDUKUNG', 'cls' => 'group-title-sistem', 'items' => []]
     ];
     
-    $aksesorisAreas = ['Starter', 'Nok & Jurai', 'Underlayer', 'Flashing', 'Paku & Screw', 'Metal Flashing', 'Shingle Stick', 'Talang Jurai'];
-    $additionalAreas = ['Wall Flashing', 'Flashing Kaca', 'Penangkal Petir', 'Ventilasi Exhaust'];
+    $aksesorisAreas = ['Starter', 'Nok & Jurai','Underlayer', 'Flashing', 'Paku & Screw', 'Metal Flashing', 'Shingle Stick', 'Talang Jurai'];
+    $additionalAreas = ['Wall Flashing',  'Flashing Kaca', 'Penangkal Petir', 'Ventilasi Exhaust'];
+    $sistemPendukungAreas = ['Lantai Kerja', 'Paku & Screw'];
     
-    // Proses hasil
-    foreach(($data['hasil'] ?? []) as $item) {
+    foreach ($results as $item) {
         $area = $item['area'] ?? '';
         if ($area === 'Atap Utama') {
-            $kelompok['Atap Utama'][] = $item;
+            $kelompok['Atap Utama']['items'][] = $item;
         } elseif (in_array($area, $additionalAreas) && ($item['qty'] ?? 0) > 0) {
-            $kelompok['Additional'][] = $item;
+            $kelompok['Additional']['items'][] = $item;
+        } elseif (in_array($area, $sistemPendukungAreas)) {
+            $kelompok['Sistem Pendukung']['items'][] = $item;
         } elseif (in_array($area, $aksesorisAreas)) {
-            $kelompok['Aksesoris'][] = $item;
+            $kelompok['Aksesoris']['items'][] = $item;
         } else {
-            $kelompok['Aksesoris'][] = $item;
+            $kelompok['Aksesoris']['items'][] = $item;
         }
     }
     
-    // Gabungkan item yang sama dalam kelompok
-    function mergeItems($items) {
-        $merged = [];
-        foreach ($items as $item) {
-            $key = $item['nama_produk'] ?? $item['nama'] ?? '';
-            if (!isset($merged[$key])) {
-                $merged[$key] = [
-                    'nama_produk' => $key,
-                    'area' => $item['area'] ?? '',
-                    'qty' => 0,
-                    'satuan' => $item['satuan'] ?? 'pcs',
-                    'harga_satuan' => $item['harga_satuan'] ?? 0,
-                    'total_harga' => 0
-                ];
-            }
-            $merged[$key]['qty'] += (int)($item['qty'] ?? 0);
-            $merged[$key]['total_harga'] += (int)($item['total_harga'] ?? 0);
+    // Cek apakah ada item yang tersisa untuk ditampilkan
+    $hasAnyItems = false;
+    foreach ($kelompok as $group) {
+        if (count($group['items']) > 0) {
+            $hasAnyItems = true;
+            break;
         }
-        return array_values($merged);
     }
-    
-    $kelompok['Atap Utama'] = mergeItems($kelompok['Atap Utama']);
-    $kelompok['Aksesoris'] = mergeItems($kelompok['Aksesoris']);
-    $kelompok['Additional'] = mergeItems($kelompok['Additional']);
-    
-    // Hitung total per kelompok
-    $totalAtap = array_sum(array_column($kelompok['Atap Utama'], 'total_harga'));
-    $totalAksesoris = array_sum(array_column($kelompok['Aksesoris'], 'total_harga'));
-    $totalAdditional = array_sum(array_column($kelompok['Additional'], 'total_harga'));
-    $grandTotal = $totalAtap + $totalAksesoris + $totalAdditional;
-    
-    $nomorBoq = $data['nomor_boq'] ?? 'BOQ-202606-0001';
 @endphp
 
 <div class="toast-message" id="toastMessage">Nomor BOQ berhasil disalin!</div>
@@ -569,7 +547,7 @@
 
     <div class="title-section">
         <h1>BILL OF QUANTITY</h1>
-        <p>{{ $data['judul'] ?? 'Pelana X' }} | {{ $data['brand'] ?? 'IKO - ATAP' }}</p>
+        <p>{{ $data['brand'] ?? 'SKYSHIELD - ATAP' }}</p>
         
         <div class="nomor-boq-wrapper">
             <span class="nomor-boq" id="nomorBoqText">
@@ -581,170 +559,130 @@
         </div>
     </div>
 
-    <!-- DATA PERHITUNGAN -->
-    <div class="info-grid">
+    <!-- ===== DATA GEOMETRIK ===== -->
+    <div class="section-title">
+        DATA GEOMETRIK
+    </div>
+    
+    <div class="info-list">
         <div class="info-item">
             <span class="info-label">Luas Atap Total</span>
-            <span class="info-value">{{ number_format($data['luas_atap'] ?? 0, 2) }} m²</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Sudut</span>
-            <span class="info-value">{{ number_format($data['sudut'] ?? 0, 2) }}°</span>
+            <span class="info-value">{{ number_format((float)$totalLuas, 2) }} m²</span>
         </div>
         <div class="info-item">
             <span class="info-label">Starter</span>
-            <span class="info-value">{{ number_format($data['starter'] ?? 0, 2) }} m</span>
+            <span class="info-value">{{ number_format((float)$starter, 2) }} m</span>
         </div>
         <div class="info-item">
             <span class="info-label">Nok & Jurai</span>
-            <span class="info-value">{{ number_format($data['nok_jurai'] ?? 0, 2) }} m</span>
+            <span class="info-value">{{ number_format((float)$nokJurai, 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Talang Jurai</span>
-            <span class="info-value">{{ number_format($data['talang_jurai'] ?? 0, 2) }} m</span>
+            <span class="info-label">Flashing</span>
+            <span class="info-value">{{ number_format((float)$flashing, 2) }} m</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">Wall Flashing</span>
-            <span class="info-value">{{ number_format($data['wall_flashing'] ?? 0, 2) }} m</span>
-        </div>
-        @if(isset($data['waste']))
-        <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] }}%</span>
-        </div>
-        @endif
     </div>
 
-    <!-- ===== RINCIAN MATERIAL - KELOMPOK ===== -->
+    <!-- ===== PILIHAN MATERIAL ===== -->
+    <div class="section-title">
+        PILIHAN MATERIAL
+    </div>
+
+    <div class="info-list">
+        <div class="info-item">
+            <span class="info-label">Produk Atap Utama</span>
+            <span class="info-value">{{ $produkAtapNama }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Starter</span>
+            <span class="info-value">{{ $starterNama }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Underlayer</span>
+            <span class="info-value">{{ $underlayerNama }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Struktur Rangka</span>
+            <span class="info-value">{{ $rangkaNama }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Lantai Kerja</span>
+            <span class="info-value">{{ $lantaiKerjaNama }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $waste }}%</span>
+        </div>
+    </div>
+
+    <!-- ===== RINCIAN MATERIAL ===== -->
     <div class="section-title">
         RINCIAN KEBUTUHAN MATERIAL
     </div>
-
-    <!-- ATAP UTAMA -->
-    @if(count($kelompok['Atap Utama']) > 0)
-    <div class="group-header group-header-atap">🏠 ATAP UTAMA</div>
+    
     <div class="table-wrapper">
-        <table>
-            <thead class="table-header">
-                <tr>
-                    <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $no = 1; @endphp
-                @foreach($kelompok['Atap Utama'] as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((int)($item['qty'] ?? 0), 0, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @if(!$hasAnyItems)
+            <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 9pt;">
+                Belum ada data material
+            </div>
+        @else
+            @foreach($kelompok as $key => $group)
+                @if(count($group['items']) > 0)
+                    <div class="group-title {{ $group['cls'] }}">
+                        {{ $group['label'] }}
+                    </div>
+                    <table>
+                        <thead class="table-header">
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="30%">Nama Produk</th>
+                                <th width="15%">Area</th>
+                                <th width="10%" class="text-right">Qty</th>
+                                <th width="10%" class="text-right">Satuan</th>
+                                <th width="15%" class="text-right">Harga</th>
+                                <th width="15%" class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1; @endphp
+                            @foreach($group['items'] as $item)
+                            <tr>
+                                <td class="text-center">{{ $no++ }}</td>
+                                <td>{{ $item['nama_produk'] ?? '-' }}</td>
+                                <td>{{ $item['area'] ?? '-' }}</td>
+                                <td class="text-right">{{ number_format($item['qty'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                                <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                                <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            @endforeach
+        @endif
     </div>
-    <div class="subtotal-box">SUB TOTAL ATAP UTAMA: {{ formatRp($totalAtap) }}</div>
-    @endif
 
-    <!-- AKSESORIS -->
-    @if(count($kelompok['Aksesoris']) > 0)
-    <div class="group-header group-header-aksesoris">🔧 AKSESORIS</div>
-    <div class="table-wrapper">
-        <table>
-            <thead class="table-header">
-                <tr>
-                    <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $no = 1; @endphp
-                @foreach($kelompok['Aksesoris'] as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((int)($item['qty'] ?? 0), 0, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <div class="subtotal-box">SUB TOTAL AKSESORIS: {{ formatRp($totalAksesoris) }}</div>
-    @endif
-
-    <!-- ADDITIONAL (HANYA JIKA ADA) -->
-    @if(count($kelompok['Additional']) > 0)
-    <div class="group-header group-header-additional">➕ ADDITIONAL</div>
-    <div class="table-wrapper">
-        <table>
-            <thead class="table-header">
-                <tr>
-                    <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $no = 1; @endphp
-                @foreach($kelompok['Additional'] as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((int)($item['qty'] ?? 0), 0, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <div class="subtotal-box">SUB TOTAL ADDITIONAL: {{ formatRp($totalAdditional) }}</div>
-    @endif
-
-    <!-- GRAND TOTAL -->
+    <!-- ===== GRAND TOTAL ===== -->
     <div class="grand-total-box">
-        <span class="label">🏆 GRAND TOTAL</span>
+        <span class="label">Total Keseluruhan</span>
         <span class="value">{{ formatRp($grandTotal) }}</span>
     </div>
 
     <div class="footer">
-        <p>Dokumen ini dibuat oleh sistem BOQ | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
+        <p>Dokumen ini dibuat oleh sistem BOQ SKYSHIELD - Pelana X | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
     </div>
 </div>
 
 <div class="action-buttons no-print">
     <button onclick="window.print()" class="btn-action btn-print">
-        Cetak
+        🖨️ Cetak
     </button>
     <button onclick="copyNomorBoq()" class="btn-action btn-copy-boq-global" id="btnCopyBoqGlobal">
-        Copy Nomor BOQ
+        📋 Copy Nomor BOQ
     </button>
     <a href="{{ route('boq.iko-atap.index') }}" class="btn-action btn-back">
-        Kembali
+        ⬅️ Kembali
     </a>
 </div>
 

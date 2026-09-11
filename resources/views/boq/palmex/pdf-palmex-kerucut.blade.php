@@ -82,10 +82,6 @@
                 color: white !important;
             }
             
-            .info-grid {
-                background-color: #f8fafc !important;
-            }
-            
             .grand-total-box {
                 background: #1a1a2e !important;
                 -webkit-print-color-adjust: exact !important;
@@ -96,6 +92,16 @@
                 background-color: #f8fafc !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+            }
+            
+            .group-title {
+                background-color: #f1f4f9 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .info-list .info-item {
+                border-bottom: 1px solid #f1f4f9 !important;
             }
         }
 
@@ -192,7 +198,7 @@
         }
 
         .btn-copy-boq:hover {
-            background: #2d2d44;
+            background: #0f3460;
         }
 
         .btn-copy-boq.copied {
@@ -205,38 +211,34 @@
             }
         }
         
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px 12px;
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
             margin-bottom: 14px;
-            background: #f8fafc;
-            padding: 10px 14px;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
+            padding: 0;
+            padding-left: 20px;
         }
         
-        .info-item {
+        .info-list .info-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0;
+            padding: 5px 0;
             border-bottom: 1px solid #f1f4f9;
         }
         
-        .info-item:last-child {
+        .info-list .info-item:last-child {
             border-bottom: none;
         }
         
-        .info-label {
-            font-size: 6.5pt;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+        .info-list .info-label {
+            font-size: 8pt;
+            font-weight: 500;
+            color: #4a5568;
         }
         
-        .info-value {
+        .info-list .info-value {
             font-size: 8pt;
             font-weight: 600;
             color: #1e293b;
@@ -261,7 +263,7 @@
             padding: 3px 10px;
             background: #f1f4f9;
             border-radius: 3px;
-            border-left: 3px solid #64748b;
+            border-left: 3px solid #0f3460;
         }
         
         table {
@@ -361,7 +363,7 @@
         }
         
         .btn-print:hover {
-            background: #2d2d44;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -381,7 +383,7 @@
         }
         
         .btn-copy-boq-global:hover {
-            background: #2d2d44;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -419,6 +421,27 @@
                 display: none !important;
             }
         }
+
+        .info-note {
+            background: #fef3c7;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin: 8px 0;
+            font-size: 7pt;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-note .icon {
+            font-size: 10pt;
+        }
+        
+        .info-note strong {
+            color: #92400e;
+        }
     </style>
 </head>
 <body>
@@ -428,38 +451,42 @@
         return 'Rp ' . number_format((int)$angka, 0, ',', '.');
     }
     
-    $nomorBoq = $data['nomor_boq'] ?? 'BOQ-202607-0001';
+    $nomorBoq = $data['nomor_boq'] ?? 'BOQ-PALMEX-202607-0001';
     $model = $data['model'] ?? 'kerucut';
     
     // Hitung grand total dari results
     $grandTotal = 0;
     foreach($data['results'] ?? [] as $item) {
-        $totalStr = $item['total'] ?? $item['total_harga'] ?? 'Rp 0';
-        $total = (int) preg_replace('/[^0-9]/', '', $totalStr);
+        $total = $item['total_harga'] ?? $item['total'] ?? 0;
+        if (is_string($total)) {
+            $total = (int) preg_replace('/[^0-9]/', '', $total);
+        }
         $grandTotal += $total;
     }
     
     $results = $data['results'] ?? [];
     
-    // Kelompokkan berdasarkan area (KERUCUT: TIDAK ADA NOK & JURAI)
+    // Kelompokkan berdasarkan area
     $groups = [
-        'Atap Utama' => ['label' => 'KELOMPOK ATAP UTAMA', 'items' => []],
+        'Atap Utama' => ['label' => 'ATAP UTAMA', 'items' => []],
         'Aksesoris' => ['label' => 'AKSESORIS', 'items' => []],
         'Additional' => ['label' => 'ADDITIONAL', 'items' => []],
         'Sistem Pendukung' => ['label' => 'SISTEM PENDUKUNG', 'items' => []]
     ];
     
     $additionalAreas = ['Wall Flashing', 'Flashing Kaca'];
-    $systemAreas = ['Underlayer', 'Lantai Kerja', 'Screw Plywood'];
-    $aksesorisAreas = ['Starter', 'Topcap', 'Screw', 'Rail', 'Wind', 'Metal Flashing'];
-    // CATATAN: JURAI TIDAK ADA UNTUK KERUCUT
+    $systemAreas = ['Underlayer', 'Lantai Kerja', 'Screw Plywood', 'Plywood', 'Paku & Screw'];
+    $aksesorisAreas = ['Starter', 'Nok Bulat', 'Topcap', 'Rail', 'Wind', 'Metal Flashing', 'Screw'];
     
     foreach ($results as $item) {
         $area = $item['area'] ?? '';
+        
         if ($area === 'Atap Utama') {
             $groups['Atap Utama']['items'][] = $item;
         } elseif (in_array($area, $additionalAreas)) {
-            $groups['Additional']['items'][] = $item;
+            if (($item['qty'] ?? 0) > 0) {
+                $groups['Additional']['items'][] = $item;
+            }
         } elseif (in_array($area, $systemAreas)) {
             $groups['Sistem Pendukung']['items'][] = $item;
         } elseif (in_array($area, $aksesorisAreas)) {
@@ -467,6 +494,30 @@
         } else {
             $groups['Aksesoris']['items'][] = $item;
         }
+    }
+    
+    // Recalculate grand total
+    $grandTotal = 0;
+    foreach ($groups as $group) {
+        foreach ($group['items'] as $item) {
+            $total = $item['total_harga'] ?? $item['total'] ?? 0;
+            if (is_string($total)) {
+                $total = (int) preg_replace('/[^0-9]/', '', $total);
+            }
+            $grandTotal += $total;
+        }
+    }
+
+    // Cek opsi tambahan
+    $hasAdditional = false;
+    $additionalItems = [];
+    if (isset($data['opsi_kaca']) && $data['opsi_kaca'] > 0) {
+        $hasAdditional = true;
+        $additionalItems[] = ['label' => 'Kaca', 'value' => number_format((float)$data['opsi_kaca'], 2) . ' m'];
+    }
+    if (isset($data['opsi_dinding']) && $data['opsi_dinding'] > 0) {
+        $hasAdditional = true;
+        $additionalItems[] = ['label' => 'Dinding', 'value' => number_format((float)$data['opsi_dinding'], 2) . ' m'];
     }
 @endphp
 
@@ -488,7 +539,7 @@
 
     <div class="title-section">
         <h1>BILL OF QUANTITY</h1>
-        <p>PALMEX Kerucut | PALMEX</p>
+        <p>PALMEX Kerucut</p>
         
         <div class="nomor-boq-wrapper">
             <span class="nomor-boq" id="nomorBoqText">
@@ -500,55 +551,62 @@
         </div>
     </div>
 
-    <!-- DATA PERHITUNGAN -->
+    <!-- DATA GEOMETRIK -->
     <div class="section-title">
-        DATA PERHITUNGAN LUAS ATAP
+        DATA GEOMETRIK
     </div>
     
-    <div class="info-grid">
+    <div class="info-list">
         <div class="info-item">
             <span class="info-label">Luas Permukaan Atap</span>
             <span class="info-value">{{ number_format((float)($data['luas_atap'] ?? 0), 2) }} m²</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Sudut Kemiringan</span>
-            <span class="info-value">{{ number_format((float)($data['sudut'] ?? 0), 2) }}°</span>
+            <span class="info-label">Panjang Starter</span>
+            <span class="info-value">{{ number_format((float)($data['starter'] ?? 0), 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
+            <span class="info-label">Panjang Flashing</span>
+            <span class="info-value">{{ number_format((float)($data['flashing'] ?? 0), 2) }} m</span>
         </div>
         <div class="info-item">
             <span class="info-label">Sistem Pemasangan</span>
             <span class="info-value">{{ ucfirst($data['sistem_pemasangan'] ?? 'Expose') }}</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Panjang Starter (Keliling)</span>
-            <span class="info-value">{{ number_format((float)($data['panjang_starter'] ?? 0), 2) }} m</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Jari-Jari Alas (r)</span>
-            <span class="info-value">{{ number_format((float)($data['radius'] ?? 0), 2) }} m</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Panjang Flashing</span>
-            <span class="info-value">{{ number_format((float)($data['panjang_flashing'] ?? 0), 2) }} m</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Garis Pelukis (s)</span>
-            <span class="info-value">{{ number_format((float)($data['garis_pelukis'] ?? 0), 2) }} m</span>
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
         </div>
     </div>
+
+    <!-- OPSI TAMBAHAN -->
+    @if($hasAdditional)
+    <div class="section-title">
+        OPSI TAMBAHAN
+    </div>
+    <div class="info-list">
+        @foreach($additionalItems as $item)
+        <div class="info-item">
+            <span class="info-label">{{ $item['label'] }}</span>
+            <span class="info-value">{{ $item['value'] }}</span>
+        </div>
+        @endforeach
+    </div>
+    @endif
 
     <!-- PILIHAN MATERIAL -->
     <div class="section-title">
         PILIHAN MATERIAL
     </div>
-    
-    <div class="info-grid">
+
+    <div class="info-list">
         <div class="info-item">
             <span class="info-label">Produk Atap Utama</span>
             <span class="info-value">{{ $data['produk_atap'] ?? '-' }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Nok Bulat</span>
+            <span class="info-value">{{ $data['nok_bulat'] ?? '-' }}</span>
         </div>
         <div class="info-item">
             <span class="info-label">Underlayer</span>
@@ -564,7 +622,7 @@
         </div>
     </div>
 
-    <!-- RINCIAN MATERIAL - DENGAN KELOMPOK -->
+    <!-- RINCIAN MATERIAL -->
     <div class="section-title">
         RINCIAN KEBUTUHAN MATERIAL
     </div>
@@ -572,65 +630,81 @@
     <div class="table-wrapper">
         @php
             $groupKeys = ['Atap Utama', 'Aksesoris', 'Additional', 'Sistem Pendukung'];
+            $hasAnyItems = false;
+            foreach ($groupKeys as $key) {
+                if (count($groups[$key]['items']) > 0) {
+                    $hasAnyItems = true;
+                    break;
+                }
+            }
         @endphp
         
-        @foreach($groupKeys as $key)
-            @php $group = $groups[$key]; @endphp
-            @if(count($group['items']) > 0)
-                <div class="group-title">
-                    {{ $group['label'] }}
-                </div>
-                <table>
-                    <thead class="table-header">
-                        <tr>
-                            <th width="5%">No</th>
-                            <th width="30%">Nama Produk</th>
-                            <th width="15%">Area</th>
-                            <th width="10%" class="text-right">Qty</th>
-                            <th width="10%" class="text-right">Satuan</th>
-                            <th width="15%" class="text-right">Harga</th>
-                            <th width="15%" class="text-right">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $no = 1; @endphp
-                        @foreach($group['items'] as $item)
-                        <tr>
-                            <td class="text-center">{{ $no++ }}</td>
-                            <td>{{ $item['nama'] ?? $item['nama_produk'] ?? '-' }}</td>
-                            <td>{{ $item['area'] ?? '-' }}</td>
-                            <td class="text-right">{{ $item['qty'] ?? 0 }}</td>
-                            <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
-                            <td class="text-right">{{ $item['harga'] ?? $item['harga_satuan'] ?? 'Rp 0' }}</td>
-                            <td class="text-right">{{ $item['total'] ?? $item['total_harga'] ?? 'Rp 0' }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
-        @endforeach
+        @if(!$hasAnyItems)
+            <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 9pt;">
+                Belum ada data material
+            </div>
+        @else
+            @foreach($groupKeys as $key)
+                @php $group = $groups[$key]; @endphp
+                @if(count($group['items']) > 0)
+                    <div class="group-title">
+                        {{ $group['label'] }}
+                    </div>
+                    <table>
+                        <thead class="table-header">
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="30%">Nama Produk</th>
+                                <th width="15%">Area</th>
+                                <th width="10%" class="text-right">Qty</th>
+                                <th width="10%" class="text-right">Satuan</th>
+                                <th width="15%" class="text-right">Harga</th>
+                                <th width="15%" class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1; @endphp
+                            @foreach($group['items'] as $item)
+                            <tr>
+                                <td class="text-center">{{ $no++ }}</td>
+                                <td>{{ $item['nama_produk'] ?? $item['nama'] ?? '-' }}</td>
+                                <td>{{ $item['area'] ?? '-' }}</td>
+                                <td class="text-right">{{ number_format($item['qty'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                                <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : (isset($item['harga']) ? formatRp($item['harga']) : 'Rp 0') }}</td>
+                                <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : (isset($item['total']) ? formatRp($item['total']) : 'Rp 0') }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            @endforeach
+        @endif
     </div>
 
     <!-- GRAND TOTAL -->
     <div class="grand-total-box">
-        <span class="label">🏆 GRAND TOTAL</span>
+        <span class="label">GRAND TOTAL</span>
         <span class="value">{{ formatRp($grandTotal) }}</span>
     </div>
 
     <div class="footer">
-        <p>Dokumen ini dibuat oleh sistem BOQ | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
+        <p>Dokumen ini dibuat oleh sistem BOQ PALMEX | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
     </div>
 </div>
 
 <div class="action-buttons no-print">
     <button onclick="window.print()" class="btn-action btn-print">
-        Cetak
+        🖨️ Cetak
+    </button>
+    <button onclick="window.location.href='{{ route('boq.palmex.export-pdf', ['model' => 'kerucut']) }}'" class="btn-action btn-print" style="background: #2563eb;">
+        ⬇️ Download PDF
     </button>
     <button onclick="copyNomorBoq()" class="btn-action btn-copy-boq-global" id="btnCopyBoqGlobal">
-        Copy Nomor BOQ
+        📋 Copy Nomor BOQ
     </button>
     <a href="{{ route('boq.palmex.index', ['model' => 'kerucut']) }}" class="btn-action btn-back">
-        Kembali
+        ↩️ Kembali
     </a>
 </div>
 

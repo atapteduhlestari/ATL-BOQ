@@ -638,10 +638,6 @@
             <span class="info-value">{{ $data['nok_atas'] ?? '-' }}</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Nok Tutup</span>
-            <span class="info-value">{{ $data['nok_tutup'] ?? '-' }}</span>
-        </div>
-        <div class="info-item">
             <span class="info-label">Struktur Rangka</span>
             <span class="info-value">{{ $data['rangka'] ?? '-' }}</span>
         </div>

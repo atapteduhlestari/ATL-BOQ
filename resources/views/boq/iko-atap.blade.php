@@ -1,31 +1,153 @@
 @extends('layouts.app')
 
 @section('content')
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-    body, button, input, select, .text-sm, .text-xs, .text-lg, .text-xl, .text-3xl, .font-semibold, .font-medium, .font-bold {
+    /* ===== STYLE SAMA PERSIS DENGAN KODE 2 ===== */
+    * {
         font-family: 'Poppins', sans-serif !important;
     }
+    
+    body {
+        background: #f5f7fa;
+    }
+    
     input, select, button {
         font-size: 13px !important;
     }
-    label {
-        font-size: 11px !important;
-        letter-spacing: 0.3px;
+    
+    .section-card {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
     }
-    h2, h3 {
-        letter-spacing: -0.3px;
-    }
-    .delete-row {
+    
+    .section-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #fafbfc;
         cursor: pointer;
+        user-select: none;
+        transition: background 0.2s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .section-header:hover {
+        background: #f1f4f9;
+    }
+    .section-header .toggle-icon {
+        font-size: 14px;
+        transition: transform 0.3s;
+    }
+    .section-header .toggle-icon.collapsed {
+        transform: rotate(-90deg);
+    }
+    
+    .section-body {
+        padding: 20px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    .section-body.collapsed {
+        max-height: 0 !important;
+        padding: 0 20px;
+        opacity: 0;
+    }
+    
+    .btn-primary {
+        background: #2d3748;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 13px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
         transition: all 0.2s;
     }
-    .delete-row:hover {
-        transform: scale(1.1);
+    .btn-primary:hover {
+        background: #1a202c;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(45, 55, 72, 0.2);
     }
-
-    /* NOTES / PEMBERITAHUAN */
+    .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .btn-pdf {
+        background: #e53e3e;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 13px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.2s;
+    }
+    .btn-pdf:hover {
+        background: #c53030;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(229, 62, 62, 0.2);
+    }
+    
+    .table-container {
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        margin-top: 12px;
+    }
+    
+    .table-container table {
+        width: 100%;
+        font-size: 12px;
+        border-collapse: collapse;
+    }
+    
+    .table-container th {
+        background: #f7fafc;
+        padding: 10px 14px;
+        text-align: left;
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .table-container td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #edf2f7;
+        color: #2d3748;
+    }
+    
+    .table-container tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .table-container tr:hover {
+        background: #f7fafc;
+    }
+    
+    .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #2d3748;
+    }
+    
+    .section-subtitle {
+        font-size: 11px;
+        color: #718096;
+    }
+    
     .notes-container {
         background: #fffbeb;
         border: 1px solid #fcd34d;
@@ -80,78 +202,427 @@
         font-weight: 500;
         color: #92400e;
     }
+
+    .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: #94a3b8;
+        font-size: 13px;
+    }
     
-    .notes-container .notes-list li .warning-text {
-        color: #991b1b;
+    .result-table .product-name {
+        font-weight: 500;
+    }
+    
+    .result-table .qty {
         font-weight: 600;
+        text-align: center;
+    }
+    
+    .result-table .unit {
+        color: #94a3b8;
+        font-size: 11px;
+        text-align: left;
+    }
+    
+    .result-table .text-center {
+        text-align: center;
+    }
+    
+    .result-table .text-right {
+        text-align: right;
+    }
+    
+    .group-header {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 8px 12px;
+        margin: 8px 0 4px 0;
+        border-radius: 4px;
+        background: #f1f4f9;
+        color: #1a1a2e;
+        border-left: 3px solid #1a1a2e;
+    }
+    
+    .group-header-atap {
+        background: #e8edf5;
+        border-left-color: #0f3460;
+        color: #1a3a5c;
+    }
+    
+    .group-header-aksesoris {
+        background: #e8f5ed;
+        border-left-color: #38a169;
+        color: #1a5c3a;
+    }
+    
+    .group-header-additional {
+        background: #f5ede8;
+        border-left-color: #e67e22;
+        color: #5c3a1a;
+    }
+    
+    .group-header-sistem {
+        background: #f3e8ff;
+        border-left-color: #7c3aed;
+        color: #4c1d95;
+    }
+    
+    .grand-total-minimal {
+        background: #1a1a2e;
+        border-radius: 8px;
+        padding: 14px 20px;
+        margin-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .grand-total-minimal .label {
+        color: rgba(255,255,255,0.6);
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .grand-total-minimal .amount {
+        color: white;
+        font-size: 20px;
+        font-weight: 700;
     }
 
-    /* Opsi Tambahan */
-    .opsi-tambahan-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-top: 12px;
-        padding-top: 12px;
-        border-top: 1px solid #e2e8f0;
-    }
-    
-    @media (max-width: 640px) {
-        .opsi-tambahan-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-    
-    .opsi-item {
+    /* Data Geometrik Style - ROW */
+    .data-geometrik {
         display: flex;
         flex-direction: column;
-        gap: 2px;
+        gap: 0;
+        padding: 4px 0;
     }
     
-    .opsi-item label {
-        font-size: 10px !important;
+    .data-geometrik .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #f1f4f9;
+    }
+    
+    .data-geometrik .row:last-child {
+        border-bottom: none;
+    }
+    
+    .data-geometrik .label {
+        font-size: 12px;
         font-weight: 500;
         color: #4a5568;
-        display: flex;
-        align-items: center;
-        gap: 4px;
+        min-width: 180px;
     }
     
-    .opsi-item label .opsi-desc {
+    .data-geometrik .value {
+        font-size: 13px;
+        font-weight: 500;
+        color: #1e293b;
+        flex: 1;
+        text-align: right;
+    }
+    
+    .data-geometrik .value .unit {
         font-weight: 400;
-        color: #a0aec0;
-        font-size: 9px;
+        color: #94a3b8;
+        margin-left: 2px;
     }
     
-    .opsi-item input {
-        width: 100%;
-        padding: 6px 10px;
+    .data-geometrik .value input[readonly] {
+        border: none;
+        background: transparent;
+        font-size: 13px;
+        font-weight: 500;
+        color: #1e293b;
+        width: 100px;
+        padding: 0;
+        text-align: right;
+    }
+
+    /* Pilih Material Style - ROW dengan INDENT */
+    .pilih-material {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 4px 0;
+    }
+    
+    .pilih-material .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0 6px 24px;
+        border-bottom: 1px solid #f1f4f9;
+    }
+    
+    .pilih-material .row:last-child {
+        border-bottom: none;
+    }
+    
+    .pilih-material .label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #4a5568;
+        min-width: 160px;
+    }
+    
+    .pilih-material .value {
+        font-size: 13px;
+        font-weight: 500;
+        color: #1e293b;
+        flex: 1;
+        text-align: right;
+    }
+    
+    .pilih-material .value select,
+    .pilih-material .value input {
         border: 1px solid #e2e8f0;
         border-radius: 6px;
+        padding: 4px 12px;
         font-size: 12px;
-        font-family: 'Poppins', sans-serif;
-        transition: all 0.2s;
         background: white;
+        width: 100%;
+        max-width: 300px;
     }
     
-    .opsi-item input:focus {
+    .pilih-material .value select:focus,
+    .pilih-material .value input:focus {
         outline: none;
         border-color: #4299e1;
         box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
     }
     
-    .opsi-item input::placeholder {
-        color: #cbd5e1;
-        font-size: 11px;
+    .pilih-material .value .waste-inline {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+    .pilih-material .value .waste-inline input {
+        width: 80px;
+        text-align: center;
+    }
+    .pilih-material .value .waste-inline span {
+        font-size: 12px;
+        color: #94a3b8;
+    }
+
+    /* Sub section title */
+    .sub-section-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin: 12px 0 6px 0;
+        padding: 4px 10px;
+        background: #f8fafc;
+        border-radius: 3px;
+        border-left: 3px solid #1a1a2e;
+    }
+
+    .sub-section-title .badge {
+        font-weight: 400;
+        font-size: 10px;
+        color: #94a3b8;
+        margin-left: 8px;
     }
     
-    .opsi-item .opsi-satuan {
+    /* Opsi Tambahan - 4 Kolom (SAMA SEPERTI KODE 2) */
+    .opsi-tambahan {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 2px solid #e2e8f0;
+    }
+    
+    .opsi-tambahan .opsi-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 8px;
+    }
+    
+    .opsi-tambahan .opsi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px 20px;
+        padding-left: 24px;
+    }
+    
+    .opsi-tambahan .opsi-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .opsi-tambahan .opsi-item label {
+        font-size: 10px !important;
+        font-weight: 500;
+        color: #4a5568;
+    }
+    
+    .opsi-tambahan .opsi-item label .opsi-desc {
+        font-weight: 400;
+        color: #a0aec0;
+        font-size: 9px;
+    }
+    
+    .opsi-tambahan .opsi-item input {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 12px;
+        transition: all 0.2s;
+        background: white;
+    }
+    
+    .opsi-tambahan .opsi-item input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    
+    .opsi-tambahan .opsi-item .satuan {
         font-size: 10px;
         color: #a0aec0;
         margin-top: 2px;
     }
+    
+    @media (max-width: 768px) {
+        .pilih-material .row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            padding-left: 12px;
+        }
+        .pilih-material .value {
+            text-align: left;
+            width: 100%;
+        }
+        .pilih-material .value select,
+        .pilih-material .value input {
+            max-width: 100%;
+        }
+        .pilih-material .value .waste-inline {
+            justify-content: flex-start;
+        }
+        .opsi-tambahan .opsi-grid {
+            grid-template-columns: 1fr;
+            padding-left: 0;
+        }
+        .data-geometrik .row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+        .data-geometrik .value {
+            text-align: left;
+            width: 100%;
+        }
+        .data-geometrik .label {
+            min-width: auto;
+        }
+        .pilih-material .label {
+            min-width: auto;
+        }
+    }
+    
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .gap-6 { gap: 24px; }
+    .mt-1 { margin-top: 4px; }
+    .mt-2 { margin-top: 8px; }
+    .mt-3 { margin-top: 12px; }
+    .mt-4 { margin-top: 16px; }
+    .mt-5 { margin-top: 20px; }
+    .mb-1 { margin-bottom: 4px; }
+    .mb-1-5 { margin-bottom: 6px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-4 { margin-bottom: 16px; }
+    .mb-5 { margin-bottom: 20px; }
+    .hidden { display: none; }
+    .border-t { border-top: 1px solid #e2e8f0; }
+    .pt-4 { padding-top: 16px; }
+    .text-right { text-align: right; }
+    .text-base { font-size: 16px; }
+    .font-semibold { font-weight: 600; }
+    .font-medium { font-weight: 500; }
+    .text-gray-700 { color: #374151; }
+    .text-gray-500 { color: #6b7280; }
+    .text-gray-400 { color: #9ca3af; }
+    .text-gray-200 { color: #e5e7eb; }
+    .text-xs { font-size: 12px; }
+    .text-[10px] { font-size: 10px; }
+    .text-xl { font-size: 20px; }
+    .uppercase { text-transform: uppercase; }
+    .tracking-wide { letter-spacing: 0.5px; }
+    .block { display: block; }
+    .space-y-6 > * + * { margin-top: 24px; }
+    
+    .btn-master {
+        background: #0f3460;
+        transition: all 0.2s;
+    }
+    .btn-master:hover {
+        background: #1a1a2e;
+    }
+    
+    .btn-master-pdf {
+        background: #e53e3e;
+    }
+    .btn-master-pdf:hover {
+        background: #c53030;
+    }
+    
+    .total-box {
+        background: #1a1a2e;
+        border-radius: 12px;
+        padding: 20px 24px;
+        color: white;
+    }
+    .total-box .label {
+        font-size: 12px;
+        color: rgba(255,255,255,0.6);
+        font-weight: 400;
+    }
+    .total-box .amount {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+    }
+    
+    .waste-inline {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .waste-inline input {
+        width: 60px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 12px;
+        background: white;
+    }
+    .waste-inline input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    .waste-inline span {
+        font-size: 12px;
+        color: #94a3b8;
+    }
 
-    /* HEADER ELEGANT MINIMALIS */
+    /* Header Brand */
     .header-brand {
         background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         border-radius: 16px;
@@ -172,16 +643,21 @@
         border-radius: 50%;
     }
     
+    .header-brand .brand-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 16px;
+        color: white;
+        flex-shrink: 0;
+    }
+    
     .header-brand .brand-icon.iko {
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    }
-    
-    .header-brand .brand-icon.skyshield {
-        background: linear-gradient(135deg, #06b6d4, #0891b2);
-    }
-    
-    .header-brand .brand-icon.palmex {
-        background: linear-gradient(135deg, #22c55e, #16a34a);
     }
     
     .header-brand .brand-name {
@@ -211,137 +687,99 @@
         text-transform: uppercase;
     }
 
-    /* STYLING HASIL PERHITUNGAN - TABLE MINIMALIS */
-    .result-section {
-        margin-bottom: 20px;
+    /* Required star */
+    .required-star {
+        color: #e53e3e;
+        margin-left: 2px;
     }
 
-    .result-section .section-label {
-        font-size: 11px;
-        font-weight: 600;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 8px 12px;
-        background: #f8fafc;
-        border-radius: 6px 6px 0 0;
-        border-bottom: 1px solid #e2e8f0;
-    }
-
-    .result-table {
+    .input-field {
         width: 100%;
-        font-size: 12px;
-        border-collapse: collapse;
-    }
-
-    .result-table th {
-        text-align: left;
         padding: 8px 12px;
-        font-weight: 500;
-        color: #94a3b8;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        border-bottom: 1px solid #e2e8f0;
-        background: #fafbfc;
-    }
-
-    .result-table td {
-        padding: 7px 12px;
-        border-bottom: 1px solid #f1f4f9;
-        color: #1a1a2e;
-    }
-
-    .result-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .result-table .product-name {
-        font-weight: 500;
-    }
-
-    .result-table .area-tag {
-        font-size: 10px;
-        color: #94a3b8;
-    }
-
-    .result-table .qty {
-        font-weight: 600;
-        text-align: center;
-    }
-
-    .result-table .unit {
-        color: #94a3b8;
-        font-size: 11px;
-        text-align: left;
-    }
-
-    .result-table .total {
-        font-weight: 500;
-        text-align: right;
-    }
-
-    .result-table .total-empty {
-        color: #cbd5e1;
-        font-weight: 400;
-        text-align: right;
-    }
-
-    .result-table .text-center {
-        text-align: center;
-    }
-
-    .result-table .text-right {
-        text-align: right;
-    }
-
-    .grand-total-minimal {
-        background: #1a1a2e;
+        border: 1px solid #e2e8f0;
         border-radius: 8px;
-        padding: 14px 20px;
-        margin-top: 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .grand-total-minimal .label {
-        color: rgba(255,255,255,0.6);
-        font-size: 12px;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .grand-total-minimal .amount {
-        color: white;
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 30px;
-        color: #94a3b8;
+        background: white;
+        transition: all 0.2s;
         font-size: 13px;
+        color: #2d3748;
+        font-family: 'Poppins', sans-serif;
+    }
+    .input-field:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    .input-field:read-only {
+        background: #f7fafc;
+        color: #2d3748;
+        font-weight: 500;
+    }
+
+    select.input-field {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+    }
+
+    select.input-field:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: #f7fafc !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .flex-col {
+            flex-direction: column;
+        }
+        .items-start {
+            align-items: flex-start;
+        }
+        .gap-4 {
+            gap: 16px;
+        }
+    }
+
+    .flex-col { flex-direction: column; }
+    .items-start { align-items: flex-start; }
+    .relative { position: relative; }
+    .z-10 { z-index: 10; }
+    .shrink-0 { flex-shrink: 0; }
+
+    /* Sistem warning */
+    .sistem_warning {
+        transition: all 0.3s ease;
+        font-size: 11px;
+    }
+
+    /* Bagian hasil */
+    .bagian-hasil {
+        margin-top: 16px;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 16px;
+    }
+    .bagian-hasil .subtotal {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a2e;
+        text-align: right;
+    }
+    .bagian-hasil .subtotal .label {
+        font-weight: 400;
+        color: #718096;
+        font-size: 12px;
+    }
+
+    /* HAPUS notifikasi toast */
+    .notification-toast {
+        display: none !important;
     }
 </style>
 
 <div class="space-y-6">
-    <!-- Header -->
-    <div class="header-brand">
-        <div class="flex items-center justify-between relative z-10">
-            <div class="flex items-center gap-4">
-                <div class="brand-icon iko">I</div>
-                <div>
-                    <div class="brand-name">BOQ - IKO Atap</div>
-                    <div class="brand-sub">Hitung kebutuhan material atap IKO berdasarkan perhitungan luas</div>
-                </div>
-            </div>
-            <div class="brand-badge">IKO - ATAP</div>
-        </div>
-    </div>
-
+  
     <!-- ===== NOTES / PEMBERITAHUAN ===== -->
     <div class="notes-container">
         <div class="notes-title">
@@ -383,362 +821,341 @@
             </li>
         </ul>
     </div>
-    
-    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-        <div class="p-6">
-            <form id="boqForm">
-                <!-- Data Perhitungan Luas -->
-                <div class="mb-8">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-1 h-5 bg-blue-600 rounded-full"></div>
-                        <h3 class="text-base font-semibold text-gray-800">Data Perhitungan Luas Atap</h3>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 rounded-xl p-4">
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Luas Permukaan Atap</label>
-                            <input type="number" id="luas_atap" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" readonly placeholder="0 m²">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Sudut Kemiringan</label>
-                            <input type="number" id="sudut" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" readonly placeholder="0°">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Starter</label>
-                            <input type="number" id="panjang_starter" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" readonly placeholder="0 m">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Nok & Jurai</label>
-                            <input type="number" id="panjang_nok_jurai" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" readonly placeholder="0 m">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Flashing</label>
-                            <input type="number" id="panjang_flashing" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" readonly placeholder="0 m">
-                        </div>
-                    </div>
-
-                    <!-- ===== OPSI TAMBAHAN ===== -->
-                    <div class="opsi-tambahan-grid">
-                        <div class="opsi-item">
-                            <label>
-                                📐 Dinding
-                                <span class="opsi-desc">(Panjang atap yang berbatasan dinding)</span>
-                            </label>
-                            <input type="number" 
-                                   id="opsi_dinding" 
-                                   step="0.1" 
-                                   min="0"
-                                   placeholder="0"
-                                   value="0">
-                            <span class="opsi-satuan">meter</span>
-                        </div>
-                        <div class="opsi-item">
-                            <label>
-                                🪟 Kaca
-                                <span class="opsi-desc">(panjang area kaca/genteng kaca)</span>
-                            </label>
-                            <input type="number" 
-                                   id="opsi_kaca" 
-                                   step="0.1" 
-                                   min="0"
-                                   placeholder="0"
-                                   value="0">
-                            <span class="opsi-satuan">meter</span>
-                        </div>
-                        <div class="opsi-item">
-                            <label>
-                                ⚡ Penangkal Petir
-                                <span class="opsi-desc">(jumlah titik)</span>
-                            </label>
-                            <input type="number" 
-                                   id="opsi_penangkal" 
-                                   step="1" 
-                                   min="0"
-                                   placeholder="0"
-                                   value="0">
-                            <span class="opsi-satuan">titik</span>
-                        </div>
-                        <div class="opsi-item">
-                            <label>
-                                💨 Ventilasi Exhaust
-                                <span class="opsi-desc">(jumlah titik)</span>
-                            </label>
-                            <input type="number" 
-                                   id="opsi_exhaust" 
-                                   step="1" 
-                                   min="0"
-                                   placeholder="0"
-                                   value="0">
-                            <span class="opsi-satuan">titik</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Pilihan Produk -->
-                <div class="mb-8">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-1 h-5 bg-green-600 rounded-full"></div>
-                        <h3 class="text-base font-semibold text-gray-800">Pilihan Material</h3>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">PRODUK ATAP UTAMA</label>
-                            <select id="produk_atap_id" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                <option value="">Pilih Produk</option>
-                                @foreach($products as $product)
-                                    <option value="{{ $product->id }}">
-                                        {{ $product->nama_produk }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">UNDERLAYER</label>
-                            <select id="underlayer_id" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                <option value="">Pilih Underlayer</option>
-                                @foreach($underlayers as $underlayer)
-                                    <option value="{{ $underlayer->id }}">
-                                        {{ $underlayer->nama_produk }} 
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- ===== DROPDOWN STARTER ===== -->
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">STARTER</label>
-                            <select id="starter_produk_id" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                <option value="">Pilih Starter</option>
-                                @foreach($starters as $starter)
-                                    <option value="{{ $starter->id }}">
-                                        {{ $starter->nama_produk }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">STRUKTUR RANGKA</label>
-                            <select id="rangka" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                @foreach($rangkaOptions as $option)
-                                    <option value="{{ $option }}">{{ $option }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">LANTAI KERJA</label>
-                            <select id="lantai_kerja" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                @foreach($lantaiKerjaOptions as $option)
-                                    <option value="{{ $option }}">{{ $option }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">WASTE (%)</label>
-                            <input type="number" id="waste" step="1" value="5" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Tombol Hitung -->
-                <div class="flex gap-3">
-                    <button type="button" onclick="hitungBOQ()" class="flex-1 bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium transition-all">
-                        <svg class="inline w-4 h-4 mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-6 3v-3m-6 3h18M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
-                        </svg>
-                        Hitung Material
-                    </button>
-                    <button type="button" id="btnPDF" onclick="exportToPDF()" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-lg text-sm font-medium hidden transition-all">
-                        <svg class="inline w-4 h-4 mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                        </svg>
-                        Export PDF
-                    </button>
-                </div>
-            </form>
+    <!-- ===== SECTION 1: DATA GEOMETRIK ===== -->
+    <div class="section-card">
+        <div class="section-header" onclick="toggleSection('geometrik')">
+            <div>
+                <h3 class="section-title">Data Geometrik</h3>
+                <p class="section-subtitle">Data luas atap dan kemiringan dari perhitungan sebelumnya</p>
+            </div>
+            <span class="toggle-icon collapsed" id="geometrik_icon">▼</span>
+        </div>
+        <div class="section-body collapsed" id="geometrik_body">
             
-            <!-- Hasil Perhitungan -->
-            <div id="hasilBOQ" class="mt-8 hidden">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-1 h-5 bg-gray-900 rounded-full"></div>
-                    <h3 class="text-base font-semibold text-gray-800">Rincian Kebutuhan Material</h3>
+            <!-- Data Geometrik - TANPA HEADER -->
+            <div class="data-geometrik">
+                <div class="row"><span class="label">Luas Atap</span><span class="value"><input type="text" id="luas_atap" readonly value="0"><span class="unit">m²</span></span></div>
+                <div class="row"><span class="label">Sudut Kemiringan</span><span class="value"><input type="text" id="sudut" readonly value="0"><span class="unit">°</span></span></div>
+                <div class="row"><span class="label">Panjang Starter</span><span class="value"><input type="text" id="panjang_starter" readonly value="0"><span class="unit">m</span></span></div>
+                <div class="row"><span class="label">Nok & Jurai</span><span class="value"><input type="text" id="panjang_nok_jurai" readonly value="0"><span class="unit">m</span></span></div>
+                <div class="row"><span class="label">Flashing</span><span class="value"><input type="text" id="panjang_flashing" readonly value="0"><span class="unit">m</span></span></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== SECTION 2: PILIH MATERIAL ===== -->
+    <div class="section-card">
+        <div class="section-header" onclick="toggleSection('material')">
+            <div>
+                <h3 class="section-title">Pilih Material</h3>
+                <p class="section-subtitle">Pilih material dan aksesoris atap</p>
+            </div>
+            <span class="toggle-icon" id="material_icon">▼</span>
+        </div>
+        <div class="section-body" id="material_body">
+
+            <!-- Pilih Material - LANGSUNG TANPA SUB-SECTION TITLE -->
+            <div class="pilih-material">
+                <div class="row">
+                    <span class="label">Produk Atap Utama <span class="required-star">*</span></span>
+                    <span class="value">
+                        <select id="produk_atap_id" required>
+                            <option value="">Pilih Produk</option>
+                            @foreach($products as $product)
+                                <option value="{{ $product->id }}">{{ $product->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </span>
                 </div>
-                <div class="rounded-xl border border-gray-200 overflow-hidden bg-white">
-                    <div id="boqResultContainer" class="p-4">
-                        <!-- Akan diisi oleh JavaScript -->
+                <div class="row" id="underlayer_container">
+                    <span class="label">Underlayer</span>
+                    <span class="value">
+                        <select id="underlayer_id">
+                            <option value="">Pilih Underlayer</option>
+                            @foreach($underlayers as $underlayer)
+                                <option value="{{ $underlayer->id }}">{{ $underlayer->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Starter</span>
+                    <span class="value">
+                        <select id="starter_produk_id">
+                            <option value="">Pilih Starter</option>
+                            @foreach($starters as $starter)
+                                <option value="{{ $starter->id }}">{{ $starter->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Struktur Rangka</span>
+                    <span class="value">
+                        <select id="rangka">
+                            <option value="Kayu">Kayu</option>
+                            <option value="Baja Ringan" selected>Baja Ringan</option>
+                            <option value="Baja Berat">Baja Berat</option>
+                            <option value="Beton">Beton</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="row" id="lantai_kerja_container">
+                    <span class="label">Lantai Kerja</span>
+                    <span class="value">
+                        <select id="lantai_kerja">
+                            <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
+                            <option value="Plywood 12 mm">Plywood 12 mm</option>
+                            <option value="Plywood 15 mm">Plywood 15 mm</option>
+                            <option value="GRC 9 mm">GRC 9 mm</option>
+                            <option value="GRC 12 mm">GRC 12 mm</option>
+                            <option value="GRC 15 mm">GRC 15 mm</option>
+                            <option value="Beton">Beton</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Waste (%)</span>
+                    <span class="value">
+                        <div class="waste-inline">
+                            <input type="number" id="waste" step="1" value="5">
+                            <span>%</span>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Opsi Tambahan - 4 Kolom (SAMA SEPERTI KODE 2) -->
+            <div class="opsi-tambahan">
+                <div class="opsi-title">Opsi Tambahan</div>
+                <div class="opsi-grid">
+                    <div class="opsi-item">
+                        <label>
+                            Dinding
+                        </label>
+                        <input type="number" 
+                               id="opsi_dinding" 
+                               step="0.1" 
+                               min="0"
+                               placeholder="0"
+                               value="0">
+                        <span class="satuan">meter</span>
+                    </div>
+                    <div class="opsi-item">
+                        <label>
+                            Kaca
+                        </label>
+                        <input type="number" 
+                               id="opsi_kaca" 
+                               step="0.1" 
+                               min="0"
+                               placeholder="0"
+                               value="0">
+                        <span class="satuan">meter</span>
+                    </div>
+                    <div class="opsi-item">
+                        <label>
+                            Penangkal Petir
+                        </label>
+                        <input type="number" 
+                               id="opsi_penangkal" 
+                               step="1" 
+                               min="0"
+                               placeholder="0"
+                               value="0">
+                        <span class="satuan">titik</span>
+                    </div>
+                    <div class="opsi-item">
+                        <label>
+                            Exhaust
+                        </label>
+                        <input type="number" 
+                               id="opsi_exhaust" 
+                               step="1" 
+                               min="0"
+                               placeholder="0"
+                               value="0">
+                        <span class="satuan">titik</span>
                     </div>
                 </div>
             </div>
+
+            <!-- Tombol Hitung -->
+            <button onclick="hitungBOQ()" class="btn-primary btn-master mt-4" style="padding:14px 24px;font-size:14px;font-weight:600;">
+                🚀 Hitung Kebutuhan Material
+            </button>
+
+            <!-- ===== HASIL MATERIAL ===== -->
+            <div class="bagian-hasil" id="hasilBOQ" style="display:none;">
+                <div class="table-container" id="boqResultContainer"></div>
+                <div class="subtotal">
+                    <span class="label">Grand Total :  </span>
+                    <span id="grandTotal">Rp 0</span>
+                </div>
+            </div>
+
         </div>
+    </div>
+
+    <!-- ===== TOTAL KESELURUHAN + PDF ===== -->
+    <div class="total-box">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h4 class="text-sm font-semibold text-white">Total Keseluruhan</h4>
+            </div>
+            <div class="text-right">
+                <p class="amount" id="totalKeseluruhan">Rp 0</p>
+            </div>
+        </div>
+        
+        <button onclick="exportToPDF()" class="btn-pdf btn-master-pdf" id="btnPDF" style="display:none;">
+            📄 Export PDF
+        </button>
     </div>
 </div>
 
 <script>
 let currentResults = [];
 
-function updateGrandTotal(total) {
-    let grandTotalEl = document.getElementById('grandTotal');
-    if (grandTotalEl) {
-        grandTotalEl.innerHTML = `Rp ${(total || 0).toLocaleString()}`;
+function toggleSection(section) {
+    let body = document.getElementById(section + '_body');
+    let icon = document.getElementById(section + '_icon');
+    if (!body || !icon) return;
+    if (body.classList.contains('collapsed')) {
+        body.classList.remove('collapsed');
+        icon.textContent = '▼';
+        icon.classList.remove('collapsed');
+    } else {
+        body.classList.add('collapsed');
+        icon.textContent = '▶';
+        icon.classList.add('collapsed');
     }
 }
 
-function renderTable() {
-    let container = document.getElementById('boqResultContainer');
-    
-    if (!container) {
-        console.error('Container boqResultContainer tidak ditemukan!');
-        return;
-    }
-    
-    if (!currentResults || currentResults.length === 0) {
-        container.innerHTML = `<div class="empty-state">Belum ada data material</div>`;
-        return;
-    }
-    
-    // Kelompokkan berdasarkan area
-    const groups = {
-        'Atap Utama': { label: 'KELOMPOK ATAP UTAMA', items: [] },
-        'Aksesoris': { label: 'AKSESORIS', items: [] },
-        'Additional': { label: 'ADDITIONAL', items: [] },
-        'Sistem Pendukung': { label: 'SISTEM PENDUKUNG', items: [] }
-    };
-    
-    const additionalAreas = ['Wall Flashing', 'Flashing Kaca', 'Penangkal Petir', 'Ventilasi Exhaust'];
-    const systemAreas = ['Underlayer', 'Lantai Kerja', 'Screw Plywood', 'Paku & Screw'];
-    const aksesorisAreas = ['Starter', 'Nok & Jurai', 'Talang Jurai', 'Flashing', 'Metal Flashing', 'Shingle Stick'];
-    
-    currentResults.forEach(item => {
-        if (item.area === 'Atap Utama') {
-            groups['Atap Utama'].items.push(item);
-        } else if (additionalAreas.includes(item.area)) {
-            groups['Additional'].items.push(item);
-        } else if (systemAreas.includes(item.area)) {
-            groups['Sistem Pendukung'].items.push(item);
-        } else if (aksesorisAreas.includes(item.area)) {
-            groups['Aksesoris'].items.push(item);
-        } else {
-            groups['Aksesoris'].items.push(item);
-        }
-    });
-    
-    let html = '';
-    let grandTotal = 0;
-    
-    const groupKeys = ['Atap Utama', 'Aksesoris', 'Additional', 'Sistem Pendukung'];
-    
-    groupKeys.forEach(key => {
-        const group = groups[key];
-        if (group.items.length === 0) return;
-        
-        const groupTotal = group.items.reduce((sum, item) => sum + (item.total_harga || 0), 0);
-        grandTotal += groupTotal;
-        
-        html += `<div class="result-section">`;
-        html += `<div class="section-label">${group.label}</div>`;
-        
-        html += `<table class="result-table">
-            <thead>
-                <tr>
-                    <th style="width:35%;">Nama Produk</th>
-                    <th style="width:20%;">Area</th>
-                    <th style="width:15%;text-align:center;">Qty</th>
-                    <th style="width:15%;">Satuan</th>
-                    <th style="width:20%;text-align:right;">Total</th>
-                </tr>
-            </thead>
-            <tbody>`;
-        
-        group.items.forEach(item => {
-            let totalDisplay = '';
-            if (item.total_harga > 0) {
-                totalDisplay = `<span class="total">Rp ${item.total_harga.toLocaleString()}</span>`;
-            } else {
-                totalDisplay = `<span class="total-empty">-</span>`;
-            }
-            
-            html += `<tr>
-                <td class="product-name">${item.nama_produk || '-'}</td>
-                <td><span class="area-tag">${item.area || '-'}</span></td>
-                <td class="qty text-center">${(item.qty || 0).toLocaleString()}</td>
-                <td class="unit">${item.satuan || '-'}</td>
-                <td class="text-right">${totalDisplay}</td>
-            </tr>`;
-        });
-        
-        html += `</tbody></table>`;
-        html += `</div>`;
-    });
-    
-    // Grand Total
-    html += `<div class="grand-total-minimal">
-        <span class="label">Grand Total</span>
-        <span class="amount">Rp ${grandTotal.toLocaleString()}</span>
-    </div>`;
-    
-    container.innerHTML = html;
+function getVal(id) {
+    let el = document.getElementById(id);
+    return el ? el.value : 0;
 }
 
-function deleteRow(index) {
-    if (confirm('Hapus item ini?')) {
-        currentResults.splice(index, 1);
-        renderTable();
-        if (currentResults.length === 0) {
-            document.getElementById('hasilBOQ').classList.add('hidden');
-            document.getElementById('btnPDF').classList.add('hidden');
-        }
-    }
+function setVal(id, val) {
+    let el = document.getElementById(id);
+    if (el) el.value = val;
 }
 
-window.onload = function() {
+document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     
-    document.getElementById('luas_atap').value = urlParams.get('luas_atap') || 0;
-    document.getElementById('sudut').value = urlParams.get('sudut') || 0;
-    document.getElementById('panjang_starter').value = urlParams.get('panjang_starter') || 0;
-    document.getElementById('panjang_nok_jurai').value = urlParams.get('panjang_nok_jurai') || 0;
-    document.getElementById('panjang_flashing').value = urlParams.get('panjang_flashing') || 0;
-    document.getElementById('opsi_dinding').value = urlParams.get('dinding') || 0;
-    document.getElementById('opsi_kaca').value = urlParams.get('kaca') || 0;
-    document.getElementById('opsi_penangkal').value = urlParams.get('penangkal') || 0;
-    document.getElementById('opsi_exhaust').value = urlParams.get('exhaust') || 0;
-
-    toggleFields();
-};
-
-function sortResults(results) {
-    const urutan = [
-        'Atap Utama',
-        'Starter',
-        'Nok & Jurai',
-        'Talang Jurai',
-        'Underlayer',
-        'Paku & Screw',
-        'Flashing',
-        'Metal Flashing',
-        'Shingle Stick',
-        'Wall Flashing',
-        'Flashing Kaca',
-        'Penangkal Petir',
-        'Ventilasi Exhaust'
-    ];
+    setVal('luas_atap', urlParams.get('luas_atap') || 0);
+    setVal('sudut', urlParams.get('sudut') || 0);
+    setVal('panjang_starter', urlParams.get('panjang_starter') || 0);
+    setVal('panjang_nok_jurai', urlParams.get('panjang_nok_jurai') || 0);
+    setVal('panjang_flashing', urlParams.get('panjang_flashing') || 0);
+    setVal('panjang_talang_jurai', urlParams.get('panjang_talang_jurai') || 0);
     
-    return results.sort((a, b) => {
-        let indexA = urutan.indexOf(a.area);
-        let indexB = urutan.indexOf(b.area);
-        if (indexA === -1) indexA = urutan.length;
-        if (indexB === -1) indexB = urutan.length;
-        return indexA - indexB;
+    setVal('opsi_dinding', urlParams.get('dinding') || 0);
+    setVal('opsi_kaca', urlParams.get('kaca') || 0);
+    setVal('opsi_penangkal', urlParams.get('penangkal') || 0);
+    setVal('opsi_exhaust', urlParams.get('exhaust') || 0);
+});
+
+// ===== RENDER TABLE HASIL SAMA PERSIS DENGAN KODE 2 =====
+function renderResultTable(results, containerId) {
+    let container = document.getElementById(containerId);
+    if (!container) return;
+    
+    if (!results || results.length === 0) {
+        container.innerHTML = `<div class="empty-state">Belum ada data material</div>`;
+        return 0;
+    }
+    
+    let kelompok = {
+        'Atap Utama': [],
+        'Aksesoris': [],
+        'Additional': [],
+        'Sistem Pendukung': []
+    };
+
+    const aksesorisAreas = ['Starter', 'Topcap', 'Underlayer', 'Screw', 'Rail', 'Wind', 'Metal Flashing', 'Flashing', 'Paku & Screw', 'Shingle Stick', 'Nok & Jurai', 'Talang Jurai'];
+    const additionalAreas = ['Wall Flashing', 'Flashing Kaca', 'Penangkal Petir', 'Ventilasi Exhaust'];
+    const sistemPendukungAreas = ['Lantai Kerja', 'Paku & Screw'];
+
+    results.forEach(function(item) {
+        const area = item.area || '';
+        if (area === 'Atap Utama') {
+            kelompok['Atap Utama'].push(item);
+        } else if (additionalAreas.includes(area) && item.qty > 0) {
+            kelompok['Additional'].push(item);
+        } else if (sistemPendukungAreas.includes(area) || area.toLowerCase().includes('lantai') || area.toLowerCase().includes('kerja')) {
+            kelompok['Sistem Pendukung'].push(item);
+        } else if (aksesorisAreas.includes(area)) {
+            kelompok['Aksesoris'].push(item);
+        } else {
+            kelompok['Aksesoris'].push(item);
+        }
     });
+
+    let html = '';
+    let grandTotal = 0;
+
+    const groupConfig = [
+        { key: 'Atap Utama', label: '📁 ATAP UTAMA', cls: 'group-header-atap' },
+        { key: 'Aksesoris', label: '📁 AKSESORIS', cls: 'group-header-aksesoris' },
+        { key: 'Additional', label: '📁 ADDITIONAL', cls: 'group-header-additional' },
+        { key: 'Sistem Pendukung', label: '📁 SISTEM PENDUKUNG', cls: 'group-header-sistem' }
+    ];
+
+    groupConfig.forEach(function(config) {
+        const key = config.key;
+        const label = config.label;
+        const cls = config.cls;
+        const items = kelompok[key];
+        if (items.length === 0) return;
+
+        html += `<div class="group-header ${cls}">${label}</div>`;
+        html += `<table class="result-table">`;
+        html += `<thead>
+            <tr>
+                <th style="width:5%;text-align:center;">No</th>
+                <th style="width:35%;">Nama Produk</th>
+                <th style="width:15%;text-align:center;">Qty</th>
+                <th style="width:15%;">Satuan</th>
+                <th style="width:30%;text-align:right;">Total</th>
+            </tr>
+        </thead>`;
+        html += `<tbody>`;
+        items.forEach(function(item, index) {
+            grandTotal += item.total_harga || 0;
+            html += `<tr>
+                <td class="text-center">${index + 1}</td>
+                <td class="product-name">${item.nama_produk}</td>
+                <td class="qty">${(item.qty || 0).toLocaleString()}</td>
+                <td class="unit">${item.satuan || '-'}</td>
+                <td class="text-right">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+    });
+
+    if (html === '') {
+        html = '<div class="empty-state">Belum ada data material</div>';
+    }
+
+    container.innerHTML = html;
+    return grandTotal;
 }
 
 function hitungBOQ() {
-    let btn = event.target;
-    let originalText = btn.innerHTML;
-    btn.innerHTML = '<svg class="inline w-4 h-4 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Memproses...';
-    btn.disabled = true;
+    let btn = event?.target;
+    if (!btn) {
+        btn = document.querySelector('.btn-master');
+    }
+    
+    let originalText = btn ? btn.innerHTML : 'Menghitung...';
+    if (btn) {
+        btn.innerHTML = '⏳ Menghitung...';
+        btn.disabled = true;
+    }
     
     let opsiDinding = parseFloat(document.getElementById('opsi_dinding')?.value) || 0;
     let opsiKaca = parseFloat(document.getElementById('opsi_kaca')?.value) || 0;
@@ -767,15 +1184,19 @@ function hitungBOQ() {
     
     if (!data.produk_atap_id) {
         alert('Pilih Produk Atap Utama terlebih dahulu!');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+        if (btn) {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
         return;
     }
     
     if (data.luas_atap <= 0) {
         alert('Data luas atap tidak valid! Silakan hitung ulang dari halaman sebelumnya.');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+        if (btn) {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
         return;
     }
     
@@ -784,33 +1205,84 @@ function hitungBOQ() {
         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
         if (data.success) {
-            currentResults = sortResults(data.results);
-            renderTable();
-            document.getElementById('hasilBOQ').classList.remove('hidden');
-            document.getElementById('hasilBOQ').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            document.getElementById('btnPDF').classList.remove('hidden');
+            currentResults = data.results;
+            let grandTotal = renderResultTable(currentResults, 'boqResultContainer');
+            
+            let hasilEl = document.getElementById('hasilBOQ');
+            if (hasilEl) {
+                hasilEl.style.display = 'block';
+            }
+            
+            let grandTotalEl = document.getElementById('grandTotal');
+            if (grandTotalEl) {
+                grandTotalEl.textContent = 'Rp ' + grandTotal.toLocaleString();
+            }
+            
+            let totalEl = document.getElementById('totalKeseluruhan');
+            if (totalEl) {
+                totalEl.textContent = 'Rp ' + grandTotal.toLocaleString();
+            }
+            
+            let btnPDF = document.getElementById('btnPDF');
+            if (btnPDF) {
+                btnPDF.style.display = 'block';
+            }
+            
+            updatePdfData(grandTotal);
         } else {
             alert('Terjadi kesalahan: ' + (data.message || 'Unknown error'));
         }
     })
-    .catch(error => { 
+    .catch(function(error) {
         console.error('Error:', error);
-        alert('Error: ' + error.message); 
+        alert('Error: ' + error.message);
     })
-    .finally(() => { 
-        btn.innerHTML = originalText; 
-        btn.disabled = false; 
+    .finally(function() {
+        if (btn) {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
     });
 }
 
-function toggleFields() {
-    // Tidak ada toggle untuk IKO, semua field selalu muncul
+function updatePdfData(grandTotal) {
+    // Helper untuk set nilai dengan aman
+    function setPdfValue(id, value) {
+        var el = document.getElementById(id);
+        if (el) el.value = value;
+    }
+    
+    function getInputValue(id) {
+        var el = document.getElementById(id);
+        return el ? el.value : 0;
+    }
+    
+    // Set semua nilai PDF
+    setPdfValue('pdf_hasil', JSON.stringify(currentResults));
+    setPdfValue('pdf_luas_atap', getInputValue('luas_atap'));
+    setPdfValue('pdf_sudut', getInputValue('sudut'));
+    setPdfValue('pdf_starter', getInputValue('panjang_starter'));
+    setPdfValue('pdf_nok_jurai', getInputValue('panjang_nok_jurai'));
+    setPdfValue('pdf_flashing', getInputValue('panjang_flashing'));
+    setPdfValue('pdf_talang_jurai', getInputValue('panjang_talang_jurai'));
+    setPdfValue('pdf_waste', getInputValue('waste') || 5);
+    setPdfValue('pdf_grand_total', grandTotal || 0);
+    setPdfValue('pdf_tanggal', new Date().toLocaleDateString('id-ID'));
+    setPdfValue('pdf_waktu', new Date().toLocaleTimeString('id-ID'));
+    
+    setPdfValue('pdf_opsi_dinding', getInputValue('opsi_dinding'));
+    setPdfValue('pdf_opsi_kaca', getInputValue('opsi_kaca'));
+    setPdfValue('pdf_opsi_penangkal', getInputValue('opsi_penangkal'));
+    setPdfValue('pdf_opsi_exhaust', getInputValue('opsi_exhaust'));
 }
 
 function exportToPDF() {
+    // ===== AMBIL DATA =====
     let data = {
         luas_atap: document.getElementById('luas_atap')?.value || 0,
         sudut: document.getElementById('sudut')?.value || 0,
@@ -830,28 +1302,59 @@ function exportToPDF() {
         opsi_kaca: document.getElementById('opsi_kaca')?.value || 0,
         opsi_penangkal: document.getElementById('opsi_penangkal')?.value || 0,
         opsi_exhaust: document.getElementById('opsi_exhaust')?.value || 0,
-        results: currentResults.map(item => ({
-            id: item.id,
-            product_id: item.product_id,
-            nama: item.nama_produk,
-            area: item.area,
-            qty: item.qty,
-            satuan: item.satuan,
-            harga: item.harga_satuan,
-            total: item.total_harga
-        }))
+        results: currentResults.map(function(item) {
+            return {
+                id: item.id,
+                product_id: item.product_id,
+                nama: item.nama_produk,
+                area: item.area,
+                qty: item.qty,
+                satuan: item.satuan,
+                harga: item.harga_satuan,
+                total: item.total_harga
+            };
+        })
     };
     
+    // ===== TAMPILKAN LOADING =====
+    let btn = document.getElementById('btnPDF');
+    let originalText = btn ? btn.innerHTML : 'Export PDF';
+    if (btn) {
+        btn.innerHTML = '⏳ Memproses...';
+        btn.disabled = true;
+    }
+    
+    // ===== KIRIM REQUEST =====
     fetch('{{ route("boq.iko-atap.export-pdf") }}', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        headers: { 
+            'Content-Type': 'application/json', 
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+        },
         body: JSON.stringify(data)
     })
-    .then(response => response.text())
-    .then(html => {
-        let win = window.open();
-        win.document.write(html);
-        win.document.close();
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(html) {
+        let win = window.open('', '_blank');
+        if (win) {
+            win.document.write(html);
+            win.document.close();
+            win.focus();
+        } else {
+            alert('Popup blocked! Please allow popups for this site.');
+        }
+    })
+    .catch(function(error) {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat export PDF: ' + error.message);
+    })
+    .finally(function() {
+        if (btn) {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
     });
 }
 </script>

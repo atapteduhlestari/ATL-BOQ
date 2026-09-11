@@ -264,6 +264,7 @@ function lanjutKeBOQPelana() {
         'emarin-roof': '/boq/emarin/pelana',
         'master-roof': '/boq/masterroof/pelana',
         'maha-roof': '/boq/maharoof/pelana',
+        'mahaspan-roof': '/boq/mahaspanroof/pelana',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

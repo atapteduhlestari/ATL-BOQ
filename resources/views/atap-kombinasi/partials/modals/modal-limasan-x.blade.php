@@ -360,6 +360,7 @@ function lanjutKeBOQLimasanX() {
         'emarin-roof': '/boq/emarinroof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
         'master-roof': '/boq/masterroof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
         'maha-roof': '/boq/maharoof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
+        'mahaspan-roof': '/boq/mahaspanroof/atap-kombinasi/limasan-x',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limasan-x';

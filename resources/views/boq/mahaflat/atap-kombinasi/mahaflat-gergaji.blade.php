@@ -968,82 +968,82 @@
         });
     }
 
-    function renderTable(results) {
-        let container = document.getElementById('tableMaterial');
-        
-        let kelompok = {
-            'Atap Utama': [],
-            'Aksesoris': [],
-            'Additional': [],
-            'Sistem Pendukung': []
-        };
+   function renderTable(results) {
+    let container = document.getElementById('tableMaterial');
+    
+    let kelompok = {
+        'Atap Utama': [],
+        'Aksesoris': [],
+        'Additional': [],
+        'Sistem Pendukung': []
+    };
 
-        const aksesorisAreas = ['Starter', 'Mahaflat Nok & Jurai', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
-        const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
-        const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
+    const aksesorisAreas = ['Starter', 'Mahaflat Nok & Jurai', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
+    const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
+    const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
 
-        results.forEach(item => {
-            const area = item.area || '';
-            if (area === 'Atap Utama') {
-                kelompok['Atap Utama'].push(item);
-            } else if (additionalAreas.includes(area) && item.qty > 0) {
-                kelompok['Additional'].push(item);
-            } else if (systemAreas.includes(area)) {
-                kelompok['Sistem Pendukung'].push(item);
-            } else if (aksesorisAreas.includes(area)) {
-                kelompok['Aksesoris'].push(item);
-            } else {
-                kelompok['Aksesoris'].push(item);
-            }
-        });
-
-        let html = '';
-        let grandTotal = 0;
-
-        const groupConfig = [
-            { key: 'Atap Utama', label: 'ATAP UTAMA', cls: 'group-header-atap' },
-            { key: 'Aksesoris', label: 'AKSESORIS', cls: 'group-header-aksesoris' },
-            { key: 'Additional', label: 'ADDITIONAL', cls: 'group-header-additional' },
-            { key: 'Sistem Pendukung', label: 'SISTEM PENDUKUNG', cls: 'group-header-sistem' }
-        ];
-
-        groupConfig.forEach(({ key, label, cls }) => {
-            const items = kelompok[key];
-            if (items.length === 0) return;
-
-            html += `<div class="group-header ${cls}">📁 ${label}</div>`;
-            html += `<table class="result-table">`;
-            html += `<thead>
-                <tr>
-                    <th style="width:5%;text-align:center;">No</th>
-                    <th style="width:40%;">Nama Produk</th>
-                    <th style="width:20%;text-align:center;">Qty</th>
-                    <th style="width:20%;">Satuan</th>
-                    <th style="width:15%;text-align:right;">Total</th>
-                </tr>
-            </thead>`;
-            html += `<tbody>`;
-            items.forEach((item, index) => {
-                grandTotal += item.total_harga || 0;
-                html += `<tr>
-                    <td class="text-center">${index + 1}</td>
-                    <td class="product-name">${item.nama_produk}</td>
-                    <td class="qty">${item.qty}</td>
-                    <td class="unit">${item.satuan}</td>
-                    <td class="text-right">Rp ${(item.total_harga || 0).toLocaleString()}</td>
-                </tr>`;
-            });
-            html += `</tbody></table>`;
-        });
-
-        if (html === '') {
-            html = '<div class="empty-state">Belum ada data material</div>';
+    results.forEach(item => {
+        const area = item.area || '';
+        if (area === 'Atap Utama') {
+            kelompok['Atap Utama'].push(item);
+        } else if (additionalAreas.includes(area) && item.qty > 0) {
+            kelompok['Additional'].push(item);
+        } else if (systemAreas.includes(area)) {
+            kelompok['Sistem Pendukung'].push(item);
+        } else if (aksesorisAreas.includes(area)) {
+            kelompok['Aksesoris'].push(item);
+        } else {
+            kelompok['Aksesoris'].push(item);
         }
+    });
 
-        container.innerHTML = html;
-        document.getElementById('grandTotal').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
-        document.getElementById('totalKeseluruhan').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
+    let html = '';
+    let grandTotal = 0;
+
+    const groupConfig = [
+        { key: 'Atap Utama', label: 'ATAP UTAMA', cls: 'group-header-atap' },
+        { key: 'Aksesoris', label: 'AKSESORIS', cls: 'group-header-aksesoris' },
+        { key: 'Additional', label: 'ADDITIONAL', cls: 'group-header-additional' },
+        { key: 'Sistem Pendukung', label: 'SISTEM PENDUKUNG', cls: 'group-header-sistem' }
+    ];
+
+    groupConfig.forEach(({ key, label, cls }) => {
+        const items = kelompok[key];
+        if (items.length === 0) return;
+
+        html += `<div class="group-header ${cls}">${label}</div>`;
+        html += `<table class="result-table">`;
+        html += `<thead>
+            <tr>
+                <th style="width:5%;text-align:center;">No</th>
+                <th style="width:40%;">Nama Produk</th>
+                <th style="width:20%;text-align:center;">Qty</th>
+                <th style="width:20%;">Satuan</th>
+                <th style="width:15%;text-align:right;">Total</th>
+            </tr>
+        </thead>`;
+        html += `<tbody>`;
+        items.forEach((item, index) => {
+            grandTotal += item.total_harga || 0;
+            html += `<tr>
+                <td class="text-center">${index + 1}</td>
+                <td class="product-name">${item.nama_produk}</td>
+                <td class="qty">${item.qty}</td>
+                <td class="unit">${item.satuan}</td>
+                <td class="text-right">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+    });
+
+    if (html === '') {
+        html = '<div class="empty-state">Belum ada data material</div>';
     }
+
+    container.innerHTML = html;
+    document.getElementById('grandTotal').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
+    document.getElementById('totalKeseluruhan').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
+}
 
     function updatePdfData() {
         document.getElementById('pdf_hasil').value = JSON.stringify(results);

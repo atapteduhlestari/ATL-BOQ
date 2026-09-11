@@ -1,4 +1,3 @@
-{{-- resources/views/boq/palmex/pelana-2-sisi/pdf.blade.php --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,33 +82,30 @@
                 color: white !important;
             }
             
-            .info-grid {
-                background-color: #f8fafc !important;
-            }
-            
             .grand-total-box {
                 background: #1a1a2e !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
             
-            .badge {
+            .section-title {
+                background-color: #f8fafc !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
             
-            .subtotal-box {
-                background: #f8fafc !important;
+            .group-title {
+                background-color: #f1f4f9 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             
-            .group-header-atap {
-                background: #e8edf5 !important;
+            .info-list .info-item {
+                border-bottom: 1px solid #f1f4f9 !important;
             }
-            .group-header-aksesoris {
-                background: #e8f5ed !important;
-            }
-            .group-header-additional {
-                background: #f5e8ed !important;
+            
+            .page-break-rincian {
+                page-break-before: always;
             }
         }
 
@@ -206,7 +202,7 @@
         }
 
         .btn-copy-boq:hover {
-            background: #2d2d44;
+            background: #0f3460;
         }
 
         .btn-copy-boq.copied {
@@ -219,54 +215,70 @@
             }
         }
         
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 14px;
-            background: #f8fafc;
-            padding: 10px 12px;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .info-item {
+        /* LIST STYLE - Dengan Indent */
+        .info-list {
             display: flex;
             flex-direction: column;
+            gap: 0;
+            margin-bottom: 14px;
+            padding: 0;
+            padding-left: 20px;
         }
         
-        .info-label {
-            font-size: 6.5pt;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .info-list .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #f1f4f9;
         }
         
-        .info-value {
+        .info-list .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-list .info-label {
+            font-size: 8pt;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .info-list .info-value {
             font-size: 8pt;
             font-weight: 600;
             color: #1e293b;
-            margin-top: 2px;
         }
         
         .section-title {
-            font-size: 10pt;
-            font-weight: 700;
+            font-size: 9pt;
+            font-weight: 600;
             color: #1a1a2e;
-            margin: 14px 0 8px 0;
-            padding-bottom: 4px;
-            border-bottom: 2px solid #e2e8f0;
+            margin: 12px 0 6px 0;
+            padding: 4px 10px;
+            background: #f8fafc;
+            border-radius: 3px;
+            border-left: 3px solid #1a1a2e;
         }
         
-        .section-title .sub {
-            font-size: 7pt;
-            font-weight: 400;
-            color: #94a3b8;
-            margin-left: 8px;
+        .section-title-kiri {
+            border-left-color: #1e40af;
         }
         
-        .group-header {
+        .section-title-tengah {
+            border-left-color: #9d174d;
+        }
+        
+        .section-title-kanan {
+            border-left-color: #065f46;
+        }
+        
+        .section-title-center {
+            text-align: center;
+            border-left: none;
+            background: transparent;
+        }
+        
+        .group-title {
             font-size: 8pt;
             font-weight: 600;
             padding: 6px 10px;
@@ -274,29 +286,35 @@
             border-radius: 3px;
         }
         
-        .group-header-atap {
+        .group-title-atap {
             background: #e8edf5;
             color: #1a3a5c;
-            border-left: 3px solid #2b6cb0;
+            border-left: 3px solid #0f3460;
         }
         
-        .group-header-aksesoris {
+        .group-title-aksesoris {
             background: #e8f5ed;
             color: #1a5c3a;
             border-left: 3px solid #38a169;
         }
         
-        .group-header-additional {
-            background: #f5e8ed;
-            color: #5c1a3a;
-            border-left: 3px solid #e53e3e;
+        .group-title-additional {
+            background: #f5ede8;
+            color: #5c3a1a;
+            border-left: 3px solid #e67e22;
+        }
+        
+        .group-title-sistem {
+            background: #f3e8ff;
+            color: #4c1d95;
+            border-left: 3px solid #7c3aed;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 7pt;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         
         th, td {
@@ -324,31 +342,6 @@
             text-align: center;
         }
         
-        .badge {
-            display: inline-block;
-            padding: 1px 8px;
-            border-radius: 3px;
-            font-size: 6pt;
-            font-weight: 500;
-        }
-        .badge-blue { background: #e8edf5; color: #1a3a5c; }
-        .badge-green { background: #e8f5ed; color: #1a5c3a; }
-        .badge-orange { background: #f5ede8; color: #5c3a1a; }
-        .badge-purple { background: #ede8f5; color: #3a1a5c; }
-        .badge-red { background: #f5e8ed; color: #5c1a3a; }
-        .badge-gray { background: #f1f4f9; color: #4a5568; }
-        
-        .subtotal-box {
-            text-align: right;
-            font-weight: 600;
-            font-size: 8pt;
-            padding: 6px 12px;
-            background: #f8fafc;
-            border-radius: 4px;
-            margin-top: 4px;
-            border: 1px solid #e2e8f0;
-        }
-        
         .grand-total-box {
             background: #1a1a2e;
             color: white;
@@ -369,6 +362,18 @@
             font-size: 14pt;
             font-weight: 700;
             letter-spacing: 0.5px;
+        }
+        
+        .subtotal-box {
+            text-align: right;
+            font-weight: 600;
+            font-size: 8pt;
+            padding: 6px 12px;
+            background: #f8fafc;
+            border-radius: 4px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
         }
         
         .footer {
@@ -414,7 +419,17 @@
         }
         
         .btn-print:hover {
-            background: #2d2d44;
+            background: #0f3460;
+            transform: translateY(-1px);
+        }
+        
+        .btn-back {
+            background: #64748b;
+            color: white;
+        }
+        
+        .btn-back:hover {
+            background: #475569;
             transform: translateY(-1px);
         }
         
@@ -424,7 +439,7 @@
         }
         
         .btn-copy-boq-global:hover {
-            background: #2d2d44;
+            background: #0f3460;
             transform: translateY(-1px);
         }
         
@@ -467,9 +482,9 @@
 <body>
 
 @php
-  function formatRp($angka) {
-    return 'Rp ' . number_format((float) $angka, 0, ',', '.');
-}
+    function formatRp($angka) {
+        return 'Rp ' . number_format((float) $angka, 0, ',', '.');
+    }
     
     function safeFloat($val) {
         return (float) preg_replace('/[^0-9.]/', '', $val);
@@ -480,7 +495,6 @@
         'Underlayer' => 'badge-green',
         'Starter' => 'badge-orange',
         'Nok Atas' => 'badge-purple',
-        'Nok & Jurai' => 'badge-purple',
         'Talang Jurai' => 'badge-purple',
         'Flashing' => 'badge-gray',
         'Metal Flashing' => 'badge-gray',
@@ -498,16 +512,62 @@
         'Lantai Kerja' => 'badge-green',
     ];
     
+    // ===== DECODE HASIL DARI JSON STRING =====
+    $bagian1Data = [
+        'hasil' => $data['bagian1']['hasil'] ?? [],
+        'data_perhitungan' => $data['bagian1']['data_perhitungan'] ?? [],
+        'total' => $data['bagian1']['total'] ?? 0,
+        'opsi' => $data['bagian1']['opsi'] ?? ['dinding' => 0, 'kaca' => 0],
+        'sistem_pemasangan' => $data['bagian1']['sistem_pemasangan'] ?? 'expose'
+    ];
+    
+    $bagian2Data = [
+        'hasil' => $data['bagian2']['hasil'] ?? [],
+        'data_perhitungan' => $data['bagian2']['data_perhitungan'] ?? [],
+        'total' => $data['bagian2']['total'] ?? 0,
+        'opsi' => $data['bagian2']['opsi'] ?? ['dinding' => 0, 'kaca' => 0],
+        'sistem_pemasangan' => $data['bagian2']['sistem_pemasangan'] ?? 'expose'
+    ];
+    
+    $bagian3Data = [
+        'hasil' => $data['bagian3']['hasil'] ?? [],
+        'data_perhitungan' => $data['bagian3']['data_perhitungan'] ?? [],
+        'total' => $data['bagian3']['total'] ?? 0,
+        'opsi' => $data['bagian3']['opsi'] ?? ['dinding' => 0, 'kaca' => 0],
+        'sistem_pemasangan' => $data['bagian3']['sistem_pemasangan'] ?? 'expose'
+    ];
+    
+    // Gabungkan semua hasil
+    $allResults = array_merge($bagian1Data['hasil'], $bagian2Data['hasil'], $bagian3Data['hasil']);
+    
     // ===== KELOMPOKKAN HASIL =====
     $kelompok = [
         'Atap Utama' => [],
         'Aksesoris' => [],
-        'Additional' => []
+        'Additional' => [],
+        'Sistem Pendukung' => []
     ];
     
-    $aksesorisAreas = ['Starter', 'Nok Atas', 'Underlayer', 'Flashing', 'Paku & Screw', 'Screw', 'Screw Plywood', 'Metal Flashing', 'Shingle Stick', 'Talang Jurai', 'Lantai Kerja', 'Topcap', 'Wind', 'Rail'];
+    $aksesorisAreas = ['Starter', 'Nok Atas', 'Flashing', 'Screw', 'Screw Plywood', 'Metal Flashing', 'Shingle Stick', 'Talang Jurai', 'Topcap', 'Wind', 'Rail'];
     $additionalAreas = ['Wall Flashing', 'Flashing Kaca', 'Penangkal Petir', 'Ventilasi Exhaust'];
+    $sistemPendukungAreas = ['Underlayer', 'Lantai Kerja', 'Paku & Screw'];
     
+    foreach($allResults as $item) {
+        $area = $item['area'] ?? '';
+        if ($area === 'Atap Utama') {
+            $kelompok['Atap Utama'][] = $item;
+        } elseif (in_array($area, $additionalAreas) && ((float)($item['qty'] ?? 0) > 0)) {
+            $kelompok['Additional'][] = $item;
+        } elseif (in_array($area, $sistemPendukungAreas)) {
+            $kelompok['Sistem Pendukung'][] = $item;
+        } elseif (in_array($area, $aksesorisAreas)) {
+            $kelompok['Aksesoris'][] = $item;
+        } else {
+            $kelompok['Aksesoris'][] = $item;
+        }
+    }
+    
+    // Fungsi merge items
     function mergeItemsPdf($items) {
         $merged = [];
         foreach ($items as $item) {
@@ -530,50 +590,64 @@
         return array_values($merged);
     }
     
-    // Proses semua bagian
-    $allResults = [];
-    $bagianData = [];
-    for ($i = 1; $i <= 3; $i++) {
-        $key = "bagian{$i}";
-        $hasil = $data[$key]['hasil'] ?? [];
-        $bagianData[$key] = $hasil;
-        $allResults = array_merge($allResults, $hasil);
-    }
-    
-    foreach ($allResults as $item) {
-        $area = $item['area'] ?? '';
-        if ($area === 'Atap Utama') {
-            $kelompok['Atap Utama'][] = $item;
-        } elseif (in_array($area, $additionalAreas) && ((float)($item['qty'] ?? 0) > 0)) {
-            $kelompok['Additional'][] = $item;
-        } elseif (in_array($area, $aksesorisAreas)) {
-            $kelompok['Aksesoris'][] = $item;
-        } else {
-            $kelompok['Aksesoris'][] = $item;
-        }
-    }
-    
     $kelompok['Atap Utama'] = mergeItemsPdf($kelompok['Atap Utama']);
     $kelompok['Aksesoris'] = mergeItemsPdf($kelompok['Aksesoris']);
     $kelompok['Additional'] = mergeItemsPdf($kelompok['Additional']);
+    $kelompok['Sistem Pendukung'] = mergeItemsPdf($kelompok['Sistem Pendukung']);
     
     $totalAtap = array_sum(array_column($kelompok['Atap Utama'], 'total_harga'));
     $totalAksesoris = array_sum(array_column($kelompok['Aksesoris'], 'total_harga'));
     $totalAdditional = array_sum(array_column($kelompok['Additional'], 'total_harga'));
-    $grandTotal = $totalAtap + $totalAksesoris + $totalAdditional;
+    $totalSistem = array_sum(array_column($kelompok['Sistem Pendukung'], 'total_harga'));
+    $grandTotal = $totalAtap + $totalAksesoris + $totalAdditional + $totalSistem;
     
-    $bagian1Data = $data['bagian1'] ?? [];
-    $bagian2Data = $data['bagian2'] ?? [];
-    $bagian3Data = $data['bagian3'] ?? [];
+    $totalLuas = safeFloat($bagian1Data['data_perhitungan']['luas_atap'] ?? 0) + 
+                 safeFloat($bagian2Data['data_perhitungan']['luas_atap'] ?? 0) + 
+                 safeFloat($bagian3Data['data_perhitungan']['luas_atap'] ?? 0);
     
-    $opsiDinding1 = safeFloat($data['bagian1']['opsi']['dinding'] ?? 0);
-    $opsiKaca1 = safeFloat($data['bagian1']['opsi']['kaca'] ?? 0);
-    $opsiDinding2 = safeFloat($data['bagian2']['opsi']['dinding'] ?? 0);
-    $opsiKaca2 = safeFloat($data['bagian2']['opsi']['kaca'] ?? 0);
-    $opsiDinding3 = safeFloat($data['bagian3']['opsi']['dinding'] ?? 0);
-    $opsiKaca3 = safeFloat($data['bagian3']['opsi']['kaca'] ?? 0);
+    $totalStarter = safeFloat($bagian1Data['data_perhitungan']['starter'] ?? 0) + 
+                    safeFloat($bagian2Data['data_perhitungan']['starter'] ?? 0) + 
+                    safeFloat($bagian3Data['data_perhitungan']['starter'] ?? 0);
     
-    $nomorBoq = $data['nomor_boq'] ?? 'BOQ-' . date('Ymd') . '-0001';
+    $totalFlashing = safeFloat($bagian1Data['data_perhitungan']['flashing'] ?? 0) + 
+                     safeFloat($bagian2Data['data_perhitungan']['flashing'] ?? 0) + 
+                     safeFloat($bagian3Data['data_perhitungan']['flashing'] ?? 0);
+    
+    $totalNokAtas = safeFloat($bagian2Data['data_perhitungan']['nok_atas'] ?? 0);
+    
+    $nomorBoq = $data['nomor_boq'] ?? 'BOQ-202606-0001';
+    
+    // ===== SISTEM PEMASANGAN - DIAMBIL DARI MASING-MASING BAGIAN =====
+    $sistemPemasangan1 = $bagian1Data['sistem_pemasangan'] ?? 'expose';
+    $sistemPemasangan2 = $bagian2Data['sistem_pemasangan'] ?? 'expose';
+    $sistemPemasangan3 = $bagian3Data['sistem_pemasangan'] ?? 'expose';
+    
+    $waste1 = $data['waste_1'] ?? 5;
+    $waste2 = $data['waste_2'] ?? 5;
+    $waste3 = $data['waste_3'] ?? 5;
+    
+    $opsiDinding1 = safeFloat($bagian1Data['opsi']['dinding'] ?? 0);
+    $opsiKaca1 = safeFloat($bagian1Data['opsi']['kaca'] ?? 0);
+    $opsiDinding2 = safeFloat($bagian2Data['opsi']['dinding'] ?? 0);
+    $opsiKaca2 = safeFloat($bagian2Data['opsi']['kaca'] ?? 0);
+    $opsiDinding3 = safeFloat($bagian3Data['opsi']['dinding'] ?? 0);
+    $opsiKaca3 = safeFloat($bagian3Data['opsi']['kaca'] ?? 0);
+    
+    $hasAnyItems = false;
+    foreach ($kelompok as $group) {
+        if (count($group) > 0) {
+            $hasAnyItems = true;
+            break;
+        }
+    }
+    
+    function cleanRp($str) {
+        return (int) preg_replace('/[^0-9]/', '', $str);
+    }
+    
+    $totalBagian1 = cleanRp($bagian1Data['total'] ?? 0);
+    $totalBagian2 = cleanRp($bagian2Data['total'] ?? 0);
+    $totalBagian3 = cleanRp($bagian3Data['total'] ?? 0);
 @endphp
 
 <div class="toast-message" id="toastMessage">Nomor BOQ berhasil disalin!</div>
@@ -594,7 +668,7 @@
 
     <div class="title-section">
         <h1>BILL OF QUANTITY</h1>
-        <p>{{ $data['judul'] ?? 'Pelana + 2 Sisi' }} | {{ $data['brand'] ?? 'PALMEX' }}</p>
+        <p>{{ $data['brand'] ?? 'PALMEX' }}</p>
         
         <div class="nomor-boq-wrapper">
             <span class="nomor-boq" id="nomorBoqText">
@@ -606,360 +680,383 @@
         </div>
     </div>
 
-    <!-- DATA PERHITUNGAN -->
-    <div class="info-grid">
+    <!-- ============================================================ -->
+    <!-- ===== 1. DATA GEOMETRIK ===== -->
+    <!-- ============================================================ -->
+    <div class="section-title">
+        DATA GEOMETRIK
+    </div>
+    
+    <div class="info-list">
         <div class="info-item">
             <span class="info-label">Total Luas Atap</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian1Data['data_perhitungan']['luas_atap'] ?? 0) + safeFloat($bagian2Data['data_perhitungan']['luas_atap'] ?? 0) + safeFloat($bagian3Data['data_perhitungan']['luas_atap'] ?? 0), 2) }} m²</span>
+            <span class="info-value">{{ number_format($totalLuas, 2) }} m²</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Starter Total</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian1Data['data_perhitungan']['starter'] ?? 0) + safeFloat($bagian2Data['data_perhitungan']['starter'] ?? 0) + safeFloat($bagian3Data['data_perhitungan']['starter'] ?? 0), 2) }} m</span>
+            <span class="info-label">Total Panjang Starter</span>
+            <span class="info-value">{{ number_format($totalStarter, 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Flashing Total</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian1Data['data_perhitungan']['flashing'] ?? 0) + safeFloat($bagian2Data['data_perhitungan']['flashing'] ?? 0) + safeFloat($bagian3Data['data_perhitungan']['flashing'] ?? 0), 2) }} m</span>
+            <span class="info-label">Total Panjang Flashing</span>
+            <span class="info-value">{{ number_format($totalFlashing, 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Nok Atas (Pelana)</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian2Data['data_perhitungan']['nok_atas'] ?? 0), 2) }} m</span>
+            <span class="info-label">Total Panjang Nok Atas (Pelana)</span>
+            <span class="info-value">{{ number_format($totalNokAtas, 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste_1'] ?? 5 }}% / {{ $data['waste_2'] ?? 5 }}% / {{ $data['waste_3'] ?? 5 }}%</span>
+            <span class="info-label">Sudut Kemiringan</span>
+            <span class="info-value">{{ number_format($bagian1Data['data_perhitungan']['sudut'] ?? 0, 2) }}° / {{ number_format($bagian2Data['data_perhitungan']['sudut'] ?? 0, 2) }}° / {{ number_format($bagian3Data['data_perhitungan']['sudut'] ?? 0, 2) }}°</span>
         </div>
         <div class="info-item">
             <span class="info-label">Sistem Pemasangan</span>
-            <span class="info-value">{{ ucfirst($bagian1Data['sistem_pemasangan'] ?? 'Expose') }}</span>
+            <span class="info-value">{{ ucfirst($sistemPemasangan1) }} / {{ ucfirst($sistemPemasangan2) }} / {{ ucfirst($sistemPemasangan3) }}</span>
         </div>
     </div>
 
-    <!-- ===== RINCIAN MATERIAL - KELOMPOK ===== -->
+    <!-- ============================================================ -->
+    <!-- ===== 2. KEBUTUHAN MATERIAL KESELURUHAN ===== -->
+    <!-- ============================================================ -->
     <div class="section-title">
-        RINCIAN KEBUTUHAN MATERIAL
+        KEBUTUHAN MATERIAL KESELURUHAN
     </div>
-
-    <!-- ATAP UTAMA -->
-    @if(count($kelompok['Atap Utama']) > 0)
-    <div class="group-header group-header-atap">🏠 ATAP UTAMA</div>
+    
     <div class="table-wrapper">
-        <table>
-            <thead class="table-header">
-                <tr>
-                    <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $no = 1; @endphp
-                @foreach($kelompok['Atap Utama'] as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((float)($item['qty'] ?? 0), 2, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @if(!$hasAnyItems)
+            <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 9pt;">
+                Belum ada data material
+            </div>
+        @else
+            @php
+                $groupConfig = [
+                    ['key' => 'Atap Utama', 'label' => '📁 ATAP UTAMA', 'cls' => 'group-title-atap'],
+                    ['key' => 'Aksesoris', 'label' => '📁 AKSESORIS', 'cls' => 'group-title-aksesoris'],
+                    ['key' => 'Additional', 'label' => '📁 ADDITIONAL', 'cls' => 'group-title-additional'],
+                    ['key' => 'Sistem Pendukung', 'label' => '📁 SISTEM PENDUKUNG', 'cls' => 'group-title-sistem']
+                ];
+            @endphp
+            
+            @foreach($groupConfig as $config)
+                @php $items = $kelompok[$config['key']] ?? []; @endphp
+                @if(count($items) > 0)
+                    <div class="group-title {{ $config['cls'] }}">
+                        {{ $config['label'] }}
+                    </div>
+                    <table>
+                        <thead class="table-header">
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="30%">Nama Produk</th>
+                                <th width="15%">Area</th>
+                                <th width="10%" class="text-right">Qty</th>
+                                <th width="10%" class="text-right">Satuan</th>
+                                <th width="15%" class="text-right">Harga</th>
+                                <th width="15%" class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1; @endphp
+                            @foreach($items as $item)
+                            <tr>
+                                <td class="text-center">{{ $no++ }}</td>
+                                <td>{{ $item['nama_produk'] ?? '-' }}</td>
+                                <td>{{ $item['area'] ?? '-' }}</td>
+                                <td class="text-right">{{ number_format($item['qty'] ?? 0, 2, ',', '.') }}</td>
+                                <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                                <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                                <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            @endforeach
+        @endif
     </div>
-    <div class="subtotal-box">SUB TOTAL ATAP UTAMA: {{ formatRp($totalAtap) }}</div>
-    @endif
 
-    <!-- AKSESORIS -->
-    @if(count($kelompok['Aksesoris']) > 0)
-    <div class="group-header group-header-aksesoris">🔧 AKSESORIS</div>
-    <div class="table-wrapper">
-        <table>
-            <thead class="table-header">
-                <tr>
-                    <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $no = 1; @endphp
-                @foreach($kelompok['Aksesoris'] as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((float)($item['qty'] ?? 0), 2, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <div class="subtotal-box">SUB TOTAL AKSESORIS: {{ formatRp($totalAksesoris) }}</div>
-    @endif
-
-    <!-- ADDITIONAL -->
-    @if(count($kelompok['Additional']) > 0)
-    <div class="group-header group-header-additional">➕ ADDITIONAL</div>
-    <div class="table-wrapper">
-        <table>
-            <thead class="table-header">
-                <tr>
-                    <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $no = 1; @endphp
-                @foreach($kelompok['Additional'] as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((float)($item['qty'] ?? 0), 2, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <div class="subtotal-box">SUB TOTAL ADDITIONAL: {{ formatRp($totalAdditional) }}</div>
-    @endif
-
-    <!-- GRAND TOTAL -->
+    <!-- ============================================================ -->
+    <!-- ===== 3. TOTAL KESELURUHAN ===== -->
+    <!-- ============================================================ -->
     <div class="grand-total-box">
-        <span class="label">🏆 GRAND TOTAL (Kiri + Pelana + Kanan)</span>
+        <span class="label">Total Keseluruhan</span>
         <span class="value">{{ formatRp($grandTotal) }}</span>
     </div>
 
-    <!-- DETAIL BAGIAN 1: KIRI -->
-    @if(count($bagian1Data['hasil'] ?? []) > 0)
-    <div class="section-title">
-        DETAIL BAGIAN KIRI
-        <span class="sub">Kemiringan {{ $bagian1Data['data_perhitungan']['sudut'] ?? 0 }}°</span>
+    <!-- ============================================================ -->
+    <!-- ===== 4. DETAIL PERBAGIAN ===== -->
+    <!-- ============================================================ -->
+    
+    <div class="page-break-rincian"></div>
+    
+    <div class="section-title section-title-center" style="margin-top:0;">
+        RINCIAN PERHITUNGAN PER BAGIAN
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== BAGIAN 1: KIRI ===== -->
+    <!-- ============================================================ -->
+    <div class="section-title section-title-kiri" style="font-size:10pt;margin-top:12px;padding:6px 12px;">
+        PERHITUNGAN BAGIAN KIRI - 1 Sisi Kemiringan
     </div>
     
-    <div class="info-grid">
+    <div class="info-list" style="margin-bottom:8px;">
         <div class="info-item">
             <span class="info-label">Luas Atap</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian1Data['data_perhitungan']['luas_atap'] ?? 0), 2) }} m²</span>
+            <span class="info-value">{{ number_format($bagian1Data['data_perhitungan']['luas_atap'] ?? 0, 2) }} m²</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Starter</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian1Data['data_perhitungan']['starter'] ?? 0), 2) }} m</span>
+            <span class="info-label">Sudut Kemiringan</span>
+            <span class="info-value">{{ number_format($bagian1Data['data_perhitungan']['sudut'] ?? 0, 2) }}°</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Flashing</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian1Data['data_perhitungan']['flashing'] ?? 0), 2) }} m</span>
+            <span class="info-label">Total Panjang Starter</span>
+            <span class="info-value">{{ number_format($bagian1Data['data_perhitungan']['starter'] ?? 0, 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste_1'] ?? 5 }}%</span>
+            <span class="info-label">Total Panjang Flashing</span>
+            <span class="info-value">{{ number_format($bagian1Data['data_perhitungan']['flashing'] ?? 0, 2) }} m</span>
         </div>
         @if($opsiDinding1 > 0 || $opsiKaca1 > 0)
         <div class="info-item">
             <span class="info-label">Opsi Tambahan</span>
             <span class="info-value">
-                @if($opsiDinding1 > 0)Dinding: {{ number_format($opsiDinding1, 2) }} m @endif
+                @if($opsiDinding1 > 0)Dinding: {{ number_format($opsiDinding1, 2) }}m @endif
                 @if($opsiDinding1 > 0 && $opsiKaca1 > 0) | @endif
-                @if($opsiKaca1 > 0)Kaca: {{ number_format($opsiKaca1, 2) }} m @endif
+                @if($opsiKaca1 > 0)Kaca: {{ number_format($opsiKaca1, 2) }}m @endif
             </span>
         </div>
         @endif
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $waste1 }}%</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Sistem Pemasangan</span>
+            <span class="info-value">{{ ucfirst($sistemPemasangan1) }}</span>
+        </div>
+    </div>
+
+    <div style="font-size:8pt;font-weight:600;margin:6px 0 4px 0;padding:4px 10px;background:#e8edf5;border-radius:3px;border-left:3px solid #1e40af;">
+        DETAIL KEBUTUHAN MATERIAL
     </div>
     
+    @if(count($bagian1Data['hasil']) > 0)
     <div class="table-wrapper">
         <table>
             <thead class="table-header">
                 <tr>
                     <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
+                    <th width="30%">Nama Produk</th>
+                    <th width="15%">Area</th>
+                    <th width="10%" class="text-right">Qty</th>
+                    <th width="10%" class="text-right">Satuan</th>
+                    <th width="15%" class="text-right">Harga</th>
+                    <th width="15%" class="text-right">Total</th>
                 </tr>
             </thead>
             <tbody>
                 @php $no = 1; @endphp
-                @foreach($bagian1Data['hasil'] ?? [] as $item)
+                @foreach($bagian1Data['hasil'] as $item)
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
                     <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((float)($item['qty'] ?? 0), 2, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
+                    <td>{{ $item['area'] ?? '-' }}</td>
+                    <td class="text-right">{{ number_format($item['qty'] ?? 0, 2, ',', '.') }}</td>
+                    <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                    <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                    <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-    <div class="subtotal-box">SUB TOTAL KIRI: {{ formatRp(preg_replace('/[^0-9]/', '', $bagian1Data['total'] ?? '0')) }}</div>
+    <div class="subtotal-box">SUB TOTAL KIRI: {{ formatRp($totalBagian1) }}</div>
+    @else
+    <div style="text-align: center; padding: 10px; color: #94a3b8; font-size: 8pt;">
+        Belum ada data material untuk bagian kiri
+    </div>
     @endif
 
-    <!-- DETAIL BAGIAN 2: TENGAH (PELANA) -->
-    @if(count($bagian2Data['hasil'] ?? []) > 0)
-    <div class="section-title">
-        DETAIL BAGIAN TENGAH (PELANA)
-        <span class="sub">Kemiringan {{ $bagian2Data['data_perhitungan']['sudut'] ?? 0 }}°</span>
+    <!-- ============================================================ -->
+    <!-- ===== BAGIAN 2: TENGAH (PELANA) ===== -->
+    <!-- ============================================================ -->
+    <div class="page-break-rincian"></div>
+    
+    <div class="section-title section-title-tengah" style="font-size:10pt;margin-top:12px;padding:6px 12px;">
+        PERHITUNGAN BAGIAN TENGAH - Pelana
     </div>
     
-    <div class="info-grid">
+    <div class="info-list" style="margin-bottom:8px;">
         <div class="info-item">
             <span class="info-label">Luas Atap</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian2Data['data_perhitungan']['luas_atap'] ?? 0), 2) }} m²</span>
+            <span class="info-value">{{ number_format($bagian2Data['data_perhitungan']['luas_atap'] ?? 0, 2) }} m²</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Starter</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian2Data['data_perhitungan']['starter'] ?? 0), 2) }} m</span>
+            <span class="info-label">Sudut Kemiringan</span>
+            <span class="info-value">{{ number_format($bagian2Data['data_perhitungan']['sudut'] ?? 0, 2) }}°</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Nok Atas</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian2Data['data_perhitungan']['nok_atas'] ?? 0), 2) }} m</span>
+            <span class="info-label">Total Panjang Starter</span>
+            <span class="info-value">{{ number_format($bagian2Data['data_perhitungan']['starter'] ?? 0, 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Flashing</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian2Data['data_perhitungan']['flashing'] ?? 0), 2) }} m</span>
+            <span class="info-label">Total Panjang Nok Atas</span>
+            <span class="info-value">{{ number_format($bagian2Data['data_perhitungan']['nok_atas'] ?? 0, 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste_2'] ?? 5 }}%</span>
+            <span class="info-label">Total Panjang Flashing</span>
+            <span class="info-value">{{ number_format($bagian2Data['data_perhitungan']['flashing'] ?? 0, 2) }} m</span>
         </div>
         @if($opsiDinding2 > 0 || $opsiKaca2 > 0)
         <div class="info-item">
             <span class="info-label">Opsi Tambahan</span>
             <span class="info-value">
-                @if($opsiDinding2 > 0)Dinding: {{ number_format($opsiDinding2, 2) }} m @endif
+                @if($opsiDinding2 > 0)Dinding: {{ number_format($opsiDinding2, 2) }}m @endif
                 @if($opsiDinding2 > 0 && $opsiKaca2 > 0) | @endif
-                @if($opsiKaca2 > 0)Kaca: {{ number_format($opsiKaca2, 2) }} m @endif
+                @if($opsiKaca2 > 0)Kaca: {{ number_format($opsiKaca2, 2) }}m @endif
             </span>
         </div>
         @endif
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $waste2 }}%</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Sistem Pemasangan</span>
+            <span class="info-value">{{ ucfirst($sistemPemasangan2) }}</span>
+        </div>
+    </div>
+
+    <div style="font-size:8pt;font-weight:600;margin:6px 0 4px 0;padding:4px 10px;background:#fce7f3;border-radius:3px;border-left:3px solid #9d174d;">
+        DETAIL KEBUTUHAN MATERIAL
     </div>
     
+    @if(count($bagian2Data['hasil']) > 0)
     <div class="table-wrapper">
         <table>
             <thead class="table-header">
                 <tr>
                     <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
+                    <th width="30%">Nama Produk</th>
+                    <th width="15%">Area</th>
+                    <th width="10%" class="text-right">Qty</th>
+                    <th width="10%" class="text-right">Satuan</th>
+                    <th width="15%" class="text-right">Harga</th>
+                    <th width="15%" class="text-right">Total</th>
                 </tr>
             </thead>
             <tbody>
                 @php $no = 1; @endphp
-                @foreach($bagian2Data['hasil'] ?? [] as $item)
+                @foreach($bagian2Data['hasil'] as $item)
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
                     <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((float)($item['qty'] ?? 0), 2, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
+                    <td>{{ $item['area'] ?? '-' }}</td>
+                    <td class="text-right">{{ number_format($item['qty'] ?? 0, 2, ',', '.') }}</td>
+                    <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                    <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                    <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-    <div class="subtotal-box">SUB TOTAL PELANA: {{ formatRp(preg_replace('/[^0-9]/', '', $bagian2Data['total'] ?? '0')) }}</div>
+    <div class="subtotal-box">SUB TOTAL PELANA: {{ formatRp($totalBagian2) }}</div>
+    @else
+    <div style="text-align: center; padding: 10px; color: #94a3b8; font-size: 8pt;">
+        Belum ada data material untuk bagian tengah
+    </div>
     @endif
 
-    <!-- DETAIL BAGIAN 3: KANAN -->
-    @if(count($bagian3Data['hasil'] ?? []) > 0)
-    <div class="section-title">
-        DETAIL BAGIAN KANAN
-        <span class="sub">Kemiringan {{ $bagian3Data['data_perhitungan']['sudut'] ?? 0 }}°</span>
+    <!-- ============================================================ -->
+    <!-- ===== BAGIAN 3: KANAN ===== -->
+    <!-- ============================================================ -->
+    <div class="page-break-rincian"></div>
+    
+    <div class="section-title section-title-kanan" style="font-size:10pt;margin-top:12px;padding:6px 12px;">
+        PERHITUNGAN BAGIAN KANAN - 1 Sisi Kemiringan
     </div>
     
-    <div class="info-grid">
+    <div class="info-list" style="margin-bottom:8px;">
         <div class="info-item">
             <span class="info-label">Luas Atap</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian3Data['data_perhitungan']['luas_atap'] ?? 0), 2) }} m²</span>
+            <span class="info-value">{{ number_format($bagian3Data['data_perhitungan']['luas_atap'] ?? 0, 2) }} m²</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Starter</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian3Data['data_perhitungan']['starter'] ?? 0), 2) }} m</span>
+            <span class="info-label">Sudut Kemiringan</span>
+            <span class="info-value">{{ number_format($bagian3Data['data_perhitungan']['sudut'] ?? 0, 2) }}°</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Flashing</span>
-            <span class="info-value">{{ number_format(safeFloat($bagian3Data['data_perhitungan']['flashing'] ?? 0), 2) }} m</span>
+            <span class="info-label">Total Panjang Starter</span>
+            <span class="info-value">{{ number_format($bagian3Data['data_perhitungan']['starter'] ?? 0, 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste_3'] ?? 5 }}%</span>
+            <span class="info-label">Total Panjang Flashing</span>
+            <span class="info-value">{{ number_format($bagian3Data['data_perhitungan']['flashing'] ?? 0, 2) }} m</span>
         </div>
         @if($opsiDinding3 > 0 || $opsiKaca3 > 0)
         <div class="info-item">
             <span class="info-label">Opsi Tambahan</span>
             <span class="info-value">
-                @if($opsiDinding3 > 0)Dinding: {{ number_format($opsiDinding3, 2) }} m @endif
+                @if($opsiDinding3 > 0)Dinding: {{ number_format($opsiDinding3, 2) }}m @endif
                 @if($opsiDinding3 > 0 && $opsiKaca3 > 0) | @endif
-                @if($opsiKaca3 > 0)Kaca: {{ number_format($opsiKaca3, 2) }} m @endif
+                @if($opsiKaca3 > 0)Kaca: {{ number_format($opsiKaca3, 2) }}m @endif
             </span>
         </div>
         @endif
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $waste3 }}%</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Sistem Pemasangan</span>
+            <span class="info-value">{{ ucfirst($sistemPemasangan3) }}</span>
+        </div>
+    </div>
+
+    <div style="font-size:8pt;font-weight:600;margin:6px 0 4px 0;padding:4px 10px;background:#d1fae5;border-radius:3px;border-left:3px solid #065f46;">
+        DETAIL KEBUTUHAN MATERIAL
     </div>
     
+    @if(count($bagian3Data['hasil']) > 0)
     <div class="table-wrapper">
         <table>
             <thead class="table-header">
                 <tr>
                     <th width="5%">No</th>
-                    <th width="27%">Nama Produk</th>
-                    <th width="12%">Area</th>
-                    <th width="8%" class="text-right">Qty</th>
-                    <th width="8%" class="text-right">Satuan</th>
-                    <th width="14%" class="text-right">Harga</th>
-                    <th width="14%" class="text-right">Total</th>
+                    <th width="30%">Nama Produk</th>
+                    <th width="15%">Area</th>
+                    <th width="10%" class="text-right">Qty</th>
+                    <th width="10%" class="text-right">Satuan</th>
+                    <th width="15%" class="text-right">Harga</th>
+                    <th width="15%" class="text-right">Total</th>
                 </tr>
             </thead>
             <tbody>
                 @php $no = 1; @endphp
-                @foreach($bagian3Data['hasil'] ?? [] as $item)
+                @foreach($bagian3Data['hasil'] as $item)
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
                     <td>{{ $item['nama_produk'] ?? '-' }}</td>
-                    <td><span class="badge {{ $badgeMap[$item['area']] ?? 'badge-gray' }}">{{ $item['area'] }}</span></td>
-                    <td class="text-right">{{ number_format((float)($item['qty'] ?? 0), 2, ',', '.') }}</td>
-                    <td class="text-right">{{ $item['satuan'] ?? 'pcs' }}</td>
-                    <td class="text-right">{{ formatRp($item['harga_satuan'] ?? 0) }}</td>
-                    <td class="text-right">{{ formatRp($item['total_harga'] ?? 0) }}</td>
+                    <td>{{ $item['area'] ?? '-' }}</td>
+                    <td class="text-right">{{ number_format($item['qty'] ?? 0, 2, ',', '.') }}</td>
+                    <td class="text-right">{{ $item['satuan'] ?? '-' }}</td>
+                    <td class="text-right">{{ isset($item['harga_satuan']) ? formatRp($item['harga_satuan']) : 'Rp 0' }}</td>
+                    <td class="text-right">{{ isset($item['total_harga']) ? formatRp($item['total_harga']) : 'Rp 0' }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-    <div class="subtotal-box">SUB TOTAL KANAN: {{ formatRp(preg_replace('/[^0-9]/', '', $bagian3Data['total'] ?? '0')) }}</div>
+    <div class="subtotal-box">SUB TOTAL KANAN: {{ formatRp($totalBagian3) }}</div>
+    @else
+    <div style="text-align: center; padding: 10px; color: #94a3b8; font-size: 8pt;">
+        Belum ada data material untuk bagian kanan
+    </div>
     @endif
 
     <div class="footer">
-        <p>Dokumen ini dibuat oleh sistem BOQ PALMEX | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
+        <p>Dokumen ini dibuat oleh sistem BOQ PALMEX - Pelana + 2 Sisi | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
     </div>
 </div>
 

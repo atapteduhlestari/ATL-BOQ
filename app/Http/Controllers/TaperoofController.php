@@ -278,7 +278,7 @@ public function index($model)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangStarter / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok', $panjangStarter);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangStarter);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -711,7 +711,7 @@ private function hitungLimasan($request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangNokJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangNokJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangNokJurai);
             $processedProductIds[] = $nok->id;
         }
     }
@@ -1120,7 +1120,7 @@ private function hitungPiramid($request)
             $satuan = $nok->satuan_terkecil ?? 1;
             $qtyRaw = $panjangJurai / $satuan;
             $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-            $results[] = $this->formatResult($nok, $qty, 'Tape Roof Nok & Jurai', $panjangJurai);
+            $results[] = $this->formatResult($nok, $qty, 'Nok dan Jurai', $panjangJurai);
             $processedProductIds[] = $nok->id;
         }
     }

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'BOQ TAPE ROOF - Limasan X')
+
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -16,23 +18,11 @@
         font-size: 13px !important;
     }
     
-    label {
-        font-size: 11px !important;
-        letter-spacing: 0.3px;
-        font-weight: 500;
-        color: #4a5568;
-    }
-    
     .section-card {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         border: 1px solid #e2e8f0;
-        transition: all 0.2s;
         overflow: hidden;
-    }
-    .section-card:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
     
     .section-header {
@@ -45,50 +35,6 @@
         padding: 20px;
     }
     
-    .input-field {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        background: white;
-        transition: all 0.2s;
-        font-size: 13px;
-        color: #2d3748;
-    }
-    .input-field:focus {
-        outline: none;
-        border-color: #4299e1;
-        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-    }
-    .input-field:read-only {
-        background: #f7fafc;
-        color: #2d3748;
-        font-weight: 500;
-    }
-    
-    .data-box {
-        background: #f7fafc;
-        border-radius: 8px;
-        padding: 10px 14px;
-        border: 1px solid #edf2f7;
-    }
-    
-    .data-box label {
-        font-size: 9px !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #a0aec0;
-        font-weight: 600;
-        display: block;
-        margin-bottom: 2px;
-    }
-    
-    .data-box .value {
-        font-size: 14px;
-        font-weight: 600;
-        color: #2d3748;
-    }
-    
     .btn-primary {
         background: #2d3748;
         color: white;
@@ -97,14 +43,11 @@
         font-weight: 500;
         font-size: 13px;
         border: none;
-        transition: all 0.2s;
         cursor: pointer;
         width: 100%;
     }
     .btn-primary:hover {
         background: #1a202c;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(45, 55, 72, 0.2);
     }
     
     .btn-pdf {
@@ -115,14 +58,11 @@
         font-weight: 500;
         font-size: 13px;
         border: none;
-        transition: all 0.2s;
         cursor: pointer;
         width: 100%;
     }
     .btn-pdf:hover {
         background: #c53030;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(229, 62, 62, 0.2);
     }
     
     .table-container {
@@ -138,9 +78,22 @@
         border-collapse: collapse;
     }
     
+    .table-container th {
+        background: #f7fafc;
+        padding: 10px 14px;
+        text-align: left;
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
     .table-container td {
-        padding: 6px 10px;
+        padding: 10px 14px;
         border-bottom: 1px solid #edf2f7;
+        color: #2d3748;
     }
     
     .table-container tr:last-child td {
@@ -149,64 +102,6 @@
     
     .table-container tr:hover {
         background: #f7fafc;
-    }
-    
-    .badge-area {
-        display: inline-block;
-        padding: 2px 10px;
-        border-radius: 12px;
-        font-size: 10px;
-        font-weight: 500;
-        background: #edf2f7;
-        color: #4a5568;
-    }
-    
-    .total-box {
-        background: #2d3748;
-        border-radius: 12px;
-        padding: 20px 24px;
-        color: white;
-    }
-    
-    .total-box .label {
-        font-size: 12px;
-        color: #a0aec0;
-        font-weight: 400;
-    }
-    
-    .total-box .amount {
-        font-size: 28px;
-        font-weight: 700;
-        color: white;
-    }
-    
-    select {
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 12px center;
-        padding-right: 36px;
-    }
-    
-    .waste-input {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .waste-input input {
-        width: 80px;
-        text-align: center;
-    }
-    .waste-input span {
-        font-size: 12px;
-        color: #4a5568;
-    }
-    
-    .header-main {
-        background: linear-gradient(135deg, #1a1a2e, #0f3460);
-        border-radius: 12px;
-        padding: 24px 28px;
-        color: white;
     }
     
     .section-title {
@@ -220,111 +115,6 @@
         color: #718096;
     }
     
-    .badge-section {
-        background: #edf2f7;
-        color: #4a5568;
-        padding: 2px 12px;
-        border-radius: 12px;
-        font-size: 10px;
-        font-weight: 600;
-    }
-    
-    .warning-text {
-        font-size: 11px;
-        color: #dd6b20;
-        margin-top: 4px;
-    }
-
-    .opsi-tambahan-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-top: 12px;
-        padding-top: 12px;
-        border-top: 1px solid #e2e8f0;
-    }
-    
-    @media (max-width: 640px) {
-        .opsi-tambahan-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-    
-    .opsi-item {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
-    
-    .opsi-item label {
-        font-size: 10px !important;
-        font-weight: 500;
-        color: #4a5568;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-    
-    .opsi-item label .opsi-desc {
-        font-weight: 400;
-        color: #a0aec0;
-        font-size: 9px;
-    }
-    
-    .opsi-item input {
-        width: 100%;
-        padding: 6px 10px;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        font-size: 12px;
-        font-family: 'Poppins', sans-serif;
-        transition: all 0.2s;
-        background: white;
-    }
-    
-    .opsi-item input:focus {
-        outline: none;
-        border-color: #4299e1;
-        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-    }
-    
-    .opsi-item input::placeholder {
-        color: #cbd5e1;
-        font-size: 11px;
-    }
-    
-    .opsi-item .opsi-satuan {
-        font-size: 10px;
-        color: #a0aec0;
-        margin-top: 2px;
-    }
-
-    .group-header {
-        background: #f0f4f8;
-        padding: 8px 12px;
-        border-radius: 6px;
-        margin-top: 8px;
-        font-weight: 600;
-        font-size: 12px;
-        color: #2d3748;
-    }
-    
-    .group-header:first-child {
-        margin-top: 0;
-    }
-    
-    .group-header-atap {
-        border-left: 3px solid #2b6cb0;
-    }
-    
-    .group-header-aksesoris {
-        border-left: 3px solid #38a169;
-    }
-    
-    .group-header-additional {
-        border-left: 3px solid #e53e3e;
-    }
-
     .notes-container {
         background: #fffbeb;
         border: 1px solid #fcd34d;
@@ -374,20 +164,410 @@
 
     .empty-state {
         text-align: center;
-        padding: 20px;
-        color: #a0aec0;
+        padding: 30px;
+        color: #94a3b8;
         font-size: 13px;
     }
-
-    /* Style untuk auto-select nok */
-    .nok-auto-select {
-        background: #f0fdf4 !important;
-        border-color: #86efac !important;
+    
+    .result-table .product-name {
+        font-weight: 500;
     }
     
-    .nok-auto-select:focus {
-        border-color: #22c55e !important;
-        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1) !important;
+    .result-table .qty {
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .result-table .unit {
+        color: #94a3b8;
+        font-size: 11px;
+        text-align: left;
+    }
+    
+    .result-table .text-center {
+        text-align: center;
+    }
+    
+    .result-table .text-right {
+        text-align: right;
+    }
+    
+    .group-header {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 8px 12px;
+        margin: 8px 0 4px 0;
+        border-radius: 4px;
+        background: #f1f4f9;
+        color: #1a1a2e;
+        border-left: 3px solid #1a1a2e;
+    }
+    
+    .group-header-atap {
+        background: #e8edf5;
+        border-left-color: #0f3460;
+        color: #1a3a5c;
+    }
+    
+    .group-header-aksesoris {
+        background: #e8f5ed;
+        border-left-color: #38a169;
+        color: #1a5c3a;
+    }
+    
+    .group-header-additional {
+        background: #f5ede8;
+        border-left-color: #e67e22;
+        color: #5c3a1a;
+    }
+    
+    .group-header-sistem {
+        background: #f5e8ed;
+        border-left-color: #e53e3e;
+        color: #5c1a3a;
+    }
+
+    .grand-total-minimal {
+        background: #1a1a2e;
+        border-radius: 8px;
+        padding: 14px 20px;
+        margin-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .grand-total-minimal .label {
+        color: rgba(255,255,255,0.6);
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .grand-total-minimal .amount {
+        color: white;
+        font-size: 20px;
+        font-weight: 700;
+    }
+    
+    /* ===== DATA GEOMETRIK - LIST DENGAN SUB BAGIAN & COLLAPSE ===== */
+    .data-geometrik {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 4px 0;
+    }
+    
+    .data-geometrik .sub-section {
+        margin-bottom: 4px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+    
+    .data-geometrik .sub-section .sub-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 14px;
+        background: #f7fafc;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.2s;
+    }
+    
+    .data-geometrik .sub-section .sub-header:hover {
+        background: #edf2f7;
+    }
+    
+    .data-geometrik .sub-section .sub-header .sub-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: #1a1a2e;
+    }
+    
+    .data-geometrik .sub-section .sub-header .toggle-icon {
+        font-size: 12px;
+        color: #94a3b8;
+        transition: transform 0.3s ease;
+    }
+    
+    .data-geometrik .sub-section .sub-header .toggle-icon.open {
+        transform: rotate(180deg);
+    }
+    
+    .data-geometrik .sub-section .sub-content {
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease;
+    }
+    
+    .data-geometrik .sub-section .sub-content.open {
+        max-height: 500px;
+    }
+    
+    .data-geometrik .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 14px;
+        border-top: 1px solid #f1f4f9;
+    }
+    
+    .data-geometrik .row:first-child {
+        border-top: none;
+    }
+    
+    .data-geometrik .row .label {
+        font-size: 11px;
+        font-weight: 500;
+        color: #4a5568;
+    }
+    
+    .data-geometrik .row .value {
+        font-size: 12px;
+        font-weight: 500;
+        color: #1e293b;
+    }
+    
+    .data-geometrik .row .value .unit {
+        font-weight: 400;
+        color: #94a3b8;
+        margin-left: 2px;
+    }
+    
+    .data-geometrik .row .value input[readonly] {
+        border: none;
+        background: transparent;
+        font-size: 12px;
+        font-weight: 500;
+        color: #1e293b;
+        width: 70px;
+        padding: 0;
+        text-align: right;
+    }
+    
+    .data-geometrik .total-section {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 2px solid #1a1a2e;
+        padding-left: 20px;
+    }
+    
+    .data-geometrik .total-section .total-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 2px;
+        padding: 4px 0;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .data-geometrik .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        border-bottom: 1px solid #f1f4f9;
+        padding-left: 20px;
+    }
+    
+    .data-geometrik .total-row:last-child {
+        border-bottom: none;
+    }
+    
+    .data-geometrik .total-row .label {
+        font-size: 11px;
+        font-weight: 500;
+        color: #4a5568;
+    }
+    
+    .data-geometrik .total-row .value {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a2e;
+    }
+    
+    .data-geometrik .total-row .value .unit {
+        font-weight: 400;
+        color: #94a3b8;
+        margin-left: 2px;
+    }
+    
+    .data-geometrik .total-row .value input[readonly] {
+        border: none;
+        background: transparent;
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a2e;
+        width: 70px;
+        padding: 0;
+        text-align: right;
+    }
+    
+    @media (max-width: 768px) {
+        .data-geometrik .sub-section {
+            padding-left: 0;
+        }
+        .data-geometrik .row {
+            padding: 5px 10px;
+        }
+        .data-geometrik .sub-section .sub-header {
+            padding: 6px 10px;
+        }
+        .data-geometrik .total-section {
+            padding-left: 10px;
+        }
+        .data-geometrik .total-row {
+            padding-left: 10px;
+        }
+    }
+
+    /* Pilih Material - 1 KOLOM */
+    .pilih-material {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 4px 0;
+    }
+    
+    .pilih-material .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #f1f4f9;
+    }
+    
+    .pilih-material .row:last-child {
+        border-bottom: none;
+    }
+    
+    .pilih-material .label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #4a5568;
+        min-width: 140px;
+    }
+    
+    .pilih-material .value {
+        font-size: 13px;
+        font-weight: 500;
+        color: #1e293b;
+        flex: 1;
+        text-align: right;
+    }
+    
+    .pilih-material .value select,
+    .pilih-material .value input {
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 4px 12px;
+        font-size: 12px;
+        background: white;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .pilih-material .value select:focus,
+    .pilih-material .value input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    
+    .pilih-material .value .waste-inline {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+    .pilih-material .value .waste-inline input {
+        width: 80px;
+        text-align: center;
+    }
+    .pilih-material .value .waste-inline span {
+        font-size: 12px;
+        color: #94a3b8;
+    }
+    
+    /* Opsi Tambahan - Indent */
+    .opsi-tambahan {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 2px solid #e2e8f0;
+    }
+    
+    .opsi-tambahan .opsi-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 8px;
+    }
+    
+    .opsi-tambahan .opsi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+        padding-left: 24px;
+    }
+    
+    .opsi-tambahan .opsi-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .opsi-tambahan .opsi-item label {
+        font-size: 10px !important;
+        font-weight: 500;
+        color: #4a5568;
+    }
+    
+    .opsi-tambahan .opsi-item input {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 12px;
+        transition: all 0.2s;
+        background: white;
+    }
+    
+    .opsi-tambahan .opsi-item input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    
+    .opsi-tambahan .opsi-item .satuan {
+        font-size: 10px;
+        color: #a0aec0;
+        margin-top: 2px;
+    }
+    
+    @media (max-width: 768px) {
+        .pilih-material .row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+        .pilih-material .value {
+            text-align: left;
+            width: 100%;
+        }
+        .pilih-material .value select,
+        .pilih-material .value input {
+            max-width: 100%;
+        }
+        .pilih-material .value .waste-inline {
+            justify-content: flex-start;
+        }
+        .opsi-tambahan .opsi-grid {
+            grid-template-columns: 1fr;
+            padding-left: 0;
+        }
     }
     
     .nok-type-indicator {
@@ -399,38 +579,111 @@
         font-size: 10px;
         font-weight: 600;
     }
-
     .nok-type-indicator.u {
         background: #dbeafe;
         color: #1e40af;
     }
-
     .nok-type-indicator.v {
         background: #fce7f3;
         color: #9d174d;
     }
-
     .nok-type-indicator.bulat {
         background: #fef3c7;
         color: #92400e;
     }
+    
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .gap-3 { gap: 12px; }
+    .mt-1 { margin-top: 4px; }
+    .mt-4 { margin-top: 16px; }
+    .mb-2 { margin-bottom: 8px; }
+    .hidden { display: none; }
+    .border-t { border-top: 1px solid #e2e8f0; }
+    .pt-4 { padding-top: 16px; }
+    .text-right { text-align: right; }
+    .text-base { font-size: 16px; }
+    .font-semibold { font-weight: 600; }
+    .text-gray-700 { color: #374151; }
+    .text-xs { font-size: 12px; }
+    .text-red-500 { color: #ef4444; }
+    .text-gray-200 { color: #e5e7eb; }
+    .text-[10px] { font-size: 10px; }
+    .font-medium { font-weight: 500; }
+    .text-xl { font-size: 20px; }
+    .mb-1 { margin-bottom: 4px; }
+    .space-y-6 > * + * { margin-top: 24px; }
+    
+    .btn-master {
+        background: #0f3460;
+        transition: all 0.2s;
+    }
+    .btn-master:hover {
+        background: #1a1a2e;
+    }
+    
+    .btn-master-pdf {
+        background: #e53e3e;
+    }
+    .btn-master-pdf:hover {
+        background: #c53030;
+    }
+    
+    .total-box {
+        background: #1a1a2e;
+        border-radius: 12px;
+        padding: 20px 24px;
+        color: white;
+    }
+    .total-box .label {
+        font-size: 12px;
+        color: rgba(255,255,255,0.6);
+        font-weight: 400;
+    }
+    .total-box .amount {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+    }
+    
+    .waste-inline {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .waste-inline input {
+        width: 60px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 12px;
+        background: white;
+    }
+    .waste-inline input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    .waste-inline span {
+        font-size: 12px;
+        color: #94a3b8;
+    }
+
+    .nok-auto-select {
+        background: #f0fdf4 !important;
+        border-color: #86efac !important;
+    }
+    
+    .nok-auto-select:focus {
+        border-color: #22c55e !important;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1) !important;
+    }
 </style>
 
 <div class="space-y-6">
-    <!-- Header -->
-    <div class="header-main">
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-xl font-semibold mb-1">BOQ - Limasan X</h2>
-                <p class="text-gray-400 text-xs">Hitung kebutuhan material atap kombinasi Limasan X (3 Tingkat)</p>
-            </div>
-            <div class="bg-white/10 backdrop-blur rounded-full px-3 py-1.5">
-                <span class="text-[10px] font-medium text-gray-300">TAPE ROOF</span>
-            </div>
-        </div>
-    </div>
 
-    <!-- ===== NOTES ===== -->
+    <!-- NOTES -->
     <div class="notes-container">
         <div class="notes-title">
             <span class="icon">📋</span> Petunjuk Pengisian BOQ TAPE ROOF - LIMASAN X
@@ -438,7 +691,11 @@
         <ul class="notes-list">
             <li>
                 <span class="bullet">•</span>
-                <span>Pastikan data luas atap dari setiap bagian sudah benar.</span>
+                <span>Cek lebih detail apakah ada atap yang bertemu langsung dengan <strong>dinding</strong>, <strong>cerobong asap</strong>, <strong>penangkal petir</strong> dll.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span>Jika bertemu dinding, cerobong asap, penangkal petir, silahkan input berapa panjang/area pertemuannya di bagian <strong>Opsi Tambahan</strong>.</span>
             </li>
             <li>
                 <span class="bullet">•</span>
@@ -449,7 +706,7 @@
                 <span><strong>Hal yang perlu diperhatikan:</strong></span>
             </li>
             <li style="padding-left: 28px;">
-                <span>• Jarak usuk per <strong>61 cm</strong> pakai <strong>Plywood minimal 12 mm</strong></span>
+                <span>• Jarak usuk per <strong>61 cm</strong> pakai <strong>Plywood minimal 12 mm</strong>, tidak disarankan pakai 9 mm</span>
             </li>
             <li style="padding-left: 28px;">
                 <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
@@ -457,321 +714,291 @@
         </ul>
     </div>
 
-    <!-- Data Perhitungan (Readonly) -->
+    <!-- Data Geometrik -->
     <div class="section-card">
         <div class="section-header">
             <div class="flex items-center justify-between">
                 <div>
-                    <h3 class="section-title">📐 Data Perhitungan</h3>
+                    <h3 class="section-title">Data Geometrik</h3>
                     <p class="section-subtitle">Data luas atap dari perhitungan sebelumnya</p>
                 </div>
-                <span class="badge-section">READONLY</span>
             </div>
         </div>
         <div class="section-body">
-            <!-- Bagian 1: Limasan A (Atas) -->
-            <div class="bg-gray-50 rounded-lg p-3 mb-3">
-                <div class="text-xs font-semibold text-gray-600 mb-2">Bagian 1 - Limasan A (Atas)</div>
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                    <div class="data-box">
-                        <label>Luas Atap</label>
-                        <div class="value">
-                            <input type="number" id="luas_atap_1" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m²</span>
-                        </div>
+            <div class="data-geometrik">
+                <!-- Bagian 1: Limasan A (Atas) -->
+                <div class="sub-section">
+                    <div class="sub-header" onclick="toggleSection(this)">
+                        <span class="sub-title">▶ Bagian 1 - Limasan A (Atas)</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
-                    <div class="data-box">
-                        <label>Sudut</label>
-                        <div class="value">
-                            <input type="number" id="sudut_1" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">°</span>
+                    <div class="sub-content">
+                        <div class="row">
+                            <span class="label">Luas Atap</span>
+                            <span class="value">
+                                <input type="text" id="luas_atap_1" readonly>
+                                <span class="unit">m²</span>
+                            </span>
                         </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Starter</label>
-                        <div class="value">
-                            <input type="number" id="starter_1" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
+                        <div class="row">
+                            <span class="label">Sudut</span>
+                            <span class="value">
+                                <input type="text" id="sudut_1" readonly>
+                                <span class="unit">°</span>
+                            </span>
                         </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Flashing</label>
-                        <div class="value">
-                            <input type="number" id="flashing_1" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
+                        <div class="row">
+                            <span class="label">Starter</span>
+                            <span class="value">
+                                <input type="text" id="starter_1" readonly>
+                                <span class="unit">m</span>
+                            </span>
                         </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Nok & Jurai</label>
-                        <div class="value">
-                            <input type="number" id="nok_1" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
+                        <div class="row">
+                            <span class="label">Flashing</span>
+                            <span class="value">
+                                <input type="text" id="flashing_1" readonly>
+                                <span class="unit">m</span>
+                            </span>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Bagian 2: Limasan B (Tengah) -->
-            <div class="bg-gray-50 rounded-lg p-3 mb-3">
-                <div class="text-xs font-semibold text-gray-600 mb-2">Bagian 2 - Limasan B (Tengah)</div>
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                    <div class="data-box">
-                        <label>Luas Atap</label>
-                        <div class="value">
-                            <input type="number" id="luas_atap_2" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m²</span>
-                        </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Sudut</label>
-                        <div class="value">
-                            <input type="number" id="sudut_2" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">°</span>
-                        </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Starter</label>
-                        <div class="value">
-                            <input type="number" id="starter_2" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
-                        </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Flashing</label>
-                        <div class="value">
-                            <input type="number" id="flashing_2" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
-                        </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Nok & Jurai</label>
-                        <div class="value">
-                            <input type="number" id="nok_2" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
+                        <div class="row">
+                            <span class="label">Nok & Jurai</span>
+                            <span class="value">
+                                <input type="text" id="nok_1" readonly>
+                                <span class="unit">m</span>
+                            </span>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Bagian 3: Limasan C (Bawah) -->
-            <div class="bg-gray-50 rounded-lg p-3">
-                <div class="text-xs font-semibold text-gray-600 mb-2">Bagian 3 - Limasan C (Bawah)</div>
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                    <div class="data-box">
-                        <label>Luas Atap</label>
-                        <div class="value">
-                            <input type="number" id="luas_atap_3" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m²</span>
-                        </div>
+
+                <!-- Bagian 2: Limasan B (Tengah) -->
+                <div class="sub-section">
+                    <div class="sub-header" onclick="toggleSection(this)">
+                        <span class="sub-title">▶ Bagian 2 - Limasan B (Tengah)</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
-                    <div class="data-box">
-                        <label>Sudut</label>
-                        <div class="value">
-                            <input type="number" id="sudut_3" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">°</span>
+                    <div class="sub-content">
+                        <div class="row">
+                            <span class="label">Luas Atap</span>
+                            <span class="value">
+                                <input type="text" id="luas_atap_2" readonly>
+                                <span class="unit">m²</span>
+                            </span>
                         </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Starter</label>
-                        <div class="value">
-                            <input type="number" id="starter_3" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
+                        <div class="row">
+                            <span class="label">Sudut</span>
+                            <span class="value">
+                                <input type="text" id="sudut_2" readonly>
+                                <span class="unit">°</span>
+                            </span>
                         </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Flashing</label>
-                        <div class="value">
-                            <input type="number" id="flashing_3" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
+                        <div class="row">
+                            <span class="label">Starter</span>
+                            <span class="value">
+                                <input type="text" id="starter_2" readonly>
+                                <span class="unit">m</span>
+                            </span>
                         </div>
-                    </div>
-                    <div class="data-box">
-                        <label>Nok & Jurai</label>
-                        <div class="value">
-                            <input type="number" id="nok_3" class="input-field" style="border: none; padding: 0; background: transparent;" readonly>
-                            <span style="font-size: 11px; color: #a0aec0; font-weight: 400;">m</span>
+                        <div class="row">
+                            <span class="label">Flashing</span>
+                            <span class="value">
+                                <input type="text" id="flashing_2" readonly>
+                                <span class="unit">m</span>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Nok & Jurai</span>
+                            <span class="value">
+                                <input type="text" id="nok_2" readonly>
+                                <span class="unit">m</span>
+                            </span>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Total -->
-            <div class="bg-blue-50 rounded-lg p-3 mt-3 border border-blue-200">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div class="data-box" style="background: #dbeafe;">
-                        <label style="color: #1e40af;">Total Luas Atap</label>
-                        <div class="value" style="color: #1e3a5f;">
-                            <input type="number" id="total_luas_atap" class="input-field" style="border: none; padding: 0; background: transparent; font-weight: 700;" readonly>
-                            <span style="font-size: 11px; color: #1e40af; font-weight: 400;">m²</span>
+
+                <!-- Bagian 3: Limasan C (Bawah) -->
+                <div class="sub-section">
+                    <div class="sub-header" onclick="toggleSection(this)">
+                        <span class="sub-title">▶ Bagian 3 - Limasan C (Bawah)</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="sub-content">
+                        <div class="row">
+                            <span class="label">Luas Atap</span>
+                            <span class="value">
+                                <input type="text" id="luas_atap_3" readonly>
+                                <span class="unit">m²</span>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Sudut</span>
+                            <span class="value">
+                                <input type="text" id="sudut_3" readonly>
+                                <span class="unit">°</span>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Starter</span>
+                            <span class="value">
+                                <input type="text" id="starter_3" readonly>
+                                <span class="unit">m</span>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Flashing</span>
+                            <span class="value">
+                                <input type="text" id="flashing_3" readonly>
+                                <span class="unit">m</span>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Nok & Jurai</span>
+                            <span class="value">
+                                <input type="text" id="nok_3" readonly>
+                                <span class="unit">m</span>
+                            </span>
                         </div>
                     </div>
-                    <div class="data-box" style="background: #dbeafe;">
-                        <label style="color: #1e40af;">Total Starter</label>
-                        <div class="value" style="color: #1e3a5f;">
-                            <input type="number" id="total_starter" class="input-field" style="border: none; padding: 0; background: transparent; font-weight: 700;" readonly>
-                            <span style="font-size: 11px; color: #1e40af; font-weight: 400;">m</span>
-                        </div>
+                </div>
+
+                <!-- TOTAL -->
+                <div class="total-section">
+                    <div class="total-title">Total</div>
+                    <div class="total-row">
+                        <span class="label">Luas Atap</span>
+                        <span class="value">
+                            <input type="text" id="total_luas_atap" readonly>
+                            <span class="unit">m²</span>
+                        </span>
                     </div>
-                    <div class="data-box" style="background: #dbeafe;">
-                        <label style="color: #1e40af;">Total Flashing</label>
-                        <div class="value" style="color: #1e3a5f;">
-                            <input type="number" id="total_flashing" class="input-field" style="border: none; padding: 0; background: transparent; font-weight: 700;" readonly>
-                            <span style="font-size: 11px; color: #1e40af; font-weight: 400;">m</span>
-                        </div>
+                    <div class="total-row">
+                        <span class="label">Starter</span>
+                        <span class="value">
+                            <input type="text" id="total_starter" readonly>
+                            <span class="unit">m</span>
+                        </span>
                     </div>
-                    <div class="data-box" style="background: #dbeafe;">
-                        <label style="color: #1e40af;">Total Nok & Jurai</label>
-                        <div class="value" style="color: #1e3a5f;">
-                            <input type="number" id="total_nok_jurai" class="input-field" style="border: none; padding: 0; background: transparent; font-weight: 700;" readonly>
-                            <span style="font-size: 11px; color: #1e40af; font-weight: 400;">m</span>
-                        </div>
+                    <div class="total-row">
+                        <span class="label">Flashing</span>
+                        <span class="value">
+                            <input type="text" id="total_flashing" readonly>
+                            <span class="unit">m</span>
+                        </span>
+                    </div>
+                    <div class="total-row">
+                        <span class="label">Nok & Jurai</span>
+                        <span class="value">
+                            <input type="text" id="total_nok_jurai" readonly>
+                            <span class="unit">m</span>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ===== OPSI TAMBAHAN ===== -->
+    <!-- Pilih Material -->
     <div class="section-card">
         <div class="section-header">
             <div class="flex items-center justify-between">
                 <div>
-                    <h3 class="section-title">🔧 Opsi Tambahan</h3>
-                    <p class="section-subtitle">Masukkan panjang atap yang berbatasan dengan elemen lain</p>
+                    <h3 class="section-title">Pilih Material</h3>
+                    <p class="section-subtitle">Pilih material dan aksesoris atap</p>
                 </div>
-                <span class="badge-section">OPSIONAL</span>
             </div>
         </div>
         <div class="section-body">
-            <div class="opsi-tambahan-grid">
-                <div class="opsi-item">
-                    <label>
-                        📐 Dinding
-                        <span class="opsi-desc">(panjang atap yang berbatasan dinding)</span>
-                    </label>
-                    <input type="number" 
-                           id="opsi_dinding" 
-                           step="0.1" 
-                           min="0"
-                           placeholder="0"
-                           value="{{ $opsiDinding ?? 0 }}">
-                    <span class="opsi-satuan">meter</span>
+            <div class="pilih-material">
+                <!-- TIPE ATAP DIHAPUS - TAPE ROOF TIDAK PAKAI -->
+                
+                <div class="row">
+                    <span class="label">Jenis Nok</span>
+                    <span class="value">
+                        <select id="nok_dropdown" onchange="updateNokOptions()">
+                            <option value="">Pilih Jenis Nok</option>
+                            @foreach($nokOptions ?? [] as $nok)
+                                <option value="{{ $nok->id }}" data-tipe="{{ $nok->productTipe->kode_tipe ?? 'U' }}">
+                                    {{ $nok->nama_produk }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </span>
                 </div>
-                <div class="opsi-item">
-                    <label>
-                        🏭 Cerobong Asap
-                        <span class="opsi-desc">(jumlah cerobong asap)</span>
-                    </label>
-                    <input type="number" 
-                           id="opsi_cerobong" 
-                           step="1" 
-                           min="0"
-                           placeholder="0"
-                           value="{{ $opsiCerobong ?? 0 }}">
-                    <span class="opsi-satuan">unit</span>
+                
+                <div class="row">
+                    <span class="label">Struktur Rangka</span>
+                    <span class="value">
+                        <select id="rangka">
+                            <option value="Baja Ringan" selected>Baja Ringan</option>
+                            <option value="Baja Berat">Baja Berat</option>
+                            <option value="Beton">Beton</option>
+                            <option value="Kayu">Kayu</option>
+                        </select>
+                    </span>
                 </div>
-                <div class="opsi-item">
-                    <label>
-                        ⚡ Penangkal Petir
-                        <span class="opsi-desc">(panjang instalasi)</span>
-                    </label>
-                    <input type="number" 
-                           id="opsi_penangkal" 
-                           step="0.1" 
-                           min="0"
-                           placeholder="0"
-                           value="{{ $opsiPenangkal ?? 0 }}">
-                    <span class="opsi-satuan">meter</span>
+                
+                <div class="row">
+                    <span class="label">Lantai Kerja</span>
+                    <span class="value">
+                        <select id="lantai_kerja">
+                            <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
+                            <option value="Plywood 12 mm">Plywood 12 mm</option>
+                            <option value="Plywood 15 mm">Plywood 15 mm</option>
+                            <option value="GRC 9 mm">GRC 9 mm</option>
+                            <option value="GRC 12 mm">GRC 12 mm</option>
+                            <option value="GRC 15 mm">GRC 15 mm</option>
+                            <option value="Beton">Beton</option>
+                        </select>
+                    </span>
+                </div>
+                
+                <div class="row">
+                    <span class="label">Waste</span>
+                    <span class="value">
+                        <div class="waste-inline">
+                            <input type="number" id="waste" step="1" value="5">
+                            <span>%</span>
+                        </div>
+                    </span>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Pilih Produk & Hitung Material -->
-    <div class="section-card">
-        <div class="section-header">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h3 class="section-title">🏷️ Pilih Produk & Hitung Material</h3>
-                    <p class="section-subtitle">Pilih produk atap yang akan digunakan</p>
-                </div>
-                <span class="badge-section">UTAMA</span>
-            </div>
-        </div>
-        <div class="section-body">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">TAPE ROOF NOK <span class="text-red-500">*</span></label>
-                    <select id="nok_dropdown" class="input-field" required onchange="updateNokOptions()">
-                        <option value="">Pilih Jenis Nok</option>
-                        @foreach($nokOptions ?? [] as $nok)
-                            <option value="{{ $nok->id }}" data-tipe="{{ $nok->productTipe->kode_tipe ?? 'U' }}">
-                                {{ $nok->nama_produk }} 
-                            </option>
-                        @endforeach
-                    </select>
-                    <div id="nok_selected_info" class="text-[9px] text-gray-400 mt-1">
-                        <span class="nok-type-indicator u" id="nok_type_badge" style="display:none;">Tipe: U</span>
-                        <span class="text-gray-400">* Nok Tutup otomatis menyesuaikan</span>
+            <input type="hidden" id="nok_tutup_id" value="">
+            <input type="hidden" id="nok_tutup_display" value="">
+
+            <div class="opsi-tambahan">
+                <div class="opsi-title">Opsi Tambahan</div>
+                <div class="opsi-grid">
+                    <div class="opsi-item">
+                        <label>Dinding</label>
+                        <input type="number" id="opsi_dinding" step="0.1" min="0" placeholder="0" value="{{ $opsiDinding ?? 0 }}">
+                        <span class="satuan">meter</span>
                     </div>
-                </div>
-
-                <!-- TAMPILAN NOK TUTUP (READONLY / AUTO) -->
-                <div>
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
-                        NOK TUTUP
-                    </label>
-                    <div>
-                        <input type="text" id="nok_tutup_display" 
-                            class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 nok-auto-select" 
-                            readonly 
-                            placeholder="Pilih Nok terlebih dahulu">
-                        <input type="hidden" id="nok_tutup_id" value="">
+                    <div class="opsi-item">
+                        <label>Cerobong Asap</label>
+                        <input type="number" id="opsi_cerobong" step="0.1" min="0" placeholder="0" value="{{ $opsiCerobong ?? 0 }}">
+                        <span class="satuan">unit</span>
                     </div>
-                    <p class="text-[9px] text-gray-400 mt-1">
-                        <span id="nok_tutup_status">⏳ Menunggu pemilihan Nok</span>
-                    </p>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Struktur Rangka</label>
-                    <select id="rangka" class="input-field">
-                        <option value="Baja Ringan" selected>Baja Ringan</option>
-                        <option value="Baja Berat">Baja Berat</option>
-                        <option value="Beton">Beton</option>
-                        <option value="Kayu">Kayu</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Lantai Kerja</label>
-                    <select id="lantai_kerja" class="input-field">
-                        <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                        <option value="Plywood 12 mm">Plywood 12 mm</option>
-                        <option value="Plywood 15 mm">Plywood 15 mm</option>
-                        <option value="GRC 9 mm">GRC 9 mm</option>
-                        <option value="GRC 12 mm">GRC 12 mm</option>
-                        <option value="GRC 15 mm">GRC 15 mm</option>
-                        <option value="Beton">Beton</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Waste (%)</label>
-                    <div class="waste-input">
-                        <input type="number" id="waste" step="1" value="5" class="input-field" style="width: 100px;">
-                        <span>%</span>
+                    <div class="opsi-item">
+                        <label>Penangkal Petir</label>
+                        <input type="number" id="opsi_penangkal" step="0.1" min="0" placeholder="0" value="{{ $opsiPenangkal ?? 0 }}">
+                        <span class="satuan">meter</span>
                     </div>
                 </div>
             </div>
-            
-            <button onclick="hitungMaterial()" class="btn-primary">
-                🏠 Hitung Material
+
+            <button onclick="hitungMaterial()" class="btn-primary btn-master" style="margin-top:16px;">
+                Hitung Material
             </button>
-            
+
             <div id="hasilMaterial" class="mt-4 hidden">
-                <div class="border-t border-gray-200 pt-4">
+                <div class="border-t pt-4">
                     <h4 class="text-xs font-semibold text-gray-700 mb-2">Rincian Material</h4>
                     <div class="table-container" id="tableMaterial"></div>
-                    <div class="text-right mt-3 font-semibold text-gray-800 text-base" id="grandTotal">Rp 0</div>
+                    <div class="grand-total-minimal">
+                        <span class="label">Grand Total</span>
+                        <span class="amount" id="grandTotal">Rp 0</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -782,7 +1009,7 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h4 class="text-sm font-semibold text-white">Total Keseluruhan</h4>
-                <p class="text-gray-400 text-[10px]">Limasan X (termasuk waste)</p>
+                <p class="text-gray-200 text-[10px]">Limasan X TAPE ROOF (termasuk waste)</p>
             </div>
             <div class="text-right">
                 <p class="label">Grand Total</p>
@@ -814,6 +1041,9 @@
             <input type="hidden" name="tanggal" id="pdf_tanggal">
             <input type="hidden" name="waktu" id="pdf_waktu">
             
+            <input type="hidden" name="nok_atas" id="pdf_nok_atas">
+            <input type="hidden" name="nok_tutup" id="pdf_nok_tutup">
+            
             <input type="hidden" name="luas_atap_1" id="pdf_luas_atap_1">
             <input type="hidden" name="starter_1" id="pdf_starter_1">
             <input type="hidden" name="flashing_1" id="pdf_flashing_1">
@@ -832,69 +1062,74 @@
             <input type="hidden" name="nok_3" id="pdf_nok_3">
             <input type="hidden" name="sudut_3" id="pdf_sudut_3">
             
-            <button type="submit" class="btn-pdf">
-                📄 Export PDF
+            <button type="submit" class="btn-pdf btn-master-pdf">
+                Export PDF
             </button>
         </form>
     </div>
 </div>
 
 <script>
-    // Data mapping dari server
-    const nokMapping = @json($nokMapping ?? []);
+    // Fungsi Toggle Collapse
+    function toggleSection(header) {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('.toggle-icon');
+        
+        if (content.classList.contains('open')) {
+            content.classList.remove('open');
+            icon.classList.remove('open');
+            header.querySelector('.sub-title').textContent = '▶ ' + header.querySelector('.sub-title').textContent.substring(2).trim();
+        } else {
+            content.classList.add('open');
+            icon.classList.add('open');
+            header.querySelector('.sub-title').textContent = '▼ ' + header.querySelector('.sub-title').textContent.substring(2).trim();
+        }
+    }
 
-    // Fungsi untuk update Nok options
+    // Set default semua tertutup
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.sub-content').forEach(function(el) {
+            el.classList.remove('open');
+        });
+        document.querySelectorAll('.toggle-icon').forEach(function(el) {
+            el.classList.remove('open');
+        });
+        document.querySelectorAll('.sub-header .sub-title').forEach(function(el) {
+            let text = el.textContent.trim();
+            if (!text.startsWith('▶') && !text.startsWith('▼')) {
+                el.textContent = '▶ ' + text;
+            }
+        });
+    });
+
+    const nokMapping = @json($nokMapping ?? []);
+    let results = [];
+
     function updateNokOptions() {
         const nokDropdown = document.getElementById('nok_dropdown');
-        const selectedOption = nokDropdown.options[nokDropdown.selectedIndex];
         const nokId = nokDropdown.value;
-        
-        const nokTutupDisplay = document.getElementById('nok_tutup_display');
         const nokTutupId = document.getElementById('nok_tutup_id');
-        const nokTutupStatus = document.getElementById('nok_tutup_status');
-        const nokTypeBadge = document.getElementById('nok_type_badge');
         
         if (!nokId || !nokMapping[nokId]) {
-            // Reset semua
-            nokTutupDisplay.value = '';
             nokTutupId.value = '';
-            nokTutupStatus.innerHTML = '⏳ Menunggu pemilihan Nok';
-            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700';
-            nokTypeBadge.style.display = 'none';
             return;
         }
         
         const data = nokMapping[nokId];
-        const tipe = data.tipe || 'U';
         
-        // Update badge tipe
-        nokTypeBadge.textContent = 'Tipe: ' + tipe;
-        nokTypeBadge.className = 'nok-type-indicator ' + tipe.toLowerCase();
-        nokTypeBadge.style.display = 'inline-block';
-        
-        // Update Nok Tutup
         if (data.nokTutupId) {
-            nokTutupDisplay.value = data.nokTutupName;
             nokTutupId.value = data.nokTutupId;
-            nokTutupStatus.innerHTML = '✅ <span class="text-green-600">Otomatis terpilih</span>';
-            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-green-300 rounded-lg bg-green-50 text-gray-700 nok-auto-select';
         } else {
-            nokTutupDisplay.value = '❌ Tidak tersedia untuk tipe ' + tipe;
             nokTutupId.value = '';
-            nokTutupStatus.innerHTML = '❌ <span class="text-red-600">Tidak tersedia</span>';
-            nokTutupDisplay.className = 'w-full px-3 py-2 text-sm border border-red-300 rounded-lg bg-red-50 text-gray-700';
         }
     }
 
-    // Jalankan saat halaman load
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(updateNokOptions, 200);
     });
 
-    let results = [];
-
     window.onload = function() {
-        // GUNakan data dari PHP LANGSUNG
+        // Gunakan data dari PHP LANGSUNG
         const luasAtap1 = {{ $luasAtap1 ?? 0 }};
         const starter1 = {{ $starter1 ?? 0 }};
         const flashing1 = {{ $flashing1 ?? 0 }};
@@ -913,32 +1148,26 @@
         const nok3 = {{ $nok3 ?? 0 }};
         const sudut3 = {{ $sudut3 ?? 0 }};
         
-        console.log('Data dari PHP:', {
-            luasAtap1, starter1, flashing1, nok1, sudut1,
-            luasAtap2, starter2, flashing2, nok2, sudut2,
-            luasAtap3, starter3, flashing3, nok3, sudut3
-        });
-        
         // Bagian 1 (Limasan A - Atas)
-        document.getElementById('luas_atap_1').value = luasAtap1.toFixed(2);
-        document.getElementById('starter_1').value = starter1.toFixed(2);
-        document.getElementById('flashing_1').value = flashing1.toFixed(2);
-        document.getElementById('nok_1').value = nok1.toFixed(2);
-        document.getElementById('sudut_1').value = sudut1.toFixed(2);
+        document.getElementById('luas_atap_1').value = luasAtap1;
+        document.getElementById('starter_1').value = starter1;
+        document.getElementById('flashing_1').value = flashing1;
+        document.getElementById('nok_1').value = nok1;
+        document.getElementById('sudut_1').value = sudut1;
         
         // Bagian 2 (Limasan B - Tengah)
-        document.getElementById('luas_atap_2').value = luasAtap2.toFixed(2);
-        document.getElementById('starter_2').value = starter2.toFixed(2);
-        document.getElementById('flashing_2').value = flashing2.toFixed(2);
-        document.getElementById('nok_2').value = nok2.toFixed(2);
-        document.getElementById('sudut_2').value = sudut2.toFixed(2);
+        document.getElementById('luas_atap_2').value = luasAtap2;
+        document.getElementById('starter_2').value = starter2;
+        document.getElementById('flashing_2').value = flashing2;
+        document.getElementById('nok_2').value = nok2;
+        document.getElementById('sudut_2').value = sudut2;
         
         // Bagian 3 (Limasan C - Bawah)
-        document.getElementById('luas_atap_3').value = luasAtap3.toFixed(2);
-        document.getElementById('starter_3').value = starter3.toFixed(2);
-        document.getElementById('flashing_3').value = flashing3.toFixed(2);
-        document.getElementById('nok_3').value = nok3.toFixed(2);
-        document.getElementById('sudut_3').value = sudut3.toFixed(2);
+        document.getElementById('luas_atap_3').value = luasAtap3;
+        document.getElementById('starter_3').value = starter3;
+        document.getElementById('flashing_3').value = flashing3;
+        document.getElementById('nok_3').value = nok3;
+        document.getElementById('sudut_3').value = sudut3;
         
         // Total
         let totalLuas = luasAtap1 + luasAtap2 + luasAtap3;
@@ -946,18 +1175,16 @@
         let totalFlashing = flashing1 + flashing2 + flashing3;
         let totalNok = nok1 + nok2 + nok3;
         
-        document.getElementById('total_luas_atap').value = totalLuas.toFixed(2);
-        document.getElementById('total_starter').value = totalStarter.toFixed(2);
-        document.getElementById('total_flashing').value = totalFlashing.toFixed(2);
-        document.getElementById('total_nok_jurai').value = totalNok.toFixed(2);
+        document.getElementById('total_luas_atap').value = totalLuas;
+        document.getElementById('total_starter').value = totalStarter;
+        document.getElementById('total_flashing').value = totalFlashing;
+        document.getElementById('total_nok_jurai').value = totalNok;
         
         document.getElementById('opsi_dinding').value = {{ $opsiDinding ?? 0 }};
         document.getElementById('opsi_cerobong').value = {{ $opsiCerobong ?? 0 }};
         document.getElementById('opsi_penangkal').value = {{ $opsiPenangkal ?? 0 }};
         
-        // Update Nok options setelah data terisi
         setTimeout(updateNokOptions, 300);
-        
         updatePdfData();
     };
 
@@ -978,15 +1205,14 @@
         let nokTutupId = document.getElementById('nok_tutup_id')?.value || '';
         
         if (!nokId) {
-            alert('⚠️ Pilih Tape Roof Nok terlebih dahulu!');
-            document.getElementById('nok_dropdown').focus();
+            alert('Pilih Jenis Nok terlebih dahulu!');
             btn.innerHTML = originalText;
             btn.disabled = false;
             return;
         }
         
         if (!nokTutupId) {
-            alert('⚠️ Nok Tutup tidak tersedia untuk tipe yang dipilih! Silakan pilih Nok lain.');
+            alert('Nok Tutup tidak tersedia untuk tipe yang dipilih! Silakan pilih Nok lain.');
             btn.innerHTML = originalText;
             btn.disabled = false;
             return;
@@ -1053,19 +1279,17 @@
             'Additional': [],
             'Sistem Pendukung': []
         };
-        
+
         const aksesorisAreas = ['Starter', 'Tape Roof Nok & Jurai', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
         const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
         const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
-        
+
         results.forEach(item => {
-            let area = item.area || '';
+            const area = item.area || '';
             if (area === 'Atap Utama') {
                 kelompok['Atap Utama'].push(item);
-            } else if (additionalAreas.includes(area)) {
-                if (item.qty > 0) {
-                    kelompok['Additional'].push(item);
-                }
+            } else if (additionalAreas.includes(area) && item.qty > 0) {
+                kelompok['Additional'].push(item);
             } else if (systemAreas.includes(area)) {
                 kelompok['Sistem Pendukung'].push(item);
             } else if (aksesorisAreas.includes(area)) {
@@ -1074,82 +1298,50 @@
                 kelompok['Aksesoris'].push(item);
             }
         });
-        
+
         let html = '';
         let grandTotal = 0;
-        
-        // ATAP UTAMA
-        if (kelompok['Atap Utama'].length > 0) {
-            html += `<div class="group-header group-header-atap">🏠 ATAP UTAMA</div>`;
-            html += `<table>`;
-            kelompok['Atap Utama'].forEach(item => {
+
+        const groupConfig = [
+            { key: 'Atap Utama', label: 'ATAP UTAMA', cls: 'group-header-atap' },
+            { key: 'Aksesoris', label: 'AKSESORIS', cls: 'group-header-aksesoris' },
+            { key: 'Additional', label: 'ADDITIONAL', cls: 'group-header-additional' },
+            { key: 'Sistem Pendukung', label: 'SISTEM PENDUKUNG', cls: 'group-header-sistem' }
+        ];
+
+        groupConfig.forEach(({ key, label, cls }) => {
+            const items = kelompok[key];
+            if (items.length === 0) return;
+
+            html += `<div class="group-header ${cls}">📁 ${label}</div>`;
+            html += `<table class="result-table">`;
+            html += `<thead>
+                <tr>
+                    <th style="width:5%;text-align:center;">No</th>
+                    <th style="width:40%;">Nama Produk</th>
+                    <th style="width:20%;text-align:center;">Qty</th>
+                    <th style="width:20%;">Satuan</th>
+                    <th style="width:15%;text-align:right;">Total</th>
+                </tr>
+            </thead>`;
+            html += `<tbody>`;
+            items.forEach((item, index) => {
                 grandTotal += item.total_harga || 0;
                 html += `<tr>
-                    <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
-                    <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
-                    <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
-                    <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
-                    <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+                    <td class="text-center">${index + 1}</td>
+                    <td class="product-name">${item.nama_produk}</td>
+                    <td class="qty">${item.qty}</td>
+                    <td class="unit">${item.satuan}</td>
+                    <td class="text-right">Rp ${(item.total_harga || 0).toLocaleString()}</td>
                 </tr>`;
             });
-            html += `</table>`;
-        }
-        
-        // AKSESORIS
-        if (kelompok['Aksesoris'].length > 0) {
-            html += `<div class="group-header group-header-aksesoris">🔧 AKSESORIS</div>`;
-            html += `<table>`;
-            kelompok['Aksesoris'].forEach(item => {
-                grandTotal += item.total_harga || 0;
-                html += `<tr>
-                    <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
-                    <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
-                    <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
-                    <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
-                    <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
-                </tr>`;
-            });
-            html += `</table>`;
-        }
-        
-        // ADDITIONAL
-        if (kelompok['Additional'].length > 0) {
-            html += `<div class="group-header group-header-additional">➕ ADDITIONAL</div>`;
-            html += `<table>`;
-            kelompok['Additional'].forEach(item => {
-                grandTotal += item.total_harga || 0;
-                html += `<tr>
-                    <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
-                    <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
-                    <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
-                    <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
-                    <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
-                </tr>`;
-            });
-            html += `</table>`;
-        }
-        
-        // SISTEM PENDUKUNG
-        if (kelompok['Sistem Pendukung'].length > 0) {
-            html += `<div class="group-header group-header-aksesoris" style="border-left-color: #805ad5;">⚙️ SISTEM PENDUKUNG</div>`;
-            html += `<table>`;
-            kelompok['Sistem Pendukung'].forEach(item => {
-                grandTotal += item.total_harga || 0;
-                html += `<tr>
-                    <td style="width:35%;"><strong>${item.nama_produk}</strong></td>
-                    <td style="width:20%;"><span class="badge-area">${item.area}</span></td>
-                    <td style="width:15%; text-align:right; font-weight:500;">${item.qty}</td>
-                    <td style="width:15%; text-align:right; color:#718096;">${item.satuan}</td>
-                    <td style="width:15%; text-align:right; font-weight:600; color:#2d3748;">Rp ${(item.total_harga || 0).toLocaleString()}</td>
-                </tr>`;
-            });
-            html += `</table>`;
-        }
-        
+            html += `</tbody></table>`;
+        });
+
         if (html === '') {
-            html = `<div class="empty-state">Belum ada data material</div>`;
+            html = '<div class="empty-state">Belum ada data material</div>';
         }
-        
+
         container.innerHTML = html;
         document.getElementById('grandTotal').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
         document.getElementById('totalKeseluruhan').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
@@ -1175,6 +1367,9 @@
         
         document.getElementById('pdf_tanggal').value = new Date().toLocaleDateString('id-ID');
         document.getElementById('pdf_waktu').value = new Date().toLocaleTimeString('id-ID');
+        
+        document.getElementById('pdf_nok_atas').value = document.getElementById('nok_dropdown')?.selectedOptions[0]?.text || '';
+        document.getElementById('pdf_nok_tutup').value = document.getElementById('nok_tutup_id')?.value || '';
         
         document.getElementById('pdf_luas_atap_1').value = document.getElementById('luas_atap_1').value;
         document.getElementById('pdf_starter_1').value = document.getElementById('starter_1').value;

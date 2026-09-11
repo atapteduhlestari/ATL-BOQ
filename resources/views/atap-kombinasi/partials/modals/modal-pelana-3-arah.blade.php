@@ -576,6 +576,7 @@ function lanjutKeBOQPelana3Arah() {
         'emarin-roof': '/boq/emarinroof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
         'master-roof': '/boq/masterroof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
         'maha-roof': '/boq/maharoof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
+        'mahaspan-roof': '/boq/mahaspanroof/atap-kombinasi/pelana-3-arah',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-3-arah';

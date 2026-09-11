@@ -309,7 +309,8 @@ function lanjutKeBOQSatu() {
         'eco-roof': '/boq/ecoroof/satu-kemiringan',  // <-- INI DITAMBAH
         'emarin-roof': '/boq/emarin/satu-kemiringan',  // <-- INI DITAMBAH
         'master-roof': '/boq/masterroof/satu-kemiringan',  // <-- INI DITAMBAH
-        'maha-roof': '/boq/maharoof/satu-kemiringan',  // <-- INI DITAMBAH
+        'maha-roof': '/boq/maharoof/satu-kemiringan',  // <-- INIx DITAMBAH
+        'mahaspan-roof': '/boq/mahaspanroof/satu-kemiringan',  // <-- INIx DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

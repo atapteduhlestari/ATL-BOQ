@@ -541,7 +541,7 @@
 
     <div class="title-section">
         <h1>BILL OF QUANTITY</h1>
-        <p>MAHAROOF Limasan</p>
+        <p>MAHA ROOF</p>
         
         <div class="nomor-boq-wrapper">
             <span class="nomor-boq" id="nomorBoqText">
@@ -637,14 +637,7 @@
             <span class="info-label">Jenis Nok</span>
             <span class="info-value">{{ $data['nok_atas'] ?? '-' }}</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">Nok 3 Arah</span>
-            <span class="info-value">{{ $data['nok_3_arah'] ?? '-' }}</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Nok Tutup</span>
-            <span class="info-value">{{ $data['nok_tutup'] ?? '-' }}</span>
-        </div>
+       
         <div class="info-item">
             <span class="info-label">Struktur Rangka</span>
             <span class="info-value">{{ $data['rangka'] ?? '-' }}</span>

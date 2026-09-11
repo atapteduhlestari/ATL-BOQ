@@ -362,6 +362,7 @@ function lanjutKeBOQPelana2Kemiringan() {
         'emarin-roof': '/boq/emarinroof/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
         'master-roof': '/boq/masterroof/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
         'maha-roof': '/boq/maharoof/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
+        'mahaspan-roof': '/boq/mahaspanroof/atap-kombinasi/pelana-2-kemiringan',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-2-kemiringan';

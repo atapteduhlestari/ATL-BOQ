@@ -4,26 +4,115 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-    body, button, input, select, .text-sm, .text-xs, .text-lg, .text-xl, .text-3xl, .font-semibold, .font-medium, .font-bold {
+    * {
         font-family: 'Poppins', sans-serif !important;
     }
+    
+    body {
+        background: #f5f7fa;
+    }
+    
     input, select, button {
         font-size: 13px !important;
     }
-    label {
-        font-size: 11px !important;
-        letter-spacing: 0.3px;
+    
+    .section-card {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
     }
-    h2, h3 {
-        letter-spacing: -0.3px;
+    
+    .section-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #fafbfc;
     }
-
-    .required-star {
-        color: #e53e3e;
-        margin-left: 2px;
+    
+    .section-body {
+        padding: 20px;
     }
-
-    /* NOTES / PEMBERITAHUAN */
+    
+    .btn-primary {
+        background: #2d3748;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 13px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+    }
+    .btn-primary:hover {
+        background: #1a202c;
+    }
+    
+    .btn-pdf {
+        background: #e53e3e;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 13px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+    }
+    .btn-pdf:hover {
+        background: #c53030;
+    }
+    
+    .table-container {
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        margin-top: 12px;
+    }
+    
+    .table-container table {
+        width: 100%;
+        font-size: 12px;
+        border-collapse: collapse;
+    }
+    
+    .table-container th {
+        background: #f7fafc;
+        padding: 10px 14px;
+        text-align: left;
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .table-container td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #edf2f7;
+        color: #2d3748;
+    }
+    
+    .table-container tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .table-container tr:hover {
+        background: #f7fafc;
+    }
+    
+    .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #2d3748;
+    }
+    
+    .section-subtitle {
+        font-size: 11px;
+        color: #718096;
+    }
+    
     .notes-container {
         background: #fffbeb;
         border: 1px solid #fcd34d;
@@ -84,72 +173,369 @@
         font-weight: 600;
     }
 
-    /* Opsi Tambahan */
-    .opsi-tambahan-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        margin-top: 12px;
-        padding-top: 12px;
-        border-top: 1px solid #e2e8f0;
+    .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: #94a3b8;
+        font-size: 13px;
     }
     
-    @media (max-width: 640px) {
-        .opsi-tambahan-grid {
-            grid-template-columns: 1fr;
-        }
+    .result-table .product-name {
+        font-weight: 500;
     }
     
-    .opsi-item {
+    .result-table .qty {
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .result-table .unit {
+        color: #94a3b8;
+        font-size: 11px;
+        text-align: left;
+    }
+    
+    .result-table .text-center {
+        text-align: center;
+    }
+    
+    .result-table .text-right {
+        text-align: right;
+    }
+    
+    .group-header {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 8px 12px;
+        margin: 8px 0 4px 0;
+        border-radius: 4px;
+        background: #f1f4f9;
+        color: #1a1a2e;
+        border-left: 3px solid #1a1a2e;
+    }
+    
+    .group-header-atap {
+        background: #e8edf5;
+        border-left-color: #0f3460;
+        color: #1a3a5c;
+    }
+    
+    .group-header-aksesoris {
+        background: #e8f5ed;
+        border-left-color: #38a169;
+        color: #1a5c3a;
+    }
+    
+    .group-header-additional {
+        background: #f5ede8;
+        border-left-color: #e67e22;
+        color: #5c3a1a;
+    }
+    
+    .group-header-sistem {
+        background: #f5e8ed;
+        border-left-color: #e53e3e;
+        color: #5c1a3a;
+    }
+
+    .grand-total-minimal {
+        background: #1a1a2e;
+        border-radius: 8px;
+        padding: 14px 20px;
+        margin-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .grand-total-minimal .label {
+        color: rgba(255,255,255,0.6);
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .grand-total-minimal .amount {
+        color: white;
+        font-size: 20px;
+        font-weight: 700;
+    }
+    
+    /* ===== DATA GEOMETRIK ===== */
+    .data-geometrik {
         display: flex;
         flex-direction: column;
-        gap: 2px;
+        gap: 0;
+        padding: 4px 0;
     }
     
-    .opsi-item label {
-        font-size: 10px !important;
+    .data-geometrik .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #f1f4f9;
+    }
+    
+    .data-geometrik .row:last-child {
+        border-bottom: none;
+    }
+    
+    .data-geometrik .row .label {
+        font-size: 12px;
         font-weight: 500;
         color: #4a5568;
-        display: flex;
-        align-items: center;
-        gap: 4px;
     }
     
-    .opsi-item label .opsi-desc {
+    .data-geometrik .row .value {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1e293b;
+    }
+    
+    .data-geometrik .row .value .unit {
         font-weight: 400;
-        color: #a0aec0;
-        font-size: 9px;
+        color: #94a3b8;
+        margin-left: 2px;
     }
     
-    .opsi-item input {
-        width: 100%;
-        padding: 6px 10px;
+    .data-geometrik .row .value input[readonly] {
+        border: none;
+        background: transparent;
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a2e;
+        width: 70px;
+        padding: 0;
+        text-align: right;
+    }
+
+    /* Pilih Material - 1 KOLOM */
+    .pilih-material {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 4px 0;
+    }
+    
+    .pilih-material .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #f1f4f9;
+    }
+    
+    .pilih-material .row:last-child {
+        border-bottom: none;
+    }
+    
+    .pilih-material .label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #4a5568;
+        min-width: 140px;
+    }
+    
+    .pilih-material .value {
+        font-size: 13px;
+        font-weight: 500;
+        color: #1e293b;
+        flex: 1;
+        text-align: right;
+    }
+    
+    .pilih-material .value select,
+    .pilih-material .value input {
         border: 1px solid #e2e8f0;
         border-radius: 6px;
+        padding: 4px 12px;
         font-size: 12px;
-        font-family: 'Poppins', sans-serif;
-        transition: all 0.2s;
         background: white;
+        width: 100%;
+        max-width: 280px;
     }
     
-    .opsi-item input:focus {
+    .pilih-material .value select:focus,
+    .pilih-material .value input:focus {
         outline: none;
         border-color: #4299e1;
         box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
     }
     
-    .opsi-item input::placeholder {
-        color: #cbd5e1;
-        font-size: 11px;
+    .pilih-material .value .waste-inline {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+    .pilih-material .value .waste-inline input {
+        width: 80px;
+        text-align: center;
+    }
+    .pilih-material .value .waste-inline span {
+        font-size: 12px;
+        color: #94a3b8;
     }
     
-    .opsi-item .opsi-satuan {
+    /* Opsi Tambahan - Indent */
+    .opsi-tambahan {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 2px solid #e2e8f0;
+    }
+    
+    .opsi-tambahan .opsi-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 8px;
+    }
+    
+    .opsi-tambahan .opsi-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px 20px;
+        padding-left: 24px;
+    }
+    
+    .opsi-tambahan .opsi-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .opsi-tambahan .opsi-item label {
+        font-size: 10px !important;
+        font-weight: 500;
+        color: #4a5568;
+    }
+    
+    .opsi-tambahan .opsi-item input {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 12px;
+        transition: all 0.2s;
+        background: white;
+    }
+    
+    .opsi-tambahan .opsi-item input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    
+    .opsi-tambahan .opsi-item .satuan {
         font-size: 10px;
         color: #a0aec0;
         margin-top: 2px;
     }
+    
+    @media (max-width: 768px) {
+        .pilih-material .row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+        .pilih-material .value {
+            text-align: left;
+            width: 100%;
+        }
+        .pilih-material .value select,
+        .pilih-material .value input {
+            max-width: 100%;
+        }
+        .pilih-material .value .waste-inline {
+            justify-content: flex-start;
+        }
+        .opsi-tambahan .opsi-grid {
+            grid-template-columns: 1fr;
+            padding-left: 0;
+        }
+    }
+    
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .gap-3 { gap: 12px; }
+    .mt-1 { margin-top: 4px; }
+    .mt-4 { margin-top: 16px; }
+    .mb-2 { margin-bottom: 8px; }
+    .hidden { display: none; }
+    .border-t { border-top: 1px solid #e2e8f0; }
+    .pt-4 { padding-top: 16px; }
+    .text-right { text-align: right; }
+    .text-base { font-size: 16px; }
+    .font-semibold { font-weight: 600; }
+    .text-gray-700 { color: #374151; }
+    .text-xs { font-size: 12px; }
+    .text-red-500 { color: #ef4444; }
+    .text-gray-200 { color: #e5e7eb; }
+    .text-[10px] { font-size: 10px; }
+    .font-medium { font-weight: 500; }
+    .text-xl { font-size: 20px; }
+    .mb-1 { margin-bottom: 4px; }
+    .space-y-6 > * + * { margin-top: 24px; }
+    
+    .btn-master {
+        background: #0f3460;
+        transition: all 0.2s;
+    }
+    .btn-master:hover {
+        background: #1a1a2e;
+    }
+    
+    .btn-master-pdf {
+        background: #e53e3e;
+    }
+    .btn-master-pdf:hover {
+        background: #c53030;
+    }
+    
+    .total-box {
+        background: #1a1a2e;
+        border-radius: 12px;
+        padding: 20px 24px;
+        color: white;
+    }
+    .total-box .label {
+        font-size: 12px;
+        color: rgba(255,255,255,0.6);
+        font-weight: 400;
+    }
+    .total-box .amount {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+    }
+    
+    .waste-inline {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .waste-inline input {
+        width: 60px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 12px;
+        background: white;
+    }
+    .waste-inline input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+    .waste-inline span {
+        font-size: 12px;
+        color: #94a3b8;
+    }
 
-    /* HEADER ELEGANT MINIMALIS */
+    /* HEADER BRAND */
     .header-brand {
         background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         border-radius: 16px;
@@ -214,154 +600,15 @@
         text-transform: uppercase;
     }
 
-    /* STYLING HASIL PERHITUNGAN - TABLE MINIMALIS */
-    .result-section {
-        margin-bottom: 20px;
+    /* Sembunyikan Underlayer & Lantai Kerja secara default */
+    #underlayer_container,
+    #lantai_kerja_container {
+        display: none !important;
     }
 
-    .result-section .section-label {
-        font-size: 11px;
-        font-weight: 600;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 8px 12px;
-        background: #f8fafc;
-        border-radius: 6px 6px 0 0;
-        border-bottom: 1px solid #e2e8f0;
-    }
-
-    .result-table {
-        width: 100%;
-        font-size: 12px;
-        border-collapse: collapse;
-    }
-
-    .result-table th {
-        text-align: left;
-        padding: 8px 12px;
-        font-weight: 500;
-        color: #94a3b8;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        border-bottom: 1px solid #e2e8f0;
-        background: #fafbfc;
-    }
-
-    .result-table td {
-        padding: 7px 12px;
-        border-bottom: 1px solid #f1f4f9;
-        color: #1a1a2e;
-    }
-
-    .result-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .result-table .product-name {
-        font-weight: 500;
-    }
-
-    .result-table .area-tag {
-        font-size: 10px;
-        color: #94a3b8;
-    }
-
-    .result-table .qty {
-        font-weight: 600;
-        text-align: center;
-    }
-
-    .result-table .unit {
-        color: #94a3b8;
-        font-size: 11px;
-        text-align: left;
-    }
-
-    .result-table .total {
-        font-weight: 500;
-        text-align: right;
-    }
-
-    .result-table .total-empty {
-        color: #cbd5e1;
-        font-weight: 400;
-        text-align: right;
-    }
-
-    .result-table .text-center {
-        text-align: center;
-    }
-
-    .result-table .text-right {
-        text-align: right;
-    }
-
-    .grand-total-minimal {
-        background: #1a1a2e;
-        border-radius: 8px;
-        padding: 14px 20px;
-        margin-top: 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .grand-total-minimal .label {
-        color: rgba(255,255,255,0.6);
-        font-size: 12px;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .grand-total-minimal .amount {
-        color: white;
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 30px;
-        color: #94a3b8;
-        font-size: 13px;
-    }
-
-    /* NOTIFICATION TOAST */
-    .notification-toast {
-        animation: slideDown 0.3s ease-out;
-        z-index: 9999;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-
-    @keyframes slideDown {
-        from {
-            transform: translateY(-20px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-    /* SISTEM WARNING */
-    #sistem_warning {
-        transition: all 0.3s ease;
-        font-size: 11px;
-    }
-
-    #sistem_warning .warning-icon {
-        font-size: 14px;
-    }
-
-    /* DISABLED SELECT STYLE */
-    select:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        background-color: #f7fafc !important;
+    #underlayer_container.show,
+    #lantai_kerja_container.show {
+        display: flex !important;
     }
 
     /* FORCED NON-EXPOSE BADGE */
@@ -403,22 +650,11 @@
         font-weight: 600;
     }
 
-    .coverage-info .badge.expose {
-        background: #dbeafe;
-        color: #1e40af;
-    }
-
-    .coverage-info .badge.non-expose {
-        background: #fef3c7;
-        color: #92400e;
-    }
-
     .coverage-info .badge.auto {
         background: #d1fae5;
         color: #065f46;
     }
 
-    /* REKOMENDASI COVERAGE */
     .coverage-recommendation {
         font-size: 10px;
         color: #6b7280;
@@ -433,10 +669,58 @@
     .coverage-recommendation strong {
         color: #16a34a;
     }
+
+    /* SISTEM WARNING */
+    #sistem_warning {
+        transition: all 0.3s ease;
+        font-size: 11px;
+    }
+
+    #sistem_warning .warning-icon {
+        font-size: 14px;
+    }
+
+    select:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: #f7fafc !important;
+    }
+
+    /* Coverage status & description inline */
+    .coverage-status-inline {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 2px 0 6px 140px;
+        font-size: 10px;
+        color: #6b7280;
+    }
+    .coverage-status-inline .badge {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 10px;
+        font-size: 9px;
+        font-weight: 600;
+        background: #d1fae5;
+        color: #065f46;
+    }
+    .coverage-rec-inline {
+        padding: 4px 10px;
+        margin: 0 0 6px 140px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 6px;
+        font-size: 10px;
+        color: #6b7280;
+    }
+    .coverage-rec-inline strong {
+        color: #16a34a;
+    }
 </style>
 
 <div class="space-y-6">
-    <!-- Header -->
+
+    <!-- HEADER -->
     <div class="header-brand">
         <div class="flex items-center justify-between relative z-10">
             <div class="flex items-center gap-4">
@@ -512,758 +796,657 @@
             </li>
         </ul>
     </div>
-    
-    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-        <div class="p-6">
-            <form id="boqForm">
-                <!-- Data Perhitungan Luas (READONLY dari URL) -->
-                <div class="mb-8">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-1 h-5 bg-green-600 rounded-full"></div>
-                        <h3 class="text-base font-semibold text-gray-800">Data Perhitungan Luas Atap</h3>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 rounded-xl p-4">
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Luas Permukaan Atap</label>
-                            <input type="number" id="luas_atap" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 focus:ring-1 focus:ring-green-500 focus:border-green-500" readonly placeholder="0 m²">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Sudut Kemiringan</label>
-                            <input type="number" id="sudut" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 focus:ring-1 focus:ring-green-500 focus:border-green-500" readonly placeholder="0°">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Tepi Bawah Atap</label>
-                            <input type="number" id="panjang_starter" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 focus:ring-1 focus:ring-green-500 focus:border-green-500" readonly placeholder="0 m">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Nok</label>
-                            <input type="number" id="panjang_nok" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 focus:ring-1 focus:ring-green-500 focus:border-green-500" readonly placeholder="0 m">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Jurai</label>
-                            <input type="number" id="panjang_jurai" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 focus:ring-1 focus:ring-green-500 focus:border-green-500" readonly placeholder="0 m">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang Flashing</label>
-                            <input type="number" id="panjang_flashing" step="0.01" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-700 focus:ring-1 focus:ring-green-500 focus:border-green-500" readonly placeholder="0 m">
-                        </div>
-                    </div>
 
-                    <!-- ===== OPSI TAMBAHAN ===== -->
-                    <div class="opsi-tambahan-grid">
-                        <div class="opsi-item">
-                            <label>
-                                📐 Dinding
-                                <span class="opsi-desc">(Panjang atap yang berbatasan dinding)</span>
-                            </label>
-                            <input type="number" 
-                                   id="opsi_dinding" 
-                                   step="0.1" 
-                                   min="0"
-                                   placeholder="0"
-                                   value="0">
-                            <span class="opsi-satuan">meter</span>
+    <!-- Data Geometrik -->
+    <div class="section-card">
+        <div class="section-header">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="section-title">Data Geometrik</h3>
+                    <p class="section-subtitle">Data luas atap dari perhitungan sebelumnya</p>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="data-geometrik">
+                <div class="row">
+                    <span class="label">Luas Atap</span>
+                    <span class="value">
+                        <input type="text" id="luas_atap" readonly>
+                        <span class="unit">m²</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Sudut</span>
+                    <span class="value">
+                        <input type="text" id="sudut" readonly>
+                        <span class="unit">°</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Starter</span>
+                    <span class="value">
+                        <input type="text" id="panjang_starter" readonly>
+                        <span class="unit">m</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Nok</span>
+                    <span class="value">
+                        <input type="text" id="panjang_nok" readonly>
+                        <span class="unit">m</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Jurai</span>
+                    <span class="value">
+                        <input type="text" id="panjang_jurai" readonly>
+                        <span class="unit">m</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Flashing</span>
+                    <span class="value">
+                        <input type="text" id="panjang_flashing" readonly>
+                        <span class="unit">m</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pilih Material -->
+    <div class="section-card">
+        <div class="section-header">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="section-title">Pilih Material</h3>
+                    <p class="section-subtitle">Pilih material dan aksesoris atap</p>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="pilih-material">
+                <!-- Produk Atap Utama -->
+                <div class="row">
+                    <span class="label">Produk Atap Utama</span>
+                    <span class="value">
+                        <select id="produk_atap_id">
+                            <option value="">Pilih Produk</option>
+                            @foreach($products as $product)
+                                <option value="{{ $product->id }}">{{ $product->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
+
+                <!-- Jurai -->
+                <div class="row">
+                    <span class="label">Jurai <span style="color:#e53e3e;">*</span></span>
+                    <span class="value">
+                        <select id="jurai_dropdown">
+                            <option value="">Pilih Jurai</option>
+                            @foreach($juraiOptions ?? [] as $jurai)
+                                <option value="{{ $jurai->id }}">{{ $jurai->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
+
+                <!-- Nok Atas -->
+                <div class="row">
+                    <span class="label">Nok Atas <span style="color:#e53e3e;">*</span></span>
+                    <span class="value">
+                        <select id="nok_atas_dropdown">
+                            <option value="">Pilih Nok Atas</option>
+                            @foreach($nokAtasOptions ?? [] as $nok)
+                                <option value="{{ $nok->id }}">{{ $nok->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
+
+                <!-- SISTEM PEMASANGAN -->
+                <div class="row">
+                    <span class="label">
+                        <span class="sistem-label-wrapper">
+                            Sistem Pemasangan
+                            <span id="forced_badge" class="forced-badge hidden">FORCED NON-EXPOSE</span>
+                        </span>
+                    </span>
+                    <span class="value">
+                        <select id="sistem_pemasangan" onchange="validateAndToggleFields()">
+                            <option value="">Pilih Sistem Pemasangan</option>
+                            <option value="expose">Expose</option>
+                            <option value="non-expose">Non-Expose</option>
+                        </select>
+                    </span>
+                </div>
+
+                <!-- ===== WARNING SISTEM ===== -->
+                <div id="sistem_warning" class="hidden" style="margin-top:4px; padding:6px 12px; background:#fef3c7; border:1px solid #fcd34d; border-radius:6px; font-size:11px; color:#92400e; display:flex; align-items:center; gap:8px;">
+                    <span>⚠️</span>
+                    <span id="sistem_warning_text">Sudut atap < 30°, sistem otomatis NON-EXPOSE (tidak bisa diubah)</span>
+                </div>
+
+                <!-- ===== COVERAGE ===== -->
+                <div class="row">
+                    <span class="label">Coverage <span style="color:#e53e3e;">*</span></span>
+                    <span class="value">
+                        <select id="coverage" required>
+                            <option value="">Pilih Coverage</option>
+                            <option value="8">8 daun / m²</option>
+                            <option value="7">7 daun / m²</option>
+                            <option value="6">6 daun / m²</option>
+                        </select>
+                    </span>
+                </div>
+               
+
+                <!-- Underlayer -->
+                <div class="row" id="underlayer_container">
+                    <span class="label">Underlayer</span>
+                    <span class="value">
+                        <select id="underlayer_id">
+                            <option value="">Pilih Underlayer</option>
+                            @foreach($underlayers as $underlayer)
+                                <option value="{{ $underlayer->id }}">{{ $underlayer->nama_produk }}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
+
+                <!-- Struktur Rangka -->
+                <div class="row">
+                    <span class="label">Struktur Rangka</span>
+                    <span class="value">
+                        <select id="rangka">
+                            @foreach($rangkaOptions as $option)
+                                <option value="{{ $option }}" {{ $option == 'Baja Ringan' ? 'selected' : '' }}>{{ $option }}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
+
+                <!-- Lantai Kerja -->
+                <div class="row" id="lantai_kerja_container">
+                    <span class="label">Lantai Kerja</span>
+                    <span class="value">
+                        <select id="lantai_kerja">
+                            @foreach($lantaiKerjaOptions as $option)
+                                <option value="{{ $option }}" {{ $option == 'Plywood 9 mm' ? 'selected' : '' }}>{{ $option }}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
+
+                <!-- Waste -->
+                <div class="row">
+                    <span class="label">Waste</span>
+                    <span class="value">
+                        <div class="waste-inline">
+                            <input type="number" id="waste" step="1" value="5">
+                            <span>%</span>
                         </div>
-                        <div class="opsi-item">
-                            <label>
-                                🪟 Kaca
-                                <span class="opsi-desc">(panjang area kaca/genteng kaca)</span>
-                            </label>
-                            <input type="number" 
-                                   id="opsi_kaca" 
-                                   step="0.1" 
-                                   min="0"
-                                   placeholder="0"
-                                   value="0">
-                            <span class="opsi-satuan">meter</span>
-                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="opsi-tambahan">
+                <div class="opsi-title">Opsi Tambahan</div>
+                <div class="opsi-grid">
+                    <div class="opsi-item">
+                        <label>Dinding</label>
+                        <input type="number" id="opsi_dinding" step="0.1" min="0" placeholder="0" value="0">
+                        <span class="satuan">meter</span>
+                    </div>
+                    <div class="opsi-item">
+                        <label>Kaca</label>
+                        <input type="number" id="opsi_kaca" step="0.1" min="0" placeholder="0" value="0">
+                        <span class="satuan">meter</span>
                     </div>
                 </div>
-                
-                <!-- Pilihan Produk -->
-                <div class="mb-8">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-1 h-5 bg-green-600 rounded-full"></div>
-                        <h3 class="text-base font-semibold text-gray-800">Pilihan Material</h3>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Produk Atap Utama -->
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">PRODUK ATAP UTAMA</label>
-                            <select id="produk_atap_id" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-white">
-                                <option value="">Pilih Produk</option>
-                                @foreach($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->nama_produk }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+            </div>
 
-                        <!-- ===== DROPDOWN JURAI (WAJIB) ===== -->
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
-                                JURAI <span class="required-star">*</span>
-                            </label>
-                            <select id="jurai_dropdown" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-white" required>
-                                <option value="">Pilih Jurai</option>
-                                @foreach($juraiOptions ?? [] as $jurai)
-                                    <option value="{{ $jurai->id }}">{{ $jurai->nama_produk }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+            <button onclick="hitungMaterial()" class="btn-primary btn-master" style="margin-top:16px;">
+                Hitung Material
+            </button>
 
-                        <!-- ===== DROPDOWN NOK ATAS (WAJIB) ===== -->
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
-                                NOK ATAS <span class="required-star">*</span>
-                            </label>
-                            <select id="nok_atas_dropdown" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-white" required>
-                                <option value="">Pilih Nok Atas</option>
-                                @foreach($nokAtasOptions ?? [] as $nok)
-                                    <option value="{{ $nok->id }}">{{ $nok->nama_produk }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- SISTEM PEMASANGAN -->
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
-                                <span class="sistem-label-wrapper">
-                                    SISTEM PEMASANGAN
-                                    <span id="forced_badge" class="forced-badge hidden">FORCED NON-EXPOSE</span>
-                                </span>
-                            </label>
-                            <select id="sistem_pemasangan" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-white" onchange="validateAndToggleFields()">
-                                <option value="">Pilih Sistem Pemasangan</option>
-                                <option value="expose">Expose (Terlihat)</option>
-                                <option value="non-expose">Non-Expose (Tidak Terlihat)</option>
-                            </select>
-                            <!-- ===== WARNING SISTEM ===== -->
-                            <div id="sistem_warning" class="hidden mt-2 bg-yellow-50 border border-yellow-300 rounded-lg px-3 py-2 text-xs text-yellow-800 flex items-center gap-2">
-                                <span class="warning-icon">⚠️</span>
-                                <span id="sistem_warning_text">Sudut atap < 30°, sistem otomatis NON-EXPOSE (tidak bisa diubah)</span>
-                            </div>
-                        </div>
-
-                        <!-- ===== COVERAGE (DAUN/M²) - OPEN ===== -->
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">
-                                COVERAGE <span class="required-star">*</span>
-                                <span id="coverage_info_text" class="font-normal text-gray-400 text-[9px]"></span>
-                            </label>
-                            <select id="coverage" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-white" required>
-                                <option value="">Pilih Coverage</option>
-                                <option value="8">8 daun / m²</option>
-                                <option value="7">7 daun / m²</option>
-                                <option value="6">6 daun / m²</option>
-                            </select>
-                            <div class="coverage-info">
-                                <span id="coverage_status" class="badge auto">Bebas</span>
-                                <span id="coverage_description" class="text-gray-500">Pilih sesuai kebutuhan</span>
-                            </div>
-                            <div id="coverage_recommendation" class="coverage-recommendation hidden">
-                                💡 Rekomendasi: <strong id="recommendation_text">7 daun/m²</strong>
-                            </div>
-                        </div>
-
-                        <!-- UNDERLAYER -->
-                        <div id="underlayer_container">
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">UNDERLAYER</label>
-                            <select id="underlayer_id" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-white">
-                                <option value="">Pilih Underlayer</option>
-                                @foreach($underlayers as $underlayer)
-                                    <option value="{{ $underlayer->id }}">{{ $underlayer->nama_produk }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- ===== STRUKTUR RANGKA ===== -->
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">STRUKTUR RANGKA</label>
-                            <select id="rangka" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-white">
-                                @foreach($rangkaOptions as $option)
-                                    <option value="{{ $option }}" {{ $option == 'Baja Ringan' ? 'selected' : '' }}>{{ $option }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- LANTAI KERJA -->
-                        <div id="lantai_kerja_container">
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">LANTAI KERJA</label>
-                            <select id="lantai_kerja" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-white">
-                                @foreach($lantaiKerjaOptions as $option)
-                                    <option value="{{ $option }}" {{ $option == 'Plywood 9 mm' ? 'selected' : '' }}>{{ $option }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        <!-- WASTE -->
-                        <div>
-                            <label class="block text-[10px] font-medium text-gray-500 mb-1.5">WASTE (%)</label>
-                            <input type="number" id="waste" step="1" value="5" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-1 focus:ring-green-500 focus:border-green-500">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Tombol Hitung -->
-                <div class="flex gap-3">
-                    <button type="button" onclick="hitungBOQ()" class="flex-1 bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium transition-all">
-                        <svg class="inline w-4 h-4 mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-6 3v-3m-6 3h18M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
-                        </svg>
-                        Hitung Material
-                    </button>
-                    <button type="button" id="btnPDF" onclick="exportToPDF()" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-lg text-sm font-medium hidden transition-all">
-                        <svg class="inline w-4 h-4 mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                        </svg>
-                        Export PDF
-                    </button>
-                </div>
-            </form>
-            
-            <!-- Hasil Perhitungan -->
-            <div id="hasilBOQ" class="mt-8 hidden">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-1 h-5 bg-gray-900 rounded-full"></div>
-                    <h3 class="text-base font-semibold text-gray-800">Rincian Kebutuhan Material</h3>
-                </div>
-                <div class="rounded-xl border border-gray-200 overflow-hidden bg-white">
-                    <div id="boqResultContainer" class="p-4">
-                        <!-- Akan diisi oleh JavaScript -->
+            <div id="hasilMaterial" class="mt-4 hidden">
+                <div class="border-t pt-4">
+                    <h4 class="text-xs font-semibold text-gray-700 mb-2">Rincian Material</h4>
+                    <div class="table-container" id="tableMaterial"></div>
+                    <div class="grand-total-minimal">
+                        <span class="label">Grand Total</span>
+                        <span class="amount" id="grandTotal">Rp 0</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- TOTAL KESELURUHAN -->
+    <div class="total-box">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h4 class="text-sm font-semibold text-white">Total Keseluruhan</h4>
+                <p class="text-gray-200 text-[10px]">PALMEX Limasan (termasuk waste)</p>
+            </div>
+            <div class="text-right">
+                <p class="label">Grand Total</p>
+                <p class="amount" id="totalKeseluruhan">Rp 0</p>
+            </div>
+        </div>
+        
+        <button onclick="exportToPDF()" class="btn-pdf btn-master-pdf" style="margin-top:16px; width:100%;">
+            Export PDF
+        </button>
+    </div>
 </div>
 
 <script>
-let currentResults = [];
+    let results = [];
 
-function updateGrandTotal(total) {
-    let grandTotalEl = document.getElementById('grandTotal');
-    if (grandTotalEl) {
-        grandTotalEl.innerHTML = `Rp ${(total || 0).toLocaleString()}`;
-    }
-}
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        document.getElementById('luas_atap').value = urlParams.get('luas_atap') || 0;
+        document.getElementById('sudut').value = urlParams.get('sudut') || 0;
+        document.getElementById('panjang_starter').value = urlParams.get('panjang_starter') || 0;
+        document.getElementById('panjang_nok').value = urlParams.get('panjang_nok') || 0;
+        document.getElementById('panjang_jurai').value = urlParams.get('panjang_jurai') || 0;
+        document.getElementById('panjang_flashing').value = urlParams.get('panjang_flashing') || 0;
+        document.getElementById('opsi_dinding').value = urlParams.get('dinding') || 0;
+        document.getElementById('opsi_kaca').value = urlParams.get('kaca') || 0;
 
-function renderTable() {
-    let container = document.getElementById('boqResultContainer');
-    
-    if (!container) {
-        console.error('Container boqResultContainer tidak ditemukan!');
-        return;
-    }
-    
-    if (!currentResults || currentResults.length === 0) {
-        container.innerHTML = `<div class="empty-state">Belum ada data material</div>`;
-        return;
-    }
-    
-    const groups = {
-        'Atap Utama': { label: 'KELOMPOK ATAP UTAMA', items: [] },
-        'Aksesoris': { label: 'AKSESORIS', items: [] },
-        'Additional': { label: 'ADDITIONAL', items: [] },
-        'Sistem Pendukung': { label: 'SISTEM PENDUKUNG', items: [] }
-    };
-    
-    const additionalAreas = ['Wall Flashing', 'Flashing Kaca'];
-    const systemAreas = ['Underlayer', 'Lantai Kerja', 'Screw Plywood'];
-    const aksesorisAreas = ['Starter', 'Nok Atas', 'Jurai', 'Topcap', 'Screw', 'Rail', 'Wind', 'Metal Flashing'];
-    
-    currentResults.forEach(item => {
-        if (item.area === 'Atap Utama') {
-            groups['Atap Utama'].items.push(item);
-        } else if (additionalAreas.includes(item.area)) {
-            groups['Additional'].items.push(item);
-        } else if (systemAreas.includes(item.area)) {
-            groups['Sistem Pendukung'].items.push(item);
-        } else if (aksesorisAreas.includes(item.area)) {
-            groups['Aksesoris'].items.push(item);
-        } else {
-            groups['Aksesoris'].items.push(item);
+        let sistemPemasangan = urlParams.get('sistem_pemasangan') || 'expose';
+        let sudut = parseFloat(document.getElementById('sudut').value) || 0;
+        
+        if (sudut < 30) {
+            sistemPemasangan = 'non-expose';
         }
-    });
-    
-    let html = '';
-    let grandTotal = 0;
-    
-    const groupKeys = ['Atap Utama', 'Aksesoris', 'Additional', 'Sistem Pendukung'];
-    
-    groupKeys.forEach(key => {
-        const group = groups[key];
-        if (group.items.length === 0) return;
         
-        const groupTotal = group.items.reduce((sum, item) => sum + (item.total_harga || 0), 0);
-        grandTotal += groupTotal;
+        document.getElementById('sistem_pemasangan').value = sistemPemasangan;
         
-        html += `<div class="result-section">`;
-        html += `<div class="section-label">${group.label}</div>`;
+        checkForcedNonExpose();
+        updateCoverage();
+    };
+
+    function toggleFields() {
+        let sistem = document.getElementById('sistem_pemasangan')?.value || '';
+        let underlayerContainer = document.getElementById('underlayer_container');
+        let lantaiKerjaContainer = document.getElementById('lantai_kerja_container');
         
-        html += `<table class="result-table">
-            <thead>
-                <tr>
-                    <th style="width:35%;">Nama Produk</th>
-                    <th style="width:20%;">Area</th>
-                    <th style="width:15%;text-align:center;">Qty</th>
-                    <th style="width:15%;">Satuan</th>
-                    <th style="width:20%;text-align:right;">Total</th>
-                </tr>
-            </thead>
-            <tbody>`;
+        if (sistem === 'expose') {
+            if (underlayerContainer) {
+                underlayerContainer.style.display = 'none';
+                underlayerContainer.classList.remove('show');
+            }
+            if (lantaiKerjaContainer) {
+                lantaiKerjaContainer.style.display = 'none';
+                lantaiKerjaContainer.classList.remove('show');
+            }
+        } else if (sistem === 'non-expose') {
+            if (underlayerContainer) {
+                underlayerContainer.style.display = 'flex';
+                underlayerContainer.classList.add('show');
+            }
+            if (lantaiKerjaContainer) {
+                lantaiKerjaContainer.style.display = 'flex';
+                lantaiKerjaContainer.classList.add('show');
+            }
+        } else {
+            if (underlayerContainer) {
+                underlayerContainer.style.display = 'none';
+                underlayerContainer.classList.remove('show');
+            }
+            if (lantaiKerjaContainer) {
+                lantaiKerjaContainer.style.display = 'none';
+                lantaiKerjaContainer.classList.remove('show');
+            }
+        }
+    }
+
+    function validateAndToggleFields() {
+        let sudut = parseFloat(document.getElementById('sudut')?.value) || 0;
+        let sistemSelect = document.getElementById('sistem_pemasangan');
+        let selectedValue = sistemSelect.value;
         
-        group.items.forEach(item => {
-            let totalDisplay = '';
-            if (item.total_harga > 0) {
-                totalDisplay = `<span class="total">Rp ${item.total_harga.toLocaleString()}</span>`;
-            } else {
-                totalDisplay = `<span class="total-empty">-</span>`;
+        if (sudut < 30 && selectedValue === 'expose') {
+            sistemSelect.value = 'non-expose';
+            alert('⚠️ Sudut atap ' + sudut + '° (< 30°), tidak bisa menggunakan EXPOSE. Sistem otomatis NON-EXPOSE.');
+        }
+        
+        checkForcedNonExpose();
+        updateCoverage();
+    }
+
+    function checkForcedNonExpose() {
+        let sudut = parseFloat(document.getElementById('sudut')?.value) || 0;
+        let sistemSelect = document.getElementById('sistem_pemasangan');
+        let warningEl = document.getElementById('sistem_warning');
+        let warningText = document.getElementById('sistem_warning_text');
+        let forcedBadge = document.getElementById('forced_badge');
+        
+        if (sudut < 30) {
+            sistemSelect.value = 'non-expose';
+            sistemSelect.disabled = true;
+            sistemSelect.style.opacity = '0.7';
+            sistemSelect.style.cursor = 'not-allowed';
+            
+            if (warningEl) {
+                warningEl.style.display = 'flex';
+                if (warningText) {
+                    warningText.textContent = '⚠️ Sudut atap ' + sudut + '° (< 30°), sistem otomatis NON-EXPOSE (tidak bisa diubah)';
+                }
             }
             
-            html += `<tr>
-                <td class="product-name">${item.nama_produk || '-'}</td>
-                <td><span class="area-tag">${item.area || '-'}</span></td>
-                <td class="qty text-center">${(item.qty || 0).toLocaleString()}</td>
-                <td class="unit">${item.satuan || '-'}</td>
-                <td class="text-right">${totalDisplay}</td>
-            </tr>`;
-        });
-        
-        html += `</tbody></table>`;
-        html += `</div>`;
-    });
-    
-    html += `<div class="grand-total-minimal">
-        <span class="label">Grand Total</span>
-        <span class="amount">Rp ${grandTotal.toLocaleString()}</span>
-    </div>`;
-    
-    container.innerHTML = html;
-}
-
-function showNotification(message, type = 'info') {
-    let existing = document.querySelector('.notification-toast');
-    if (existing) existing.remove();
-    
-    let toast = document.createElement('div');
-    toast.className = 'notification-toast fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-md';
-    
-    if (type === 'warning') {
-        toast.className += ' bg-yellow-50 border border-yellow-400 text-yellow-800';
-    } else if (type === 'error') {
-        toast.className += ' bg-red-50 border border-red-400 text-red-800';
-    } else {
-        toast.className += ' bg-blue-50 border border-blue-400 text-blue-800';
-    }
-    
-    toast.innerHTML = `
-        <div class="flex items-start gap-3">
-            <span class="text-lg">${type === 'warning' ? '⚠️' : type === 'error' ? '❌' : 'ℹ️'}</span>
-            <div class="flex-1">
-                <p class="text-sm font-medium">${message}</p>
-            </div>
-            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
-                ✕
-            </button>
-        </div>
-    `;
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        if (toast.parentElement) toast.remove();
-    }, 5000);
-}
-
-// ===== FUNGSI UPDATE COVERAGE (HANYA REKOMENDASI, TIDAK LOCK) =====
-function updateCoverage() {
-    let sudut = parseFloat(document.getElementById('sudut')?.value) || 0;
-    let sistem = document.getElementById('sistem_pemasangan')?.value || '';
-    let coverageSelect = document.getElementById('coverage');
-    let coverageStatus = document.getElementById('coverage_status');
-    let coverageDesc = document.getElementById('coverage_description');
-    let coverageInfoText = document.getElementById('coverage_info_text');
-    let recommendationEl = document.getElementById('coverage_recommendation');
-    let recommendationText = document.getElementById('recommendation_text');
-    
-    let recommendedValue = null;
-    let descText = '';
-    let infoText = '';
-    
-    // Tentukan rekomendasi berdasarkan sudut & sistem (tapi tidak memaksa)
-    if (sistem === 'expose') {
-        if (sudut >= 30 && sudut <= 31) {
-            recommendedValue = '8';
-            descText = 'Rekomendasi: 8 daun/m² (Expose 30°)';
-            infoText = ' (Expose 30° → disarankan 8 daun/m²)';
-        } else if (sudut > 30) {
-            recommendedValue = '7';
-            descText = 'Rekomendasi: 7 daun/m² (Expose >30°)';
-            infoText = ' (Expose >30° → disarankan 7 daun/m²)';
+            if (forcedBadge) {
+                forcedBadge.style.display = 'inline-block';
+            }
         } else {
-            recommendedValue = '7';
-            descText = 'Rekomendasi: 7 daun/m² (Sudut < 30° → Non-Expose)';
-            infoText = ' (Sudut < 30° → disarankan 7 daun/m²)';
-        }
-    } else if (sistem === 'non-expose') {
-        if (sudut > 30 && sudut <= 40) {
-            recommendedValue = '7';
-            descText = 'Rekomendasi: 7 daun/m² (Non-Expose 31-40°)';
-            infoText = ' (Non-Expose 31-40° → disarankan 7 daun/m²)';
-        } else if (sudut > 40) {
-            recommendedValue = '7';
-            descText = 'Rekomendasi: 7 daun/m² (Non-Expose >40°, bisa pilih 6 atau 7)';
-            infoText = ' (Non-Expose >40° → bisa pilih 6 atau 7)';
-        } else if (sudut >= 15 && sudut <= 30) {
-            recommendedValue = '7';
-            descText = 'Rekomendasi: 7 daun/m² (Non-Expose 15-30°)';
-            infoText = ' (Non-Expose 15-30° → disarankan 7 daun/m²)';
-        } else {
-            recommendedValue = '7';
-            descText = 'Rekomendasi: 7 daun/m² (Sudut < 15°)';
-            infoText = ' (Sudut < 15° → disarankan 7 daun/m²)';
-        }
-    } else {
-        recommendedValue = null;
-        descText = 'Pilih sistem pemasangan terlebih dahulu';
-        infoText = '';
-    }
-    
-    // Update status - TIDAK MEMAKSA/MELOCK nilai
-    if (coverageStatus) {
-        coverageStatus.className = 'badge';
-        coverageStatus.textContent = '✎ Bebas';
-    }
-    if (coverageDesc) {
-        coverageDesc.textContent = descText || 'Pilih sesuai kebutuhan';
-    }
-    if (coverageInfoText) {
-        coverageInfoText.textContent = infoText || '';
-    }
-    
-    // Tampilkan rekomendasi (tapi tidak memaksa)
-    if (recommendedValue && recommendationEl) {
-        recommendationEl.classList.remove('hidden');
-        if (recommendationText) {
-            recommendationText.textContent = recommendedValue + ' daun/m²';
-        }
-    } else if (recommendationEl) {
-        recommendationEl.classList.add('hidden');
-    }
-}
-
-// ===== FUNGSI VALIDASI DAN TOGGLE FIELDS =====
-function validateAndToggleFields() {
-    let sudut = parseFloat(document.getElementById('sudut')?.value) || 0;
-    let sistemSelect = document.getElementById('sistem_pemasangan');
-    let selectedValue = sistemSelect.value;
-    
-    if (sudut < 30 && selectedValue === 'expose') {
-        sistemSelect.value = 'non-expose';
-        showNotification('⚠️ Sudut atap ' + sudut + '° (< 30°), tidak bisa menggunakan EXPOSE. Sistem otomatis NON-EXPOSE.', 'warning');
-    }
-    
-    toggleFields();
-}
-
-// ===== FUNGSI TOGGLE FIELDS =====
-function toggleFields() {
-    let sistem = document.getElementById('sistem_pemasangan')?.value || '';
-    let sudut = parseFloat(document.getElementById('sudut')?.value) || 0;
-    let underlayerContainer = document.getElementById('underlayer_container');
-    let lantaiKerjaContainer = document.getElementById('lantai_kerja_container');
-    let warningEl = document.getElementById('sistem_warning');
-    let warningText = document.getElementById('sistem_warning_text');
-    let sistemSelect = document.getElementById('sistem_pemasangan');
-    let forcedBadge = document.getElementById('forced_badge');
-    
-    if (sudut < 30) {
-        sistemSelect.value = 'non-expose';
-        sistem = 'non-expose';
-        
-        if (warningEl) {
-            warningEl.classList.remove('hidden');
-            if (warningText) {
-                warningText.textContent = '⚠️ Sudut atap ' + sudut + '° (< 30°), sistem otomatis NON-EXPOSE (tidak bisa diubah)';
+            sistemSelect.disabled = false;
+            sistemSelect.style.opacity = '1';
+            sistemSelect.style.cursor = 'default';
+            
+            if (warningEl) {
+                warningEl.style.display = 'none';
+            }
+            
+            if (forcedBadge) {
+                forcedBadge.style.display = 'none';
             }
         }
         
-        if (forcedBadge) {
-            forcedBadge.classList.remove('hidden');
-        }
-        
-        sistemSelect.disabled = true;
-        sistemSelect.style.cursor = 'not-allowed';
-        sistemSelect.style.opacity = '0.7';
-        sistemSelect.style.backgroundColor = '#f7fafc';
-    } else {
-        if (warningEl) {
-            warningEl.classList.add('hidden');
-        }
-        
-        if (forcedBadge) {
-            forcedBadge.classList.add('hidden');
-        }
-        
-        sistemSelect.disabled = false;
-        sistemSelect.style.cursor = 'default';
-        sistemSelect.style.opacity = '1';
-        sistemSelect.style.backgroundColor = 'white';
-    }
-    
-    if (sistem === 'expose') {
-        if (underlayerContainer) underlayerContainer.style.display = 'none';
-        if (lantaiKerjaContainer) lantaiKerjaContainer.style.display = 'none';
-    } else if (sistem === 'non-expose') {
-        if (underlayerContainer) underlayerContainer.style.display = 'block';
-        if (lantaiKerjaContainer) lantaiKerjaContainer.style.display = 'block';
-    } else {
-        if (underlayerContainer) underlayerContainer.style.display = 'block';
-        if (lantaiKerjaContainer) lantaiKerjaContainer.style.display = 'block';
-    }
-    
-    updateCoverage();
-}
-
-// ===== FUNGSI SORT RESULTS =====
-function sortResults(results) {
-    const urutan = [
-        'Atap Utama',
-        'Starter',
-        'Nok Atas',
-        'Jurai',
-        'Topcap',
-        'Screw',
-        'Rail',
-        'Wind',
-        'Metal Flashing',
-        'Underlayer',
-        'Lantai Kerja',
-        'Screw Plywood',
-        'Wall Flashing',
-        'Flashing Kaca'
-    ];
-    
-    return results.sort((a, b) => {
-        let indexA = urutan.indexOf(a.area);
-        let indexB = urutan.indexOf(b.area);
-        if (indexA === -1) indexA = urutan.length;
-        if (indexB === -1) indexB = urutan.length;
-        return indexA - indexB;
-    });
-}
-
-// ===== FUNGSI HITUNG BOQ =====
-function hitungBOQ() {
-    let btn = event.target;
-    let originalText = btn.innerHTML;
-    btn.innerHTML = '<svg class="inline w-4 h-4 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Memproses...';
-    btn.disabled = true;
-    
-    let opsiDinding = parseFloat(document.getElementById('opsi_dinding')?.value) || 0;
-    let opsiKaca = parseFloat(document.getElementById('opsi_kaca')?.value) || 0;
-    
-    let juraiDropdown = document.getElementById('jurai_dropdown');
-    let juraiId = juraiDropdown ? juraiDropdown.value : '';
-    
-    let nokAtasDropdown = document.getElementById('nok_atas_dropdown');
-    let nokAtasId = nokAtasDropdown ? nokAtasDropdown.value : '';
-    
-    let rangka = document.getElementById('rangka')?.value || 'Baja Ringan';
-    let lantaiKerja = document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm';
-    
-    let sudut = parseFloat(document.getElementById('sudut')?.value) || 0;
-    let sistemPemasangan = document.getElementById('sistem_pemasangan')?.value || 'expose';
-    let coverage = parseFloat(document.getElementById('coverage')?.value) || 0;
-    
-    // ===== VALIDASI SUDUT =====
-    if (sudut < 30 && sistemPemasangan === 'expose') {
-        sistemPemasangan = 'non-expose';
-        document.getElementById('sistem_pemasangan').value = 'non-expose';
         toggleFields();
-        showNotification('⚠️ Sudut ' + sudut + '° < 30°, sistem dipaksa NON-EXPOSE', 'warning');
     }
-    
-    // ===== VALIDASI COVERAGE =====
-    if (!coverage || coverage <= 0) {
-        alert('⚠️ Pilih Coverage (daun/m²) terlebih dahulu!');
-        document.getElementById('coverage').focus();
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-    }
-    
-    // ===== VALIDASI WAJIB =====
-    if (!juraiId) {
-        alert('⚠️ Pilih Jurai terlebih dahulu! (wajib)');
-        document.getElementById('jurai_dropdown').focus();
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-    }
-    if (!nokAtasId) {
-        alert('⚠️ Pilih Nok Atas terlebih dahulu! (wajib)');
-        document.getElementById('nok_atas_dropdown').focus();
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-    }
-    
-    let data = {
-        luas_atap: parseFloat(document.getElementById('luas_atap')?.value) || 0,
-        sudut: sudut,
-        panjang_starter: parseFloat(document.getElementById('panjang_starter')?.value) || 0,
-        panjang_nok: parseFloat(document.getElementById('panjang_nok')?.value) || 0,
-        panjang_jurai: parseFloat(document.getElementById('panjang_jurai')?.value) || 0,
-        panjang_flashing: parseFloat(document.getElementById('panjang_flashing')?.value) || 0,
-        opsi_dinding: opsiDinding,
-        opsi_kaca: opsiKaca,
-        produk_atap_id: document.getElementById('produk_atap_id')?.value || '',
-        jurai_id: juraiId,
-        nok_atas_id: nokAtasId,
-        underlayer_id: document.getElementById('underlayer_id')?.value || '',
-        rangka: rangka,
-        lantai_kerja: lantaiKerja,
-        sistem_pemasangan: sistemPemasangan,
-        coverage: coverage,
-        waste: parseFloat(document.getElementById('waste')?.value) || 5
-    };
-    
-    console.log('DATA DIKIRIM:', data);
-    
-    if (!data.produk_atap_id) {
-        alert('Pilih Produk Atap Utama terlebih dahulu!');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-    }
-    
-    if (data.luas_atap <= 0) {
-        alert('Data luas atap tidak valid! Silakan hitung ulang dari halaman sebelumnya.');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        return;
-    }
-    
-    fetch('/boq/palmex/limasan/hitung', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            currentResults = sortResults(data.results);
-            renderTable();
-            document.getElementById('hasilBOQ').classList.remove('hidden');
-            document.getElementById('hasilBOQ').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            document.getElementById('btnPDF').classList.remove('hidden');
+
+    function updateCoverage() {
+        let sudut = parseFloat(document.getElementById('sudut')?.value) || 0;
+        let sistem = document.getElementById('sistem_pemasangan')?.value || '';
+        let coverageStatus = document.getElementById('coverage_status');
+        let coverageDesc = document.getElementById('coverage_description');
+        let recommendationEl = document.getElementById('coverage_recommendation');
+        let recommendationText = document.getElementById('recommendation_text');
+        
+        let recommendedValue = null;
+        let descText = '';
+        
+        if (sistem === 'expose') {
+            if (sudut >= 30 && sudut <= 31) {
+                recommendedValue = '8';
+                descText = 'Rekomendasi: 8 daun/m² (Expose 30°)';
+            } else if (sudut > 30) {
+                recommendedValue = '7';
+                descText = 'Rekomendasi: 7 daun/m² (Expose >30°)';
+            } else {
+                recommendedValue = '7';
+                descText = 'Rekomendasi: 7 daun/m² (Sudut < 30° → Non-Expose)';
+            }
+        } else if (sistem === 'non-expose') {
+            if (sudut > 30 && sudut <= 40) {
+                recommendedValue = '7';
+                descText = 'Rekomendasi: 7 daun/m² (Non-Expose 31-40°)';
+            } else if (sudut > 40) {
+                recommendedValue = '7';
+                descText = 'Rekomendasi: 7 daun/m² (Non-Expose >40°, bisa pilih 6 atau 7)';
+            } else if (sudut >= 15 && sudut <= 30) {
+                recommendedValue = '7';
+                descText = 'Rekomendasi: 7 daun/m² (Non-Expose 15-30°)';
+            } else {
+                recommendedValue = '7';
+                descText = 'Rekomendasi: 7 daun/m² (Sudut < 15°)';
+            }
         } else {
-            alert('Terjadi kesalahan: ' + (data.message || 'Unknown error'));
+            recommendedValue = null;
+            descText = 'Pilih sistem pemasangan terlebih dahulu';
         }
-    })
-    .catch(error => { 
-        console.error('Error:', error);
-        alert('Error: ' + error.message); 
-    })
-    .finally(() => { 
-        btn.innerHTML = originalText; 
-        btn.disabled = false; 
-    });
-}
-
-// ===== FUNGSI EXPORT PDF =====
-function exportToPDF() {
-    let qtyPlywood = 0;
-    let qtyScrew = 0;
-    let screwName = '';
-    
-    currentResults.forEach(item => {
-        if (item.area === 'Lantai Kerja') {
-            qtyPlywood = item.qty || 0;
+        
+        if (coverageStatus) {
+            coverageStatus.textContent = '✎ Bebas';
         }
-        if (item.area === 'Screw Plywood') {
-            qtyScrew = item.qty || 0;
-            screwName = item.nama_produk || '';
+        if (coverageDesc) {
+            coverageDesc.textContent = descText || 'Pilih sesuai kebutuhan';
         }
-    });
-    
-    let data = {
-        luas_atap: document.getElementById('luas_atap')?.value || 0,
-        sudut: document.getElementById('sudut')?.value || 0,
-        panjang_starter: document.getElementById('panjang_starter')?.value || 0,
-        panjang_nok: document.getElementById('panjang_nok')?.value || 0,
-        panjang_jurai: document.getElementById('panjang_jurai')?.value || 0,
-        panjang_flashing: document.getElementById('panjang_flashing')?.value || 0,
-        waste: document.getElementById('waste')?.value || 5,
-        coverage: document.getElementById('coverage')?.value || 0,
-        produk_atap: document.getElementById('produk_atap_id')?.selectedOptions[0]?.text || '',
-        jurai: document.getElementById('jurai_dropdown')?.selectedOptions[0]?.text || '',
-        nok_atas: document.getElementById('nok_atas_dropdown')?.selectedOptions[0]?.text || '',
-        underlayer: document.getElementById('underlayer_id')?.selectedOptions[0]?.text || '',
-        rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-        lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
-        sistem_pemasangan: document.getElementById('sistem_pemasangan')?.value || 'expose',
-        qty_plywood: qtyPlywood,
-        qty_screw: qtyScrew,
-        screw_name: screwName,
-        grand_total: document.getElementById('grandTotal')?.innerText || 'Rp 0',
-        opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
-        opsi_kaca: document.getElementById('opsi_kaca')?.value || 0,
-        results: currentResults.map(item => ({
-            id: item.id,
-            product_id: item.product_id,
-            nama: item.nama_produk,
-            area: item.area,
-            qty: item.qty,
-            satuan: item.satuan,
-            harga: item.harga_satuan,
-            total: item.total_harga
-        }))
-    };
-    
-    fetch('/boq/palmex/limasan/export-pdf', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.text())
-    .then(html => {
-        let win = window.open();
-        win.document.write(html);
-        win.document.close();
-    });
-}
-
-// ===== WINDOW ONLOAD =====
-window.onload = function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    document.getElementById('luas_atap').value = urlParams.get('luas_atap') || 0;
-    document.getElementById('sudut').value = urlParams.get('sudut') || 0;
-    document.getElementById('panjang_starter').value = urlParams.get('panjang_starter') || 0;
-    document.getElementById('panjang_nok').value = urlParams.get('panjang_nok') || 0;
-    document.getElementById('panjang_jurai').value = urlParams.get('panjang_jurai') || 0;
-    document.getElementById('panjang_flashing').value = urlParams.get('panjang_flashing') || 0;
-    document.getElementById('opsi_dinding').value = urlParams.get('dinding') || 0;
-    document.getElementById('opsi_kaca').value = urlParams.get('kaca') || 0;
-
-    let sistemPemasangan = urlParams.get('sistem_pemasangan') || 'expose';
-    let sudut = parseFloat(document.getElementById('sudut').value) || 0;
-    
-    if (sudut < 30) {
-        sistemPemasangan = 'non-expose';
-        setTimeout(() => {
-            showNotification('⚠️ Sudut atap ' + sudut + '° (< 30°), sistem NON-EXPOSE (tidak bisa diubah)', 'warning');
-        }, 500);
+        
+        if (recommendedValue && recommendationEl) {
+            recommendationEl.style.display = 'block';
+            if (recommendationText) {
+                recommendationText.textContent = recommendedValue + ' daun/m²';
+            }
+        } else if (recommendationEl) {
+            recommendationEl.style.display = 'none';
+        }
     }
-    
-    document.getElementById('sistem_pemasangan').value = sistemPemasangan;
-    toggleFields();
-    
-    document.getElementById('sistem_pemasangan').addEventListener('change', function() {
-        validateAndToggleFields();
-    });
-};
+
+    function hitungMaterial() {
+        let btn = event.target;
+        let originalText = btn.innerHTML;
+        btn.innerHTML = 'Menghitung...';
+        btn.disabled = true;
+        
+        let wasteValue = parseFloat(document.getElementById('waste').value) || 5;
+        
+        let opsiDinding = parseFloat(document.getElementById('opsi_dinding')?.value) || 0;
+        let opsiKaca = parseFloat(document.getElementById('opsi_kaca')?.value) || 0;
+        
+        let totalLuas = parseFloat(document.getElementById('luas_atap').value) || 0;
+        let sudut = parseFloat(document.getElementById('sudut').value) || 0;
+        let totalStarter = parseFloat(document.getElementById('panjang_starter').value) || 0;
+        let totalNok = parseFloat(document.getElementById('panjang_nok').value) || 0;
+        let totalJurai = parseFloat(document.getElementById('panjang_jurai').value) || 0;
+        let totalFlashing = parseFloat(document.getElementById('panjang_flashing').value) || 0;
+        
+        // Validasi Coverage
+        let coverage = parseFloat(document.getElementById('coverage')?.value) || 0;
+        if (!coverage || coverage <= 0) {
+            alert('⚠️ Pilih Coverage (daun/m²) terlebih dahulu!');
+            document.getElementById('coverage').focus();
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        // Validasi Jurai & Nok Atas
+        let juraiId = document.getElementById('jurai_dropdown')?.value || '';
+        let nokAtasId = document.getElementById('nok_atas_dropdown')?.value || '';
+        
+        if (!juraiId) {
+            alert('⚠️ Pilih Jurai terlebih dahulu! (wajib)');
+            document.getElementById('jurai_dropdown').focus();
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        if (!nokAtasId) {
+            alert('⚠️ Pilih Nok Atas terlebih dahulu! (wajib)');
+            document.getElementById('nok_atas_dropdown').focus();
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        if (totalLuas <= 0) {
+            alert('Data luas atap tidak valid! Silakan hitung ulang dari halaman sebelumnya.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        // Force non-expose if sudut < 30
+        let sistemPemasangan = document.getElementById('sistem_pemasangan')?.value || 'expose';
+        if (sudut < 30) {
+            sistemPemasangan = 'non-expose';
+        }
+        
+        let data = {
+            luas_atap: totalLuas,
+            sudut: sudut,
+            panjang_starter: totalStarter,
+            panjang_nok: totalNok,
+            panjang_jurai: totalJurai,
+            panjang_flashing: totalFlashing,
+            opsi_dinding: opsiDinding,
+            opsi_kaca: opsiKaca,
+            produk_atap_id: document.getElementById('produk_atap_id')?.value || '',
+            jurai_id: juraiId,
+            nok_atas_id: nokAtasId,
+            underlayer_id: document.getElementById('underlayer_id')?.value || '',
+            rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            sistem_pemasangan: sistemPemasangan,
+            coverage: coverage,
+            waste: wasteValue
+        };
+        
+        console.log('DATA DIKIRIM:', data);
+        
+        fetch('{{ route("boq.palmex.hitung", ["model" => "limasan"]) }}', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                results = data.results;
+                renderTable(results);
+                document.getElementById('hasilMaterial').classList.remove('hidden');
+                document.getElementById('hasilMaterial').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                alert('Error: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan server: ' + err.message);
+        })
+        .finally(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+    }
+
+    function renderTable(results) {
+        let container = document.getElementById('tableMaterial');
+        
+        let kelompok = {
+            'Atap Utama': [],
+            'Aksesoris': [],
+            'Additional': [],
+            'Sistem Pendukung': []
+        };
+
+        const aksesorisAreas = ['Starter', 'Nok Atas', 'Jurai', 'Topcap', 'Screw', 'Rail', 'Wind', 'Metal Flashing'];
+        const additionalAreas = ['Wall Flashing', 'Flashing Kaca'];
+        const systemAreas = ['Underlayer', 'Lantai Kerja', 'Paku & Screw', 'Screw Plywood'];
+
+        results.forEach(item => {
+            const area = item.area || '';
+            if (area === 'Atap Utama') {
+                kelompok['Atap Utama'].push(item);
+            } else if (additionalAreas.includes(area) && item.qty > 0) {
+                kelompok['Additional'].push(item);
+            } else if (systemAreas.includes(area)) {
+                kelompok['Sistem Pendukung'].push(item);
+            } else if (aksesorisAreas.includes(area)) {
+                kelompok['Aksesoris'].push(item);
+            } else {
+                kelompok['Aksesoris'].push(item);
+            }
+        });
+
+        let html = '';
+        let grandTotal = 0;
+
+        const groupConfig = [
+            { key: 'Atap Utama', label: 'ATAP UTAMA', cls: 'group-header-atap' },
+            { key: 'Aksesoris', label: 'AKSESORIS', cls: 'group-header-aksesoris' },
+            { key: 'Additional', label: 'ADDITIONAL', cls: 'group-header-additional' },
+            { key: 'Sistem Pendukung', label: 'SISTEM PENDUKUNG', cls: 'group-header-sistem' }
+        ];
+
+        groupConfig.forEach(({ key, label, cls }) => {
+            const items = kelompok[key];
+            if (items.length === 0) return;
+
+            html += `<div class="group-header ${cls}">📁 ${label}</div>`;
+            html += `<table class="result-table">`;
+            html += `<thead>
+                <tr>
+                    <th style="width:5%;text-align:center;">No</th>
+                    <th style="width:40%;">Nama Produk</th>
+                    <th style="width:20%;text-align:center;">Qty</th>
+                    <th style="width:20%;">Satuan</th>
+                    <th style="width:15%;text-align:right;">Total</th>
+                </tr>
+            </thead>`;
+            html += `<tbody>`;
+            items.forEach((item, index) => {
+                grandTotal += item.total_harga || 0;
+                html += `<tr>
+                    <td class="text-center">${index + 1}</td>
+                    <td class="product-name">${item.nama_produk}</td>
+                    <td class="qty">${item.qty}</td>
+                    <td class="unit">${item.satuan}</td>
+                    <td class="text-right">Rp ${(item.total_harga || 0).toLocaleString()}</td>
+                </tr>`;
+            });
+            html += `</tbody></table>`;
+        });
+
+        if (html === '') {
+            html = '<div class="empty-state">Belum ada data material</div>';
+        }
+
+        container.innerHTML = html;
+        document.getElementById('grandTotal').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
+        document.getElementById('totalKeseluruhan').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
+    }
+
+    function exportToPDF() {
+        let data = {
+            luas_atap: document.getElementById('luas_atap')?.value || 0,
+            sudut: document.getElementById('sudut')?.value || 0,
+            starter: document.getElementById('panjang_starter')?.value || 0,
+            nok: document.getElementById('panjang_nok')?.value || 0,
+            jurai: document.getElementById('panjang_jurai')?.value || 0,
+            flashing: document.getElementById('panjang_flashing')?.value || 0,
+            waste: document.getElementById('waste')?.value || 5,
+            coverage: document.getElementById('coverage')?.value || 0,
+            produk_atap: document.getElementById('produk_atap_id')?.selectedOptions[0]?.text || '',
+            jurai: document.getElementById('jurai_dropdown')?.selectedOptions[0]?.text || '',
+            nok_atas: document.getElementById('nok_atas_dropdown')?.selectedOptions[0]?.text || '',
+            underlayer: document.getElementById('underlayer_id')?.selectedOptions[0]?.text || '',
+            rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            sistem_pemasangan: document.getElementById('sistem_pemasangan')?.value || 'expose',
+            grand_total: document.getElementById('grandTotal')?.innerText || 'Rp 0',
+            opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
+            opsi_kaca: document.getElementById('opsi_kaca')?.value || 0,
+            results: results
+        };
+        
+        fetch('{{ route("boq.palmex.export-pdf", ["model" => "limasan"]) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.text())
+        .then(html => {
+            let win = window.open();
+            win.document.write(html);
+            win.document.close();
+        })
+        .catch(error => {
+            alert('Gagal export PDF: ' + error.message);
+        });
+    }
 </script>
 @endsection
