@@ -882,7 +882,7 @@
 </style>
 
 <div class="space-y-6">
-    <!-- ===== NOTES ===== -->
+     <!-- ===== NOTES / PEMBERITAHUAN ===== -->
     <div class="notes-container">
         <div class="notes-title">
             <span class="icon">📋</span> Petunjuk Pengisian BOQ
@@ -894,13 +894,21 @@
             </li>
             <li>
                 <span class="bullet">•</span>
-                <span>Jika bertemu dinding, kaca, penangkal petir, ventilasi exhaust, silahkan input berapa panjang/area pertemuannya di bagian <strong>"Opsi Tambahan"</strong> masing-masing bagian atap.</span>
+                <span>Jika bertemu dinding, kaca, penangkal petir, ventilasi exhaust, silahkan input berapa panjang/area pertemuannya di bagian <strong>"Opsi Tambahan"</strong>.</span>
             </li>
             <li>
                 <span class="bullet">•</span>
                 <span>Untuk atap dengan kemiringan dibawah <strong>15 Derajat</strong> tidak disarankan menggunakan ridge ventilator.</span>
             </li>
             <li>
+                <span class="bullet">•</span>
+                <span>Untuk lokasi dengan potensi <strong>angin kencang (&gt;97 km/jam)</strong>, direkomendasikan menggunakan <span class="highlight">Cambridge</span>.</span>
+            </li>
+            <li>
+                <span class="bullet">•</span>
+                <span class="warning-text">⚠️ Jika memaksakan menggunakan produk lain selain Cambridge, maka garansi akan hilang.</span>
+            </li>
+              <li>
                 <span class="bullet">•</span>
                 <span><strong>Hal yang perlu diperhatikan:</strong></span>
             </li>
@@ -910,8 +918,11 @@
             <li style="padding-left: 28px;">
                 <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
             </li>
-            <li style="padding-left: 32px;">
-                <span>• Pemakaian underlayer <strong>self adhesives</strong> direkomendasikan</span>
+            <li style="padding-left: 28px;">
+                <span>• Ukuran Flashing menyesuaikan dengan ukuran Lantai Kerja</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Pemakaian underlayer <strong>self adhesive</strong> direkomendasikan</span>
             </li>
         </ul>
     </div>
@@ -1005,13 +1016,10 @@
                         </div>
                         <div class="row"><span class="label">Lantai Kerja</span>
                             <span class="value"><select id="lantai_kerja_1">
-                                <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                <option value="GRC 9 mm">GRC 9 mm</option>
-                                <option value="GRC 12 mm">GRC 12 mm</option>
-                                <option value="GRC 15 mm">GRC 15 mm</option>
-                                <option value="Beton">Beton</option>
+                              <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                             </select></span>
                         </div>
                         <div class="row"><span class="label">Struktur Rangka</span>
@@ -1102,13 +1110,10 @@
                         </div>
                         <div class="row"><span class="label">Lantai Kerja</span>
                             <span class="value"><select id="lantai_kerja_2">
-                                <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                <option value="GRC 9 mm">GRC 9 mm</option>
-                                <option value="GRC 12 mm">GRC 12 mm</option>
-                                <option value="GRC 15 mm">GRC 15 mm</option>
-                                <option value="Beton">Beton</option>
+                              <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                             </select></span>
                         </div>
                         <div class="row"><span class="label">Struktur Rangka</span>

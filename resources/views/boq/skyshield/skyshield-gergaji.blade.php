@@ -809,6 +809,9 @@
             <li style="padding-left: 28px;">
                 <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
             </li>
+                 <li style="padding-left: 28px;">
+                <span>• Ukuran Flashing menyesuaikan dengan ukuran Lantai Kerja</strong></span>
+            </li>
             <li style="padding-left: 32px;">
                 <span>• Pemakaian underlayer <strong>self adhesives</strong> direkomendasikan</span>
             </li>
@@ -903,13 +906,10 @@
                     <span class="label">Lantai Kerja</span>
                     <span class="value">
                         <select id="lantai_kerja">
-                            <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                            <option value="Plywood 12 mm">Plywood 12 mm</option>
-                            <option value="Plywood 15 mm">Plywood 15 mm</option>
-                            <option value="GRC 9 mm">GRC 9 mm</option>
-                            <option value="GRC 12 mm">GRC 12 mm</option>
-                            <option value="GRC 15 mm">GRC 15 mm</option>
-                            <option value="Beton">Beton</option>
+                          <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                         </select>
                     </span>
                 </div>

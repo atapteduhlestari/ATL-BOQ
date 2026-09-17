@@ -582,10 +582,6 @@
             <span class="info-label">Sistem Pemasangan</span>
             <span class="info-value">{{ ucfirst($data['sistem_pemasangan'] ?? 'Expose') }}</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
-        </div>
     </div>
 
     <!-- OPSI TAMBAHAN (jika ada) -->

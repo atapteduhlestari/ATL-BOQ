@@ -935,7 +935,19 @@
         <div class="section-body">
             <div class="pilih-material">
                 <!-- TIPE ATAP DIHAPUS - EMARINROOF TIDAK PAKAI -->
-                
+                <div class="row">
+                    <span class="label">Tipe Atap</span>
+                    <span class="value">
+                        <select id="jenis_atap">
+                            <option value="">Pilih Jenis Atap</option>
+                            @foreach($jenisAtapOptions ?? [] as $atap)
+                                <option value="{{ $atap->id }}" data-lebar="{{ $atap->lebar_efektif ?? 0 }}">
+                                    {{ $atap->nama_produk }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </span>
+                </div>
                 <div class="row">
                     <span class="label">Jenis Nok</span>
                     <span class="value">
@@ -962,7 +974,7 @@
                     </span>
                 </div>
                 
-                <div class="row">
+                {{-- <div class="row">
                     <span class="label">Lantai Kerja</span>
                     <span class="value">
                         <select id="lantai_kerja">
@@ -975,7 +987,7 @@
                             <option value="Beton">Beton</option>
                         </select>
                     </span>
-                </div>
+                </div> --}}
                 
                 <div class="row">
                     <span class="label">Waste</span>
@@ -1037,15 +1049,13 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h4 class="text-sm font-semibold text-white">Total Keseluruhan</h4>
-                <p class="text-gray-200 text-[10px]">Limasan + Trapesium EMARINROOF (termasuk waste)</p>
             </div>
             <div class="text-right">
-                <p class="label">Grand Total</p>
                 <p class="amount" id="totalKeseluruhan">Rp 0</p>
             </div>
         </div>
         
-        <form action="{{ route('boq.emarinroof.limasan-trapesium.export-pdf') }}" method="POST" target="_blank" class="mt-4">
+        <form action="{{ route('boq.masterroof.limasan-trapesium.export-pdf') }}" method="POST" target="_blank" class="mt-4">
             @csrf
             <input type="hidden" name="judul" value="BOQ - Limasan + Trapesium EMARINROOF">
             <input type="hidden" name="brand" value="EMARINROOF">
@@ -1057,7 +1067,7 @@
             <input type="hidden" name="waste" id="pdf_waste">
             <input type="hidden" name="hasil" id="pdf_hasil">
             <input type="hidden" name="grand_total" id="pdf_grand_total">
-            
+                     <input type="hidden" name="jenis_atap" id="pdf_jenis_atap">
             <input type="hidden" name="opsi_kaca" id="pdf_opsi_kaca">
             <input type="hidden" name="opsi_dinding" id="pdf_opsi_dinding">
             <input type="hidden" name="opsi_cerobong" id="pdf_opsi_cerobong">
@@ -1300,7 +1310,7 @@
         
         console.log('DATA DIKIRIM:', data);
         
-        fetch('{{ route("boq.emarinroof.limasan-trapesium.hitung") }}', {
+        fetch('{{ route("boq.masterroof.limasan-trapesium.hitung") }}', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json', 

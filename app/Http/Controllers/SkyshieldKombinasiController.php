@@ -38,7 +38,11 @@ class SkyshieldKombinasiController extends Controller
             ->get();
         
         $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-        $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+  $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
         
         return view('boq.atap-kombinasi.iko-atap', compact(
             'products', 
@@ -271,7 +275,11 @@ public function limasanTrapesium(Request $request)
     \Log::info('Jumlah underlayer Trapesium: ' . $underlayers_2->count());
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+   $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.skyshield.skyshield-limasan-trapesium', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 
@@ -283,7 +291,7 @@ public function limasanTrapesium(Request $request)
 }
 public function limasPelana(Request $request)
 {
-    $brand = ProductBrand::where('nama_brand', 'SKYSHIELD')->first();
+    $brand = ProductBrand::where('id', '7')->first();
     
     // Ambil sudut dari request/URL
     $sudut_1 = $request->query('sudut_1', 0);
@@ -346,7 +354,11 @@ public function limasPelana(Request $request)
     \Log::info('Jumlah underlayer Pelana: ' . $underlayers_2->count());
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+   $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.skyshield.skyshield-limasan-pelana', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 
@@ -515,7 +527,11 @@ public function pelana2Trapesium(Request $request)
     \Log::info('Jumlah underlayer Trapesium B: ' . $underlayers_3->count());
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+   $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.skyshield.skyshield-pelana-2-trapesium', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
@@ -629,7 +645,11 @@ public function limasanLimasan(Request $request)
     $underlayers_2 = $underlayers_2->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+   $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.skyshield.skyshield-limasan-limasan', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 
@@ -772,7 +792,11 @@ public function pelanaX(Request $request)
     $underlayers_3 = $underlayers_3->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+  $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.skyshield.skyshield-pelana-x', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
@@ -889,7 +913,11 @@ public function limasanX(Request $request)
     $underlayers_3 = $this->getFilteredUnderlayers($brand, $areaUnderlayer, $sudut_3);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+  $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.skyshield.skyshield-limasan-x', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
@@ -1019,7 +1047,11 @@ public function gergaji(Request $request)
     $underlayers = $underlayers->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+   $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.skyshield.skyshield-gergaji', compact(
         'products', 'starters', 'underlayers', 'rangkaOptions', 'lantaiKerjaOptions',
@@ -1155,7 +1187,11 @@ public function pelana2Kemiringan(Request $request)
     $underlayers_3 = $underlayers_3->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+   $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.skyshield.skyshield-pelana-2-kemiringan', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
@@ -1345,7 +1381,11 @@ public function exportPdfPelana2Kemiringan(Request $request)
     $jumlahFlashing = ceil($totalFlashing / 1);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+  $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     // ==================== KIRIM KE VIEW ====================
     return view('boq.skyshield.skyshield-lengkung-2-sisi', compact(
@@ -1555,7 +1595,11 @@ public function pelana2Sisi(Request $request)
     $jumlahFlashing = ceil($totalFlashing / 1);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+  $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     // ==================== KIRIM KE VIEW ====================
     return view('boq.skyshield.skyshield-pelana-2-sisi', compact(
@@ -1669,7 +1713,11 @@ public function pelanaDinding(Request $request)
     $jumlahWallFlashing = ceil($totalWallFlashing / 1);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     // ==================== KIRIM KE VIEW ====================
     return view('boq.skyshield.skyshield-pelana-dinding', compact(
@@ -1803,7 +1851,11 @@ public function pelana3Arah(Request $request)
     $jumlahTalangJurai = ceil($totalTalangJurai / 1);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+  $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     // ==================== KIRIM KE VIEW ====================
     return view('boq.skyshield.skyshield-pelana-3-arah', compact(

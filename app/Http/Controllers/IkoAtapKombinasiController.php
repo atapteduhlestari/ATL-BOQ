@@ -36,9 +36,15 @@ class IkoAtapKombinasiController extends Controller
             ->where('area_id', $areaUnderlayer->id)
             ->with('unit')
             ->get();
+
+        $areaLantaiKerja = ProductArea::where('id', '21')->first();
+        $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+            ->where('area_id', $areaLantaiKerja->id)
+            ->with('unit')
+            ->orderBy('id', 'asc')
+            ->get();
         
         $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-        $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
         
         return view('boq.atap-kombinasi.iko-atap', compact(
             'products', 
@@ -368,7 +374,7 @@ public function exportPdf(Request $request)
 }
 public function limasanTrapesium(Request $request)
 {
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     // Ambil sudut dari request/URL
     $sudut_1 = $request->query('sudut_1', 0);
@@ -435,8 +441,13 @@ public function limasanTrapesium(Request $request)
     \Log::info('Jumlah underlayer Limasan: ' . $underlayers_1->count());
     \Log::info('Jumlah underlayer Trapesium: ' . $underlayers_2->count());
     
+      $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
+
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
     return view('boq.atap-kombinasi.limasan-trapesium', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 
@@ -448,7 +459,7 @@ public function limasanTrapesium(Request $request)
 }
 public function limasPelana(Request $request)
 {
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     // Ambil sudut dari request/URL
     $sudut_1 = $request->query('sudut_1', 0);
@@ -511,7 +522,11 @@ public function limasPelana(Request $request)
     \Log::info('Jumlah underlayer Pelana: ' . $underlayers_2->count());
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+   $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.atap-kombinasi.limas-pelana', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 
@@ -680,7 +695,11 @@ public function pelana2Trapesium(Request $request)
     \Log::info('Jumlah underlayer Trapesium B: ' . $underlayers_3->count());
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+  $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.atap-kombinasi.pelana-2trapesium', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
@@ -745,7 +764,7 @@ public function exportPdfPelana2Trapesium(Request $request)
 }
 public function limasanLimasan(Request $request)
 {
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     // Ambil sudut dari request/URL
     $sudut_1 = $request->query('sudut_1', 0);
@@ -795,7 +814,11 @@ public function limasanLimasan(Request $request)
     $underlayers_2 = $underlayers_2->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+$areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.atap-kombinasi.limasan-limasan', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 
@@ -858,7 +881,7 @@ public function exportPdfLimasanLimasan(Request $request)
 
 public function pelanaPelana(Request $request)
 {
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     $sudut_1 = $request->query('sudut_1', 0);
     $sudut_2 = $request->query('sudut_2', 0);
@@ -886,7 +909,7 @@ public function pelanaPelana(Request $request)
 }
 public function pelanaX(Request $request)
 {
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     $sudut_1 = $request->query('sudut_1', 0);
     $sudut_2 = $request->query('sudut_2', 0);
@@ -937,7 +960,12 @@ public function pelanaX(Request $request)
     $underlayers_3 = $underlayers_3->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+$areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
+
     
     return view('boq.atap-kombinasi.pelana-x', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
@@ -1144,7 +1172,7 @@ public function exportPdfPelanaX(Request $request)
 }
 public function limasanX(Request $request)
 {
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     $sudut_1 = $request->query('sudut_1', 0);
     $sudut_2 = $request->query('sudut_2', 0);
@@ -1175,7 +1203,11 @@ public function limasanX(Request $request)
     $underlayers_3 = $this->getFilteredUnderlayers($brand, $areaUnderlayer, $sudut_3);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.atap-kombinasi.limasan-x', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
@@ -1402,7 +1434,7 @@ private function getFilteredUnderlayers($brand, $areaUnderlayer, $sudut)
 }
 public function gergaji(Request $request)
 {
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     $sudut = $request->query('sudut', 0);
     $panjangBangunan = $request->query('panjang_bangunan', 0);
@@ -1438,9 +1470,12 @@ public function gergaji(Request $request)
         $underlayers = $underlayers->where('id', 22);
     }
     $underlayers = $underlayers->get();
-    
+      $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
     return view('boq.atap-kombinasi.gergaji', compact(
         'products', 'starters', 'underlayers', 
@@ -1588,7 +1623,7 @@ public function exportPdfGergaji(Request $request)
 }
 public function pelana2Kemiringan(Request $request)
 {
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     $sudut_1 = $request->query('sudut_1', 0);
     $sudut_2 = $request->query('sudut_2', 0);
@@ -1647,7 +1682,11 @@ public function pelana2Kemiringan(Request $request)
     $underlayers_3 = $underlayers_3->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+$areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     return view('boq.atap-kombinasi.pelana-2-kemiringan', compact(
         'products', 'starters', 'underlayers_1', 'underlayers_2', 'underlayers_3', 
@@ -1732,7 +1771,7 @@ public function exportPdfPelana2Kemiringan(Request $request)
 public function lengkung2Sisi(Request $request)
 {
     // ==================== AMBIL DATA DARI URL ====================
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     $sudut_1 = floatval($request->query('sudut_1', 0));
     $sudut_3 = floatval($request->query('sudut_3', 0));
@@ -1839,7 +1878,11 @@ public function lengkung2Sisi(Request $request)
     $jumlahTalangJurai = ceil($totalTalangJurai / 1);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     // ==================== KIRIM KE VIEW ====================
     return view('boq.atap-kombinasi.lengkung-2-sisi', compact(
@@ -1940,7 +1983,7 @@ public function exportPdfLengkung2Sisi(Request $request)
 public function pelana2Sisi(Request $request)
 {
     // ==================== AMBIL DATA DARI URL ====================
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     $sudut_1 = floatval($request->query('sudut_1', 0));
     $sudut_2 = floatval($request->query('sudut_2', 0));
@@ -2051,7 +2094,11 @@ public function pelana2Sisi(Request $request)
     $jumlahTalangJurai = ceil($totalTalangJurai / 1);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+   $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     // ==================== KIRIM KE VIEW ====================
     return view('boq.atap-kombinasi.pelana-2-sisi', compact(
@@ -2080,88 +2127,107 @@ public function pelana2Sisi(Request $request)
 public function pelanaDinding(Request $request)
 {
     // ==================== AMBIL DATA DARI URL ====================
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
-    
-    // Data Atap
-    $luasAtap = floatval($request->query('luas_atap', 0));
-    $sudut = floatval($request->query('sudut', 0));
-    $starter = floatval($request->query('starter', 0));
-    $nokJurai = floatval($request->query('nok_jurai', 0));
-    $flashing = floatval($request->query('flashing', 0));
-    
-    // Data Dinding
-    $luasDinding = floatval($request->query('luas_dinding', 0));
-    
-    // Data dimensi
-    $panjang = floatval($request->query('panjang', 0));
-    $lebar = floatval($request->query('lebar', 0));
-    $panjangDinding = floatval($request->query('panjang_dinding', 0));
-    $tinggiDinding = floatval($request->query('tinggi_dinding', 0));
-    $jumlahSisi = intval($request->query('jumlah_sisi', 2));
-    
-    // ===== AMBIL OPSI TAMBAHAN DARI URL =====
-    // Opsi untuk Atap (Bagian 1)
-    $opsiDinding1 = floatval($request->query('dinding_1', 0));
-    $opsiKaca1 = floatval($request->query('kaca_1', 0));
-    $opsiPenangkal1 = floatval($request->query('penangkal_1', 0));
-    
-    // Opsi untuk Dinding (Bagian 2)
-    $opsiDinding2 = floatval($request->query('dinding_2', 0));
-    $opsiKaca2 = floatval($request->query('kaca_2', 0));
-    $opsiPenangkal2 = floatval($request->query('penangkal_2', 0));
-    
-    // ==================== AMBIL DATA BRAND ====================
+    $brand = ProductBrand::where('id', '1')->first();
+
     if (!$brand) {
         return redirect()->back()->with('error', 'Brand tidak ditemukan');
     }
-    
+
+    // ===== DATA ATAP (dari URL pakai suffix _1) =====
+    $luasAtap   = floatval($request->query('luas_atap_1', 0));
+    $sudut      = floatval($request->query('sudut_1', 0));
+    $starter    = floatval($request->query('starter_1', 0));
+    $nokJurai   = floatval($request->query('nok_1', 0));
+    $flashing   = floatval($request->query('flashing_1', 0));
+
+    // ===== DATA DINDING (dari URL pakai suffix _2) =====
+    $luasDinding = floatval($request->query('luas_atap_2', 0));
+
+    // ===== DATA DIMENSI =====
+    $panjang        = floatval($request->query('panjang', 0));
+    $lebar          = floatval($request->query('lebar', 0));
+    $panjangDinding = floatval($request->query('panjang_dinding', 0));
+    $tinggiDinding  = floatval($request->query('tinggi_dinding', 0));
+    $jumlahSisi     = intval($request->query('jumlah_sisi', 2));
+
+    // ===== OPSI TAMBAHAN ATAP (BAGIAN 1) =====
+    $opsiDinding1   = floatval($request->query('dinding_1', 0));
+    $opsiKaca1      = floatval($request->query('kaca_1', 0));
+    $opsiPenangkal1 = floatval($request->query('penangkal_1', 0));
+    $opsiExhaust1   = floatval($request->query('exhaust_1', 0));
+
+    // ===== OPSI TAMBAHAN DINDING (BAGIAN 2) =====
+    $opsiDinding2   = floatval($request->query('dinding_2', 0));
+    $opsiKaca2      = floatval($request->query('kaca_2', 0));
+    $opsiPenangkal2 = floatval($request->query('penangkal_2', 0));
+    $opsiExhaust2   = floatval($request->query('exhaust_2', 0));
+
     // ==================== AMBIL PRODUK ATAP UTAMA ====================
     $areaAtapUtama = ProductArea::where('nama_area', 'Atap Utama')->first();
-    $products = Product::where('brand_id', $brand->id)
-        ->where('area_id', $areaAtapUtama->id)
-        ->with(['unit', 'accessories.unit', 'accessories.area'])
-        ->get();
-    
+    $products = collect();
+    if ($areaAtapUtama) {
+        $products = Product::where('brand_id', $brand->id)
+            ->where('area_id', $areaAtapUtama->id)
+            ->with(['unit', 'accessories.unit', 'accessories.area'])
+            ->get();
+    }
+
     // ===== AMBIL PRODUK STARTER =====
     $areaStarter = ProductArea::where('nama_area', 'Starter')->first();
-    $starters = Product::where('brand_id', $brand->id)
-        ->where('area_id', $areaStarter->id)
-        ->with('unit')
-        ->get();
-    
+    $starters = collect();
+    if ($areaStarter) {
+        $starters = Product::where('brand_id', $brand->id)
+            ->where('area_id', $areaStarter->id)
+            ->with('unit')
+            ->get();
+    }
+
     // ==================== AMBIL UNDERLAYER ====================
     $areaUnderlayer = ProductArea::where('nama_area', 'Underlayer')->first();
-    
-    $underlayers = Product::where('brand_id', $brand->id)
-        ->where('area_id', $areaUnderlayer->id)
-        ->with('unit');
-    if ($sudut <= 15 && $sudut > 0) {
-        $underlayers = $underlayers->where('id', 22);
+    $underlayers = collect();
+    if ($areaUnderlayer) {
+        $underlayersQuery = Product::where('brand_id', $brand->id)
+            ->where('area_id', $areaUnderlayer->id)
+            ->with('unit');
+
+        if ($sudut <= 15 && $sudut > 0) {
+            $underlayersQuery = $underlayersQuery->where('id', 22);
+        }
+        $underlayers = $underlayersQuery->get();
     }
-    $underlayers = $underlayers->get();
-    
-    // ==================== AMBIL PRODUK DINDING ====================
-    // Dinding tetap pakai produk Atap Utama (sama dengan atap)
+
+    // ==================== PRODUK DINDING ====================
+    // Dinding pakai produk Atap Utama yang sama
     $productsDinding = $products;
-    
+
     // ==================== TOTAL ====================
-    $totalLuas = $luasAtap + $luasDinding;
-    $totalStarter = $starter;
-    $totalNok = $nokJurai;
+    $totalLuas     = $luasAtap + $luasDinding;
+    $totalStarter  = $starter;
+    $totalNok      = $nokJurai;
     $totalFlashing = $flashing;
-    
+
     // ==================== KEBUTUHAN MATERIAL ====================
-    $ukuranLembaran = 1.2; // meter
-    $waste = 0.05; // 5%
-    
+    $ukuranLembaran = 1.2;
+    $waste          = 0.05;
+
     $jumlahLembaran = ceil(($totalLuas / $ukuranLembaran) * (1 + $waste));
-    $jumlahStarter = ceil($totalStarter / 1);
-    $jumlahNok = ceil($totalNok / 1);
+    $jumlahStarter  = ceil($totalStarter / 1);
+    $jumlahNok      = ceil($totalNok / 1);
     $jumlahFlashing = ceil($totalFlashing / 1);
-    
+
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
-    
+
+    // ==================== LANTAI KERJA OPTIONS ====================
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = collect();
+    if ($areaLantaiKerja) {
+        $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+            ->where('area_id', $areaLantaiKerja->id)
+            ->with('unit')
+            ->orderBy('id', 'asc')
+            ->get();
+    }
+
     // ==================== KIRIM KE VIEW ====================
     return view('boq.atap-kombinasi.pelana-dinding', compact(
         'brand',
@@ -2191,14 +2257,14 @@ public function pelanaDinding(Request $request)
         'ukuranLembaran',
         'rangkaOptions',
         'lantaiKerjaOptions',
-        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1',
-        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2'
+        'opsiDinding1', 'opsiKaca1', 'opsiPenangkal1', 'opsiExhaust1',
+        'opsiDinding2', 'opsiKaca2', 'opsiPenangkal2', 'opsiExhaust2'
     ));
 }
 public function pelana3Arah(Request $request)
 {
     // ==================== AMBIL DATA DARI URL ====================
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     $sudut_1 = floatval($request->query('sudut_1', 0));
     $sudut_2 = floatval($request->query('sudut_2', 0));
@@ -2289,7 +2355,12 @@ public function pelana3Arah(Request $request)
     $jumlahTalangJurai = ceil($totalTalangJurai / 1);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+$areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
+
     
     // ==================== KIRIM KE VIEW ====================
     return view('boq.atap-kombinasi.pelana-3-arah', compact(

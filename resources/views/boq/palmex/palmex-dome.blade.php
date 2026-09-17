@@ -756,9 +756,10 @@
                     <span class="label">Lantai Kerja</span>
                     <span class="value">
                         <select id="lantai_kerja">
-                            @foreach($lantaiKerjaOptions as $option)
-                                <option value="{{ $option }}" {{ $option == 'Plywood 9 mm' ? 'selected' : '' }}>{{ $option }}</option>
-                            @endforeach
+                          <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                         </select>
                     </span>
                 </div>
@@ -813,10 +814,8 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h4 class="text-sm font-semibold text-white">Total Keseluruhan</h4>
-                <p class="text-gray-200 text-[10px]">PALMEX Dome (termasuk waste)</p>
             </div>
             <div class="text-right">
-                <p class="label">Grand Total</p>
                 <p class="amount" id="totalKeseluruhan">Rp 0</p>
             </div>
         </div>
@@ -1027,7 +1026,7 @@
             produk_atap: document.getElementById('produk_atap_id')?.selectedOptions[0]?.text || '',
             underlayer: document.getElementById('underlayer_id')?.selectedOptions[0]?.text || '',
             rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            lantai_kerja: document.getElementById('lantai_kerja')?.selectedOptions[0]?.text || '',
             sistem_pemasangan: document.getElementById('sistem_pemasangan')?.value || 'expose',
             grand_total: document.getElementById('grandTotal')?.innerText || 'Rp 0',
             opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,

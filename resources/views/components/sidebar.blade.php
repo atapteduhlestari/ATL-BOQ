@@ -1,47 +1,49 @@
-<aside class="w-64 bg-slate-900 text-white min-h-screen">
+<aside class="w-64 sticky top-4 ml-4 h-[calc(100vh-2rem)] flex flex-col
+              bg-white/70 backdrop-blur-xl
+              border border-white/60
+              rounded-3xl
+              shadow-[0_8px_32px_rgba(15,23,42,0.08)]
+              overflow-hidden">
     <div class="flex flex-col h-full">
-        <!-- Logo - dengan margin top yang lebih kecil -->
-        <div class="px-6 pt-6 pb-5 border-b border-slate-700/50">
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
-                    <span class="text-white text-xs font-bold tracking-wider">AT</span>
-                </div>
-                <div>
-                    <p class="text-sm font-semibold text-white tracking-tight">ATL</p>
-                    <p class="text-[10px] text-slate-400 tracking-wide">BOQ Material</p>
-                </div>
-            </div>
+
+        {{-- ==================== LOGO PERUSAHAAN ==================== --}}
+        <div class="px-5 pt-6 pb-1 flex justify-center">
+            <img src="{{ asset('images/atl new logo.png') }}"
+                 alt="Logo Perusahaan"
+                 class="h-30 w-auto object-contain">
         </div>
 
-        <!-- Menu -->
-       <nav class="flex-1 px-4 py-6 space-y-0.5">
-    <x-sidebar-link href="/atap-standar" :active="request()->is('atap-standar')">
-        <span class="text-sm font-medium text-slate-200 hover:text-white">Atap Standar</span>
-    </x-sidebar-link>
+        {{-- Divider tipis --}}
+        <div class="mx-4 border-t border-slate-200/60"></div>
 
-    <x-sidebar-link href="/atap-kombinasi" :active="request()->is('atap-kombinasi')">
-        <span class="text-sm font-medium text-slate-200 hover:text-white">Atap Kombinasi</span>
-    </x-sidebar-link>
+        {{-- ==================== MENU ==================== --}}
+        <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
 
-    <x-sidebar-link href="/dinding" :active="request()->is('dinding') || request()->is('dinding/*')">
-        <span class="text-sm font-medium text-slate-200 hover:text-white">Dinding</span>
-    </x-sidebar-link>
+            <x-sidebar-link href="/atap-standar" :active="request()->is('atap-standar')">
+                <span>Atap Standar</span>
+            </x-sidebar-link>
 
-    <x-sidebar-link href="/waterproofing" :active="request()->is('waterproofing') || request()->is('waterproofing/*')">
-        <span class="text-sm font-medium text-slate-200 hover:text-white">Waterproofing</span>
-    </x-sidebar-link>
+            <x-sidebar-link href="/atap-kombinasi" :active="request()->is('atap-kombinasi')">
+                <span>Atap Kombinasi</span>
+            </x-sidebar-link>
 
-    <x-sidebar-link href="/jendela" :active="request()->is('jendela') || request()->is('jendela/*')">
-        <span class="text-sm font-medium text-slate-200 hover:text-white">Jendela</span>
-    </x-sidebar-link>
-    <x-sidebar-link href="/pintu" :active="request()->is('Pintu') || request()->is('jendela/*')">
-        <span class="text-sm font-medium text-slate-200 hover:text-white">Pintu</span>
-    </x-sidebar-link>
-</nav>
+            <x-sidebar-link href="/dinding" :active="request()->is('dinding') || request()->is('dinding/*')">
+                <span>Dinding</span>
+            </x-sidebar-link>
 
-        <!-- Footer -->
-        <div class="px-6 py-5 border-t border-slate-700/50">
-            <p class="text-[10px] text-slate-500">© 2026 Atap Teduh Lestari</p>
-        </div>
+            <x-sidebar-link href="/waterproofing" :active="request()->is('waterproofing') || request()->is('waterproofing/*')">
+                <span>Waterproofing</span>
+            </x-sidebar-link>
+
+            <x-sidebar-link href="/jendela" :active="request()->is('jendela') || request()->is('jendela/*')">
+                <span>Jendela</span>
+            </x-sidebar-link>
+
+            <x-sidebar-link href="/pintu" :active="request()->is('pintu') || request()->is('pintu/*')">
+                <span>Pintu</span>
+            </x-sidebar-link>
+
+        </nav>
+
     </div>
 </aside>

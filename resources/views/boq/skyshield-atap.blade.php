@@ -808,6 +808,9 @@
             <li style="padding-left: 28px;">
                 <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
             </li>
+              <li style="padding-left: 28px;">
+                <span>• Ukuran Flashing menyesuaikan dengan ukuran Lantai Kerja</strong></span>
+            </li>
             <li style="padding-left: 32px;">
                 <span>• Pemakaian underlayer <strong>self adhesives</strong> direkomendasikan</span>
             </li>
@@ -898,13 +901,11 @@
                     <span class="label">Lantai Kerja</span>
                     <span class="value">
                         <select id="lantai_kerja">
-                            <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                            <option value="Plywood 12 mm">Plywood 12 mm</option>
-                            <option value="Plywood 15 mm">Plywood 15 mm</option>
-                            <option value="GRC 9 mm">GRC 9 mm</option>
-                            <option value="GRC 12 mm">GRC 12 mm</option>
-                            <option value="GRC 15 mm">GRC 15 mm</option>
-                            <option value="Beton">Beton</option>
+                          
+  <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                         </select>
                     </span>
                 </div>
@@ -1293,7 +1294,7 @@ function exportToPDF() {
         underlayer: document.getElementById('underlayer_id')?.selectedOptions[0]?.text || '',
         starter: document.getElementById('starter_produk_id')?.selectedOptions[0]?.text || '',
         rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-        lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+        lantai_kerja: document.getElementById('lantai_kerja')?.selectedOptions[0]?.text || '',
         grand_total: document.getElementById('grandTotal')?.innerText || 'Rp 0',
         opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
         opsi_kaca: document.getElementById('opsi_kaca')?.value || 0,

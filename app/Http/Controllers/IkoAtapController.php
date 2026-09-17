@@ -16,7 +16,7 @@ class IkoAtapController extends Controller
 {
     Log::info('=== IkoAtapController: index() ===');
     
-    $brand = ProductBrand::where('nama_brand', 'IKO - ATAP')->first();
+    $brand = ProductBrand::where('id', '1')->first();
     
     $areaAtapUtama = ProductArea::where('nama_area', 'Atap Utama')->first();
     $products = Product::where('brand_id', $brand->id)
@@ -36,9 +36,14 @@ class IkoAtapController extends Controller
         ->where('area_id', $areaStarter->id)
         ->with('unit')
         ->get();
+   
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
     
     return view('boq.iko-atap', compact(
         'products', 
@@ -72,7 +77,7 @@ class IkoAtapController extends Controller
     $underlayerId = $request->underlayer_id;
     $starterProdukId = $request->starter_produk_id ?? null;
     $rangka = $request->rangka ?? 'Baja Ringan';
-    $lantaiKerja = $request->lantai_kerja ?? 'Plywood 9 mm';
+    $lantaiKerja = $request->lantai_kerja;
     
     Log::info('Input parameters:', [
         'luasAtap' => $luasAtap,
@@ -313,7 +318,7 @@ $qtyPlywood = 0;
 
 // Cari produk Plywood berdasarkan nama dari dropdown
 $plywoodProduct = Product::where('brand_id', $brandId)
-    ->where('nama_produk', 'LIKE', '%' . $lantaiKerja . '%')
+    ->where('id', $lantaiKerja)
     ->first();
 
 if ($plywoodProduct) {
@@ -345,54 +350,97 @@ if ($plywoodProduct) {
 }
 
 // ============================================================
-// 10. PAKU & SCREW (berdasarkan struktur rangka)
+// 10. SCREW (berdasarkan struktur rangka + lantai kerja)
 // ============================================================
-// HITUNG PAKU (tetap dari luas atap)
-$satuanPaku = ($sudut < 45) ? 20 : 13.4;
-$qtyRawPaku = $luasAtap / $satuanPaku;
-$qtyPaku = ceil($qtyRawPaku + ($qtyRawPaku * $waste));
 
-// HITUNG SCREW (berdasarkan jumlah plywood) = qty plywood × 40
-$qtyScrew = $qtyPlywood * 40;
+// ============================================================
+// TENTUKAN SCREW ID BERDASARKAN LANTAI KERJA + RANGKA
+// ============================================================
 
-// Screw berdasarkan struktur rangka
-if ($rangka == 'Kayu' || $rangka == 'Baja Ringan') {
-    $screwName = 'Screw Plywood';
-} else {
-    $screwName = 'Drilling Screw';
+$lantaiKerjaId = (int) $request->input('lantai_kerja');
+
+$lantaiKerjaGrupA = [384, 383, 385];                         // → screw 390
+$lantaiKerjaGrupB = [386, 387, 388];                         // → screw 391
+$lantaiKerjaBajaBeratBeton = [383, 384, 385, 386, 387, 388]; // → screw 389
+
+$screwId = null;
+
+if (in_array($rangka, ['Kayu', 'Baja Ringan'], true)) {
+    if (in_array($lantaiKerjaId, $lantaiKerjaGrupA, true)) {
+        $screwId = 390;
+    } elseif (in_array($lantaiKerjaId, $lantaiKerjaGrupB, true)) {
+        $screwId = 391;
+    }
+} elseif (in_array($rangka, ['Baja Berat', 'Beton'], true)) {
+    if (in_array($lantaiKerjaId, $lantaiKerjaBajaBeratBeton, true)) {
+        $screwId = 389;
+    }
 }
 
-// Cari produk screw di database berdasarkan nama
-$screwProduct = Product::where('brand_id', $brandId)
-    ->where('nama_produk', 'LIKE', '%' . $screwName . '%')
-    ->first();
+// ============================================================
+// AMBIL PRODUK SCREW DARI DATABASE
+// ============================================================
+
+$screwProduct = null;
+
+if ($screwId) {
+    $screwProduct = Product::where('brand_id', $brandId)
+        ->where('id', $screwId)
+        ->first();
+}
+
+// ============================================================
+// HITUNG QTY SCREW = qtyPlywood × satuan_terkecil
+// ============================================================
 
 if ($screwProduct) {
-    $qtyRaw = $qtyScrew / $screwProduct->satuan_terkecil;
-    $qty = ceil($qtyRaw + ($qtyRaw * $waste));
-    $results[] = $this->formatResult($screwProduct, $qty, 'Paku & Screw', $qtyPlywood . ' lembar');
+    $satuanTerkecil = $screwProduct->satuan_terkecil ?: 1;
+
+    // QTY = qtyPlywood × satuan_terkecil
+    $qtyScrew = $qtyPlywood * $satuanTerkecil;
+
+    // Tambah waste + bulatkan
+    $qty = ceil($qtyScrew + ($qtyScrew * $waste));
+
+    $results[] = $this->formatResult(
+        $screwProduct,
+        $qty,
+        'Paku & Screw',
+        $qtyPlywood . ' lembar'
+    );
+
     Log::info('Screw dari database ditambahkan:', [
-        'nama' => $screwProduct->nama_produk,
-        'qtyPlywood' => $qtyPlywood,
-        'qtyScrew' => $qtyScrew,
-        'qty' => $qty
+        'screw_id'        => $screwId,
+        'nama'            => $screwProduct->nama_produk,
+        'lantai_kerja'    => $lantaiKerjaId,
+        'rangka'          => $rangka,
+        'qtyPlywood'      => $qtyPlywood,
+        'satuan_terkecil' => $satuanTerkecil,
+        'qtyScrew'        => $qtyScrew,
+        'qty_final'       => $qty
     ]);
 } else {
+    // Fallback hardcode kalau produk screw tidak ada di DB
+    $screwName = in_array($rangka, ['Baja Berat', 'Beton'], true)
+        ? 'Drilling Screw'
+        : 'Screw Plywood';
+
     $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $screwName,
-        'area' => 'Paku & Screw',
-        'qty' => $qtyScrew,
-        'satuan' => 'pcs',
+        'product_id'   => null,
+        'produk_id'    => null,
+        'nama_produk'  => $screwName,
+        'area'         => 'Paku & Screw',
+        'qty'          => $qtyPlywood * 40,
+        'satuan'       => 'pcs',
         'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $qtyPlywood . ' lembar plywood'
+        'total_harga'  => 0,
+        'parameter'    => $qtyPlywood . ' lembar plywood'
     ];
-    Log::info('Screw hardcode ditambahkan:', [
-        'nama' => $screwName,
-        'qtyPlywood' => $qtyPlywood,
-        'qtyScrew' => $qtyScrew
+
+    Log::warning('Screw tidak ditemukan, fallback hardcode:', [
+        'screw_id_target' => $screwId,
+        'lantai_kerja'    => $lantaiKerjaId,
+        'rangka'          => $rangka,
     ]);
 }
     
@@ -463,6 +511,68 @@ if ($screwProduct) {
             }
         }
     }
+    // ============================================================
+// 10b. PAKU (berdasarkan lantai kerja: GRC → 392, else → 7)
+// ============================================================
+
+$lantaiKerjaProduct = $lantaiKerjaId
+    ? Product::find($lantaiKerjaId)
+    : null;
+
+$isGrc = $lantaiKerjaProduct
+    && stripos($lantaiKerjaProduct->nama_produk, 'GRC') !== false;
+
+$pakuId = $isGrc ? 392 : 7;
+
+$pakuProduct = Product::where('brand_id', $brandId)
+    ->where('id', $pakuId)
+    ->first();
+
+if ($pakuProduct) {
+    // Rumus: luasAtap / satuanPaku
+    $satuanPaku = ($sudut < 45) ? 20 : 13.4;
+    $qtyRawPaku = $luasAtap / $satuanPaku;
+    $qtyPaku = ceil($qtyRawPaku + ($qtyRawPaku * $waste));
+
+    $results[] = $this->formatResult(
+        $pakuProduct,
+        $qtyPaku,
+        'Paku & Screw',
+        $luasAtap . ' m²'
+    );
+
+    Log::info('Paku dari database ditambahkan:', [
+        'paku_id'         => $pakuId,
+        'nama'            => $pakuProduct->nama_produk,
+        'lantai_kerja_id' => $lantaiKerjaId,
+        'lantai_kerja'    => $lantaiKerjaProduct->nama_produk ?? '-',
+        'is_grc'          => $isGrc,
+        'luasAtap'        => $luasAtap,
+        'sudut'           => $sudut,
+        'satuanPaku'      => $satuanPaku,
+        'qtyRaw'          => $qtyRawPaku,
+        'qty_final'       => $qtyPaku,
+    ]);
+} else {
+    // Fallback hardcode kalau produk paku tidak ada di DB
+    $results[] = [
+        'product_id'   => null,
+        'produk_id'    => null,
+        'nama_produk'  => $isGrc ? 'Paku GRC' : 'Paku',
+        'area'         => 'Paku & Screw',
+        'qty'          => ceil(($luasAtap / (($sudut < 45) ? 20 : 13.4)) * (1 + $waste)),
+        'satuan'       => 'pcs',
+        'harga_satuan' => 0,
+        'total_harga'  => 0,
+        'parameter'    => $luasAtap . ' m²'
+    ];
+
+    Log::warning('Paku tidak ditemukan di database, fallback hardcode:', [
+        'paku_id_target' => $pakuId,
+        'lantai_kerja'   => $lantaiKerjaId,
+        'is_grc'         => $isGrc,
+    ]);
+}
     
     // ============================================================
     // 12. Grand Total
@@ -505,12 +615,7 @@ if ($screwProduct) {
                 $variable = (($luasAtap / $koefisienNFA) * 10000) / 275;
                 $qtyRaw = $variable / $satuan;
                 return ceil($qtyRaw + ($qtyRaw * $waste));
-                
-            case 'Paku & Screw':
-                $satuanPaku = ($sudut < 45) ? 20 : 13.4;
-                $qtyRaw = $luasAtap / $satuanPaku;
-                return ceil($qtyRaw + ($qtyRaw * $waste));
-                
+            
             case 'Lem':
                 return ceil($panjangStarter / $satuan);
                 

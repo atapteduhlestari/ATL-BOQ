@@ -907,9 +907,10 @@
                     <span class="label">Lantai Kerja</span>
                     <span class="value">
                         <select id="lantai_kerja">
-                            @foreach($lantaiKerjaOptions as $option)
-                                <option value="{{ $option }}" {{ $option == 'Plywood 9 mm' ? 'selected' : '' }}>{{ $option }}</option>
-                            @endforeach
+                           <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                         </select>
                     </span>
                 </div>
@@ -964,10 +965,8 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h4 class="text-sm font-semibold text-white">Total Keseluruhan</h4>
-                <p class="text-gray-200 text-[10px]">PALMEX Pelana (termasuk waste)</p>
             </div>
             <div class="text-right">
-                <p class="label">Grand Total</p>
                 <p class="amount" id="totalKeseluruhan">Rp 0</p>
             </div>
         </div>
@@ -1271,10 +1270,10 @@
             'Sistem Pendukung': []
         };
 
-        const aksesorisAreas = ['Starter', 'Nok Atas', 'Topcap', 'Rail', 'Wind', 'Metal Flashing', 'Screw', 'Paku & Screw'];
+        const aksesorisAreas = ['Starter', 'Nok Atas', 'Topcap', 'Rail', 'Wind', 'Metal Flashing'];
         const additionalAreas = ['Wall Flashing', 'Flashing Kaca'];
         // SCREW PLYWOOD MASUK SISTEM PENDUKUNG
-        const systemAreas = ['Underlayer', 'Lantai Kerja', 'Screw Plywood'];
+        const systemAreas = ['Underlayer', 'Lantai Kerja', 'Paku & Screw'];
 
         results.forEach(item => {
             const area = item.area || '';
@@ -1352,7 +1351,7 @@
             nok_atas: document.getElementById('nok_atas_dropdown')?.selectedOptions[0]?.text || '',
             underlayer: document.getElementById('underlayer_id')?.selectedOptions[0]?.text || '',
             rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            lantai_kerja: document.getElementById('lantai_kerja')?.selectedOptions[0]?.text || '',
             sistem_pemasangan: document.getElementById('sistem_pemasangan')?.value || 'expose',
             grand_total: document.getElementById('grandTotal')?.innerText || 'Rp 0',
             opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,

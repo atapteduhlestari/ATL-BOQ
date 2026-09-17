@@ -976,7 +976,7 @@
                     </span>
                 </div>
                 
-                <div class="row">
+                {{-- <div class="row">
                     <span class="label">Lantai Kerja</span>
                     <span class="value">
                         <select id="lantai_kerja">
@@ -989,7 +989,7 @@
                             <option value="Beton">Beton</option>
                         </select>
                     </span>
-                </div>
+                </div> --}}
                 
                 <div class="row">
                     <span class="label">Waste</span>

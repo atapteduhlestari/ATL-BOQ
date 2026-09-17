@@ -829,19 +829,6 @@
 </style>
 
 <div class="space-y-6">
-    <!-- ===== HEADER BRAND ===== -->
-    <div class="header-brand">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="brand-icon iko">IKO</div>
-                <div>
-                    <div class="brand-name">BOQ - Pelana 2 Kemiringan</div>
-                    <div class="brand-sub">Hitung kebutuhan material atap pelana dengan 3 bagian berbeda</div>
-                </div>
-            </div>
-            <div class="brand-badge">IKO - ATAP</div>
-        </div>
-    </div>
 
     <!-- ===== NOTES ===== -->
     <div class="notes-container">
@@ -878,6 +865,9 @@
             </li>
             <li style="padding-left: 28px;">
                 <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
+                <span>• Ukuran Flashing menyesuaikan dengan ukuran Lantai Kerja</strong></span>
             </li>
             <li style="padding-left: 32px;">
                 <span>• Pemakaian underlayer <strong>self adhesives</strong> direkomendasikan</span>
@@ -987,13 +977,10 @@
                         </div>
                         <div class="row"><span class="label">Lantai Kerja</span>
                             <span class="value"><select id="lantai_kerja_1">
-                                <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                <option value="GRC 9 mm">GRC 9 mm</option>
-                                <option value="GRC 12 mm">GRC 12 mm</option>
-                                <option value="GRC 15 mm">GRC 15 mm</option>
-                                <option value="Beton">Beton</option>
+                                <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                             </select></span>
                         </div>
                         <div class="row"><span class="label">Struktur Rangka</span>
@@ -1084,13 +1071,10 @@
                         </div>
                         <div class="row"><span class="label">Lantai Kerja</span>
                             <span class="value"><select id="lantai_kerja_2">
-                                <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                <option value="GRC 9 mm">GRC 9 mm</option>
-                                <option value="GRC 12 mm">GRC 12 mm</option>
-                                <option value="GRC 15 mm">GRC 15 mm</option>
-                                <option value="Beton">Beton</option>
+                                <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                             </select></span>
                         </div>
                         <div class="row"><span class="label">Struktur Rangka</span>
@@ -1181,13 +1165,10 @@
                         </div>
                         <div class="row"><span class="label">Lantai Kerja</span>
                             <span class="value"><select id="lantai_kerja_3">
-                                <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                <option value="GRC 9 mm">GRC 9 mm</option>
-                                <option value="GRC 12 mm">GRC 12 mm</option>
-                                <option value="GRC 15 mm">GRC 15 mm</option>
-                                <option value="Beton">Beton</option>
+                               <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                             </select></span>
                         </div>
                         <div class="row"><span class="label">Struktur Rangka</span>

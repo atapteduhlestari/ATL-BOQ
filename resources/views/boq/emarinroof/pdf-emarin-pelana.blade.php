@@ -596,10 +596,7 @@
             <span class="info-label">Struktur Rangka</span>
             <span class="info-value">{{ $data['rangka'] ?? '-' }}</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">Lantai Kerja</span>
-            <span class="info-value">{{ $data['lantai_kerja'] ?? '-' }}</span>
-        </div>
+     
         <div class="info-item">
             <span class="info-label">Waste</span>
             <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>

@@ -937,7 +937,7 @@
                     </span>
                 </div>
                 
-                <div class="row">
+                {{-- <div class="row">
                     <span class="label">Lantai Kerja</span>
                     <span class="value">
                         <select id="lantai_kerja">
@@ -950,7 +950,7 @@
                             <option value="Beton">Beton</option>
                         </select>
                     </span>
-                </div>
+                </div> --}}
                 
                 <div class="row">
                     <span class="label">Waste</span>
@@ -1008,10 +1008,8 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h4 class="text-sm font-semibold text-white">Total Keseluruhan</h4>
-                <p class="text-gray-200 text-[10px]">Pelana 2 Kemiringan ECOROOF (termasuk waste)</p>
             </div>
             <div class="text-right">
-                <p class="label">Grand Total</p>
                 <p class="amount" id="totalKeseluruhan">Rp 0</p>
             </div>
         </div>

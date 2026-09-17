@@ -1091,13 +1091,10 @@
                             <span class="label">Lantai Kerja</span>
                             <span class="value">
                                 <select id="lantai_kerja_1">
-                                    <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                    <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                    <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                    <option value="GRC 9 mm">GRC 9 mm</option>
-                                    <option value="GRC 12 mm">GRC 12 mm</option>
-                                    <option value="GRC 15 mm">GRC 15 mm</option>
-                                    <option value="Beton">Beton</option>
+                                <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                                 </select>
                             </span>
                         </div>
@@ -1228,13 +1225,10 @@
                             <span class="label">Lantai Kerja</span>
                             <span class="value">
                                 <select id="lantai_kerja_2">
-                                    <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                    <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                    <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                    <option value="GRC 9 mm">GRC 9 mm</option>
-                                    <option value="GRC 12 mm">GRC 12 mm</option>
-                                    <option value="GRC 15 mm">GRC 15 mm</option>
-                                    <option value="Beton">Beton</option>
+                                   <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                                 </select>
                             </span>
                         </div>

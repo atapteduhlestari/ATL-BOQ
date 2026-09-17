@@ -178,7 +178,11 @@ class PalmexController extends Controller
     // 13. RANGKA & LANTAI KERJA (Hardcoded options)
     // ============================================================
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit') -> orderBy('id', 'asc')
+        ->get();
     
     // ============================================================
     // 14. VIEW MAPPING
@@ -250,22 +254,7 @@ class PalmexController extends Controller
  * HITUNG ATAP PELANA
  * ============================================================
  */
-/**
- * ============================================================
- * HITUNG ATAP PELANA
- * Mengambil aksesoris dari relasi product accessories
- * ============================================================
- */
-/**
- * ============================================================
- * HITUNG ATAP PELANA
- * ============================================================
- */
-/**
- * ============================================================
- * HITUNG ATAP PELANA
- * ============================================================
- */
+
 private function hitungPelana($request)
 {
    Log::info('=== PalmexController: hitungPelana() ===');
@@ -293,8 +282,11 @@ private function hitungPelana($request)
         Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
     }
     
-    $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
+    $brand = ProductBrand::where('id', '14')->first();
     $brandId = $brand->id ?? 1;
+
+    $rangka = $request->input('rangka', 'Baja Ringan');
+    $lantaiKerja = $request->input('lantai_kerja');
     
     Log::info('HITUNG PELANA:', [
         'luasAtap' => $luasAtap,
@@ -469,41 +461,171 @@ private function hitungPelana($request)
     }
     
     // ============================================================
-    // 3. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
+// 5. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Cari produk lantai kerja dari database berdasarkan ID
+    $lantaiKerjaProduct = Product::where('brand_id', $brandId)
+        ->where('id', $lantaiKerja)
+        ->first();
+
+    if ($lantaiKerjaProduct) {
+        $satuanTerkecil = $lantaiKerjaProduct->satuan_terkecil ?: 1;
+
+        // qty = luasAtap / satuan_terkecil (+ waste)
+        $qtyRaw = $luasAtap / $satuanTerkecil;
+        $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
+        $results[] = $this->formatResult(
+            $lantaiKerjaProduct,
+            $qtyPlywood,
+            'Lantai Kerja',
+            $luasAtap . ' m²'
+        );
+
+        Log::info('Lantai Kerja dari database ditambahkan:', [
+            'id'              => $lantaiKerjaProduct->id,
+            'nama'            => $lantaiKerjaProduct->nama_produk,
+            'satuan_terkecil' => $satuanTerkecil,
+            'luasAtap'        => $luasAtap,
+            'qtyRaw'          => $qtyRaw,
+            'waste'           => $waste,
+            'qty_final'       => $qtyPlywood,
+        ]);
+    } else {
+        // Fallback hardcode kalau produk tidak ditemukan
         $luasPerLembar = 2.88;
         $qtyRaw = $luasAtap / $luasPerLembar;
         $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
         $results[] = [
-            'product_id' => null,
-            'produk_id' => null,
-            'nama_produk' => $lantaiKerja,
-            'area' => 'Lantai Kerja',
-            'qty' => $qtyPlywood,
-            'satuan' => 'lembar',
+            'product_id'   => null,
+            'produk_id'    => null,
+            'nama_produk'  => $lantaiKerja,
+            'area'         => 'Lantai Kerja',
+            'qty'          => $qtyPlywood,
+            'satuan'       => 'lembar',
             'harga_satuan' => 0,
-            'total_harga' => 0,
-            'parameter' => $luasAtap . ' m²'
+            'total_harga'  => 0,
+            'parameter'    => $luasAtap . ' m²'
         ];
+
+        Log::warning('Lantai Kerja tidak ditemukan di database, fallback hardcode:', [
+            'lantai_kerja_id' => $lantaiKerja,
+            'brand_id'        => $brandId,
+            'luasPerLembar'   => $luasPerLembar,
+            'qty_final'       => $qtyPlywood,
+        ]);
     }
-    // ============================================================
-// SCREW PLYWOOD (HANYA UNTUK NON-EXPOSE)
+}
+    
+// ============================================================
+// 6. SCREW PLYWOOD (HANYA UNTUK NON-EXPOSE)
 // ============================================================
 if ($sistemPemasangan == 'non-expose') {
-    $qtyRaw = $luasAtap / 20;
-    $qtyScrewPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => 'Screw Plywood',
-        'area' => 'Screw Plywood',
-        'qty' => $qtyScrewPlywood,
-        'satuan' => 'dus',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+
+    // Ambil qtyPlywood dari results (yang sudah dihitung di step 5)
+    $qtyPlywood = 0;
+    foreach ($results as $result) {
+        if (($result['area'] ?? '') == 'Lantai Kerja') {
+            $qtyPlywood = $result['qty'];
+            break;
+        }
+    }
+
+    if ($qtyPlywood > 0) {
+
+        // ============================================================
+        // TENTUKAN SCREW ID BERDASARKAN LANTAI KERJA + RANGKA
+        // ============================================================
+
+        $lantaiKerjaId = (int) $lantaiKerja;
+
+        $grupA = [403, 404, 405];           // → screw 410
+        $grupB = [406, 407, 408];           // → screw 411
+        $grupBajaBeratBeton = [403, 404, 405, 406, 407, 408]; // → screw 409
+
+        $screwId = null;
+
+        if (in_array($rangka, ['Kayu', 'Baja Ringan'], true)) {
+            if (in_array($lantaiKerjaId, $grupA, true)) {
+                $screwId = 410;
+            } elseif (in_array($lantaiKerjaId, $grupB, true)) {
+                $screwId = 411;
+            }
+        } elseif (in_array($rangka, ['Baja Berat', 'Beton'], true)) {
+            if (in_array($lantaiKerjaId, $grupBajaBeratBeton, true)) {
+                $screwId = 409;
+            }
+        }
+
+        // ============================================================
+        // AMBIL PRODUK SCREW DARI DATABASE
+        // ============================================================
+
+        $screwProduct = null;
+
+        if ($screwId) {
+            $screwProduct = Product::where('brand_id', $brandId)
+                ->where('id', $screwId)
+                ->first();
+        }
+
+        // ============================================================
+        // HITUNG QTY SCREW = qtyPlywood × satuan_terkecil
+        // ============================================================
+
+        if ($screwProduct) {
+            $satuanTerkecil = $screwProduct->satuan_terkecil ?: 1;
+
+            // QTY = qtyPlywood × satuan_terkecil
+            $qtyScrew = $qtyPlywood * $satuanTerkecil;
+
+            // Tambah waste + bulatkan
+            $qty = ceil($qtyScrew + ($qtyScrew * $waste));
+
+            $results[] = $this->formatResult(
+                $screwProduct,
+                $qty,
+                'Paku & Screw',
+                $qtyPlywood . ' lembar'
+            );
+
+            Log::info('Screw dari database ditambahkan:', [
+                'screw_id'        => $screwId,
+                'nama'            => $screwProduct->nama_produk,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
+                'qtyPlywood'      => $qtyPlywood,
+                'satuan_terkecil' => $satuanTerkecil,
+                'qtyScrew'        => $qtyScrew,
+                'qty_final'       => $qty,
+            ]);
+        } else {
+            // Fallback hardcode kalau produk screw tidak ditemukan
+            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan'], true);
+            $screwName = $isKayuOrBajaRingan ? 'Screw Plywood' : 'Drilling Screw';
+
+            $results[] = [
+                'product_id'   => null,
+                'produk_id'    => null,
+                'nama_produk'  => $screwName,
+                'area'         => 'Paku & Screw',
+                'qty'          => $qtyPlywood * 40,
+                'satuan'       => 'pcs',
+                'harga_satuan' => 0,
+                'total_harga'  => 0,
+                'parameter'    => $qtyPlywood . ' lembar plywood'
+            ];
+
+            Log::warning('Screw tidak ditemukan, fallback hardcode:', [
+                'screw_id_target' => $screwId,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
+            ]);
+        }
+    }
 }
     // ============================================================
     // 4. GRAND TOTAL
@@ -560,7 +682,7 @@ private function hitungLimasan($request)
         Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
     }
     
-    $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
+    $brand = ProductBrand::where('id', '14')->first();
     $brandId = $brand->id ?? 1;
     
     Log::info('HITUNG LIMASAN:', [
@@ -833,57 +955,173 @@ private function hitungLimasan($request)
     }
     
     // ============================================================
-    // 5. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
+// 5. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Cari produk lantai kerja dari database berdasarkan ID
+    $lantaiKerjaProduct = Product::where('brand_id', $brandId)
+        ->where('id', $lantaiKerja)
+        ->first();
+
+    if ($lantaiKerjaProduct) {
+        $satuanTerkecil = $lantaiKerjaProduct->satuan_terkecil ?: 1;
+
+        // qty = luasAtap / satuan_terkecil (+ waste)
+        $qtyRaw = $luasAtap / $satuanTerkecil;
+        $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
+        $results[] = $this->formatResult(
+            $lantaiKerjaProduct,
+            $qtyPlywood,
+            'Lantai Kerja',
+            $luasAtap . ' m²'
+        );
+
+        Log::info('Lantai Kerja dari database ditambahkan:', [
+            'id'              => $lantaiKerjaProduct->id,
+            'nama'            => $lantaiKerjaProduct->nama_produk,
+            'satuan_terkecil' => $satuanTerkecil,
+            'luasAtap'        => $luasAtap,
+            'qtyRaw'          => $qtyRaw,
+            'waste'           => $waste,
+            'qty_final'       => $qtyPlywood,
+        ]);
+    } else {
+        // Fallback hardcode kalau produk tidak ditemukan
         $luasPerLembar = 2.88;
         $qtyRaw = $luasAtap / $luasPerLembar;
         $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
         $results[] = [
-            'product_id' => null,
-            'produk_id' => null,
-            'nama_produk' => $lantaiKerja,
-            'area' => 'Lantai Kerja',
-            'qty' => $qtyPlywood,
-            'satuan' => 'lembar',
+            'product_id'   => null,
+            'produk_id'    => null,
+            'nama_produk'  => $lantaiKerja,
+            'area'         => 'Lantai Kerja',
+            'qty'          => $qtyPlywood,
+            'satuan'       => 'lembar',
             'harga_satuan' => 0,
-            'total_harga' => 0,
-            'parameter' => $luasAtap . ' m²'
+            'total_harga'  => 0,
+            'parameter'    => $luasAtap . ' m²'
         ];
+
+        Log::warning('Lantai Kerja tidak ditemukan di database, fallback hardcode:', [
+            'lantai_kerja_id' => $lantaiKerja,
+            'brand_id'        => $brandId,
+            'luasPerLembar'   => $luasPerLembar,
+            'qty_final'       => $qtyPlywood,
+        ]);
     }
+}
     
-    // ============================================================
-    // 6. SCREW PLYWOOD (HANYA UNTUK NON-EXPOSE) - HARDCODE
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
+// ============================================================
+// 6. SCREW PLYWOOD (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Ambil qtyPlywood dari results (yang sudah dihitung di step 5)
+    $qtyPlywood = 0;
+    foreach ($results as $result) {
+        if (($result['area'] ?? '') == 'Lantai Kerja') {
+            $qtyPlywood = $result['qty'];
+            break;
+        }
+    }
+
+    if ($qtyPlywood > 0) {
+
+        // ============================================================
+        // TENTUKAN SCREW ID BERDASARKAN LANTAI KERJA + RANGKA
+        // ============================================================
+
+        $lantaiKerjaId = (int) $lantaiKerja;
+
+        $grupA = [403, 404, 405];           // → screw 410
+        $grupB = [406, 407, 408];           // → screw 411
+        $grupBajaBeratBeton = [403, 404, 405, 406, 407, 408]; // → screw 409
+
+        $screwId = null;
+
+        if (in_array($rangka, ['Kayu', 'Baja Ringan'], true)) {
+            if (in_array($lantaiKerjaId, $grupA, true)) {
+                $screwId = 410;
+            } elseif (in_array($lantaiKerjaId, $grupB, true)) {
+                $screwId = 411;
+            }
+        } elseif (in_array($rangka, ['Baja Berat', 'Beton'], true)) {
+            if (in_array($lantaiKerjaId, $grupBajaBeratBeton, true)) {
+                $screwId = 409;
             }
         }
-        
-        if ($qtyPlywood > 0) {
-            $qtyScrew = $qtyPlywood * 40;
-            
-            // Tentukan jenis screw berdasarkan rangka
-            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan']);
+
+        // ============================================================
+        // AMBIL PRODUK SCREW DARI DATABASE
+        // ============================================================
+
+        $screwProduct = null;
+
+        if ($screwId) {
+            $screwProduct = Product::where('brand_id', $brandId)
+                ->where('id', $screwId)
+                ->first();
+        }
+
+        // ============================================================
+        // HITUNG QTY SCREW = qtyPlywood × satuan_terkecil
+        // ============================================================
+
+        if ($screwProduct) {
+            $satuanTerkecil = $screwProduct->satuan_terkecil ?: 1;
+
+            // QTY = qtyPlywood × satuan_terkecil
+            $qtyScrew = $qtyPlywood * $satuanTerkecil;
+
+            // Tambah waste + bulatkan
+            $qty = ceil($qtyScrew + ($qtyScrew * $waste));
+
+            $results[] = $this->formatResult(
+                $screwProduct,
+                $qty,
+                'Paku & Screw',
+                $qtyPlywood . ' lembar'
+            );
+
+            Log::info('Screw dari database ditambahkan:', [
+                'screw_id'        => $screwId,
+                'nama'            => $screwProduct->nama_produk,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
+                'qtyPlywood'      => $qtyPlywood,
+                'satuan_terkecil' => $satuanTerkecil,
+                'qtyScrew'        => $qtyScrew,
+                'qty_final'       => $qty,
+            ]);
+        } else {
+            // Fallback hardcode kalau produk screw tidak ditemukan
+            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan'], true);
             $screwName = $isKayuOrBajaRingan ? 'Screw Plywood' : 'Drilling Screw';
-            
+
             $results[] = [
-                'product_id' => null,
-                'produk_id' => null,
-                'nama_produk' => $screwName,
-                'area' => 'Paku & Screw',
-                'qty' => $qtyScrew,
-                'satuan' => 'pcs',
+                'product_id'   => null,
+                'produk_id'    => null,
+                'nama_produk'  => $screwName,
+                'area'         => 'Paku & Screw',
+                'qty'          => $qtyPlywood * 40,
+                'satuan'       => 'pcs',
                 'harga_satuan' => 0,
-                'total_harga' => 0,
-                'parameter' => $qtyPlywood . ' lembar plywood'
+                'total_harga'  => 0,
+                'parameter'    => $qtyPlywood . ' lembar plywood'
             ];
+
+            Log::warning('Screw tidak ditemukan, fallback hardcode:', [
+                'screw_id_target' => $screwId,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
+            ]);
         }
     }
+}
+
     
     // ============================================================
     // 7. GRAND TOTAL
@@ -940,7 +1178,7 @@ private function hitungPiramid($request)
         Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
     }
     
-    $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
+    $brand = ProductBrand::where('id', '14')->first();
     $brandId = $brand->id ?? 1;
     
     Log::info('HITUNG PIRAMID:', [
@@ -1207,67 +1445,173 @@ private function hitungPiramid($request)
         }
     }
     
-    // ============================================================
-    // 5. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
+      // ============================================================
+// 5. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Cari produk lantai kerja dari database berdasarkan ID
+    $lantaiKerjaProduct = Product::where('brand_id', $brandId)
+        ->where('id', $lantaiKerja)
+        ->first();
+
+    if ($lantaiKerjaProduct) {
+        $satuanTerkecil = $lantaiKerjaProduct->satuan_terkecil ?: 1;
+
+        // qty = luasAtap / satuan_terkecil (+ waste)
+        $qtyRaw = $luasAtap / $satuanTerkecil;
+        $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
+        $results[] = $this->formatResult(
+            $lantaiKerjaProduct,
+            $qtyPlywood,
+            'Lantai Kerja',
+            $luasAtap . ' m²'
+        );
+
+        Log::info('Lantai Kerja dari database ditambahkan:', [
+            'id'              => $lantaiKerjaProduct->id,
+            'nama'            => $lantaiKerjaProduct->nama_produk,
+            'satuan_terkecil' => $satuanTerkecil,
+            'luasAtap'        => $luasAtap,
+            'qtyRaw'          => $qtyRaw,
+            'waste'           => $waste,
+            'qty_final'       => $qtyPlywood,
+        ]);
+    } else {
+        // Fallback hardcode kalau produk tidak ditemukan
         $luasPerLembar = 2.88;
         $qtyRaw = $luasAtap / $luasPerLembar;
         $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
         $results[] = [
-            'product_id' => null,
-            'produk_id' => null,
-            'nama_produk' => $lantaiKerja,
-            'area' => 'Lantai Kerja',
-            'qty' => $qtyPlywood,
-            'satuan' => 'lembar',
+            'product_id'   => null,
+            'produk_id'    => null,
+            'nama_produk'  => $lantaiKerja,
+            'area'         => 'Lantai Kerja',
+            'qty'          => $qtyPlywood,
+            'satuan'       => 'lembar',
             'harga_satuan' => 0,
-            'total_harga' => 0,
-            'parameter' => $luasAtap . ' m²'
+            'total_harga'  => 0,
+            'parameter'    => $luasAtap . ' m²'
         ];
+
+        Log::warning('Lantai Kerja tidak ditemukan di database, fallback hardcode:', [
+            'lantai_kerja_id' => $lantaiKerja,
+            'brand_id'        => $brandId,
+            'luasPerLembar'   => $luasPerLembar,
+            'qty_final'       => $qtyPlywood,
+        ]);
     }
+}
     
-    // ============================================================
-    // 6. PAKU & SCREW (HANYA UNTUK NON-EXPOSE) - HARDCODE
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
-        // Cari qty plywood dari results
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
+// ============================================================
+// 6. SCREW PLYWOOD (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Ambil qtyPlywood dari results (yang sudah dihitung di step 5)
+    $qtyPlywood = 0;
+    foreach ($results as $result) {
+        if (($result['area'] ?? '') == 'Lantai Kerja') {
+            $qtyPlywood = $result['qty'];
+            break;
+        }
+    }
+
+    if ($qtyPlywood > 0) {
+
+        // ============================================================
+        // TENTUKAN SCREW ID BERDASARKAN LANTAI KERJA + RANGKA
+        // ============================================================
+
+        $lantaiKerjaId = (int) $lantaiKerja;
+
+        $grupA = [403, 404, 405];           // → screw 410
+        $grupB = [406, 407, 408];           // → screw 411
+        $grupBajaBeratBeton = [403, 404, 405, 406, 407, 408]; // → screw 409
+
+        $screwId = null;
+
+        if (in_array($rangka, ['Kayu', 'Baja Ringan'], true)) {
+            if (in_array($lantaiKerjaId, $grupA, true)) {
+                $screwId = 410;
+            } elseif (in_array($lantaiKerjaId, $grupB, true)) {
+                $screwId = 411;
+            }
+        } elseif (in_array($rangka, ['Baja Berat', 'Beton'], true)) {
+            if (in_array($lantaiKerjaId, $grupBajaBeratBeton, true)) {
+                $screwId = 409;
             }
         }
-        
-        if ($qtyPlywood > 0) {
-            // HITUNG SCREW (40 screw per lembar plywood)
-            $qtyScrew = $qtyPlywood * 40;
-            
-            // Tentukan jenis screw berdasarkan rangka
-            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan']);
+
+        // ============================================================
+        // AMBIL PRODUK SCREW DARI DATABASE
+        // ============================================================
+
+        $screwProduct = null;
+
+        if ($screwId) {
+            $screwProduct = Product::where('brand_id', $brandId)
+                ->where('id', $screwId)
+                ->first();
+        }
+
+        // ============================================================
+        // HITUNG QTY SCREW = qtyPlywood × satuan_terkecil
+        // ============================================================
+
+        if ($screwProduct) {
+            $satuanTerkecil = $screwProduct->satuan_terkecil ?: 1;
+
+            // QTY = qtyPlywood × satuan_terkecil
+            $qtyScrew = $qtyPlywood * $satuanTerkecil;
+
+            // Tambah waste + bulatkan
+            $qty = ceil($qtyScrew + ($qtyScrew * $waste));
+
+            $results[] = $this->formatResult(
+                $screwProduct,
+                $qty,
+                'Paku & Screw',
+                $qtyPlywood . ' lembar'
+            );
+
+            Log::info('Screw dari database ditambahkan:', [
+                'screw_id'        => $screwId,
+                'nama'            => $screwProduct->nama_produk,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
+                'qtyPlywood'      => $qtyPlywood,
+                'satuan_terkecil' => $satuanTerkecil,
+                'qtyScrew'        => $qtyScrew,
+                'qty_final'       => $qty,
+            ]);
+        } else {
+            // Fallback hardcode kalau produk screw tidak ditemukan
+            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan'], true);
             $screwName = $isKayuOrBajaRingan ? 'Screw Plywood' : 'Drilling Screw';
-            
+
             $results[] = [
-                'product_id' => null,
-                'produk_id' => null,
-                'nama_produk' => $screwName,
-                'area' => 'Paku & Screw',
-                'qty' => $qtyScrew,
-                'satuan' => 'pcs',
+                'product_id'   => null,
+                'produk_id'    => null,
+                'nama_produk'  => $screwName,
+                'area'         => 'Paku & Screw',
+                'qty'          => $qtyPlywood * 40,
+                'satuan'       => 'pcs',
                 'harga_satuan' => 0,
-                'total_harga' => 0,
-                'parameter' => $qtyPlywood . ' lembar plywood'
+                'total_harga'  => 0,
+                'parameter'    => $qtyPlywood . ' lembar plywood'
             ];
-            
-            Log::info('Screw (hardcode) ditambahkan:', [
-                'nama' => $screwName,
-                'qty' => $qtyScrew,
-                'rangka' => $rangka
+
+            Log::warning('Screw tidak ditemukan, fallback hardcode:', [
+                'screw_id_target' => $screwId,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
             ]);
         }
     }
-    
+}
     // ============================================================
     // 7. GRAND TOTAL
     // ============================================================
@@ -1531,66 +1875,173 @@ private function hitungKerucut($request)
         }
     }
     
-    // ============================================================
-    // 4. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
+      // ============================================================
+// 5. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Cari produk lantai kerja dari database berdasarkan ID
+    $lantaiKerjaProduct = Product::where('brand_id', $brandId)
+        ->where('id', $lantaiKerja)
+        ->first();
+
+    if ($lantaiKerjaProduct) {
+        $satuanTerkecil = $lantaiKerjaProduct->satuan_terkecil ?: 1;
+
+        // qty = luasAtap / satuan_terkecil (+ waste)
+        $qtyRaw = $luasAtap / $satuanTerkecil;
+        $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
+        $results[] = $this->formatResult(
+            $lantaiKerjaProduct,
+            $qtyPlywood,
+            'Lantai Kerja',
+            $luasAtap . ' m²'
+        );
+
+        Log::info('Lantai Kerja dari database ditambahkan:', [
+            'id'              => $lantaiKerjaProduct->id,
+            'nama'            => $lantaiKerjaProduct->nama_produk,
+            'satuan_terkecil' => $satuanTerkecil,
+            'luasAtap'        => $luasAtap,
+            'qtyRaw'          => $qtyRaw,
+            'waste'           => $waste,
+            'qty_final'       => $qtyPlywood,
+        ]);
+    } else {
+        // Fallback hardcode kalau produk tidak ditemukan
         $luasPerLembar = 2.88;
         $qtyRaw = $luasAtap / $luasPerLembar;
         $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
         $results[] = [
-            'product_id' => null,
-            'produk_id' => null,
-            'nama_produk' => $lantaiKerja,
-            'area' => 'Lantai Kerja',
-            'qty' => $qtyPlywood,
-            'satuan' => 'lembar',
+            'product_id'   => null,
+            'produk_id'    => null,
+            'nama_produk'  => $lantaiKerja,
+            'area'         => 'Lantai Kerja',
+            'qty'          => $qtyPlywood,
+            'satuan'       => 'lembar',
             'harga_satuan' => 0,
-            'total_harga' => 0,
-            'parameter' => $luasAtap . ' m²'
+            'total_harga'  => 0,
+            'parameter'    => $luasAtap . ' m²'
         ];
+
+        Log::warning('Lantai Kerja tidak ditemukan di database, fallback hardcode:', [
+            'lantai_kerja_id' => $lantaiKerja,
+            'brand_id'        => $brandId,
+            'luasPerLembar'   => $luasPerLembar,
+            'qty_final'       => $qtyPlywood,
+        ]);
     }
+}
     
-    // ============================================================
-    // 5. PAKU & SCREW (HANYA UNTUK NON-EXPOSE) - HARDCODE
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
-        // Cari qty plywood dari results
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
+// ============================================================
+// 6. SCREW PLYWOOD (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Ambil qtyPlywood dari results (yang sudah dihitung di step 5)
+    $qtyPlywood = 0;
+    foreach ($results as $result) {
+        if (($result['area'] ?? '') == 'Lantai Kerja') {
+            $qtyPlywood = $result['qty'];
+            break;
+        }
+    }
+
+    if ($qtyPlywood > 0) {
+
+        // ============================================================
+        // TENTUKAN SCREW ID BERDASARKAN LANTAI KERJA + RANGKA
+        // ============================================================
+
+        $lantaiKerjaId = (int) $lantaiKerja;
+
+        $grupA = [403, 404, 405];           // → screw 410
+        $grupB = [406, 407, 408];           // → screw 411
+        $grupBajaBeratBeton = [403, 404, 405, 406, 407, 408]; // → screw 409
+
+        $screwId = null;
+
+        if (in_array($rangka, ['Kayu', 'Baja Ringan'], true)) {
+            if (in_array($lantaiKerjaId, $grupA, true)) {
+                $screwId = 410;
+            } elseif (in_array($lantaiKerjaId, $grupB, true)) {
+                $screwId = 411;
+            }
+        } elseif (in_array($rangka, ['Baja Berat', 'Beton'], true)) {
+            if (in_array($lantaiKerjaId, $grupBajaBeratBeton, true)) {
+                $screwId = 409;
             }
         }
-        
-        if ($qtyPlywood > 0) {
-            // HITUNG SCREW (40 screw per lembar plywood)
-            $qtyScrew = $qtyPlywood * 40;
-            
-            // Tentukan jenis screw berdasarkan rangka
-            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan']);
+
+        // ============================================================
+        // AMBIL PRODUK SCREW DARI DATABASE
+        // ============================================================
+
+        $screwProduct = null;
+
+        if ($screwId) {
+            $screwProduct = Product::where('brand_id', $brandId)
+                ->where('id', $screwId)
+                ->first();
+        }
+
+        // ============================================================
+        // HITUNG QTY SCREW = qtyPlywood × satuan_terkecil
+        // ============================================================
+
+        if ($screwProduct) {
+            $satuanTerkecil = $screwProduct->satuan_terkecil ?: 1;
+
+            // QTY = qtyPlywood × satuan_terkecil
+            $qtyScrew = $qtyPlywood * $satuanTerkecil;
+
+            // Tambah waste + bulatkan
+            $qty = ceil($qtyScrew + ($qtyScrew * $waste));
+
+            $results[] = $this->formatResult(
+                $screwProduct,
+                $qty,
+                'Paku & Screw',
+                $qtyPlywood . ' lembar'
+            );
+
+            Log::info('Screw dari database ditambahkan:', [
+                'screw_id'        => $screwId,
+                'nama'            => $screwProduct->nama_produk,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
+                'qtyPlywood'      => $qtyPlywood,
+                'satuan_terkecil' => $satuanTerkecil,
+                'qtyScrew'        => $qtyScrew,
+                'qty_final'       => $qty,
+            ]);
+        } else {
+            // Fallback hardcode kalau produk screw tidak ditemukan
+            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan'], true);
             $screwName = $isKayuOrBajaRingan ? 'Screw Plywood' : 'Drilling Screw';
-            
+
             $results[] = [
-                'product_id' => null,
-                'produk_id' => null,
-                'nama_produk' => $screwName,
-                'area' => 'Paku & Screw',
-                'qty' => $qtyScrew,
-                'satuan' => 'pcs',
+                'product_id'   => null,
+                'produk_id'    => null,
+                'nama_produk'  => $screwName,
+                'area'         => 'Paku & Screw',
+                'qty'          => $qtyPlywood * 40,
+                'satuan'       => 'pcs',
                 'harga_satuan' => 0,
-                'total_harga' => 0,
-                'parameter' => $qtyPlywood . ' lembar plywood'
+                'total_harga'  => 0,
+                'parameter'    => $qtyPlywood . ' lembar plywood'
             ];
-            
-            Log::info('Screw (hardcode) ditambahkan:', [
-                'nama' => $screwName,
-                'qty' => $qtyScrew,
-                'rangka' => $rangka
+
+            Log::warning('Screw tidak ditemukan, fallback hardcode:', [
+                'screw_id_target' => $screwId,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
             ]);
         }
     }
+}
     
     // ============================================================
     // 6. GRAND TOTAL
@@ -1643,7 +2094,7 @@ private function hitungSatuKemiringan($request)
         Log::info('Sudut ' . $sudut . '° < 30°, sistem dipaksa NON-EXPOSE');
     }
     
-    $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
+    $brand = ProductBrand::where('id', '14')->first();
     $brandId = $brand->id ?? 1;
     
     Log::info('HITUNG SATU KEMIRINGAN:', [
@@ -1839,66 +2290,173 @@ private function hitungSatuKemiringan($request)
         }
     }
     
-    // ============================================================
-    // 3. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
+         // ============================================================
+// 5. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Cari produk lantai kerja dari database berdasarkan ID
+    $lantaiKerjaProduct = Product::where('brand_id', $brandId)
+        ->where('id', $lantaiKerja)
+        ->first();
+
+    if ($lantaiKerjaProduct) {
+        $satuanTerkecil = $lantaiKerjaProduct->satuan_terkecil ?: 1;
+
+        // qty = luasAtap / satuan_terkecil (+ waste)
+        $qtyRaw = $luasAtap / $satuanTerkecil;
+        $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
+        $results[] = $this->formatResult(
+            $lantaiKerjaProduct,
+            $qtyPlywood,
+            'Lantai Kerja',
+            $luasAtap . ' m²'
+        );
+
+        Log::info('Lantai Kerja dari database ditambahkan:', [
+            'id'              => $lantaiKerjaProduct->id,
+            'nama'            => $lantaiKerjaProduct->nama_produk,
+            'satuan_terkecil' => $satuanTerkecil,
+            'luasAtap'        => $luasAtap,
+            'qtyRaw'          => $qtyRaw,
+            'waste'           => $waste,
+            'qty_final'       => $qtyPlywood,
+        ]);
+    } else {
+        // Fallback hardcode kalau produk tidak ditemukan
         $luasPerLembar = 2.88;
         $qtyRaw = $luasAtap / $luasPerLembar;
         $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
         $results[] = [
-            'product_id' => null,
-            'produk_id' => null,
-            'nama_produk' => $lantaiKerja,
-            'area' => 'Lantai Kerja',
-            'qty' => $qtyPlywood,
-            'satuan' => 'lembar',
+            'product_id'   => null,
+            'produk_id'    => null,
+            'nama_produk'  => $lantaiKerja,
+            'area'         => 'Lantai Kerja',
+            'qty'          => $qtyPlywood,
+            'satuan'       => 'lembar',
             'harga_satuan' => 0,
-            'total_harga' => 0,
-            'parameter' => $luasAtap . ' m²'
+            'total_harga'  => 0,
+            'parameter'    => $luasAtap . ' m²'
         ];
+
+        Log::warning('Lantai Kerja tidak ditemukan di database, fallback hardcode:', [
+            'lantai_kerja_id' => $lantaiKerja,
+            'brand_id'        => $brandId,
+            'luasPerLembar'   => $luasPerLembar,
+            'qty_final'       => $qtyPlywood,
+        ]);
     }
+}
     
-    // ============================================================
-    // 4. PAKU & SCREW (HANYA UNTUK NON-EXPOSE) - HARDCODE
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
-        // Cari qty plywood dari results
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
+// ============================================================
+// 6. SCREW PLYWOOD (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Ambil qtyPlywood dari results (yang sudah dihitung di step 5)
+    $qtyPlywood = 0;
+    foreach ($results as $result) {
+        if (($result['area'] ?? '') == 'Lantai Kerja') {
+            $qtyPlywood = $result['qty'];
+            break;
+        }
+    }
+
+    if ($qtyPlywood > 0) {
+
+        // ============================================================
+        // TENTUKAN SCREW ID BERDASARKAN LANTAI KERJA + RANGKA
+        // ============================================================
+
+        $lantaiKerjaId = (int) $lantaiKerja;
+
+        $grupA = [403, 404, 405];           // → screw 410
+        $grupB = [406, 407, 408];           // → screw 411
+        $grupBajaBeratBeton = [403, 404, 405, 406, 407, 408]; // → screw 409
+
+        $screwId = null;
+
+        if (in_array($rangka, ['Kayu', 'Baja Ringan'], true)) {
+            if (in_array($lantaiKerjaId, $grupA, true)) {
+                $screwId = 410;
+            } elseif (in_array($lantaiKerjaId, $grupB, true)) {
+                $screwId = 411;
+            }
+        } elseif (in_array($rangka, ['Baja Berat', 'Beton'], true)) {
+            if (in_array($lantaiKerjaId, $grupBajaBeratBeton, true)) {
+                $screwId = 409;
             }
         }
-        
-        if ($qtyPlywood > 0) {
-            // HITUNG SCREW (40 screw per lembar plywood)
-            $qtyScrew = $qtyPlywood * 40;
-            
-            // Tentukan jenis screw berdasarkan rangka
-            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan']);
+
+        // ============================================================
+        // AMBIL PRODUK SCREW DARI DATABASE
+        // ============================================================
+
+        $screwProduct = null;
+
+        if ($screwId) {
+            $screwProduct = Product::where('brand_id', $brandId)
+                ->where('id', $screwId)
+                ->first();
+        }
+
+        // ============================================================
+        // HITUNG QTY SCREW = qtyPlywood × satuan_terkecil
+        // ============================================================
+
+        if ($screwProduct) {
+            $satuanTerkecil = $screwProduct->satuan_terkecil ?: 1;
+
+            // QTY = qtyPlywood × satuan_terkecil
+            $qtyScrew = $qtyPlywood * $satuanTerkecil;
+
+            // Tambah waste + bulatkan
+            $qty = ceil($qtyScrew + ($qtyScrew * $waste));
+
+            $results[] = $this->formatResult(
+                $screwProduct,
+                $qty,
+                'Paku & Screw',
+                $qtyPlywood . ' lembar'
+            );
+
+            Log::info('Screw dari database ditambahkan:', [
+                'screw_id'        => $screwId,
+                'nama'            => $screwProduct->nama_produk,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
+                'qtyPlywood'      => $qtyPlywood,
+                'satuan_terkecil' => $satuanTerkecil,
+                'qtyScrew'        => $qtyScrew,
+                'qty_final'       => $qty,
+            ]);
+        } else {
+            // Fallback hardcode kalau produk screw tidak ditemukan
+            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan'], true);
             $screwName = $isKayuOrBajaRingan ? 'Screw Plywood' : 'Drilling Screw';
-            
+
             $results[] = [
-                'product_id' => null,
-                'produk_id' => null,
-                'nama_produk' => $screwName,
-                'area' => 'Paku & Screw',
-                'qty' => $qtyScrew,
-                'satuan' => 'pcs',
+                'product_id'   => null,
+                'produk_id'    => null,
+                'nama_produk'  => $screwName,
+                'area'         => 'Paku & Screw',
+                'qty'          => $qtyPlywood * 40,
+                'satuan'       => 'pcs',
                 'harga_satuan' => 0,
-                'total_harga' => 0,
-                'parameter' => $qtyPlywood . ' lembar plywood'
+                'total_harga'  => 0,
+                'parameter'    => $qtyPlywood . ' lembar plywood'
             ];
-            
-            Log::info('Screw (hardcode) ditambahkan:', [
-                'nama' => $screwName,
-                'qty' => $qtyScrew,
-                'rangka' => $rangka
+
+            Log::warning('Screw tidak ditemukan, fallback hardcode:', [
+                'screw_id_target' => $screwId,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
             ]);
         }
     }
+}
     
     // ============================================================
     // 5. GRAND TOTAL
@@ -1945,7 +2503,7 @@ private function hitungDome($request)
     $lantaiKerja = $request->lantai_kerja ?? 'Plywood 9 mm';
     $sistemPemasangan = $request->sistem_pemasangan ?? 'expose';
     
-    $brand = ProductBrand::where('nama_brand', 'PALMEX')->first();
+    $brand = ProductBrand::where('id', '14')->first();
     $brandId = $brand->id ?? 1;
     
     Log::info('HITUNG DOME:', [
@@ -2139,67 +2697,173 @@ private function hitungDome($request)
         }
     }
     
-    // ============================================================
-    // 3. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
+       // ============================================================
+// 5. LANTAI KERJA (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Cari produk lantai kerja dari database berdasarkan ID
+    $lantaiKerjaProduct = Product::where('brand_id', $brandId)
+        ->where('id', $lantaiKerja)
+        ->first();
+
+    if ($lantaiKerjaProduct) {
+        $satuanTerkecil = $lantaiKerjaProduct->satuan_terkecil ?: 1;
+
+        // qty = luasAtap / satuan_terkecil (+ waste)
+        $qtyRaw = $luasAtap / $satuanTerkecil;
+        $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
+        $results[] = $this->formatResult(
+            $lantaiKerjaProduct,
+            $qtyPlywood,
+            'Lantai Kerja',
+            $luasAtap . ' m²'
+        );
+
+        Log::info('Lantai Kerja dari database ditambahkan:', [
+            'id'              => $lantaiKerjaProduct->id,
+            'nama'            => $lantaiKerjaProduct->nama_produk,
+            'satuan_terkecil' => $satuanTerkecil,
+            'luasAtap'        => $luasAtap,
+            'qtyRaw'          => $qtyRaw,
+            'waste'           => $waste,
+            'qty_final'       => $qtyPlywood,
+        ]);
+    } else {
+        // Fallback hardcode kalau produk tidak ditemukan
         $luasPerLembar = 2.88;
         $qtyRaw = $luasAtap / $luasPerLembar;
         $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+
         $results[] = [
-            'product_id' => null,
-            'produk_id' => null,
-            'nama_produk' => $lantaiKerja,
-            'area' => 'Lantai Kerja',
-            'qty' => $qtyPlywood,
-            'satuan' => 'lembar',
+            'product_id'   => null,
+            'produk_id'    => null,
+            'nama_produk'  => $lantaiKerja,
+            'area'         => 'Lantai Kerja',
+            'qty'          => $qtyPlywood,
+            'satuan'       => 'lembar',
             'harga_satuan' => 0,
-            'total_harga' => 0,
-            'parameter' => $luasAtap . ' m²'
+            'total_harga'  => 0,
+            'parameter'    => $luasAtap . ' m²'
         ];
+
+        Log::warning('Lantai Kerja tidak ditemukan di database, fallback hardcode:', [
+            'lantai_kerja_id' => $lantaiKerja,
+            'brand_id'        => $brandId,
+            'luasPerLembar'   => $luasPerLembar,
+            'qty_final'       => $qtyPlywood,
+        ]);
     }
+}
     
-    // ============================================================
-    // 4. PAKU & SCREW (HANYA UNTUK NON-EXPOSE) - HARDCODE
-    // ============================================================
-    if ($sistemPemasangan == 'non-expose') {
-        // Cari qty plywood dari results
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
+// ============================================================
+// 6. SCREW PLYWOOD (HANYA UNTUK NON-EXPOSE)
+// ============================================================
+if ($sistemPemasangan == 'non-expose') {
+
+    // Ambil qtyPlywood dari results (yang sudah dihitung di step 5)
+    $qtyPlywood = 0;
+    foreach ($results as $result) {
+        if (($result['area'] ?? '') == 'Lantai Kerja') {
+            $qtyPlywood = $result['qty'];
+            break;
+        }
+    }
+
+    if ($qtyPlywood > 0) {
+
+        // ============================================================
+        // TENTUKAN SCREW ID BERDASARKAN LANTAI KERJA + RANGKA
+        // ============================================================
+
+        $lantaiKerjaId = (int) $lantaiKerja;
+
+        $grupA = [403, 404, 405];           // → screw 410
+        $grupB = [406, 407, 408];           // → screw 411
+        $grupBajaBeratBeton = [403, 404, 405, 406, 407, 408]; // → screw 409
+
+        $screwId = null;
+
+        if (in_array($rangka, ['Kayu', 'Baja Ringan'], true)) {
+            if (in_array($lantaiKerjaId, $grupA, true)) {
+                $screwId = 410;
+            } elseif (in_array($lantaiKerjaId, $grupB, true)) {
+                $screwId = 411;
+            }
+        } elseif (in_array($rangka, ['Baja Berat', 'Beton'], true)) {
+            if (in_array($lantaiKerjaId, $grupBajaBeratBeton, true)) {
+                $screwId = 409;
             }
         }
-        
-        if ($qtyPlywood > 0) {
-            // HITUNG SCREW (40 screw per lembar plywood)
-            $qtyScrew = $qtyPlywood * 40;
-            
-            // Tentukan jenis screw berdasarkan rangka
-            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan']);
+
+        // ============================================================
+        // AMBIL PRODUK SCREW DARI DATABASE
+        // ============================================================
+
+        $screwProduct = null;
+
+        if ($screwId) {
+            $screwProduct = Product::where('brand_id', $brandId)
+                ->where('id', $screwId)
+                ->first();
+        }
+
+        // ============================================================
+        // HITUNG QTY SCREW = qtyPlywood × satuan_terkecil
+        // ============================================================
+
+        if ($screwProduct) {
+            $satuanTerkecil = $screwProduct->satuan_terkecil ?: 1;
+
+            // QTY = qtyPlywood × satuan_terkecil
+            $qtyScrew = $qtyPlywood * $satuanTerkecil;
+
+            // Tambah waste + bulatkan
+            $qty = ceil($qtyScrew + ($qtyScrew * $waste));
+
+            $results[] = $this->formatResult(
+                $screwProduct,
+                $qty,
+                'Paku & Screw',
+                $qtyPlywood . ' lembar'
+            );
+
+            Log::info('Screw dari database ditambahkan:', [
+                'screw_id'        => $screwId,
+                'nama'            => $screwProduct->nama_produk,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
+                'qtyPlywood'      => $qtyPlywood,
+                'satuan_terkecil' => $satuanTerkecil,
+                'qtyScrew'        => $qtyScrew,
+                'qty_final'       => $qty,
+            ]);
+        } else {
+            // Fallback hardcode kalau produk screw tidak ditemukan
+            $isKayuOrBajaRingan = in_array($rangka, ['Kayu', 'Baja Ringan'], true);
             $screwName = $isKayuOrBajaRingan ? 'Screw Plywood' : 'Drilling Screw';
-            
+
             $results[] = [
-                'product_id' => null,
-                'produk_id' => null,
-                'nama_produk' => $screwName,
-                'area' => 'Paku & Screw',
-                'qty' => $qtyScrew,
-                'satuan' => 'pcs',
+                'product_id'   => null,
+                'produk_id'    => null,
+                'nama_produk'  => $screwName,
+                'area'         => 'Paku & Screw',
+                'qty'          => $qtyPlywood * 40,
+                'satuan'       => 'pcs',
                 'harga_satuan' => 0,
-                'total_harga' => 0,
-                'parameter' => $qtyPlywood . ' lembar plywood'
+                'total_harga'  => 0,
+                'parameter'    => $qtyPlywood . ' lembar plywood'
             ];
-            
-            Log::info('Screw (hardcode) ditambahkan:', [
-                'nama' => $screwName,
-                'qty' => $qtyScrew,
-                'rangka' => $rangka
+
+            Log::warning('Screw tidak ditemukan, fallback hardcode:', [
+                'screw_id_target' => $screwId,
+                'lantai_kerja_id' => $lantaiKerjaId,
+                'rangka'          => $rangka,
             ]);
         }
     }
-    
+}
     // ============================================================
     // 5. GRAND TOTAL
     // ============================================================

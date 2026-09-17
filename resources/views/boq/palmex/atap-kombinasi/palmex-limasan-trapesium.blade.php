@@ -1090,13 +1090,10 @@
                             <span class="label">Lantai Kerja</span>
                             <span class="value">
                                 <select id="lantai_kerja_1">
-                                    <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                    <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                    <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                    <option value="GRC 9 mm">GRC 9 mm</option>
-                                    <option value="GRC 12 mm">GRC 12 mm</option>
-                                    <option value="GRC 15 mm">GRC 15 mm</option>
-                                    <option value="Beton">Beton</option>
+                                  <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach  
                                 </select>
                             </span>
                         </div>
@@ -1239,13 +1236,10 @@
                             <span class="label">Lantai Kerja</span>
                             <span class="value">
                                 <select id="lantai_kerja_2">
-                                    <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                    <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                    <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                    <option value="GRC 9 mm">GRC 9 mm</option>
-                                    <option value="GRC 12 mm">GRC 12 mm</option>
-                                    <option value="GRC 15 mm">GRC 15 mm</option>
-                                    <option value="Beton">Beton</option>
+                                     <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach  
                                 </select>
                             </span>
                         </div>
@@ -1344,7 +1338,8 @@
             <input type="hidden" name="bagian2[data_perhitungan][flashing]" id="pdf_flashing_2">
             <input type="hidden" name="bagian2[total]" id="pdf_total_2">
             <input type="hidden" name="bagian2[hasil]" id="pdf_hasil_2">
-            
+            <input type="hidden" name="bagian1[sistem_pemasangan]" id="pdf_sistem_1">
+<input type="hidden" name="bagian2[sistem_pemasangan]" id="pdf_sistem_2">
             <!-- WASTE -->
             <input type="hidden" name="waste_1" id="pdf_waste_1">
             <input type="hidden" name="waste_2" id="pdf_waste_2">
@@ -1700,6 +1695,7 @@ function hitungBagian(bagian) {
             document.getElementById('pdf_total_1').value = total;
             document.getElementById('pdf_hasil_1').value = JSON.stringify(hasil);
             document.getElementById('pdf_waste_1').value = wasteValue;
+               document.getElementById('pdf_sistem_1').value = sistem ? sistem.value : 'expose';
         }
         else if (bagian === 2) { 
             results2 = hasil; 
@@ -1713,6 +1709,7 @@ function hitungBagian(bagian) {
             document.getElementById('pdf_total_2').value = total;
             document.getElementById('pdf_hasil_2').value = JSON.stringify(hasil);
             document.getElementById('pdf_waste_2').value = wasteValue;
+             document.getElementById('pdf_sistem_2').value = sistem ? sistem.value : 'expose';
         }
         
         var hasilDiv = document.getElementById('hasil_bagian_' + bagian);

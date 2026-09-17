@@ -868,19 +868,6 @@
 
 <div class="space-y-6">
 
-    <!-- ===== HEADER BRAND ===== -->
-    <div class="header-brand">
-        <div class="flex items-center justify-between relative z-10">
-            <div class="flex items-center gap-4">
-                <div class="brand-icon palmex">P</div>
-                <div>
-                    <div class="brand-name">BOQ - PALMEX Lengkung + 2 Sisi Miring</div>
-                    <div class="brand-sub">Hitung kebutuhan material atap lengkung dengan 2 sisi miring</div>
-                </div>
-            </div>
-            <div class="brand-badge">PALMEX</div>
-        </div>
-    </div>
 
     <!-- ===== NOTES ===== -->
     <div class="notes-container">
@@ -1001,13 +988,10 @@
                         </div>
                         <div class="row" id="lantai_kerja_container_1" style="display:none;"><span class="label">Lantai Kerja</span>
                             <span class="value"><select id="lantai_kerja_1">
-                                <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                <option value="GRC 9 mm">GRC 9 mm</option>
-                                <option value="GRC 12 mm">GRC 12 mm</option>
-                                <option value="GRC 15 mm">GRC 15 mm</option>
-                                <option value="Beton">Beton</option>
+                                <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                             </select></span>
                         </div>
                         <div class="row"><span class="label">Struktur Rangka</span>
@@ -1101,13 +1085,10 @@
                         </div>
                         <div class="row" id="lantai_kerja_container_2" style="display:none;"><span class="label">Lantai Kerja</span>
                             <span class="value"><select id="lantai_kerja_2">
-                                <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                <option value="GRC 9 mm">GRC 9 mm</option>
-                                <option value="GRC 12 mm">GRC 12 mm</option>
-                                <option value="GRC 15 mm">GRC 15 mm</option>
-                                <option value="Beton">Beton</option>
+                                 <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                             </select></span>
                         </div>
                         <div class="row"><span class="label">Struktur Rangka</span>
@@ -1193,13 +1174,10 @@
                         </div>
                         <div class="row" id="lantai_kerja_container_3" style="display:none;"><span class="label">Lantai Kerja</span>
                             <span class="value"><select id="lantai_kerja_3">
-                                <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                <option value="GRC 9 mm">GRC 9 mm</option>
-                                <option value="GRC 12 mm">GRC 12 mm</option>
-                                <option value="GRC 15 mm">GRC 15 mm</option>
-                                <option value="Beton">Beton</option>
+                                <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach   
                             </select></span>
                         </div>
                         <div class="row"><span class="label">Struktur Rangka</span>

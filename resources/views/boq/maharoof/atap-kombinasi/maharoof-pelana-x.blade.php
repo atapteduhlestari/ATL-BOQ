@@ -1055,7 +1055,7 @@
                     </span>
                 </div>
                 
-                <div class="row">
+                {{-- <div class="row">
                     <span class="label">Lantai Kerja</span>
                     <span class="value">
                         <select id="lantai_kerja">
@@ -1068,7 +1068,7 @@
                             <option value="Beton">Beton</option>
                         </select>
                     </span>
-                </div>
+                </div> --}}
                 
                 <div class="row">
                     <span class="label">Waste</span>
@@ -1145,7 +1145,6 @@
                 <p class="text-gray-200 text-[10px]">Pelana X (termasuk waste)</p>
             </div>
             <div class="text-right">
-                <p class="label">Grand Total</p>
                 <p class="amount" id="totalKeseluruhan">Rp 0</p>
             </div>
         </div>

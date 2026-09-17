@@ -919,6 +919,9 @@
                 <span>• Jarak usuk per <strong>40.5 cm</strong> pakai <strong>Plywood minimal 9 mm</strong></span>
             </li>
             <li style="padding-left: 28px;">
+                <span>• Ukuran Flashing menyesuaikan dengan ukuran Lantai Kerja</strong></span>
+            </li>
+            <li style="padding-left: 28px;">
                 <span>• Pemakaian underlayer <strong>self adhesive</strong> direkomendasikan</span>
             </li>
         </ul>
@@ -1014,13 +1017,10 @@
                         </div>
                         <div class="row"><span class="label">Lantai Kerja</span>
                             <span class="value"><select id="lantai_kerja">
-                                <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                                <option value="Plywood 12 mm">Plywood 12 mm</option>
-                                <option value="Plywood 15 mm">Plywood 15 mm</option>
-                                <option value="GRC 9 mm">GRC 9 mm</option>
-                                <option value="GRC 12 mm">GRC 12 mm</option>
-                                <option value="GRC 15 mm">GRC 15 mm</option>
-                                <option value="Beton">Beton</option>
+                                <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach 
                             </select></span>
                         </div>
                         <div class="row"><span class="label">Struktur Rangka</span>
@@ -1111,7 +1111,7 @@
                         <div class="opsi-title" style="font-size:12px;margin-bottom:6px;">Opsi Tambahan</div>
                         <div class="opsi-grid" style="padding-left:24px;">
                             <div class="opsi-item">
-                                <label>Dinding Tambahan <span class="opsi-desc">(panjang dinding tambahan)</span></label>
+                                <label>Dinding</label>
                                 <input type="number" id="opsi_dinding_2" step="0.1" min="0" placeholder="0" value="0">
                                 <span class="satuan">meter</span>
                             </div>
@@ -1284,6 +1284,13 @@ function renderResultTable(results, containerId) {
         return;
     }
     
+    // ✅ FILTER: buang item "Lantai Kerja" kalau containerId = table_bagian_2 (dinding)
+    if (containerId === 'table_bagian_2') {
+        results = results.filter(function(item) {
+            return item.area !== 'Lantai Kerja';
+        });
+    }
+    
     let kelompok = {
         'Atap Utama': [],
         'Aksesoris': [],
@@ -1407,51 +1414,55 @@ document.addEventListener('DOMContentLoaded', function() {
     setVal('opsi_penangkal_2', urlParams.get('penangkal_2') || 0);
     setVal('opsi_exhaust_2', urlParams.get('exhaust_2') || 0);
 });
-
 function hitungBagianAtap() {
-    var wasteEl = document.getElementById('waste_atap');
-    var opsiDindingEl = document.getElementById('opsi_dinding_1');
-    var opsiKacaEl = document.getElementById('opsi_kaca_1');
-    var opsiPenangkalEl = document.getElementById('opsi_penangkal_1');
-    var opsiExhaustEl = document.getElementById('opsi_exhaust_1');
-    var luasEl = document.getElementById('luas_atap');
-    var sudutEl = document.getElementById('sudut');
-    var starterEl = document.getElementById('starter');
-    var flashingEl = document.getElementById('flashing');
-    var nokEl = document.getElementById('nok_jurai');
-    
-    var wasteValue = wasteEl ? parseFloat(wasteEl.value) || 5 : 5;
-    var opsiDinding = opsiDindingEl ? parseFloat(opsiDindingEl.value) || 0 : 0;
-    var opsiKaca = opsiKacaEl ? parseFloat(opsiKacaEl.value) || 0 : 0;
+    var wasteEl        = document.getElementById('waste_atap');
+    var opsiDindingEl  = document.getElementById('opsi_dinding_1');
+    var opsiKacaEl     = document.getElementById('opsi_kaca_1');
+    var opsiPenangkalEl= document.getElementById('opsi_penangkal_1');
+    var opsiExhaustEl  = document.getElementById('opsi_exhaust_1');
+    var luasEl         = document.getElementById('luas_atap');
+    var sudutEl        = document.getElementById('sudut');
+    var starterEl      = document.getElementById('starter');
+    var flashingEl     = document.getElementById('flashing');
+    var nokEl          = document.getElementById('nok_jurai');
+
+    var wasteValue    = wasteEl ? parseFloat(wasteEl.value) || 5 : 5;
+    var opsiDinding   = opsiDindingEl ? parseFloat(opsiDindingEl.value) || 0 : 0;
+    var opsiKaca      = opsiKacaEl ? parseFloat(opsiKacaEl.value) || 0 : 0;
     var opsiPenangkal = opsiPenangkalEl ? parseInt(opsiPenangkalEl.value) || 0 : 0;
-    var opsiExhaust = opsiExhaustEl ? parseInt(opsiExhaustEl.value) || 0 : 0;
-    var luas = luasEl ? parseFloat(luasEl.value) || 0 : 0;
-    var sudut = sudutEl ? parseFloat(sudutEl.value) || 0 : 0;
-    var starter = starterEl ? parseFloat(starterEl.value) || 0 : 0;
-    var flashing = flashingEl ? parseFloat(flashingEl.value) || 0 : 0;
-    var nokJurai = nokEl ? parseFloat(nokEl.value) || 0 : 0;
-    
-    var produk = document.getElementById('produk_atap');
-    var underlayer = document.getElementById('underlayer');
-    var lantaiKerja = document.getElementById('lantai_kerja');
-    var rangka = document.getElementById('rangka');
-    var starterProdukId = document.getElementById('starter_produk')?.value || '';
-    
+    var opsiExhaust   = opsiExhaustEl ? parseInt(opsiExhaustEl.value) || 0 : 0;
+    var luas          = luasEl ? parseFloat(luasEl.value) || 0 : 0;
+    var sudut         = sudutEl ? parseFloat(sudutEl.value) || 0 : 0;
+    var starter       = starterEl ? parseFloat(starterEl.value) || 0 : 0;
+    var flashing      = flashingEl ? parseFloat(flashingEl.value) || 0 : 0;
+    var nokJurai      = nokEl ? parseFloat(nokEl.value) || 0 : 0;
+
+    var produk         = document.getElementById('produk_atap');
+    var underlayer     = document.getElementById('underlayer');
+    var lantaiKerja    = document.getElementById('lantai_kerja');
+    var rangka         = document.getElementById('rangka');
+    var starterProdukId= document.getElementById('starter_produk')?.value || '';
+
     if (!produk || !produk.value) {
         alert('⚠️ Pilih produk atap utama untuk Bagian Atap!');
         return;
     }
-    
+
     var btn = document.getElementById('btn_hitung_1');
     if (!btn) {
         alert('Tombol hitung tidak ditemukan!');
         return;
     }
-    
+
     var originalText = btn.innerHTML;
     btn.innerHTML = '⏳ Menghitung...';
     btn.disabled = true;
-    
+
+    // ✅ FIX: pastikan lantai_kerja dikirim sebagai ID (numeric) atau kosong
+    var lantaiKerjaValue = (lantaiKerja && lantaiKerja.value && !isNaN(lantaiKerja.value))
+        ? lantaiKerja.value
+        : '';
+
     var data = {
         luas_atap: luas,
         sudut: sudut,
@@ -1463,31 +1474,45 @@ function hitungBagianAtap() {
         opsi_kaca: opsiKaca,
         opsi_penangkal: opsiPenangkal,
         opsi_exhaust: opsiExhaust,
-        produk_atap_id: produk ? produk.value : '',
+        produk_atap_id: produk.value,
         underlayer_id: underlayer ? underlayer.value : '',
         starter_produk_id: starterProdukId,
         rangka: rangka ? rangka.value : 'Baja Ringan',
-        lantai_kerja: lantaiKerja ? lantaiKerja.value : 'Plywood 9 mm',
+        lantai_kerja: lantaiKerjaValue,   // ✅ ID atau kosong, bukan nama
         waste: wasteValue,
         jenis: 'pelana',
         bagian: 1
     };
-    
+
     fetch('{{ route("boq.iko-atap.hitung") }}', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+        },
         body: JSON.stringify(data)
     })
     .then(function(res) {
+        if (!res.ok) {
+            return res.text().then(function(txt) {
+                console.error('Server error body:', txt);
+                throw new Error('Server error ' + res.status);
+            });
+        }
         return res.json();
     })
     .then(function(result) {
+        if (result.error) {
+            throw new Error(result.error);
+        }
+
         var hasil = result.results || [];
         var total = hasil.reduce(function(s, i) { return s + (i.total_harga || 0); }, 0);
-        
+
         hasilAtap = hasil;
         totalAtap = total;
-        
+
         document.getElementById('pdf_luas_atap').value = luas;
         document.getElementById('pdf_sudut').value = sudut;
         document.getElementById('pdf_starter').value = starter;
@@ -1503,24 +1528,15 @@ function hitungBagianAtap() {
         document.getElementById('pdf_opsi_kaca_1').value = opsiKaca;
         document.getElementById('pdf_opsi_penangkal_1').value = opsiPenangkal;
         document.getElementById('pdf_opsi_exhaust_1').value = opsiExhaust;
-        
+
         renderResultTable(hasil, 'table_bagian_1');
         var subtotalSpan = document.getElementById('subtotal_bagian_1');
         if (subtotalSpan) subtotalSpan.textContent = 'Rp ' + total.toLocaleString();
         var hasilDiv = document.getElementById('hasil_bagian_1');
         if (hasilDiv) hasilDiv.style.display = 'block';
-        
-        var grandTotal = totalAtap + totalDinding;
-        var totalEl = document.getElementById('totalKeseluruhan');
-        if (totalEl) totalEl.textContent = 'Rp ' + grandTotal.toLocaleString();
-        
-        document.getElementById('pdf_grand_total').value = grandTotal;
-        
-        var btnPDF = document.getElementById('btnExportPDF');
-        if (btnPDF && hasilAtap.length > 0 && hasilDinding.length > 0) {
-            btnPDF.disabled = false;
-        }
-        
+
+        updateGrandTotal();
+
         btn.innerHTML = originalText;
         btn.disabled = false;
     })
@@ -1531,40 +1547,44 @@ function hitungBagianAtap() {
         btn.disabled = false;
     });
 }
-
 function hitungBagianDinding() {
-    var wasteEl = document.getElementById('waste_dinding');
-    var opsiDindingEl = document.getElementById('opsi_dinding_2');
-    var opsiKacaEl = document.getElementById('opsi_kaca_2');
-    var opsiPenangkalEl = document.getElementById('opsi_penangkal_2');
-    var opsiExhaustEl = document.getElementById('opsi_exhaust_2');
-    var luasEl = document.getElementById('luas_dinding');
-    
-    var wasteValue = wasteEl ? parseFloat(wasteEl.value) || 5 : 5;
-    var opsiDinding = opsiDindingEl ? parseFloat(opsiDindingEl.value) || 0 : 0;
-    var opsiKaca = opsiKacaEl ? parseFloat(opsiKacaEl.value) || 0 : 0;
+    var wasteEl        = document.getElementById('waste_dinding');
+    var opsiDindingEl  = document.getElementById('opsi_dinding_2');
+    var opsiKacaEl     = document.getElementById('opsi_kaca_2');
+    var opsiPenangkalEl= document.getElementById('opsi_penangkal_2');
+    var opsiExhaustEl  = document.getElementById('opsi_exhaust_2');
+    var luasEl         = document.getElementById('luas_dinding');
+
+    var wasteValue    = wasteEl ? parseFloat(wasteEl.value) || 5 : 5;
+    var opsiDinding   = opsiDindingEl ? parseFloat(opsiDindingEl.value) || 0 : 0;
+    var opsiKaca      = opsiKacaEl ? parseFloat(opsiKacaEl.value) || 0 : 0;
     var opsiPenangkal = opsiPenangkalEl ? parseInt(opsiPenangkalEl.value) || 0 : 0;
-    var opsiExhaust = opsiExhaustEl ? parseInt(opsiExhaustEl.value) || 0 : 0;
-    var luas = luasEl ? parseFloat(luasEl.value) || 0 : 0;
-    
-    var produk = document.getElementById('produk_dinding');
-    var starterProdukId = document.getElementById('starter_produk_dinding')?.value || '';
-    
+    var opsiExhaust   = opsiExhaustEl ? parseInt(opsiExhaustEl.value) || 0 : 0;
+    var luas          = luasEl ? parseFloat(luasEl.value) || 0 : 0;
+
+    var produk         = document.getElementById('produk_dinding');
+    var starterProdukId= document.getElementById('starter_produk_dinding')?.value || '';
+
     if (!produk || !produk.value) {
         alert('⚠️ Pilih produk atap utama untuk Dinding!');
         return;
     }
-    
+
+    if (luas <= 0) {
+        alert('⚠️ Luas dinding masih 0. Cek URL parameter "luas_atap_2".');
+        return;
+    }
+
     var btn = document.getElementById('btn_hitung_2');
     if (!btn) {
         alert('Tombol hitung tidak ditemukan!');
         return;
     }
-    
+
     var originalText = btn.innerHTML;
     btn.innerHTML = '⏳ Menghitung...';
     btn.disabled = true;
-    
+
     var data = {
         luas_atap: luas,
         sudut: 0,
@@ -1576,31 +1596,53 @@ function hitungBagianDinding() {
         opsi_kaca: opsiKaca,
         opsi_penangkal: opsiPenangkal,
         opsi_exhaust: opsiExhaust,
-        produk_atap_id: produk ? produk.value : '',
+        produk_atap_id: produk.value,
         underlayer_id: '',
         starter_produk_id: starterProdukId,
         rangka: 'Baja Ringan',
-        lantai_kerja: 'Plywood 9 mm',
+        lantai_kerja: '',   // ✅ FIX: kosongkan (dinding tidak pakai lantai kerja)
         waste: wasteValue,
         jenis: 'dinding',
         bagian: 2
     };
-    
+
     fetch('{{ route("boq.iko-atap.hitung") }}', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+        },
         body: JSON.stringify(data)
     })
     .then(function(res) {
+        if (!res.ok) {
+            return res.text().then(function(txt) {
+                console.error('Server error body:', txt);
+                throw new Error('Server error ' + res.status);
+            });
+        }
         return res.json();
     })
     .then(function(result) {
+        if (result.error) {
+            throw new Error(result.error);
+        }
+
         var hasil = result.results || [];
         var total = hasil.reduce(function(s, i) { return s + (i.total_harga || 0); }, 0);
-        
-        hasilDinding = hasil;
-        totalDinding = total;
-        
+
+       // ✅ FILTER: buang Lantai Kerja dari hasil dinding sebelum simpan
+hasil = (hasil || []).filter(function(item) {
+    return (item.area || '') !== 'Lantai Kerja';
+});
+
+// Recalculate total setelah filter
+total = hasil.reduce(function(s, i) { return s + (i.total_harga || 0); }, 0);
+
+hasilDinding = hasil;
+totalDinding = total;
+
         document.getElementById('pdf_luas_dinding').value = luas;
         document.getElementById('pdf_panjang_dinding').value = document.getElementById('panjang_dinding')?.value || 0;
         document.getElementById('pdf_tinggi_dinding').value = document.getElementById('tinggi_dinding')?.value || 0;
@@ -1613,24 +1655,15 @@ function hitungBagianDinding() {
         document.getElementById('pdf_opsi_kaca_2').value = opsiKaca;
         document.getElementById('pdf_opsi_penangkal_2').value = opsiPenangkal;
         document.getElementById('pdf_opsi_exhaust_2').value = opsiExhaust;
-        
+
         renderResultTable(hasil, 'table_bagian_2');
         var subtotalSpan = document.getElementById('subtotal_bagian_2');
         if (subtotalSpan) subtotalSpan.textContent = 'Rp ' + total.toLocaleString();
         var hasilDiv = document.getElementById('hasil_bagian_2');
         if (hasilDiv) hasilDiv.style.display = 'block';
-        
-        var grandTotal = totalAtap + totalDinding;
-        var totalEl = document.getElementById('totalKeseluruhan');
-        if (totalEl) totalEl.textContent = 'Rp ' + grandTotal.toLocaleString();
-        
-        document.getElementById('pdf_grand_total').value = grandTotal;
-        
-        var btnPDF = document.getElementById('btnExportPDF');
-        if (btnPDF && hasilAtap.length > 0 && hasilDinding.length > 0) {
-            btnPDF.disabled = false;
-        }
-        
+
+        updateGrandTotal();
+
         btn.innerHTML = originalText;
         btn.disabled = false;
     })
@@ -1640,6 +1673,21 @@ function hitungBagianDinding() {
         btn.innerHTML = originalText;
         btn.disabled = false;
     });
+}
+
+// ===== FUNGSI BANTU: update grand total + tombol PDF =====
+function updateGrandTotal() {
+    var grandTotal = (totalAtap || 0) + (totalDinding || 0);
+    var totalEl = document.getElementById('totalKeseluruhan');
+    if (totalEl) totalEl.textContent = 'Rp ' + grandTotal.toLocaleString();
+
+    var pdfGrandTotal = document.getElementById('pdf_grand_total');
+    if (pdfGrandTotal) pdfGrandTotal.value = grandTotal;
+
+    var btnPDF = document.getElementById('btnExportPDF');
+    if (btnPDF && hasilAtap.length > 0 && hasilDinding.length > 0) {
+        btnPDF.disabled = false;
+    }
 }
 </script>
 @endsection

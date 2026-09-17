@@ -411,24 +411,24 @@ public function hitungGergaji(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -480,48 +480,48 @@ public function hitungGergaji(Request $request)
         }
     }
     
-      // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    //   // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     
     $grandTotal = collect($results)->sum('total_harga');
     
@@ -1105,24 +1105,24 @@ public function hitungLengkung2Sisi(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -1174,48 +1174,48 @@ public function hitungLengkung2Sisi(Request $request)
         }
     }
     
-     // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    //  // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     
     $grandTotal = collect($results)->sum('total_harga');
     
@@ -1760,24 +1760,24 @@ public function hitungLimasPelana(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -1829,48 +1829,48 @@ public function hitungLimasPelana(Request $request)
         }
     }
     
-     // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    //  // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     
     $grandTotal = collect($results)->sum('total_harga');
     
@@ -2415,24 +2415,24 @@ public function hitungLimasanLimasan(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -2484,48 +2484,48 @@ public function hitungLimasanLimasan(Request $request)
         }
     }
     
-     // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    //  // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     $grandTotal = collect($results)->sum('total_harga');
     
     Log::info('HASIL LIMASAN + LIMASAN MAHAROOF:', [
@@ -3119,24 +3119,24 @@ public function hitungLimasanTrapesium(Request $request)
         }
     }
     
-    // ============================================================
-    // 13. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 13. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 14. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -3188,48 +3188,48 @@ public function hitungLimasanTrapesium(Request $request)
         }
     }
     
-     // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    //  // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     $grandTotal = collect($results)->sum('total_harga');
     
     Log::info('HASIL LIMASAN + TRAPESIUM MAHAROOF:', [
@@ -3786,24 +3786,24 @@ public function hitungLimasanX(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -3855,48 +3855,48 @@ public function hitungLimasanX(Request $request)
         }
     }
     
-    // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    // // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     
     $grandTotal = collect($results)->sum('total_harga');
     
@@ -4450,24 +4450,24 @@ public function hitungPelana2Kemiringan(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -4519,48 +4519,48 @@ public function hitungPelana2Kemiringan(Request $request)
         }
     }
     
-      // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    //   // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     
     $grandTotal = collect($results)->sum('total_harga');
     
@@ -5114,24 +5114,24 @@ public function hitungPelana2Sisi(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -5183,48 +5183,48 @@ public function hitungPelana2Sisi(Request $request)
         }
     }
     
-     // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    //  // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     
     $grandTotal = collect($results)->sum('total_harga');
     
@@ -5777,24 +5777,24 @@ public function hitungPelana2Trapesium(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -5846,48 +5846,48 @@ public function hitungPelana2Trapesium(Request $request)
         }
     }
     
-      // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    //   // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     
     $grandTotal = collect($results)->sum('total_harga');
     
@@ -6438,24 +6438,24 @@ public function hitungPelana3Arah(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -6507,48 +6507,48 @@ public function hitungPelana3Arah(Request $request)
         }
     }
     
-   // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+//    // ============================================================
+//         // 13. SCREW PLYWOOD - MASTER ROOF
+//         // ============================================================
+//         $qtyPlywood = 0;
+//         foreach ($results as $result) {
+//             if ($result['area'] == 'Lantai Kerja') {
+//                 $qtyPlywood = $result['qty'];
+//                 break;
+//             }
+//         }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+//         if ($qtyPlywood > 0) {
+//             $screwPlywoodProduct = null;
+//             if ($brandId) {
+//                 $screwPlywoodProduct = Product::where('brand_id', $brandId)
+//                     ->whereHas('area', function($q) {
+//                         $q->where('slug', 'screw-plywood');
+//                     })
+//                     ->with('unit')
+//                     ->first();
+//             }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+//             $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+//             $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+//             $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+//             $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+//             $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+//             $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+//             $results[] = [
+//                 'product_id' => $screwPlywoodProduct->id ?? null,
+//                 'produk_id' => $screwPlywoodProduct->id ?? null,
+//                 'nama_produk' => $namaProduk,
+//                 'area' => 'Screw Plywood',
+//                 'qty' => $qtyScrewPlywood,
+//                 'satuan' => $satuanText,
+//                 'harga_satuan' => $harga,
+//                 'total_harga' => $harga * $qtyScrewPlywood,
+//                 'parameter' => $qtyPlywood . ' lembar plywood'
+//             ];
+//         }
     
     $grandTotal = collect($results)->sum('total_harga');
     
@@ -7145,24 +7145,24 @@ if ($insulasi && $brandId) {
             ];
         }
         
-        // ============================================================
-        // 11. LANTAI KERJA
-        // ============================================================
-        $luasPerLembar = 2.88;
-        $qtyRaw = $luasAtap / $luasPerLembar;
-        $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+        // // ============================================================
+        // // 11. LANTAI KERJA
+        // // ============================================================
+        // $luasPerLembar = 2.88;
+        // $qtyRaw = $luasAtap / $luasPerLembar;
+        // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
         
-        $results[] = [
-            'product_id' => null,
-            'produk_id' => null,
-            'nama_produk' => $lantaiKerja,
-            'area' => 'Lantai Kerja',
-            'qty' => $qtyPlywood,
-            'satuan' => 'lembar',
-            'harga_satuan' => 0,
-            'total_harga' => 0,
-            'parameter' => $luasAtap . ' m²'
-        ];
+        // $results[] = [
+        //     'product_id' => null,
+        //     'produk_id' => null,
+        //     'nama_produk' => $lantaiKerja,
+        //     'area' => 'Lantai Kerja',
+        //     'qty' => $qtyPlywood,
+        //     'satuan' => 'lembar',
+        //     'harga_satuan' => 0,
+        //     'total_harga' => 0,
+        //     'parameter' => $luasAtap . ' m²'
+        // ];
         
         // ============================================================
         // 12. PAKU & SCREW - MANUAL ID (344,345,346,347) - MAHAROOF
@@ -7214,48 +7214,48 @@ if ($insulasi && $brandId) {
             }
         }
         
-          // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+        //   // ============================================================
+        // // 13. SCREW PLYWOOD - MASTER ROOF
+        // // ============================================================
+        // $qtyPlywood = 0;
+        // foreach ($results as $result) {
+        //     if ($result['area'] == 'Lantai Kerja') {
+        //         $qtyPlywood = $result['qty'];
+        //         break;
+        //     }
+        // }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+        // if ($qtyPlywood > 0) {
+        //     $screwPlywoodProduct = null;
+        //     if ($brandId) {
+        //         $screwPlywoodProduct = Product::where('brand_id', $brandId)
+        //             ->whereHas('area', function($q) {
+        //                 $q->where('slug', 'screw-plywood');
+        //             })
+        //             ->with('unit')
+        //             ->first();
+        //     }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+        //     $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+        //     $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+        //     $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+        //     $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+        //     $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+        //     $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+        //     $results[] = [
+        //         'product_id' => $screwPlywoodProduct->id ?? null,
+        //         'produk_id' => $screwPlywoodProduct->id ?? null,
+        //         'nama_produk' => $namaProduk,
+        //         'area' => 'Screw Plywood',
+        //         'qty' => $qtyScrewPlywood,
+        //         'satuan' => $satuanText,
+        //         'harga_satuan' => $harga,
+        //         'total_harga' => $harga * $qtyScrewPlywood,
+        //         'parameter' => $qtyPlywood . ' lembar plywood'
+        //     ];
+        // }
         
         $grandTotal = collect($results)->sum('total_harga');
         
@@ -7853,24 +7853,24 @@ public function hitungPelanaDinding(Request $request)
         }
     }
     
-    // ============================================================
-    // 12. LANTAI KERJA
-    // ============================================================
-    $luasPerLembar = 2.88;
-    $qtyRaw = $luasAtap / $luasPerLembar;
-    $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
+    // // ============================================================
+    // // 12. LANTAI KERJA
+    // // ============================================================
+    // $luasPerLembar = 2.88;
+    // $qtyRaw = $luasAtap / $luasPerLembar;
+    // $qtyPlywood = ceil($qtyRaw + ($qtyRaw * $waste));
     
-    $results[] = [
-        'product_id' => null,
-        'produk_id' => null,
-        'nama_produk' => $lantaiKerja,
-        'area' => 'Lantai Kerja',
-        'qty' => $qtyPlywood,
-        'satuan' => 'lembar',
-        'harga_satuan' => 0,
-        'total_harga' => 0,
-        'parameter' => $luasAtap . ' m²'
-    ];
+    // $results[] = [
+    //     'product_id' => null,
+    //     'produk_id' => null,
+    //     'nama_produk' => $lantaiKerja,
+    //     'area' => 'Lantai Kerja',
+    //     'qty' => $qtyPlywood,
+    //     'satuan' => 'lembar',
+    //     'harga_satuan' => 0,
+    //     'total_harga' => 0,
+    //     'parameter' => $luasAtap . ' m²'
+    // ];
     
     // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
@@ -7922,48 +7922,48 @@ public function hitungPelanaDinding(Request $request)
         }
     }
     
-      // ============================================================
-        // 13. SCREW PLYWOOD - MASTER ROOF
-        // ============================================================
-        $qtyPlywood = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Lantai Kerja') {
-                $qtyPlywood = $result['qty'];
-                break;
-            }
-        }
+    //   // ============================================================
+    //     // 13. SCREW PLYWOOD - MASTER ROOF
+    //     // ============================================================
+    //     $qtyPlywood = 0;
+    //     foreach ($results as $result) {
+    //         if ($result['area'] == 'Lantai Kerja') {
+    //             $qtyPlywood = $result['qty'];
+    //             break;
+    //         }
+    //     }
         
-        if ($qtyPlywood > 0) {
-            $screwPlywoodProduct = null;
-            if ($brandId) {
-                $screwPlywoodProduct = Product::where('brand_id', $brandId)
-                    ->whereHas('area', function($q) {
-                        $q->where('slug', 'screw-plywood');
-                    })
-                    ->with('unit')
-                    ->first();
-            }
+    //     if ($qtyPlywood > 0) {
+    //         $screwPlywoodProduct = null;
+    //         if ($brandId) {
+    //             $screwPlywoodProduct = Product::where('brand_id', $brandId)
+    //                 ->whereHas('area', function($q) {
+    //                     $q->where('slug', 'screw-plywood');
+    //                 })
+    //                 ->with('unit')
+    //                 ->first();
+    //         }
             
-            $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
-            $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
-            $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
+    //         $satuan = $screwPlywoodProduct->satuan_terkecil ?? 1;
+    //         $qtyScrewPlywoodRaw = ($qtyPlywood * 40) / 750;
+    //         $qtyScrewPlywood = ceil($qtyScrewPlywoodRaw + ($qtyScrewPlywoodRaw * $waste));
             
-            $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
-            $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
-            $harga = $screwPlywoodProduct->harga_jual ?? 0;
+    //         $namaProduk = $screwPlywoodProduct->nama_produk ?? 'Screw Plywood';
+    //         $satuanText = $screwPlywoodProduct->unit->unit_name ?? 'Box';
+    //         $harga = $screwPlywoodProduct->harga_jual ?? 0;
             
-            $results[] = [
-                'product_id' => $screwPlywoodProduct->id ?? null,
-                'produk_id' => $screwPlywoodProduct->id ?? null,
-                'nama_produk' => $namaProduk,
-                'area' => 'Screw Plywood',
-                'qty' => $qtyScrewPlywood,
-                'satuan' => $satuanText,
-                'harga_satuan' => $harga,
-                'total_harga' => $harga * $qtyScrewPlywood,
-                'parameter' => $qtyPlywood . ' lembar plywood'
-            ];
-        }
+    //         $results[] = [
+    //             'product_id' => $screwPlywoodProduct->id ?? null,
+    //             'produk_id' => $screwPlywoodProduct->id ?? null,
+    //             'nama_produk' => $namaProduk,
+    //             'area' => 'Screw Plywood',
+    //             'qty' => $qtyScrewPlywood,
+    //             'satuan' => $satuanText,
+    //             'harga_satuan' => $harga,
+    //             'total_harga' => $harga * $qtyScrewPlywood,
+    //             'parameter' => $qtyPlywood . ' lembar plywood'
+    //         ];
+    //     }
     
     $grandTotal = collect($results)->sum('total_harga');
     

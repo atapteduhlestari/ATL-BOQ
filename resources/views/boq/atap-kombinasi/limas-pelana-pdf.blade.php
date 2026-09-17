@@ -593,7 +593,7 @@
 
     <div class="title-section">
         <h1>BILL OF QUANTITY</h1>
-        <p>{{ $data['brand'] ?? 'IKO - ATAP' }}</p>
+        <p>{{ $data['brand'] ?? 'IKO' }}</p>
         
         <div class="nomor-boq-wrapper">
             <span class="nomor-boq" id="nomorBoqText">
