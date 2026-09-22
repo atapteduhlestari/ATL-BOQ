@@ -461,8 +461,8 @@
     ];
     
     $additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir', 'Flashing Kaca'];
-    $systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
-    $aksesorisAreas = ['Starter', 'Tape Roof Nok', 'Tape Roof Nok & Jurai', 'Jurai', 'Nok Tutup', 'Nok 3 Arah', 'Metal Flashing', 'Paku & Screw'];
+    $systemAreas = ['Lantai Kerja', 'Underlayer', 'Paku & Screw'];
+    $aksesorisAreas = ['Starter', 'Tape Roof Nok', 'Tape Roof Nok & Jurai', 'Jurai', 'Nok Tutup', 'Nok 3 Arah', 'Metal Flashing'];
     
     foreach ($results as $item) {
         $area = $item['area'] ?? '';
@@ -556,15 +556,15 @@
         </div>
         <div class="info-item">
             <span class="info-label">Panjang Starter</span>
-            <span class="info-value">{{ number_format((float)($data['panjang_starter'] ?? 0), 2) }} m</span>
+            <span class="info-value">{{ number_format((float)($data['starter'] ?? 0), 2) }} m</span>
         </div>
         <div class="info-item">
             <span class="info-label">Panjang Nok & Jurai</span>
-            <span class="info-value">{{ number_format((float)($data['panjang_nok_jurai'] ?? 0), 2) }} m</span>
+            <span class="info-value">{{ number_format((float)($data['nok_jurai'] ?? 0), 2) }} m</span>
         </div>
         <div class="info-item">
             <span class="info-label">Panjang Flashing</span>
-            <span class="info-value">{{ number_format((float)($data['panjang_flashing'] ?? 0), 2) }} m</span>
+            <span class="info-value">{{ number_format((float)($data['flashing'] ?? 0), 2) }} m</span>
         </div>
         <div class="info-item">
             <span class="info-label">Waste</span>

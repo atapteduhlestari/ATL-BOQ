@@ -313,6 +313,7 @@ function lanjutKeBOQ() {
         'master-roof': '/boq/masterroof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
         'maha-roof': '/boq/maharoof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
         'mahaspan-roof': '/boq/mahaspanroof/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
+        'flexideck-seam': '/boq/flexideckseam/atap-kombinasi/gergaji',  // <-- TAMBAHKAN TAPE ROOF
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/gergaji';

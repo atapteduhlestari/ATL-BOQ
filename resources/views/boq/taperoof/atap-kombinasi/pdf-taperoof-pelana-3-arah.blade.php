@@ -470,8 +470,8 @@
     ];
     
     $additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir', 'Flashing Kaca'];
-    $systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
-    $aksesorisAreas = ['Starter', 'Tape Roof Nok & Jurai', 'Nok Tutup', 'Metal Flashing', 'Paku & Screw'];
+    $systemAreas = ['Lantai Kerja', 'Underlayer', 'Paku & Screw'];
+    $aksesorisAreas = ['Starter', 'Tape Roof Nok & Jurai', 'Nok Tutup', 'Metal Flashing'];
     
     foreach ($results as $item) {
         $area = $item['area'] ?? '';

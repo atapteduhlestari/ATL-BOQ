@@ -384,6 +384,7 @@ function lanjutKeBOQLimasanTrapesium() {
         'master-roof': '/boq/masterroof/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
         'maha-roof': '/boq/maharoof/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
         'mahaspan-roof': '/boq/mahaspanroof/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
+        'flexideck-seam': '/boq/flexideckseam/atap-kombinasi/limasan-trapesium',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/limasan-trapesium';

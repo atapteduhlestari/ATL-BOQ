@@ -25,19 +25,20 @@
         -ms-overflow-style: none;
     }
     
+    /* ===== 3D MODEL CONTAINER ===== */
     #modelContainer {
         width: 100%;
         height: 100%;
         min-height: 280px;
         position: relative;
         overflow: hidden;
-        background: #1a1a2e;
-        border-radius: 12px 0 0 12px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+        border-radius: 20px 0 0 20px;
     }
     
     @media (max-width: 768px) {
         #modelContainer {
-            border-radius: 12px 12px 0 0;
+            border-radius: 20px 20px 0 0;
             min-height: 220px;
         }
     }
@@ -73,6 +74,175 @@
     @keyframes spin {
         to { transform: rotate(360deg); }
     }
+    
+    /* ===== FLOATING GLASS MODAL OVERRIDE ===== */
+    #modalLimasan .glass-modal-container {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 20px;
+        box-shadow:
+            0 25px 60px rgba(15, 23, 42, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 1);
+        animation: modalSlide 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    @keyframes modalSlide {
+        from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    
+    /* Overlay pakai glass blur */
+    #modalLimasan .modal-overlay-glass {
+        background: rgba(15, 23, 42, 0.45);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    
+    /* Close button bulat */
+    #modalLimasan .glass-close {
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.25s;
+        z-index: 10;
+    }
+    
+    #modalLimasan .glass-close:hover {
+        color: #1a1a2e;
+        background: #ffffff;
+        transform: rotate(90deg);
+    }
+    
+    /* Input field glass */
+    #modalLimasan .glass-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a1a2e;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        transition: all 0.25s;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    #modalLimasan .glass-input:focus {
+        outline: none;
+        border-color: #6366f1;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+    }
+    
+    #modalLimasan .glass-input::placeholder {
+        color: #cbd5e1;
+    }
+    
+    #modalLimasan .glass-select {
+        width: 100%;
+        padding: 8px 34px 8px 12px;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a1a2e;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        transition: all 0.25s;
+        font-family: 'Poppins', sans-serif;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        cursor: pointer;
+    }
+    
+    #modalLimasan .glass-select:focus {
+        outline: none;
+        border-color: #6366f1;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+    }
+    
+    /* Tombol utama gradient */
+    #modalLimasan .glass-btn-primary {
+        width: 100%;
+        padding: 10px 0;
+        background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        box-shadow: 0 4px 14px rgba(26, 26, 46, 0.25);
+    }
+    
+    #modalLimasan .glass-btn-primary:hover {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        transform: translateY(-1px);
+    }
+    
+    #modalLimasan .glass-btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    /* Tombol outline */
+    #modalLimasan .glass-btn-outline {
+        flex: 1;
+        padding: 8px 0;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        border-radius: 8px;
+        font-size: 12px;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.25s;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    #modalLimasan .glass-btn-outline:hover {
+        border-color: #6366f1;
+        color: #6366f1;
+        background: rgba(99, 102, 241, 0.06);
+    }
+    
+    /* Result box */
+    #modalLimasan .glass-result-box {
+        background: rgba(248, 250, 252, 0.8);
+        border-radius: 10px;
+        padding: 12px 14px;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    
+    #modalLimasan .glass-divider {
+        border-top: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    
+    #modalLimasan .glass-label {
+        display: block;
+        font-size: 10px;
+        font-weight: 500;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        margin-bottom: 4px;
+    }
 </style>
 
 <!-- Load Three.js dari CDN -->
@@ -82,18 +252,20 @@
 
 <div id="modalLimasan" class="fixed inset-0 z-50 hidden overflow-y-auto modal-content-scroll">
     <div class="flex items-center justify-center min-h-screen px-4 py-8">
-        <div class="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity" onclick="closeModal('modalLimasan')"></div>
+        <!-- Overlay glass -->
+        <div class="fixed inset-0 modal-overlay-glass transition-opacity" onclick="closeModal('modalLimasan')"></div>
         
-        <div class="relative bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-auto transition-all max-h-[90vh] overflow-y-auto modal-content-scroll">
-            <button onclick="closeModal('modalLimasan')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="relative glass-modal-container max-w-4xl w-full mx-auto max-h-[90vh] overflow-y-auto modal-content-scroll">
+            <!-- Close button bulat -->
+            <button onclick="closeModal('modalLimasan')" class="glass-close absolute top-4 right-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
 
             <div class="flex flex-col md:flex-row">
                 <!-- Kolom Kiri: 3D Model Container -->
-                <div class="md:w-2/5 relative rounded-t-xl md:rounded-l-xl md:rounded-tr-none overflow-hidden">
+                <div class="md:w-2/5 relative rounded-t-[20px] md:rounded-l-[20px] md:rounded-tr-none overflow-hidden">
                     <div id="modelContainer" class="h-64 md:h-full min-h-[200px]">
                         <div class="model-loading" id="modelLoading">
                             <div class="spinner"></div>
@@ -108,52 +280,52 @@
                 </div>
 
                 <!-- Kolom Kanan: Form Perhitungan -->
-                <div class="md:w-3/5 p-6">
+                <div class="md:w-3/5 p-6" style="font-family: 'Poppins', sans-serif;">
                     <div class="mb-5">
-                        <h3 class="text-base font-medium text-gray-900">Perhitungan Atap Limasan</h3>
+                        <h3 class="text-base font-semibold text-gray-900">Perhitungan Atap Limasan</h3>
                         <p class="text-xs text-gray-400 mt-1">Masukkan ukuran untuk estimasi material</p>
                     </div>
 
                     <div class="space-y-4">
                         <div class="grid grid-cols-3 gap-3">
                             <div>
-                                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Panjang</label>
+                                <label class="glass-label">Panjang</label>
                                 <input type="number" 
                                        id="panjang_limasan" 
                                        step="0.1"
-                                       class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white"
+                                       class="glass-input"
                                        placeholder="0"
                                        oninput="updateModel3D()">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Lebar</label>
+                                <label class="glass-label">Lebar</label>
                                 <input type="number" 
                                        id="lebar_limasan" 
                                        step="0.1"
-                                       class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white"
+                                       class="glass-input"
                                        placeholder="0"
                                        oninput="updateModel3D()">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Kemiringan</label>
+                                <label class="glass-label">Kemiringan</label>
                                 <input type="number" 
                                        id="sudut_limasan" 
                                        step="1"
                                        min="1"
                                        max="89"
-                                       class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white"
+                                       class="glass-input"
                                        placeholder="30"
                                        oninput="updateModel3D()">
                             </div>
                         </div>
 
-                        <button type="button" onclick="hitungAtapLimasan()" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium transition-all">
+                        <button type="button" onclick="hitungAtapLimasan()" class="glass-btn-primary">
                             Hitung Luas & Estimasi
                         </button>
 
                         <div id="hasilPerhitunganLimasan" class="hidden">
-                            <div class="bg-gray-50 rounded-lg p-4 space-y-2 border border-gray-200">
-                                <div class="flex justify-between items-center text-sm font-medium text-gray-700">
+                            <div class="glass-result-box space-y-2">
+                                <div class="flex justify-between items-center text-sm font-semibold text-gray-800">
                                     <span>Total Keseluruhan</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm pt-2 border-t border-gray-200">
@@ -179,24 +351,24 @@
                             </div>
                         </div>
 
-                        <div class="mt-4 pt-3 border-t border-gray-200">
-                            <label class="block text-[10px] font-medium text-gray-500 uppercase tracking-wide mb-1.5">Pilih Brand</label>
-                            <select id="brand_boq" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all bg-white cursor-pointer">
+                        <div class="mt-4 pt-3 glass-divider">
+                            <label class="glass-label">Pilih Brand</label>
+                            <select id="brand_boq" class="glass-select">
                                 <option value="">-- Pilih Brand --</option>
                                 @foreach($brands as $brand)
                                     <option value="{{ $brand->slug }}">{{ $brand->nama_brand }}</option>
                                 @endforeach
                             </select>
                             
-                            <button onclick="lanjutKeBOQ()" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium mt-3 transition-all">
+                            <button onclick="lanjutKeBOQ()" class="glass-btn-primary" style="margin-top: 12px;">
                                 Lanjut ke BOQ
                             </button>
                         </div>
                     </div>
 
-                    <div class="flex gap-3 mt-6 pt-4 border-t border-gray-200">
-                        <button onclick="closeModal('modalLimasan')" class="flex-1 px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all">Tutup</button>
-                        <button onclick="resetFormLimasan()" class="flex-1 px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all">Reset</button>
+                    <div class="flex gap-3 mt-6 pt-4 glass-divider">
+                        <button onclick="closeModal('modalLimasan')" class="glass-btn-outline">Tutup</button>
+                        <button onclick="resetFormLimasan()" class="glass-btn-outline">Reset</button>
                     </div>
                 </div>
             </div>
@@ -288,7 +460,6 @@ function loadGLBModel() {
     var loader = new THREE.GLTFLoader();
     var loadingEl = document.getElementById('modelLoading');
     
-    // Coba load dari path yang benar
     var modelPath = '{{ asset("images/atap-limasan.glb") }}';
     
     loader.load(
@@ -532,6 +703,7 @@ function lanjutKeBOQ() {
         'master-roof': '/boq/masterroof/limasan',
         'maha-roof': '/boq/maharoof/limasan',
         'mahaspan-roof': '/boq/mahaspanroof/limasan',
+        'flexideck-seam': '/boq/flexideckseam/limasan',
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

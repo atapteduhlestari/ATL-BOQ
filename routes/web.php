@@ -8,6 +8,8 @@ use App\Http\Controllers\PalmexController;
 use App\Http\Controllers\MahaspanroofController;
 use App\Http\Controllers\MahaspanroofKombinasiController;
 use App\Http\Controllers\TaperoofController;
+use App\Http\Controllers\FlexideckseamController;
+use App\Http\Controllers\FlexideckseamKombinasiController;
 use App\Http\Controllers\MasterroofController;
 use App\Http\Controllers\MaharoofController;
 use App\Http\Controllers\MaharoofKombinasiController;
@@ -931,6 +933,99 @@ Route::post('/boq/mahaspanroof/atap-kombinasi/pelana-x/hitung', [MahaspanroofKom
     ->name('boq.mahaspanroof.pelana-x.hitung');
 Route::post('/boq/mahaspanroof/atap-kombinasi/pelana-x/export-pdf', [MahaspanroofKombinasiController::class, 'exportPdfPelanaX'])
     ->name('boq.mahaspanroof.pelana-x.export-pdf');
+
+       // FLEXIDECKSEAM
+          Route::prefix('boq/flexideckseam')->group(function () {
+    Route::get('/{model}', [FlexideckseamController::class, 'index'])->name('boq.flexideckseam.index');
+    Route::post('/{model}/hitung', [FlexideckseamController::class, 'hitung'])->name('boq.flexideckseam.hitung');
+    Route::post('/{model}/export-pdf', [FlexideckseamController::class, 'exportPdf'])->name('boq.flexideckseam.export-pdf');
+});
+
+Route::get('/boq/flexideckseam/atap-kombinasi/gergaji', [FlexideckseamKombinasiController::class, 'gergaji'])
+    ->name('boq.flexideckseam.gergaji');
+Route::post('/boq/flexideckseam/atap-kombinasi/gergaji/hitung', [FlexideckseamKombinasiController::class, 'hitungGergaji'])
+    ->name('boq.flexideckseam.gergaji.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/gergaji/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfGergaji'])
+    ->name('boq.flexideckseam.gergaji.export-pdf');
+
+    
+        Route::get('/boq/flexideckseam/atap-kombinasi/lengkung-2-sisi', [FlexideckseamKombinasiController::class, 'lengkung2Sisi'])
+    ->name('boq.flexideckseam.lengkung-2-sisi');
+Route::post('/boq/flexideckseam/atap-kombinasi/lengkung-2-sisi/hitung', [FlexideckseamKombinasiController::class, 'hitungLengkung2Sisi'])
+    ->name('boq.flexideckseam.lengkung-2-sisi.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/lengkung-2-sisi/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfLengkung2Sisi'])
+    ->name('boq.flexideckseam.lengkung-2-sisi.export-pdf');
+
+            Route::get('/boq/flexideckseam/atap-kombinasi/limas-pelana', [FlexideckseamKombinasiController::class, 'limasPelana'])
+    ->name('boq.flexideckseam.limas-pelana');
+Route::post('/boq/flexideckseam/atap-kombinasi/limas-pelana/hitung', [FlexideckseamKombinasiController::class, 'hitungLimasPelana'])
+    ->name('boq.flexideckseam.limas-pelana.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/limas-pelana/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfLimasPelana'])
+    ->name('boq.flexideckseam.limas-pelana.export-pdf');
+
+                Route::get('/boq/flexideckseam/atap-kombinasi/limasan-limasan', [FlexideckseamKombinasiController::class, 'limasanLimasan'])
+    ->name('boq.flexideckseam.limasan-limasan');
+Route::post('/boq/flexideckseam/atap-kombinasi/limasan-limasan/hitung', [FlexideckseamKombinasiController::class, 'hitungLimasanLimasan'])
+    ->name('boq.flexideckseam.limasan-limasan.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/limasan-limasan/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfLimasanLimasan'])
+    ->name('boq.flexideckseam.limasan-limasan.export-pdf');
+
+         Route::get('/boq/flexideckseam/atap-kombinasi/limasan-trapesium', [FlexideckseamKombinasiController::class, 'limasanTrapesium'])
+    ->name('boq.flexideckseam.limasan-trapesium');
+Route::post('/boq/flexideckseam/atap-kombinasi/limasan-trapesium/hitung', [FlexideckseamKombinasiController::class, 'hitungLimasanTrapesium'])
+    ->name('boq.flexideckseam.limasan-trapesium.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/limasan-trapesium/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfLimasanTrapesium'])
+    ->name('boq.flexideckseam.limasan-trapesium.export-pdf');
+
+            Route::get('/boq/flexideckseam/atap-kombinasi/limasan-x', [FlexideckseamKombinasiController::class, 'limasanX'])
+    ->name('boq.flexideckseam.limasan-x');
+Route::post('/boq/flexideckseam/atap-kombinasi/limasan-x/hitung', [FlexideckseamKombinasiController::class, 'hitungLimasanX'])
+    ->name('boq.flexideckseam.limasan-x.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/limasan-x/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfLimasanX'])
+    ->name('boq.flexideckseam.limasan-x.export-pdf');
+
+             Route::get('/boq/flexideckseam/atap-kombinasi/pelana-2-kemiringan', [FlexideckseamKombinasiController::class, 'pelana2Kemiringan'])
+    ->name('boq.flexideckseam.pelana-2-kemiringan');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-2-kemiringan/hitung', [FlexideckseamKombinasiController::class, 'hitungPelana2Kemiringan'])
+    ->name('boq.flexideckseam.pelana-2-kemiringan.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-2-kemiringan/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfPelana2Kemiringan'])
+    ->name('boq.flexideckseam.pelana-2-kemiringan.export-pdf');
+
+            Route::get('/boq/flexideckseam/atap-kombinasi/pelana-2-sisi', [FlexideckseamKombinasiController::class, 'pelana2Sisi'])
+    ->name('boq.flexideckseam.pelana-2-sisi');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-2-sisi/hitung', [FlexideckseamKombinasiController::class, 'hitungPelana2Sisi'])
+    ->name('boq.flexideckseam.pelana-2-sisi.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-2-sisi/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfPelana2Sisi'])
+    ->name('boq.flexideckseam.pelana-2-sisi.export-pdf');
+
+        Route::get('/boq/flexideckseam/atap-kombinasi/pelana-2trapesium', [FlexideckseamKombinasiController::class, 'pelana2Trapesium'])
+    ->name('boq.flexideckseam.pelana-2trapesium');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-2trapesium/hitung', [FlexideckseamKombinasiController::class, 'hitungPelana2Trapesium'])
+    ->name('boq.flexideckseam.pelana-2trapesium.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-2trapesium/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfPelana2Trapesium'])
+    ->name('boq.flexideckseam.pelana-2trapesium.export-pdf');
+
+         Route::get('/boq/flexideckseam/atap-kombinasi/pelana-3-arah', [FlexideckseamKombinasiController::class, 'pelana3Arah'])
+    ->name('boq.flexideckseam.pelana-3-arah');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-3-arah/hitung', [FlexideckseamKombinasiController::class, 'hitungPelana3Arah'])
+    ->name('boq.flexideckseam.pelana-3-arah.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-3-arah/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfPelana3Arah'])
+    ->name('boq.flexideckseam.pelana-3-arah.export-pdf');
+
+         Route::get('/boq/flexideckseam/atap-kombinasi/pelana-dinding', [FlexideckseamKombinasiController::class, 'pelanaDinding'])
+    ->name('boq.flexideckseam.pelana-x');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-dinding/hitung', [FlexideckseamKombinasiController::class, 'hitungPelanaDinding'])
+    ->name('boq.flexideckseam.pelana-dinding.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-dinding/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfPelanaDinding'])
+    ->name('boq.flexideckseam.pelana-dinding.export-pdf');
+
+         Route::get('/boq/flexideckseam/atap-kombinasi/pelana-x', [FlexideckseamKombinasiController::class, 'pelanaX'])
+    ->name('boq.flexideckseam.pelana-x');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-x/hitung', [FlexideckseamKombinasiController::class, 'hitungPelanaX'])
+    ->name('boq.flexideckseam.pelana-x.hitung');
+Route::post('/boq/flexideckseam/atap-kombinasi/pelana-x/export-pdf', [FlexideckseamKombinasiController::class, 'exportPdfPelanaX'])
+    ->name('boq.flexideckseam.pelana-x.export-pdf');
+
 // ==================== JENDELA ====================
 
 // Halaman utama jendela

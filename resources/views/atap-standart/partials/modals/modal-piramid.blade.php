@@ -308,6 +308,7 @@ function lanjutPiramid() {
         'master-roof': '/boq/masterroof/piramid',  // <-- INI DITAMBAH
         'maha-roof': '/boq/maharoof/piramid',  // <-- INI DITAMBAH
         'mahaspan-roof': '/boq/mahaspanroof/piramid',  // <-- INI DITAMBAH
+        'flexideck-seam': '/boq/flexideckseam/piramid',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

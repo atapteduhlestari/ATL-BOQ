@@ -292,6 +292,7 @@ function lanjutKeBOQKerucut() {
         'master-roof': '/boq/masterroof/kerucut',  // <-- INI DITAMBAH
         'maha-roof': '/boq/maharoof/kerucut',  // <-- INI DITAMBAH
         'mahaspan-roof': '/boq/mahaspanroof/kerucut',  // <-- INI DITAMBAH
+        'flexideck-seam': '/boq/flexideckseam/kerucut',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

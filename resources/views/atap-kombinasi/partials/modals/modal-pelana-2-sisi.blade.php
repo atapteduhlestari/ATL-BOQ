@@ -362,6 +362,7 @@ function lanjutKeBOQPelana2Sisi() {
         'master-roof': '/boq/masterroof/atap-kombinasi/pelana-2-sisi',  // <-- TAMBAHKAN
         'maha-roof': '/boq/maharoof/atap-kombinasi/pelana-2-sisi',  // <-- TAMBAHKAN
         'mahaspan-roof': '/boq/mahaspanroof/atap-kombinasi/pelana-2-sisi',  // <-- TAMBAHKAN
+        'flexideck-seam': '/boq/flexideckseam/atap-kombinasi/pelana-2-sisi',  // <-- TAMBAHKAN
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-2-sisi';

@@ -270,6 +270,7 @@ function lanjutKeBOQDome() {
         'master-roof': '/boq/masterroof/dome',  // <-- INI DITAMBAH
         'maha-roof': '/boq/maharoof/dome',  // <-- INI DITAMBAH
         'mahaspan-roof': '/boq/mahaspanroof/dome',  // <-- INI DITAMBAH
+        'flexideck-seam': '/boq/flexideckseam/dome',  // <-- INI DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

@@ -378,6 +378,7 @@ function lanjutKeBOQPelanaX() {
         'master-roof': '/boq/masterroof/atap-kombinasi/pelana-x',
         'maha-roof': '/boq/maharoof/atap-kombinasi/pelana-x',
         'mahaspan-roof': '/boq/mahaspanroof/atap-kombinasi/pelana-x',
+        'flexideck-seam': '/boq/flexideckseam/atap-kombinasi/pelana-x',
     };
     
     let baseUrl = controllerMap[brandSlug] || '/boq/atap-kombinasi/pelana-x';

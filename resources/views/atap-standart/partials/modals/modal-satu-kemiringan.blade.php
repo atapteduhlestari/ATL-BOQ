@@ -311,6 +311,7 @@ function lanjutKeBOQSatu() {
         'master-roof': '/boq/masterroof/satu-kemiringan',  // <-- INI DITAMBAH
         'maha-roof': '/boq/maharoof/satu-kemiringan',  // <-- INIx DITAMBAH
         'mahaspan-roof': '/boq/mahaspanroof/satu-kemiringan',  // <-- INIx DITAMBAH
+        'flexideck-seam': '/boq/flexideckseam/satu-kemiringan',  // <-- INIx DITAMBAH
     };
     
     let url = controllerMap[brandSlug] || `/boq/${brandSlug}`;

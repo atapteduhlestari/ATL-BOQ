@@ -617,13 +617,12 @@
                     <span class="label">Lantai Kerja</span>
                     <span class="value">
                         <select id="lantai_kerja">
-                            <option value="Plywood 9 mm" selected>Plywood 9 mm</option>
-                            <option value="Plywood 12 mm">Plywood 12 mm</option>
-                            <option value="Plywood 15 mm">Plywood 15 mm</option>
-                            <option value="GRC 9 mm">GRC 9 mm</option>
-                            <option value="GRC 12 mm">GRC 12 mm</option>
-                            <option value="GRC 15 mm">GRC 15 mm</option>
-                            <option value="Beton">Beton</option>
+                           <option value="">Pilih Lantai Kerja</option>
+                            @foreach($lantaiKerjaOptions as $lantaiKerja)
+                                <option value="{{ $lantaiKerja->id }}">{{ $lantaiKerja->nama_produk }}</option>
+                            @endforeach
+
+
                         </select>
                     </span>
                 </div>
@@ -682,10 +681,8 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h4 class="text-sm font-semibold text-white">Total Keseluruhan</h4>
-                <p class="text-gray-200 text-[10px]">TAPE ROOF Dome (termasuk waste)</p>
             </div>
             <div class="text-right">
-                <p class="label">Grand Total</p>
                 <p class="amount" id="totalKeseluruhan">Rp 0</p>
             </div>
         </div>
@@ -787,9 +784,9 @@
             'Sistem Pendukung': []
         };
 
-        const aksesorisAreas = ['Starter', 'Metal Flashing', 'Paku & Screw'];
+        const aksesorisAreas = ['Starter', 'Metal Flashing'];
         const additionalAreas = ['Wall Flashing', 'Cerobong Asap', 'Penangkal Petir'];
-        const systemAreas = ['Lantai Kerja', 'Underlayer', 'Screw Plywood'];
+        const systemAreas = ['Lantai Kerja', 'Underlayer', 'Paku & Screw'];
 
         results.forEach(item => {
             const area = item.area || '';
@@ -861,7 +858,7 @@
             flashing: document.getElementById('panjang_flashing')?.value || 0,
             waste: document.getElementById('waste')?.value || 5,
             rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-            lantai_kerja: document.getElementById('lantai_kerja')?.value || 'Plywood 9 mm',
+            lantai_kerja: document.getElementById('lantai_kerja')?.selectedOptions[0]?.text || 'Plywood 9 mm',
             grand_total: document.getElementById('grandTotal')?.innerText || 'Rp 0',
             opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
             opsi_cerobong: document.getElementById('opsi_cerobong')?.value || 0,
