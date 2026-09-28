@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AtapStandarController;
 use App\Http\Controllers\AtapKombinasiController;
@@ -35,6 +35,7 @@ use App\Http\Controllers\DindingController;
 use App\Http\Controllers\WaterproofingController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('welcome');
+
 // Route untuk halaman atap standar
 Route::get('/atap-standar', [AtapStandarController::class, 'index'])->name('atap-standar.index');
 
