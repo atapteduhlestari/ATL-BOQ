@@ -455,20 +455,7 @@
 </style>
 
 <div class="space-y-6">
-    <!-- Header -->
-    <div class="header-brand">
-        <div class="flex items-center justify-between relative z-10">
-            <div class="flex items-center gap-4">
-                <div class="brand-icon bouven">B</div>
-                <div>
-                    <div class="brand-name">BOQ - Jendela Jungkit 2 Bouven</div>
-                    <div class="brand-sub">Hitung kebutuhan material jendela jungkit 2 bouven</div>
-                </div>
-            </div>
-            <div class="brand-badge">JUNGKIT 2 BOUVEN</div>
-        </div>
-    </div>
-
+  
     <!-- Notes / Pemberitahuan -->
     <div class="notes-container">
         <div class="notes-title">

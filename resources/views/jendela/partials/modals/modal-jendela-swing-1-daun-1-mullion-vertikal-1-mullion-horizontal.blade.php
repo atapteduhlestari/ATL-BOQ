@@ -111,7 +111,7 @@
                         
                         <div style="margin-bottom: 10px;">
                             <label class="input-label">Tinggi (cm) <span style="color:red;">*</span></label>
-                            <input type="number" class="input-field" name="tinggi" id="inputTinggi_Cross2" placeholder="Contoh: 120" required min="1" oninput="hitungSwing_Cross2()">
+                            <input type="number" class="input-field" name="panjang" id="inputTinggi_Cross2" placeholder="Contoh: 120" required min="1" oninput="hitungSwing_Cross2()">
                         </div>
 
                         <div style="margin-bottom: 10px;">

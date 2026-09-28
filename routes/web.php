@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AtapStandarController;
 use App\Http\Controllers\AtapKombinasiController;
 use App\Http\Controllers\IkoAtapController;
@@ -32,6 +33,8 @@ use App\Http\Controllers\JendelaController;
 use App\Http\Controllers\PintuController;
 use App\Http\Controllers\DindingController;
 use App\Http\Controllers\WaterproofingController;
+
+Route::get('/', [DashboardController::class, 'index'])->name('welcome');
 // Route untuk halaman atap standar
 Route::get('/atap-standar', [AtapStandarController::class, 'index'])->name('atap-standar.index');
 
@@ -1164,3 +1167,40 @@ Route::prefix('waterproofing')->group(function () {
     Route::post('/hitung', [WaterproofingController::class, 'hitung'])->name('waterproofing.hitung');
     Route::post('/export-pdf', [WaterproofingController::class, 'exportPdf'])->name('waterproofing.export-pdf');
 });
+
+// Route baru per brand
+Route::get('/waterproofing/boq/duo', [WaterproofingController::class, 'boqDuo'])
+    ->name('waterproofing.boq.duo');
+
+Route::post('/waterproofing/duo/hitung', [WaterproofingController::class, 'hitungDuo'])
+    ->name('waterproofing.duo.hitung');
+
+Route::post('/waterproofing/duo/export-pdf', [WaterproofingController::class, 'exportPdfDuo'])
+    ->name('waterproofing.duo.export-pdf');
+// Soprasun
+Route::get('/waterproofing/boq/soprasun', [WaterproofingController::class, 'boqSoprasun'])
+    ->name('waterproofing.boq.soprasun');
+
+Route::post('/waterproofing/soprasun/hitung', [WaterproofingController::class, 'hitungSoprasun'])
+    ->name('waterproofing.soprasun.hitung');
+
+Route::post('/waterproofing/soprasun/export-pdf', [WaterproofingController::class, 'exportPdfSoprasun'])
+    ->name('waterproofing.soprasun.export-pdf');
+    // Polygum
+Route::get('/waterproofing/boq/polygum', [WaterproofingController::class, 'boqPolygum'])
+    ->name('waterproofing.boq.polygum');
+
+Route::post('/waterproofing/polygum/hitung', [WaterproofingController::class, 'hitungPolygum'])
+    ->name('waterproofing.polygum.hitung');
+
+Route::post('/waterproofing/polygum/export-pdf', [WaterproofingController::class, 'exportPdfPolygum'])
+    ->name('waterproofing.polygum.export-pdf');
+// Sagitta
+Route::get('/waterproofing/boq/sagitta', [WaterproofingController::class, 'boqSagitta'])
+    ->name('waterproofing.boq.sagitta');
+
+    Route::post('/waterproofing/sagitta/hitung', [WaterproofingController::class, 'hitungSagitta'])
+    ->name('waterproofing.sagitta.hitung');
+
+Route::post('/waterproofing/sagitta/export-pdf', [WaterproofingController::class, 'exportPdfSagitta'])
+    ->name('waterproofing.sagitta.export-pdf');

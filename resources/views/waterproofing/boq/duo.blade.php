@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -147,6 +146,12 @@
         color: #1a3a5c;
     }
     
+    .group-header-upstand {
+        background: #f5ede8;
+        border-left-color: #e67e22;
+        color: #5c3a1a;
+    }
+    
     .group-header-aksesoris {
         background: #e8f5ed;
         border-left-color: #38a169;
@@ -255,14 +260,6 @@
         box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
     }
 
-    .info-note {
-        font-size: 10px;
-        color: #94a3b8;
-        margin-top: 6px;
-        padding-left: 24px;
-        font-style: italic;
-    }
-
     .hidden { display: none !important; }
     .flex { display: flex; }
     .items-center { align-items: center; }
@@ -301,22 +298,21 @@
 </style>
 
 <div class="space-y-6">
-   
 
     <!-- Data Perhitungan -->
     <div class="section-card">
         <div class="section-header">
             <div>
                 <h3 class="section-title">Data Perhitungan</h3>
-                <p class="section-subtitle">Data luas dinding dari perhitungan sebelumnya</p>
+                <p class="section-subtitle">Data dari perhitungan sebelumnya</p>
             </div>
         </div>
         <div class="section-body">
             <div class="data-geometrik">
                 <div class="row">
-                    <span class="label">Luas Dinding</span>
+                    <span class="label">Luas Area</span>
                     <span class="value">
-                        <input type="text" value="{{ number_format($luasDinding, 2) }}" readonly>
+                        <input type="text" value="{{ number_format($luas, 2) }}" readonly>
                         <span class="unit">m²</span>
                     </span>
                 </div>
@@ -327,31 +323,49 @@
                         <span class="unit">%</span>
                     </span>
                 </div>
+                <div class="row">
+                    <span class="label">Panjang Perimeter</span>
+                    <span class="value">
+                        <input type="text" value="{{ number_format($panjangPerimeter, 2) }}" readonly>
+                        <span class="unit">m</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Tinggi Perimeter</span>
+                    <span class="value">
+                        <input type="text" value="{{ number_format($tinggiPerimeter, 2) }}" readonly>
+                        <span class="unit">cm</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Sudut Kemiringan</span>
+                    <span class="value">
+                        <input type="text" value="{{ number_format($sudut, 2) }}" readonly>
+                        <span class="unit">°</span>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Pilih Produk Insulasi -->
+    <!-- Pilih Produk & Hitung -->
     <div class="section-card">
         <div class="section-header">
             <div>
-                <h3 class="section-title">Pilih Produk Insulasi</h3>
-                <p class="section-subtitle">Pilih produk insulasi yang akan digunakan</p>
+                <h3 class="section-title">Pilih Produk & Hitung Material</h3>
+                <p class="section-subtitle">Pilih produk waterproofing Duo yang akan digunakan</p>
             </div>
         </div>
         <div class="section-body">
             <div class="pilih-material">
                 <div class="row">
-                    <span class="label">Produk Insulasi</span>
+                    <span class="label">Produk Waterproofing</span>
                     <span class="value">
-                        <select id="produk_insulasi" onchange="hitungMaterial()">
+                        <select id="produk_waterproofing" onchange="hitungMaterial()">
                             <option value="">Pilih Produk</option>
-                            @foreach($productsInsulasi as $product)
-                                <option value="{{ $product->id }}" {{ $selectedProductId == $product->id ? 'selected' : '' }}>
+                            @foreach($products as $product)
+                                <option value="{{ $product->id }}">
                                     {{ $product->nama_produk }}
-                                    @if(isset($product->tebal) && $product->tebal)
-                                        ({{ $product->tebal }} mm)
-                                    @endif
                                 </option>
                             @endforeach
                         </select>
@@ -359,38 +373,31 @@
                 </div>
             </div>
             
-            <div class="info-note">
-                ⓘ Angka 30, 40, 50, 60 menunjukkan ketebalan insulasi dalam milimeter (mm)
-            </div>
-        </div>
-    </div>
-
-    <!-- Rincian Material -->
-    <div class="section-card">
-        <div class="section-header">
-            <div>
-                <h3 class="section-title">Rincian Material</h3>
-                <p class="section-subtitle">Hasil perhitungan material dinding insulasi</p>
-            </div>
-        </div>
-        <div class="section-body">
+            <button onclick="hitungMaterial()" class="btn-primary" style="margin-top:16px;">
+                Hitung Material
+            </button>
+            
             <div id="hasilMaterial" class="mt-4">
-                <div id="tableMaterial"></div>
+                <div class="border-t pt-4">
+                    <h4 class="text-xs font-semibold text-gray-700 mb-2">Rincian Material</h4>
+                    <div id="tableMaterial"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Export PDF -->
     <div class="total-box">
-        <form action="{{ route('dinding.export-pdf') }}" method="POST" target="_blank">
+        <form action="{{ route('waterproofing.duo.export-pdf') }}" method="POST" target="_blank">
             @csrf
-            <input type="hidden" name="judul" value="BOQ - Dinding Insulasi">
-            <input type="hidden" name="jenis" value="Insulasi">
-            <input type="hidden" name="luas_dinding" id="pdf_luas_dinding" value="{{ $luasDinding }}">
-            <input type="hidden" name="waste" id="pdf_waste" value="{{ $waste }}">
-            <input type="hidden" name="produk_insulasi" id="pdf_produk_insulasi" value="{{ $selectedProductId ?? '' }}">
+            <input type="hidden" name="luas" value="{{ $luas }}">
+            <input type="hidden" name="waste" value="{{ $waste }}">
+            <input type="hidden" name="panjang_perimeter" value="{{ $panjangPerimeter }}">
+            <input type="hidden" name="tinggi_perimeter" value="{{ $tinggiPerimeter }}">
+            <input type="hidden" name="sudut" value="{{ $sudut }}">
+            <input type="hidden" name="brand_id" value="{{ $brandId }}">
+            <input type="hidden" name="produk_id" id="pdf_produk_id">
             <input type="hidden" name="hasil" id="pdf_hasil">
-            <input type="hidden" name="grand_total" id="pdf_grand_total">
             <button type="submit" class="btn-pdf">Export PDF</button>
         </form>
     </div>
@@ -400,26 +407,32 @@
 let results = [];
 
 window.onload = function() {
-    hitungMaterial();
+    results = @json($results ?? []);
+    if (results && results.length > 0) {
+        renderTable(results);
+    }
+    updatePdfData();
 };
 
 function hitungMaterial() {
-    let luasDinding = parseFloat({{ $luasDinding }}) || 0;
-    let waste = parseFloat({{ $waste }}) || 5;
-    let produkInsulasi = document.getElementById('produk_insulasi').value;
-
-    if (!produkInsulasi) {
-        document.getElementById('tableMaterial').innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;font-size:13px;">Silakan pilih produk insulasi terlebih dahulu</div>';
+    let produkId = document.getElementById('produk_waterproofing').value;
+    
+    if (!produkId) {
+        alert('Pilih produk waterproofing terlebih dahulu!');
         return;
     }
 
     let data = {
-        luas_dinding: luasDinding,
-        waste: waste,
-        produk_insulasi: produkInsulasi
+        luas: {{ $luas }},
+        waste: {{ $waste }},
+        panjang_perimeter: {{ $panjangPerimeter }},
+        tinggi_perimeter: {{ $tinggiPerimeter }},
+        sudut: {{ $sudut }},
+        brand_id: {{ $brandId ?? 'null' }},
+        produk_id: produkId
     };
 
-    fetch('{{ route("dinding.hitung-insulasi") }}', {
+    fetch('{{ route("waterproofing.duo.hitung") }}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -427,7 +440,7 @@ function hitungMaterial() {
         },
         body: JSON.stringify(data)
     })
-    .then(res => res.json())
+    .then(response => response.json())
     .then(data => {
         if (data.success) {
             results = data.results;
@@ -444,27 +457,42 @@ function renderTable(results) {
     // Kelompokkan berdasarkan area
     let kelompok = {
         'Area Utama': [],
+        'Upstand': [],
         'Aksesoris': []
     };
 
+    // Area yang termasuk Upstand (pertemuan dengan dinding/vertikal)
+    const upstandAreas = ['Upstand', 'Wall Flashing', 'Dinding', 'Perimeter', 'Cerobong Asap', 'Penangkal Petir'];
+    
+    // Area yang termasuk Aksesoris — PELAPIS DASAR DITAMBAHKAN DI SINI
     const aksesorisAreas = [
-        'Pelapis Dasar',
-        'Paku & Screw',
-        'Lem',
-        'Penjepit',
+        'Pelapis Dasar',   // ← tambahan
         'Lapisan',
-        'Aksesoris'
+        'Paku & Screw', 
+        'Lem', 
+        'Penjepit', 
+      
     ];
 
     results.forEach(item => {
         const area = (item.area || '').toLowerCase();
         let matched = false;
         
-        for (let a of aksesorisAreas) {
+        for (let a of upstandAreas) {
             if (area.includes(a.toLowerCase())) {
-                kelompok['Aksesoris'].push(item);
+                kelompok['Upstand'].push(item);
                 matched = true;
                 break;
+            }
+        }
+        
+        if (!matched) {
+            for (let a of aksesorisAreas) {
+                if (area.includes(a.toLowerCase())) {
+                    kelompok['Aksesoris'].push(item);
+                    matched = true;
+                    break;
+                }
             }
         }
         
@@ -477,6 +505,7 @@ function renderTable(results) {
 
     const groupConfig = [
         { key: 'Area Utama', label: 'AREA UTAMA', cls: 'group-header-utama' },
+        { key: 'Upstand', label: 'UPSTAND', cls: 'group-header-upstand' },
         { key: 'Aksesoris', label: 'AKSESORIS', cls: 'group-header-aksesoris' }
     ];
 
@@ -515,9 +544,9 @@ function renderTable(results) {
 }
 
 function updatePdfData() {
-    document.getElementById('pdf_produk_insulasi').value = document.getElementById('produk_insulasi').value;
+    let produkSelect = document.getElementById('produk_waterproofing');
+    document.getElementById('pdf_produk_id').value = produkSelect ? produkSelect.value : '';
     document.getElementById('pdf_hasil').value = JSON.stringify(results);
-    document.getElementById('pdf_grand_total').value = '';
 }
 </script>
 @endsection

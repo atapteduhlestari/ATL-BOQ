@@ -82,7 +82,7 @@
                         
                         <div style="margin-bottom: 10px;">
                             <label class="input-label">Tinggi (cm) <span style="color:red;">*</span></label>
-                            <input type="number" class="input-field" name="tinggi" id="inputTinggi" placeholder="Contoh: 120" required min="1" oninput="updateJendela()">
+                            <input type="number" class="input-field" name="panjang" id="inputTinggi" placeholder="Contoh: 120" required min="1" oninput="updateJendela()">
                         </div>
 
                         <div style="margin-bottom: 10px;">
@@ -167,17 +167,6 @@ function updateJendela() {
     daun.style.position = 'absolute';
     daun.style.top = gap + 'px';
     daun.style.left = gap + 'px';
-    
-    // Update label ukuran di dalam kaca (SEPERTI ASLI)
-    let label = document.getElementById('labelUkuran');
-    label.textContent = tinggi + ' × ' + lebar + ' cm';
-    let fontSize = Math.max(8, Math.min(14, Math.min(displayWidth, displayHeight) * 0.06));
-    label.style.fontSize = fontSize + 'px';
-    
-    // Update display info
-    document.getElementById('displayTinggi').textContent = tinggi;
-    document.getElementById('displayLebar').textContent = lebar;
-    document.getElementById('displayJumlah').textContent = jumlah;
 
     // ===== TAMBAHAN UNTUK RESPONSIVE MOBILE =====
     let screenWidth = window.innerWidth;
@@ -185,25 +174,17 @@ function updateJendela() {
     let angkaLebar = document.getElementById('angkaLebar');
 
     if (screenWidth < 480) {
-        // Layar HP: geser label tinggi agar tidak keluar layar
         tinggiWrapper.style.left = '-35px';
         tinggiWrapper.style.fontSize = '9px';
         tinggiWrapper.style.gap = '2px';
         document.getElementById('angkaTinggi').style.fontSize = '11px';
-        
-        // Perkecil font di dalam kaca
-        document.getElementById('labelUkuran').style.fontSize = '8px';
-        
-        // Geser angka lebar LEBIH DEKAT ke kusen agar tidak kepotong layar
         angkaLebar.style.bottom = '-20px'; 
         angkaLebar.style.fontSize = '11px';
     } else {
-        // Layar desktop: kembali ke posisi semula
         tinggiWrapper.style.left = '-75px';
         tinggiWrapper.style.fontSize = '11px';
         tinggiWrapper.style.gap = '4px';
         document.getElementById('angkaTinggi').style.fontSize = '13px';
-        document.getElementById('labelUkuran').style.fontSize = '12px';
         angkaLebar.style.bottom = '-55px';
         angkaLebar.style.fontSize = '13px';
     }

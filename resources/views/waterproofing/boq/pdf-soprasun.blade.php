@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOQ - Dinding Eksterior</title>
+    <title>BOQ - Waterproofing Soprasun</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -266,6 +266,12 @@
             border-left: 3px solid #0f3460;
         }
         
+        .group-title-upstand {
+            background: #f5ede8;
+            color: #5c3a1a;
+            border-left: 3px solid #e67e22;
+        }
+        
         .group-title-aksesoris {
             background: #e8f5ed;
             color: #1a5c3a;
@@ -444,22 +450,25 @@
     }
     
     // ===== AMBIL DATA GEOMETRIK =====
-    $luasDinding = $data['luas_dinding'] ?? 0;
+    $luas = $data['luas'] ?? 0;
     $waste = $data['waste'] ?? 5;
-    $rangka = $data['rangka'] ?? 'Baja Ringan';
-    $jenis = $data['jenis'] ?? 'Eksterior';
+    $panjangPerimeter = $data['panjang_perimeter'] ?? 0;
+    $tinggiPerimeter = $data['tinggi_perimeter'] ?? 0;
+    $sudut = $data['sudut'] ?? 0;
     
     // ===== AMBIL RESULTS =====
-    $results = $data['hasil'] ?? $data['results'] ?? [];
+    $results = $data['hasil'] ?? [];
     
     // ===== KELOMPOKKAN HASIL =====
     $kelompok = [
         'Area Utama' => ['label' => 'AREA UTAMA', 'cls' => 'group-title-utama', 'items' => []],
+        'Upstand'    => ['label' => 'UPSTAND', 'cls' => 'group-title-upstand', 'items' => []],
         'Aksesoris'  => ['label' => 'AKSESORIS', 'cls' => 'group-title-aksesoris', 'items' => []],
     ];
     
     // Daftar area untuk grouping
-    $aksesorisAreas = ['pelapis dasar', 'pelapis dinding','paku & screw', 'screw', 'lem', 'penjepit', 'lapisan', 'cat', 'jaring', 'join dinding'];
+    $upstandAreas = ['upstand', 'wall flashing', 'dinding', 'perimeter', 'cerobong asap', 'penangkal petir'];
+    $aksesorisAreas = ['pelapis dasar', 'starter', 'tape roof', 'jurai', 'nok', 'metal flashing', 'paku', 'screw', 'sealant', 'filler', 'insulasi', 'aksesoris'];
     
     if (is_array($results) && count($results) > 0) {
         foreach ($results as $item) {
@@ -479,11 +488,21 @@
             
             // Logika grouping
             $matched = false;
-            foreach ($aksesorisAreas as $a) {
-                if (strpos($areaLower, $a) !== false) {
-                    $kelompok['Aksesoris']['items'][] = $itemData;
+            foreach ($upstandAreas as $u) {
+                if (strpos($areaLower, $u) !== false) {
+                    $kelompok['Upstand']['items'][] = $itemData;
                     $matched = true;
                     break;
+                }
+            }
+            
+            if (!$matched) {
+                foreach ($aksesorisAreas as $a) {
+                    if (strpos($areaLower, $a) !== false) {
+                        $kelompok['Aksesoris']['items'][] = $itemData;
+                        $matched = true;
+                        break;
+                    }
                 }
             }
             
@@ -528,7 +547,7 @@
 
     <div class="title-section">
         <h1>BILL OF QUANTITY</h1>
-        <p>{{ $data['judul'] ?? 'Dinding Eksterior' }}</p>
+        <p>{{ $data['judul'] ?? 'Waterproofing Soprasun' }}</p>
         
         <div class="nomor-boq-wrapper">
             <span class="nomor-boq" id="nomorBoqText">
@@ -542,25 +561,29 @@
 
     <!-- ===== DATA PERHITUNGAN ===== -->
     <div class="section-title">
-        DATA PERHITUNGAN DINDING
+        DATA PERHITUNGAN WATERPROOFING
     </div>
     
     <div class="info-list">
         <div class="info-item">
-            <span class="info-label">Luas Dinding</span>
-            <span class="info-value">{{ number_format((float)$luasDinding, 2) }} m²</span>
+            <span class="info-label">Luas Area</span>
+            <span class="info-value">{{ number_format((float)$luas, 2) }} m²</span>
         </div>
         <div class="info-item">
             <span class="info-label">Waste</span>
             <span class="info-value">{{ $waste }}%</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Jenis Rangka</span>
-            <span class="info-value">{{ $rangka }}</span>
+            <span class="info-label">Panjang Perimeter</span>
+            <span class="info-value">{{ number_format((float)$panjangPerimeter, 2) }} m</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Jenis Dinding</span>
-            <span class="info-value">{{ $jenis }}</span>
+            <span class="info-label">Tinggi Perimeter</span>
+            <span class="info-value">{{ number_format((float)$tinggiPerimeter, 2) }} cm</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Sudut Kemiringan</span>
+            <span class="info-value">{{ number_format((float)$sudut, 2) }}°</span>
         </div>
     </div>
 
@@ -615,7 +638,7 @@
     </div>
 
     <div class="footer">
-        <p>Dokumen ini dibuat oleh sistem BOQ Dinding {{ $jenis }} | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
+        <p>Dokumen ini dibuat oleh sistem BOQ Waterproofing Soprasun | Dicetak: {{ date('d/m/Y H:i:s') }}</p>
     </div>
 </div>
 

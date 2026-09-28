@@ -15,19 +15,10 @@
         font-size: 13px !important;
     }
     
-    label {
-        font-size: 11px !important;
-        letter-spacing: 0.3px;
-        font-weight: 500;
-        color: #4a5568;
-    }
-    
     .section-card {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         border: 1px solid #e2e8f0;
-        transition: all 0.2s;
         overflow: hidden;
     }
     
@@ -41,66 +32,38 @@
         padding: 20px;
     }
     
-    .input-field {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        background: white;
-        transition: all 0.2s;
-        font-size: 13px;
-        color: #2d3748;
-    }
-    .input-field:focus {
-        outline: none;
-        border-color: #4299e1;
-        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-    }
-    .input-field:read-only {
-        background: #f7fafc;
-        color: #2d3748;
-        font-weight: 500;
-    }
-    
-    .data-box {
-        background: #f7fafc;
-        border-radius: 8px;
-        padding: 10px 14px;
-        border: 1px solid #edf2f7;
-    }
-    
-    .data-box label {
-        font-size: 9px !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #a0aec0;
-        font-weight: 600;
-        display: block;
-        margin-bottom: 2px;
-    }
-    
-    .data-box .value {
+    .section-title {
         font-size: 14px;
         font-weight: 600;
         color: #2d3748;
     }
     
+    .section-subtitle {
+        font-size: 11px;
+        color: #718096;
+    }
+    
+    .header-main {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        border-radius: 12px;
+        padding: 24px 28px;
+        color: white;
+    }
+    
     .btn-primary {
-        background: #2d3748;
+        background: #0f3460;
         color: white;
         padding: 10px 20px;
         border-radius: 8px;
         font-weight: 500;
         font-size: 13px;
         border: none;
-        transition: all 0.2s;
         cursor: pointer;
         width: 100%;
+        transition: all 0.2s;
     }
     .btn-primary:hover {
-        background: #1a202c;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(45, 55, 72, 0.2);
+        background: #1a1a2e;
     }
     
     .btn-pdf {
@@ -111,14 +74,12 @@
         font-weight: 500;
         font-size: 13px;
         border: none;
-        transition: all 0.2s;
         cursor: pointer;
         width: 100%;
+        transition: all 0.2s;
     }
     .btn-pdf:hover {
         background: #c53030;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(229, 62, 62, 0.2);
     }
     
     .table-container {
@@ -156,64 +117,188 @@
         border-bottom: none;
     }
     
-    .badge-area {
-        display: inline-block;
-        padding: 2px 10px;
-        border-radius: 12px;
-        font-size: 10px;
-        font-weight: 500;
-        background: #edf2f7;
-        color: #4a5568;
+    .table-container tr:hover {
+        background: #f7fafc;
     }
     
     .total-box {
-        background: #2d3748;
+        background: #1a1a2e;
         border-radius: 12px;
         padding: 20px 24px;
         color: white;
     }
-    
-    .total-box .label {
+
+    /* ===== GROUP HEADER (pemisah 3 bagian) ===== */
+    .group-header {
         font-size: 12px;
-        color: #a0aec0;
-        font-weight: 400;
-    }
-    
-    .total-box .amount {
-        font-size: 28px;
-        font-weight: 700;
-        color: white;
-    }
-    
-    .header-main {
-        background: linear-gradient(135deg, #2d3748, #1a202c);
-        border-radius: 12px;
-        padding: 24px 28px;
-        color: white;
-    }
-    
-    .section-title {
-        font-size: 14px;
         font-weight: 600;
-        color: #2d3748;
+        padding: 8px 12px;
+        margin: 12px 0 4px 0;
+        border-radius: 4px;
+        background: #f1f4f9;
+        color: #1a1a2e;
+        border-left: 3px solid #1a1a2e;
     }
     
-    .section-subtitle {
-        font-size: 11px;
-        color: #718096;
+    .group-header-utama {
+        background: #e8edf5;
+        border-left-color: #0f3460;
+        color: #1a3a5c;
+    }
+    
+    .group-header-upstand {
+        background: #f5ede8;
+        border-left-color: #e67e22;
+        color: #5c3a1a;
+    }
+    
+    .group-header-aksesoris {
+        background: #e8f5ed;
+        border-left-color: #38a169;
+        color: #1a5c3a;
     }
 
-    .badge-section {
-        background: #edf2f7;
+    /* ===== DATA GEOMETRIK ===== */
+    .data-geometrik {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 4px 0;
+    }
+    
+    .data-geometrik .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #f1f4f9;
+    }
+    
+    .data-geometrik .row:last-child {
+        border-bottom: none;
+    }
+    
+    .data-geometrik .row .label {
+        font-size: 12px;
+        font-weight: 500;
         color: #4a5568;
-        padding: 2px 12px;
-        border-radius: 12px;
-        font-size: 10px;
+    }
+    
+    .data-geometrik .row .value {
+        font-size: 12px;
         font-weight: 600;
+        color: #1e293b;
+    }
+    
+    .data-geometrik .row .value .unit {
+        font-weight: 400;
+        color: #94a3b8;
+        margin-left: 2px;
+    }
+    
+    .data-geometrik .row .value input[readonly] {
+        border: none;
+        background: transparent;
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a2e;
+        width: 70px;
+        padding: 0;
+        text-align: right;
+    }
+
+    /* ===== PILIH MATERIAL ===== */
+    .pilih-material {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 4px 0;
+    }
+    
+    .pilih-material .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #f1f4f9;
+    }
+    
+    .pilih-material .row:last-child {
+        border-bottom: none;
+    }
+    
+    .pilih-material .label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #4a5568;
+        min-width: 140px;
+    }
+    
+    .pilih-material .value {
+        font-size: 13px;
+        font-weight: 500;
+        color: #1e293b;
+        flex: 1;
+        text-align: right;
+    }
+    
+    .pilih-material .value select,
+    .pilih-material .value input {
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 4px 12px;
+        font-size: 12px;
+        background: white;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .pilih-material .value select:focus,
+    .pilih-material .value input:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+
+    .hidden { display: none !important; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .mt-1 { margin-top: 4px; }
+    .mt-4 { margin-top: 16px; }
+    .mb-1 { margin-bottom: 4px; }
+    .mb-2 { margin-bottom: 8px; }
+    .border-t { border-top: 1px solid #e2e8f0; }
+    .pt-4 { padding-top: 16px; }
+    .text-right { text-align: right; }
+    .text-xs { font-size: 12px; }
+    .text-xl { font-size: 20px; }
+    .font-semibold { font-weight: 600; }
+    .text-gray-700 { color: #374151; }
+    .text-gray-400 { color: #9ca3af; }
+    .space-y-6 > * + * { margin-top: 24px; }
+
+    @media (max-width: 768px) {
+        .pilih-material .row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+        .pilih-material .value {
+            text-align: left;
+            width: 100%;
+        }
+        .pilih-material .value select,
+        .pilih-material .value input {
+            max-width: 100%;
+        }
     }
 </style>
 
 <div class="space-y-6">
+    <!-- Header -->
     <div class="header-main">
         <div class="flex items-center justify-between">
             <div>
@@ -229,35 +314,47 @@
     <!-- Data Perhitungan -->
     <div class="section-card">
         <div class="section-header">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h3 class="section-title">📐 Data Perhitungan</h3>
-                    <p class="section-subtitle">Data dari perhitungan sebelumnya</p>
-                </div>
-                <span class="badge-section">READONLY</span>
+            <div>
+                <h3 class="section-title">Data Perhitungan</h3>
+                <p class="section-subtitle">Data dari perhitungan sebelumnya</p>
             </div>
         </div>
         <div class="section-body">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                <div class="data-box">
-                    <label>Luas Area</label>
-                    <div class="value">{{ number_format($luas, 2) }} m²</div>
+            <div class="data-geometrik">
+                <div class="row">
+                    <span class="label">Luas Area</span>
+                    <span class="value">
+                        <input type="text" value="{{ number_format($luas, 2) }}" readonly>
+                        <span class="unit">m²</span>
+                    </span>
                 </div>
-                <div class="data-box">
-                    <label>Waste</label>
-                    <div class="value">{{ $waste }}%</div>
+                <div class="row">
+                    <span class="label">Waste</span>
+                    <span class="value">
+                        <input type="text" value="{{ $waste }}" readonly>
+                        <span class="unit">%</span>
+                    </span>
                 </div>
-                <div class="data-box">
-                    <label>Panjang Perimeter</label>
-                    <div class="value">{{ number_format($panjangPerimeter, 2) }} m</div>
+                <div class="row">
+                    <span class="label">Panjang Perimeter</span>
+                    <span class="value">
+                        <input type="text" value="{{ number_format($panjangPerimeter, 2) }}" readonly>
+                        <span class="unit">m</span>
+                    </span>
                 </div>
-                <div class="data-box">
-                    <label>Tinggi Perimeter</label>
-                    <div class="value">{{ number_format($tinggiPerimeter, 2) }} m</div>
+                <div class="row">
+                    <span class="label">Tinggi Perimeter</span>
+                    <span class="value">
+                        <input type="text" value="{{ number_format($tinggiPerimeter, 2) }}" readonly>
+                        <span class="unit">m</span>
+                    </span>
                 </div>
-                <div class="data-box">
-                    <label>Sudut Kemiringan</label>
-                    <div class="value">{{ number_format($sudut, 2) }}°</div>
+                <div class="row">
+                    <span class="label">Sudut Kemiringan</span>
+                    <span class="value">
+                        <input type="text" value="{{ number_format($sudut, 2) }}" readonly>
+                        <span class="unit">°</span>
+                    </span>
                 </div>
             </div>
         </div>
@@ -266,68 +363,36 @@
     <!-- Pilih Produk & Hitung -->
     <div class="section-card">
         <div class="section-header">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h3 class="section-title">🏷️ Pilih Produk & Hitung Material</h3>
-                    <p class="section-subtitle">Pilih produk waterproofing yang akan digunakan</p>
-                </div>
-                <span class="badge-section">UTAMA</span>
+            <div>
+                <h3 class="section-title">Pilih Produk & Hitung Material</h3>
+                <p class="section-subtitle">Pilih produk waterproofing yang akan digunakan</p>
             </div>
         </div>
         <div class="section-body">
-            <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-4">
-                <div>
-                    <label class="block text-[10px] font-medium text-gray-500 mb-1.5">Produk Waterproofing</label>
-                    <select id="produk_waterproofing" class="input-field" onchange="hitungMaterial()">
-                        <option value="">Pilih Produk</option>
-                        @foreach($products as $product)
-                            <option value="{{ $product->id }}">
-                                {{ $product->nama_produk }}
-                            </option>
-                        @endforeach
-                    </select>
+            <div class="pilih-material">
+                <div class="row">
+                    <span class="label">Produk Waterproofing</span>
+                    <span class="value">
+                        <select id="produk_waterproofing" onchange="hitungMaterial()">
+                            <option value="">Pilih Produk</option>
+                            @foreach($products as $product)
+                                <option value="{{ $product->id }}">
+                                    {{ $product->nama_produk }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </span>
                 </div>
             </div>
             
-            <button onclick="hitungMaterial()" class="btn-primary">
-                🧱 Hitung Material
+            <button onclick="hitungMaterial()" class="btn-primary" style="margin-top:16px;">
+                Hitung Material
             </button>
             
             <div id="hasilMaterial" class="mt-4">
-                <div class="border-t border-gray-200 pt-4">
+                <div class="border-t pt-4">
                     <h4 class="text-xs font-semibold text-gray-700 mb-2">Rincian Material</h4>
-                    <div class="table-container" id="tableMaterial">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Produk</th>
-                                    <th>Area</th>
-                                    <th style="text-align:right;">Qty</th>
-                                    <th style="text-align:right;">Satuan</th>
-                                    <th style="text-align:right;">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBodyMaterial">
-                                @foreach($results as $item)
-                                <tr>
-                                    <td>{{ $item['nama_produk'] }}</td>
-                                    <td><span class="badge-area">{{ $item['area'] }}</span></td>
-                                    <td style="text-align:right;">{{ $item['qty'] }}</td>
-                                    <td style="text-align:right;">{{ $item['satuan'] }}</td>
-                                    <td style="text-align:right;">Rp {{ number_format($item['total_harga'], 0, ',', '.') }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4" style="text-align:right; font-weight:600;">Grand Total</td>
-                                    <td id="grandTotal" style="text-align:right; font-weight:700; color:#1a1a2e;">
-                                        Rp {{ number_format($grandTotal, 0, ',', '.') }}
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                    <div id="tableMaterial"></div>
                 </div>
             </div>
         </div>
@@ -335,18 +400,7 @@
 
     <!-- Export PDF -->
     <div class="total-box">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <h4 class="text-sm font-semibold text-white">Total Keseluruhan</h4>
-                <p class="text-gray-400 text-[10px]">Waterproofing (termasuk waste)</p>
-            </div>
-            <div class="text-right">
-                <p class="label">Grand Total</p>
-                <p class="amount" id="totalKeseluruhan">Rp {{ number_format($grandTotal, 0, ',', '.') }}</p>
-            </div>
-        </div>
-        
-        <form action="{{ route('waterproofing.export-pdf') }}" method="POST" target="_blank" class="mt-4">
+        <form action="{{ route('waterproofing.export-pdf') }}" method="POST" target="_blank">
             @csrf
             <input type="hidden" name="luas" value="{{ $luas }}">
             <input type="hidden" name="waste" value="{{ $waste }}">
@@ -356,7 +410,7 @@
             <input type="hidden" name="produk_id" id="pdf_produk_id">
             <input type="hidden" name="hasil" id="pdf_hasil">
             <input type="hidden" name="grand_total" id="pdf_grand_total">
-            <button type="submit" class="btn-pdf">📄 Export PDF</button>
+            <button type="submit" class="btn-pdf">Export PDF</button>
         </form>
     </div>
 </div>
@@ -366,6 +420,9 @@ let results = [];
 
 window.onload = function() {
     results = @json($results);
+    if (results && results.length > 0) {
+        renderTable(results);
+    }
     updatePdfData();
 };
 
@@ -406,30 +463,93 @@ function hitungMaterial() {
 }
 
 function renderTable(results) {
-    let tbody = document.getElementById('tableBodyMaterial');
-    let html = '';
-    let total = 0;
+    let container = document.getElementById('tableMaterial');
     
+    // Kelompokkan berdasarkan area
+    let kelompok = {
+        'Area Utama': [],
+        'Upstand': [],
+        'Aksesoris': []
+    };
+
+    // Area yang termasuk Upstand (pertemuan dengan dinding/vertikal)
+    const upstandAreas = ['Upstand', 'Wall Flashing', 'Dinding', 'Perimeter', 'Cerobong Asap', 'Penangkal Petir'];
+    // Area yang termasuk Aksesoris
+    const aksesorisAreas = ['Starter', 'Tape Roof', 'Tape Roof Nok', 'Jurai', 'Nok', 'Nok Tutup', 'Nok 3 Arah', 'Metal Flashing', 'Paku', 'Screw', 'Sealant', 'Filler', 'Insulasi', 'Aksesoris'];
+
     results.forEach(item => {
-        total += item.total_harga;
-        html += `<tr>
-            <td>${item.nama_produk}</td>
-            <td><span class="badge-area">${item.area}</span></td>
-            <td style="text-align:right;">${item.qty}</td>
-            <td style="text-align:right;">${item.satuan}</td>
-            <td style="text-align:right;">Rp ${item.total_harga.toLocaleString()}</td>
-        </tr>`;
+        const area = (item.area || '').toLowerCase();
+        let matched = false;
+        
+        for (let a of upstandAreas) {
+            if (area.includes(a.toLowerCase())) {
+                kelompok['Upstand'].push(item);
+                matched = true;
+                break;
+            }
+        }
+        
+        if (!matched) {
+            for (let a of aksesorisAreas) {
+                if (area.includes(a.toLowerCase())) {
+                    kelompok['Aksesoris'].push(item);
+                    matched = true;
+                    break;
+                }
+            }
+        }
+        
+        if (!matched) {
+            kelompok['Area Utama'].push(item);
+        }
     });
-    
-    tbody.innerHTML = html;
-    document.getElementById('grandTotal').innerHTML = `Rp ${total.toLocaleString()}`;
-    document.getElementById('totalKeseluruhan').innerHTML = `Rp ${total.toLocaleString()}`;
+
+    let html = '';
+
+    const groupConfig = [
+        { key: 'Area Utama', label: 'AREA UTAMA', cls: 'group-header-utama' },
+        { key: 'Upstand', label: 'UPSTAND', cls: 'group-header-upstand' },
+        { key: 'Aksesoris', label: 'AKSESORIS', cls: 'group-header-aksesoris' }
+    ];
+
+    groupConfig.forEach(({ key, label, cls }) => {
+        const items = kelompok[key];
+        if (items.length === 0) return;
+
+        html += `<div class="group-header ${cls}">${label}</div>`;
+        html += `<div class="table-container">`;
+        html += `<table>`;
+        html += `<thead>
+            <tr>
+                <th style="width:8%;text-align:center;">No</th>
+                <th style="width:62%;">Produk</th>
+                <th style="width:15%;text-align:right;">Qty</th>
+                <th style="width:15%;text-align:right;">Satuan</th>
+            </tr>
+        </thead>`;
+        html += `<tbody>`;
+        items.forEach((item, index) => {
+            html += `<tr>
+                <td style="text-align:center;">${index + 1}</td>
+                <td>${item.nama_produk}</td>
+                <td style="text-align:right;">${item.qty}</td>
+                <td style="text-align:right;">${item.satuan}</td>
+            </tr>`;
+        });
+        html += `</tbody></table></div>`;
+    });
+
+    if (html === '') {
+        html = '<div style="text-align:center;padding:30px;color:#94a3b8;font-size:13px;">Belum ada data material</div>';
+    }
+
+    container.innerHTML = html;
 }
 
 function updatePdfData() {
     document.getElementById('pdf_produk_id').value = document.getElementById('produk_waterproofing').value;
     document.getElementById('pdf_hasil').value = JSON.stringify(results);
-    document.getElementById('pdf_grand_total').value = document.getElementById('grandTotal').innerText;
+    document.getElementById('pdf_grand_total').value = '';
 }
 </script>
 @endsection

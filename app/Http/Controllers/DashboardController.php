@@ -8,14 +8,19 @@ use App\Models\Activity;
 
 class DashboardController extends Controller
 {
-    public function index()
+      public function index()
     {
-        $data = [
-            'totalUsers' => User::count(),
-            'totalProducts' => Product::count(),
-            'activities' => Activity::latest()->take(10)->get(),
-        ];
-        
-        return view('pages.dashboard', $data);
+        return view('welcome');
     }
+
+    // public function index()
+    // {
+    //     $data = [
+    //         'totalUsers' => User::count(),
+    //         'totalProducts' => Product::count(),
+    //         'activities' => Activity::latest()->take(10)->get(),
+    //     ];
+        
+    //     return view('pages.dashboard', $data);
+    // }
 }

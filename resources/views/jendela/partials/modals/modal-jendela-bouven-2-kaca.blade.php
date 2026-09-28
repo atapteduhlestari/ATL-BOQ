@@ -86,7 +86,7 @@
                         
                         <div style="margin-bottom: 5px;">
                             <label class="input-label">Tinggi (cm) <span style="color:red;">*</span></label>
-                            <input type="number" class="input-field" name="tinggi" id="inputTinggiBouven2" placeholder="Contoh: 60 (Max 70)" required min="1" oninput="updateBouven2()">
+                            <input type="number" class="input-field" name="panjang" id="inputTinggiBouven2" placeholder="Contoh: 60 (Max 70)" required min="1" oninput="updateBouven2()">
                             <div id="warningTinggiBouven2" style="color:#dc3545;font-size:12px;font-weight:bold;display:none;margin-top:4px;">
                                 ⚠️ Tinggi maksimal 70 cm. Gunakan model Jendela Mati 2 Kaca biasa.
                             </div>

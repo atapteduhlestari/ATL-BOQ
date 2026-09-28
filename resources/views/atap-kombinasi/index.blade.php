@@ -921,25 +921,11 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Langkah 3 -->
-                    <div class="guide-step">
-                        <div class="guide-number">3</div>
-                        <div class="guide-text">
-                            <h4>Pilih Jenis Material</h4>
-                            <p>Pilih material atap yang akan digunakan dari pilihan yang tersedia.</p>
-                            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
-                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">Genteng Metal</span>
-                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">Genteng Keramik</span>
-                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">Asbes Gelombang</span>
-                                <span style="background:#f1f4f9;padding:2px 10px;border-radius:4px;font-size:11px;color:#1a1a2e;">Seng Gelombang</span>
-                            </div>
-                        </div>
-                    </div>
+               
                     
                     <!-- Langkah 4 -->
                     <div class="guide-step">
-                        <div class="guide-number">4</div>
+                        <div class="guide-number">3</div>
                         <div class="guide-text">
                             <h4>Klik Hitung & Lihat Hasil</h4>
                             <p>Klik tombol <span class="highlight">"Hitung"</span> untuk melihat hasil perhitungan kebutuhan material.</p>

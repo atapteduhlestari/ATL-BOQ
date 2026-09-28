@@ -454,20 +454,7 @@
 </style>
 
 <div class="space-y-6">
-    <!-- Header -->
-    <div class="header-brand">
-        <div class="flex items-center justify-between relative z-10">
-            <div class="flex items-center gap-4">
-                <div class="brand-icon jendela">J</div>
-                <div>
-                    <div class="brand-name">BOQ - Jendela Swing 2 Daun (Mullion Vertikal 1 Horizontal)</div>
-                    <div class="brand-sub">Hitung kebutuhan material jendela swing 2 daun dengan mullion vertikal 1 horizontal</div>
-                </div>
-            </div>
-            <div class="brand-badge">JENDELA</div>
-        </div>
-    </div>
-
+  
     <!-- Notes / Pemberitahuan -->
     <div class="notes-container">
         <div class="notes-title">

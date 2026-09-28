@@ -173,7 +173,7 @@
                         
                         <div style="margin-bottom: 10px;">
                             <label class="input-label">Tinggi (cm) <span style="color:red;">*</span></label>
-                            <input type="number" class="input-field" name="tinggi" id="inputTinggi_Jungkit12BouvenUnik" placeholder="Contoh: 60" required min="1" oninput="hitungJungkit_Jungkit12BouvenUnik()">
+                            <input type="number" class="input-field" name="panjang" id="inputTinggi_Jungkit12BouvenUnik" placeholder="Contoh: 60" required min="1" oninput="hitungJungkit_Jungkit12BouvenUnik()">
                             <div id="warningTinggi_Jungkit12BouvenUnik" style="color:#dc3545;font-size:12px;font-weight:bold;display:none;margin-top:4px;">
                                 ⚠️ Tinggi maksimal 70 cm. Gunakan model Jungkit 12 Daun biasa.
                             </div>

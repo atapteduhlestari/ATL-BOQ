@@ -113,7 +113,7 @@
                         
                         <div style="margin-bottom: 10px;">
                             <label class="input-label">Tinggi (cm) <span style="color:red;">*</span></label>
-                            <input type="number" class="input-field" name="tinggi" id="inputTinggiSwing1" placeholder="Contoh: 120" required min="1" oninput="updateSwing1()">
+                            <input type="number" class="input-field" name="panjang" id="inputTinggiSwing1" placeholder="Contoh: 120" required min="1" oninput="updateSwing1()">
                         </div>
 
                         <div style="margin-bottom: 10px;">
