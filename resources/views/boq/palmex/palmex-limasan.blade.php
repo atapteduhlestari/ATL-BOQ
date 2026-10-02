@@ -1393,27 +1393,27 @@
     }
 
     function exportToPDF() {
-        let data = {
-            luas_atap: document.getElementById('luas_atap')?.value || 0,
-            sudut: document.getElementById('sudut')?.value || 0,
-            starter: document.getElementById('panjang_starter')?.value || 0,
-            nok: document.getElementById('panjang_nok')?.value || 0,
-            jurai: document.getElementById('panjang_jurai')?.value || 0,
-            flashing: document.getElementById('panjang_flashing')?.value || 0,
-            waste: document.getElementById('waste')?.value || 5,
-            coverage: document.getElementById('coverage')?.value || 0,
-            produk_atap: document.getElementById('produk_atap_id')?.selectedOptions[0]?.text || '',
-            jurai: document.getElementById('jurai_dropdown')?.selectedOptions[0]?.text || '',
-            nok_atas: document.getElementById('nok_atas_dropdown')?.selectedOptions[0]?.text || '',
-            underlayer: document.getElementById('underlayer_id')?.selectedOptions[0]?.text || '',
-            rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
-            lantai_kerja: document.getElementById('lantai_kerja').selectedOptions[0]?.text || '',
-            sistem_pemasangan: document.getElementById('sistem_pemasangan')?.value || 'expose',
-            grand_total: document.getElementById('grandTotal')?.innerText || 'Rp 0',
-            opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
-            opsi_kaca: document.getElementById('opsi_kaca')?.value || 0,
-            results: results
-        };
+    let data = {
+        luas_atap: document.getElementById('luas_atap')?.value || 0,
+        sudut: document.getElementById('sudut')?.value || 0,
+        starter: document.getElementById('panjang_starter')?.value || 0,
+        nok: document.getElementById('panjang_nok')?.value || 0,
+        jurai: document.getElementById('panjang_jurai')?.value || 0,           // panjang jurai (angka)
+        flashing: document.getElementById('panjang_flashing')?.value || 0,
+        waste: document.getElementById('waste')?.value || 5,
+        coverage: document.getElementById('coverage')?.value || 0,
+        produk_atap: document.getElementById('produk_atap_id')?.selectedOptions[0]?.text || '',
+        jurai_nama: document.getElementById('jurai_dropdown')?.selectedOptions[0]?.text || '',  // nama produk jurai
+        nok_atas: document.getElementById('nok_atas_dropdown')?.selectedOptions[0]?.text || '',
+        underlayer: document.getElementById('underlayer_id')?.selectedOptions[0]?.text || '',
+        rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
+        lantai_kerja: document.getElementById('lantai_kerja').selectedOptions[0]?.text || '',
+        sistem_pemasangan: document.getElementById('sistem_pemasangan')?.value || 'expose',
+        grand_total: document.getElementById('grandTotal')?.innerText || 'Rp 0',
+        opsi_dinding: document.getElementById('opsi_dinding')?.value || 0,
+        opsi_kaca: document.getElementById('opsi_kaca')?.value || 0,
+        results: results
+    };
         
         fetch('{{ route("boq.palmex.export-pdf", ["model" => "limasan"]) }}', {
             method: 'POST',

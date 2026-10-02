@@ -759,7 +759,11 @@ public function lengkung2Sisi(Request $request)
     Log::info('NOK MAPPING LENGKUNG 2 SISI:', $nokMapping);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
     
     Log::info('DATA LENGKUNG 2 SISI MAHAFLAT:', [
         'luasAtap1' => $luasAtap1,
@@ -1424,7 +1428,11 @@ public function limasPelana(Request $request)
     Log::info('NOK MAPPING LIMAS PELANA:', $nokMapping);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+     $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
     
     Log::info('DATA LIMAS PELANA MAHAFLAT:', [
         'luasAtap1' => $luasAtap1,
@@ -2138,8 +2146,12 @@ public function limasanLimasan(Request $request)
     Log::info('NOK MAPPING LIMASAN + LIMASAN:', $nokMapping);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
-    
+     $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
+        
     Log::info('DATA LIMASAN + LIMASAN MAHAFLAT:', [
         'luasAtap1' => $luasAtap1,
         'starter1' => $starter1,
@@ -2824,7 +2836,11 @@ public function limasanTrapesium(Request $request)
     Log::info('NOK MAPPING LIMASAN + TRAPESIUM:', $nokMapping);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+     $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
     
     Log::info('DATA LIMASAN + TRAPESIUM MAHAFLAT:', [
         'luasAtap1' => $luasAtap1,
@@ -3544,7 +3560,11 @@ public function exportPdfLimasanTrapesium(Request $request)
         Log::info('NOK MAPPING LIMASAN X:', $nokMapping);
         
         $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-        $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+         $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
         
         Log::info('DATA LIMASAN X MAHAFLAT:', [
             'luasAtap1' => $luasAtap1,
@@ -4261,7 +4281,11 @@ public function pelana2Kemiringan(Request $request)
     Log::info('NOK MAPPING PELANA 2 KEMIRINGAN:', $nokMapping);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+     $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
     
     Log::info('DATA PELANA 2 KEMIRINGAN MAHAFLAT:', [
         'luasAtap1' => $luasAtap1,
@@ -4972,7 +4996,11 @@ public function exportPdfPelana2Kemiringan(Request $request)
         Log::info('NOK MAPPING PELANA + 2 SISI:', $nokMapping);
         
         $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-        $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+       $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
         
         Log::info('DATA PELANA + 2 SISI MAHAFLAT:', [
             'luasAtap1' => $luasAtap1,
@@ -5683,7 +5711,11 @@ public function pelana2Trapesium(Request $request)
     Log::info('NOK MAPPING PELANA + 2 TRAPESIUM:', $nokMapping);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+   $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
     
     Log::info('DATA PELANA 2 TRAPESIUM MAHAFLAT:', [
         'luasAtap1' => $luasAtap1,
@@ -6393,7 +6425,11 @@ public function pelana3Arah(Request $request)
     Log::info('NOK MAPPING PELANA 3 ARAH:', $nokMapping);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
     
     Log::info('DATA PELANA 3 ARAH MAHAFLAT:', [
         'luasAtap1' => $luasAtap1,
@@ -7098,7 +7134,11 @@ public function pelanaX(Request $request)
     Log::info('NOK MAPPING PELANA X:', $nokMapping);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
     
     Log::info('DATA PELANA X MAHAFLAT:', [
         'luasAtap1' => $luasAtap1,
@@ -7822,7 +7862,11 @@ public function pelanaDinding(Request $request)
     Log::info('NOK MAPPING PELANA + DINDING:', $nokMapping);
     
     $rangkaOptions = ['Baja Ringan', 'Baja Berat', 'Beton', 'Kayu'];
-    $lantaiKerjaOptions = ['Plywood 9 mm', 'Plywood 12 mm', 'Plywood 15 mm', 'GRC 9 mm', 'GRC 12 mm', 'GRC 15 mm', 'Beton'];
+    $areaLantaiKerja = ProductArea::where('id', '21')->first();
+    $lantaiKerjaOptions = Product::where('brand_id', $brand->id)
+        ->where('area_id', $areaLantaiKerja->id)
+        ->with('unit')->orderBy('id', 'asc')  // urutkan berdasarkan kolom created_at descending
+        ->get();
     
     Log::info('DATA PELANA + DINDING MAHAFLAT:', [
         'luasAtap1' => $luasAtap1,

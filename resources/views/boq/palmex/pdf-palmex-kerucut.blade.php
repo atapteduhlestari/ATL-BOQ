@@ -453,7 +453,8 @@
     
     $nomorBoq = $data['nomor_boq'] ?? 'BOQ-PALMEX-202607-0001';
     $model = $data['model'] ?? 'kerucut';
-    
+    $sistemPemasangan = $data['sistem_pemasangan'] ?? 'expose';
+$isNonExpose = ($sistemPemasangan === 'non-expose');
     // Hitung grand total dari results
     $grandTotal = 0;
     foreach($data['results'] ?? [] as $item) {
@@ -569,14 +570,7 @@
             <span class="info-label">Panjang Flashing</span>
             <span class="info-value">{{ number_format((float)($data['flashing'] ?? 0), 2) }} m</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">Sistem Pemasangan</span>
-            <span class="info-value">{{ ucfirst($data['sistem_pemasangan'] ?? 'Expose') }}</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
-        </div>
+      
     </div>
 
     <!-- OPSI TAMBAHAN -->
@@ -608,18 +602,30 @@
             <span class="info-label">Nok Bulat</span>
             <span class="info-value">{{ $data['nok_bulat'] ?? '-' }}</span>
         </div>
+          <div class="info-item">
+            <span class="info-label">Sistem Pemasangan</span>
+            <span class="info-value">{{ ucfirst($data['sistem_pemasangan'] ?? 'Expose') }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
+        </div>
+          @if($isNonExpose)
         <div class="info-item">
             <span class="info-label">Underlayer</span>
             <span class="info-value">{{ $data['underlayer'] ?? '-' }}</span>
         </div>
+        @endif
         <div class="info-item">
             <span class="info-label">Struktur Rangka</span>
             <span class="info-value">{{ $data['rangka'] ?? '-' }}</span>
         </div>
+          @if($isNonExpose)
         <div class="info-item">
             <span class="info-label">Lantai Kerja</span>
             <span class="info-value">{{ $data['lantai_kerja'] ?? '-' }}</span>
         </div>
+        @endif
     </div>
 
     <!-- RINCIAN MATERIAL -->

@@ -546,10 +546,6 @@
             <span class="info-label">Panjang Flashing</span>
             <span class="info-value">{{ number_format((float)($data['flashing'] ?? 0), 2) }} m</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
-        </div>
     </div>
 
     <!-- OPSI TAMBAHAN (jika ada) - SAMA PERSIS FLEXI ROOF -->
@@ -600,10 +596,6 @@
         <div class="info-item">
             <span class="info-label">Jenis Nok</span>
             <span class="info-value">{{ $data['nok_atas'] ?? '-' }}</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Nok Tutup</span>
-            <span class="info-value">{{ $data['nok_tutup'] ?? '-' }}</span>
         </div>
         <div class="info-item">
             <span class="info-label">Struktur Rangka</span>

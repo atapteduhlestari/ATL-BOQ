@@ -430,7 +430,7 @@ public function hitungGergaji(Request $request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
+  // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
     // ============================================================
     $qtyAtapUtama = 0;
@@ -444,9 +444,9 @@ public function hitungGergaji(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -455,7 +455,7 @@ public function hitungGergaji(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
+                if (in_array($screwId, [362, 364])) {
                     $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
@@ -1138,9 +1138,9 @@ public function hitungLengkung2Sisi(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -1149,8 +1149,8 @@ public function hitungLengkung2Sisi(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;
@@ -1793,9 +1793,9 @@ public function hitungLimasPelana(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -1804,8 +1804,8 @@ public function hitungLimasPelana(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;
@@ -2434,7 +2434,7 @@ public function hitungLimasanLimasan(Request $request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
+  // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
     // ============================================================
     $qtyAtapUtama = 0;
@@ -2448,9 +2448,9 @@ public function hitungLimasanLimasan(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -2459,8 +2459,8 @@ public function hitungLimasanLimasan(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;
@@ -3138,8 +3138,8 @@ public function hitungLimasanTrapesium(Request $request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
-    // 14. PAKU & SCREW - MANUAL ID (344,345,346,347)
+   // ============================================================
+    // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
     // ============================================================
     $qtyAtapUtama = 0;
     foreach ($results as $result) {
@@ -3152,9 +3152,9 @@ public function hitungLimasanTrapesium(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -3163,8 +3163,8 @@ public function hitungLimasanTrapesium(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;
@@ -3187,7 +3187,6 @@ public function hitungLimasanTrapesium(Request $request)
             }
         }
     }
-    
     //  // ============================================================
     //     // 13. SCREW PLYWOOD - MASTER ROOF
     //     // ============================================================
@@ -3805,7 +3804,7 @@ public function hitungLimasanX(Request $request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
+   // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
     // ============================================================
     $qtyAtapUtama = 0;
@@ -3819,9 +3818,9 @@ public function hitungLimasanX(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -3830,8 +3829,8 @@ public function hitungLimasanX(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;
@@ -4483,9 +4482,9 @@ public function hitungPelana2Kemiringan(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -4494,8 +4493,8 @@ public function hitungPelana2Kemiringan(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;
@@ -5133,7 +5132,7 @@ public function hitungPelana2Sisi(Request $request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
+   // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
     // ============================================================
     $qtyAtapUtama = 0;
@@ -5147,9 +5146,9 @@ public function hitungPelana2Sisi(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -5158,8 +5157,8 @@ public function hitungPelana2Sisi(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;
@@ -5796,7 +5795,7 @@ public function hitungPelana2Trapesium(Request $request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
+// ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
     // ============================================================
     $qtyAtapUtama = 0;
@@ -5810,9 +5809,9 @@ public function hitungPelana2Trapesium(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -5821,8 +5820,8 @@ public function hitungPelana2Trapesium(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;
@@ -5845,7 +5844,6 @@ public function hitungPelana2Trapesium(Request $request)
             }
         }
     }
-    
     //   // ============================================================
     //     // 13. SCREW PLYWOOD - MASTER ROOF
     //     // ============================================================
@@ -6457,7 +6455,7 @@ public function hitungPelana3Arah(Request $request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
+   // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
     // ============================================================
     $qtyAtapUtama = 0;
@@ -6471,9 +6469,9 @@ public function hitungPelana3Arah(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -6482,8 +6480,8 @@ public function hitungPelana3Arah(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;
@@ -6506,7 +6504,6 @@ public function hitungPelana3Arah(Request $request)
             }
         }
     }
-    
 //    // ============================================================
 //         // 13. SCREW PLYWOOD - MASTER ROOF
 //         // ============================================================
@@ -7164,56 +7161,55 @@ if ($insulasi && $brandId) {
         //     'parameter' => $luasAtap . ' m²'
         // ];
         
-        // ============================================================
-        // 12. PAKU & SCREW - MANUAL ID (344,345,346,347) - MAHAROOF
-        // ============================================================
-        $qtyAtapUtama = 0;
-        foreach ($results as $result) {
-            if ($result['area'] == 'Atap Utama') {
-                $qtyAtapUtama = $result['qty'];
-                break;
-            }
+     // ============================================================
+    // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
+    // ============================================================
+    $qtyAtapUtama = 0;
+    foreach ($results as $result) {
+        if ($result['area'] == 'Atap Utama') {
+            $qtyAtapUtama = $result['qty'];
+            break;
+        }
+    }
+    
+    if ($qtyAtapUtama > 0) {
+        $screwIds = [];
+        if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
+            $screwIds = [362, 363];
+        } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
+            $screwIds = [364, 365];
         }
         
-        if ($qtyAtapUtama > 0) {
-            $screwIds = [];
-            if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-                $screwIds = [344, 345];
-            } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-                $screwIds = [346, 347];
-            }
+        foreach ($screwIds as $screwId) {
+            $screwProduct = Product::with('unit')->find($screwId);
             
-            foreach ($screwIds as $screwId) {
-                $screwProduct = Product::with('unit')->find($screwId);
+            if ($screwProduct) {
+                $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if ($screwProduct) {
-                    $satuan = $screwProduct->satuan_terkecil ?? 1;
-                    
-                    if (in_array($screwId, [344, 346])) {
-                        $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
-                        $parameter = $qtyAtapUtama . ' lembar atap';
-                    } else {
-                        $qtyScrewRaw = $panjangNokJurai / $satuan;
-                        $parameter = $panjangNokJurai . ' meter nok & jurai';
-                    }
-                    
-                    $qtyScrew = ceil($qtyScrewRaw + ($qtyScrewRaw * $waste));
-                    
-                    $results[] = [
-                        'product_id' => $screwProduct->id,
-                        'produk_id' => $screwProduct->id,
-                        'nama_produk' => $screwProduct->nama_produk,
-                        'area' => 'Paku & Screw',
-                        'qty' => $qtyScrew,
-                        'satuan' => $screwProduct->unit->unit_name ?? 'pcs',
-                        'harga_satuan' => $screwProduct->harga_jual ?? 0,
-                        'total_harga' => ($screwProduct->harga_jual ?? 0) * $qtyScrew,
-                        'parameter' => $parameter
-                    ];
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
+                    $parameter = $qtyAtapUtama . ' lembar atap';
+                } else {
+                    $qtyScrewRaw = $panjangNokJurai * $satuan;
+                    $parameter = $panjangNokJurai . ' meter nok & jurai';
                 }
+                
+                $qtyScrew = ceil($qtyScrewRaw + ($qtyScrewRaw * $waste));
+                
+                $results[] = [
+                    'product_id' => $screwProduct->id,
+                    'produk_id' => $screwProduct->id,
+                    'nama_produk' => $screwProduct->nama_produk,
+                    'area' => 'Paku & Screw',
+                    'qty' => $qtyScrew,
+                    'satuan' => $screwProduct->unit->unit_name ?? 'pcs',
+                    'harga_satuan' => $screwProduct->harga_jual ?? 0,
+                    'total_harga' => ($screwProduct->harga_jual ?? 0) * $qtyScrew,
+                    'parameter' => $parameter
+                ];
             }
         }
-        
+    }
         //   // ============================================================
         // // 13. SCREW PLYWOOD - MASTER ROOF
         // // ============================================================
@@ -7872,7 +7868,7 @@ public function hitungPelanaDinding(Request $request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
+   // ============================================================
     // 13. PAKU & SCREW - MANUAL ID (344,345,346,347)
     // ============================================================
     $qtyAtapUtama = 0;
@@ -7886,9 +7882,9 @@ public function hitungPelanaDinding(Request $request)
     if ($qtyAtapUtama > 0) {
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363];
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365];
         }
         
         foreach ($screwIds as $screwId) {
@@ -7897,8 +7893,8 @@ public function hitungPelanaDinding(Request $request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
-                    $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
+                if (in_array($screwId, [362, 364])) {
+                    $qtyScrewRaw = $qtyAtapUtama / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
                     $qtyScrewRaw = $panjangNokJurai * $satuan;

@@ -23,7 +23,7 @@
             </div>
         @endif
 
-        <form method="POST" action="/admin/login" class="space-y-4">
+        <form method="POST" action="  /admin/login" class="space-y-4">
             @csrf
 
             <div>

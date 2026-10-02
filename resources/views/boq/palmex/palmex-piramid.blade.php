@@ -1351,18 +1351,18 @@
         document.getElementById('totalKeseluruhan').innerHTML = `Rp ${grandTotal.toLocaleString()}`;
     }
 
-    function exportToPDF() {
-        let data = {
-            luas_atap: document.getElementById('luas_atap')?.value || 0,
-            sudut: document.getElementById('sudut')?.value || 0,
-            starter: document.getElementById('panjang_starter')?.value || 0,
-            jurai: document.getElementById('panjang_jurai')?.value || 0,
-            flashing: document.getElementById('panjang_flashing')?.value || 0,
-            waste: document.getElementById('waste')?.value || 5,
-            coverage: document.getElementById('coverage')?.value || 0,
-            produk_atap: document.getElementById('produk_atap_id')?.selectedOptions[0]?.text || '',
-            jurai: document.getElementById('jurai_dropdown')?.selectedOptions[0]?.text || '',
-            nok_bulat: document.getElementById('nok_bulat_dropdown')?.selectedOptions[0]?.text || '',
+function exportToPDF() {
+    let data = {
+        luas_atap: document.getElementById('luas_atap')?.value || 0,
+        sudut: document.getElementById('sudut')?.value || 0,
+        starter: document.getElementById('panjang_starter')?.value || 0,
+        jurai: document.getElementById('panjang_jurai')?.value || 0,               // panjang jurai (angka)
+        flashing: document.getElementById('panjang_flashing')?.value || 0,
+        waste: document.getElementById('waste')?.value || 5,
+        coverage: document.getElementById('coverage')?.value || 0,
+        produk_atap: document.getElementById('produk_atap_id')?.selectedOptions[0]?.text || '',
+        jurai_nama: document.getElementById('jurai_dropdown')?.selectedOptions[0]?.text || '',  // nama produk jurai
+        nok_bulat: document.getElementById('nok_bulat_dropdown')?.selectedOptions[0]?.text || '',
             underlayer: document.getElementById('underlayer_id')?.selectedOptions[0]?.text || '',
             rangka: document.getElementById('rangka')?.value || 'Baja Ringan',
             lantai_kerja: document.getElementById('lantai_kerja')?.selectedOptions[0]?.text || '',

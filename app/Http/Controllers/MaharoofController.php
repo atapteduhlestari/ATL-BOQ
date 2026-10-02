@@ -460,9 +460,9 @@ if ($insulasiAktif && $luasAtap > 0 && $brandId) {
         // Tentukan ID screw berdasarkan rangka
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345]; // Paku & Screw untuk kayu/baja ringan
+            $screwIds = [362, 363]; // Paku & Screw untuk kayu/baja ringan
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347]; // Paku & Screw untuk baja berat/beton
+            $screwIds = [364, 365]; // Paku & Screw untuk baja berat/beton
         }
         
         foreach ($screwIds as $screwId) {
@@ -473,7 +473,7 @@ if ($insulasiAktif && $luasAtap > 0 && $brandId) {
                 
                 // ID 344 dan 346: berdasarkan QTY Atap Utama (6 screw per lembar)
                 // ID 345 dan 347: berdasarkan Panjang Nok
-                if (in_array($screwId, [344, 346])) {
+                if (in_array($screwId, [362, 364])) {
                     // Paku & Screw untuk atap utama
                     $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
@@ -939,8 +939,8 @@ private function hitungLimasan($request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
-    // 14. PAKU & SCREW - Berdasarkan Jenis Rangka
+     // ============================================================
+    // 10. PAKU & SCREW - Berdasarkan Jenis Rangka
     // ============================================================
     $qtyAtapUtama = 0;
     foreach ($results as $result) {
@@ -950,12 +950,16 @@ private function hitungLimasan($request)
         }
     }
     
+    // Ambil panjang nok dari request atau hasil perhitungan
+    $panjangNok = $request->panjang_nok ?? 0;
+    
     if ($qtyAtapUtama > 0) {
+        // Tentukan ID screw berdasarkan rangka
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363]; // Paku & Screw untuk kayu/baja ringan
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365]; // Paku & Screw untuk baja berat/beton
         }
         
         foreach ($screwIds as $screwId) {
@@ -964,12 +968,16 @@ private function hitungLimasan($request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
+                // ID 344 dan 346: berdasarkan QTY Atap Utama (6 screw per lembar)
+                // ID 345 dan 347: berdasarkan Panjang Nok
+                if (in_array($screwId, [362, 364])) {
+                    // Paku & Screw untuk atap utama
                     $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
-                    $qtyScrewRaw = $panjangNokJurai * $satuan;
-                    $parameter = $panjangNokJurai . ' meter nok & jurai';
+                    // Paku & Screw untuk nok (ID 345 dan 347)
+                    $qtyScrewRaw = $panjangNok * $satuan;
+                    $parameter = $panjangNok . ' meter nok';
                 }
                 
                 $qtyScrew = ceil($qtyScrewRaw + ($qtyScrewRaw * $waste));
@@ -988,6 +996,7 @@ private function hitungLimasan($request)
             }
         }
     }
+    
     
     //   // ============================================================
     // // 13. SCREW PLYWOOD (untuk plywood/lantai kerja)
@@ -1405,8 +1414,8 @@ private function hitungPiramid($request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
-    // 13. PAKU & SCREW - Berdasarkan Jenis Rangka
+      // ============================================================
+    // 10. PAKU & SCREW - Berdasarkan Jenis Rangka
     // ============================================================
     $qtyAtapUtama = 0;
     foreach ($results as $result) {
@@ -1416,12 +1425,16 @@ private function hitungPiramid($request)
         }
     }
     
+    // Ambil panjang nok dari request atau hasil perhitungan
+    $panjangNok = $request->panjang_nok ?? 0;
+    
     if ($qtyAtapUtama > 0) {
+        // Tentukan ID screw berdasarkan rangka
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344, 345];
+            $screwIds = [362, 363]; // Paku & Screw untuk kayu/baja ringan
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346, 347];
+            $screwIds = [364, 365]; // Paku & Screw untuk baja berat/beton
         }
         
         foreach ($screwIds as $screwId) {
@@ -1430,12 +1443,16 @@ private function hitungPiramid($request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
+                // ID 344 dan 346: berdasarkan QTY Atap Utama (6 screw per lembar)
+                // ID 345 dan 347: berdasarkan Panjang Nok
+                if (in_array($screwId, [362, 364])) {
+                    // Paku & Screw untuk atap utama
                     $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
-                    $qtyScrewRaw = $panjangJurai * $satuan;
-                    $parameter = $panjangJurai . ' meter jurai';
+                    // Paku & Screw untuk nok (ID 345 dan 347)
+                    $qtyScrewRaw = $panjangNok * $satuan;
+                    $parameter = $panjangNok . ' meter nok';
                 }
                 
                 $qtyScrew = ceil($qtyScrewRaw + ($qtyScrewRaw * $waste));
@@ -1454,6 +1471,7 @@ private function hitungPiramid($request)
             }
         }
     }
+    
     
     //   // ============================================================
     // // 13. SCREW PLYWOOD (untuk plywood/lantai kerja)
@@ -1794,8 +1812,8 @@ private function hitungSatuKemiringan($request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
-    // 13. PAKU & SCREW - Berdasarkan Jenis Rangka
+     // ============================================================
+    // 10. PAKU & SCREW - Berdasarkan Jenis Rangka
     // ============================================================
     $qtyAtapUtama = 0;
     foreach ($results as $result) {
@@ -1805,12 +1823,16 @@ private function hitungSatuKemiringan($request)
         }
     }
     
+    // Ambil panjang nok dari request atau hasil perhitungan
+    $panjangNok = $request->panjang_nok ?? 0;
+    
     if ($qtyAtapUtama > 0) {
+        // Tentukan ID screw berdasarkan rangka
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344];
+            $screwIds = [362, 363]; // Paku & Screw untuk kayu/baja ringan
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346];
+            $screwIds = [364, 365]; // Paku & Screw untuk baja berat/beton
         }
         
         foreach ($screwIds as $screwId) {
@@ -1819,12 +1841,16 @@ private function hitungSatuKemiringan($request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
+                // ID 344 dan 346: berdasarkan QTY Atap Utama (6 screw per lembar)
+                // ID 345 dan 347: berdasarkan Panjang Nok
+                if (in_array($screwId, [362, 364])) {
+                    // Paku & Screw untuk atap utama
                     $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
                 } else {
-                    $qtyScrewRaw = $panjangStarter * $satuan;
-                    $parameter = $panjangStarter . ' meter starter';
+                    // Paku & Screw untuk nok (ID 345 dan 347)
+                    $qtyScrewRaw = $panjangNok * $satuan;
+                    $parameter = $panjangNok . ' meter nok';
                 }
                 
                 $qtyScrew = ceil($qtyScrewRaw + ($qtyScrewRaw * $waste));
@@ -2184,8 +2210,8 @@ private function hitungKerucut($request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
-    // 13. PAKU & SCREW - Berdasarkan Jenis Rangka
+      // ============================================================
+    // 10. PAKU & SCREW - Berdasarkan Jenis Rangka
     // ============================================================
     $qtyAtapUtama = 0;
     foreach ($results as $result) {
@@ -2195,12 +2221,16 @@ private function hitungKerucut($request)
         }
     }
     
+    // Ambil panjang nok dari request atau hasil perhitungan
+    $panjangNok = $request->panjang_nok ?? 0;
+    
     if ($qtyAtapUtama > 0) {
+        // Tentukan ID screw berdasarkan rangka
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344];
+            $screwIds = [362, 363]; // Paku & Screw untuk kayu/baja ringan
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346];
+            $screwIds = [364, 365]; // Paku & Screw untuk baja berat/beton
         }
         
         foreach ($screwIds as $screwId) {
@@ -2209,9 +2239,16 @@ private function hitungKerucut($request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
+                // ID 344 dan 346: berdasarkan QTY Atap Utama (6 screw per lembar)
+                // ID 345 dan 347: berdasarkan Panjang Nok
+                if (in_array($screwId, [362, 364])) {
+                    // Paku & Screw untuk atap utama
                     $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
+                } else {
+                    // Paku & Screw untuk nok (ID 345 dan 347)
+                    $qtyScrewRaw = $panjangNok * $satuan;
+                    $parameter = $panjangNok . ' meter nok';
                 }
                 
                 $qtyScrew = ceil($qtyScrewRaw + ($qtyScrewRaw * $waste));
@@ -2576,8 +2613,8 @@ private function hitungDome($request)
     //     'parameter' => $luasAtap . ' m²'
     // ];
     
-    // ============================================================
-    // 14. PAKU & SCREW - Berdasarkan Jenis Rangka
+       // ============================================================
+    // 10. PAKU & SCREW - Berdasarkan Jenis Rangka
     // ============================================================
     $qtyAtapUtama = 0;
     foreach ($results as $result) {
@@ -2587,12 +2624,16 @@ private function hitungDome($request)
         }
     }
     
+    // Ambil panjang nok dari request atau hasil perhitungan
+    $panjangNok = $request->panjang_nok ?? 0;
+    
     if ($qtyAtapUtama > 0) {
+        // Tentukan ID screw berdasarkan rangka
         $screwIds = [];
         if (in_array($rangka, ['Kayu', 'Baja Ringan'])) {
-            $screwIds = [344];
+            $screwIds = [362, 363]; // Paku & Screw untuk kayu/baja ringan
         } elseif (in_array($rangka, ['Baja Berat', 'Beton'])) {
-            $screwIds = [346];
+            $screwIds = [364, 365]; // Paku & Screw untuk baja berat/beton
         }
         
         foreach ($screwIds as $screwId) {
@@ -2601,10 +2642,17 @@ private function hitungDome($request)
             if ($screwProduct) {
                 $satuan = $screwProduct->satuan_terkecil ?? 1;
                 
-                if (in_array($screwId, [344, 346])) {
+                // ID 344 dan 346: berdasarkan QTY Atap Utama (6 screw per lembar)
+                // ID 345 dan 347: berdasarkan Panjang Nok
+                if (in_array($screwId, [362, 364])) {
+                    // Paku & Screw untuk atap utama
                     $qtyScrewRaw = ($qtyAtapUtama) / $satuan;
                     $parameter = $qtyAtapUtama . ' lembar atap';
-                } 
+                } else {
+                    // Paku & Screw untuk nok (ID 345 dan 347)
+                    $qtyScrewRaw = $panjangNok * $satuan;
+                    $parameter = $panjangNok . ' meter nok';
+                }
                 
                 $qtyScrew = ceil($qtyScrewRaw + ($qtyScrewRaw * $waste));
                 

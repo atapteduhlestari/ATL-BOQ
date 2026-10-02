@@ -556,16 +556,13 @@
         </div>
         <div class="info-item">
             <span class="info-label">Panjang Starter</span>
-            <span class="info-value">{{ number_format((float)($data['panjang_starter'] ?? 0), 2) }} m</span>
+            <span class="info-value">{{ number_format((float)($data['starter'] ?? 0), 2) }} m</span>
         </div>
         <div class="info-item">
             <span class="info-label">Panjang Flashing</span>
-            <span class="info-value">{{ number_format((float)($data['panjang_flashing'] ?? 0), 2) }} m</span>
+            <span class="info-value">{{ number_format((float)($data['flashing'] ?? 0), 2) }} m</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
-        </div>
+       
     </div>
 
     <!-- PILIHAN MATERIAL - LIST DENGAN INDENT (TIPE ATAP DIHAPUS) -->

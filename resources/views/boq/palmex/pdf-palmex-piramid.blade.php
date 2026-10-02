@@ -581,26 +581,15 @@
             <span class="info-label">Panjang Starter</span>
             <span class="info-value">{{ number_format((float)($data['starter'] ?? 0), 2) }} m</span>
         </div>
-        {{-- <div class="info-item">
+        <div class="info-item">
             <span class="info-label">Panjang Jurai</span>
-            <span class="info-value">{{ number_format((float)($data['nok'] ?? 0), 2) }} m</span>
-        </div> --}}
+            <span class="info-value">{{ number_format((float)($data['jurai'] ?? 0), 2) }} m</span>
+        </div>
         <div class="info-item">
             <span class="info-label">Panjang Flashing</span>
             <span class="info-value">{{ number_format((float)($data['flashing'] ?? 0), 2) }} m</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">Sistem Pemasangan</span>
-            <span class="info-value">{{ ucfirst($sistemPemasangan) }}</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Coverage</span>
-            <span class="info-value">{{ $data['coverage'] ?? 0 }} daun/m²</span>
-        </div>
+       
     </div>
 
     <!-- OPSI TAMBAHAN (jika ada) -->
@@ -630,11 +619,23 @@
         </div>
         <div class="info-item">
             <span class="info-label">Jurai</span>
-            <span class="info-value">{{ $data['jurai'] ?? '-' }}</span>
+            <span class="info-value">{{ $data['jurai_nama'] ?? '-' }}</span>
         </div>
         <div class="info-item">
             <span class="info-label">Nok Bulat</span>
             <span class="info-value">{{ $data['nok_bulat'] ?? '-' }}</span>
+        </div>
+         <div class="info-item">
+            <span class="info-label">Sistem Pemasangan</span>
+            <span class="info-value">{{ ucfirst($sistemPemasangan) }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Coverage</span>
+            <span class="info-value">{{ $data['coverage'] ?? 0 }} daun/m²</span>
         </div>
         @if($isNonExpose)
         <div class="info-item">

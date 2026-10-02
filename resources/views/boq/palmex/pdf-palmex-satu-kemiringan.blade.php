@@ -584,18 +584,7 @@
             <span class="info-label">Panjang Flashing</span>
             <span class="info-value">{{ number_format((float)($data['flashing'] ?? 0), 2) }} m</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">Sistem Pemasangan</span>
-            <span class="info-value">{{ ucfirst($sistemPemasangan) }}</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Waste</span>
-            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">Coverage</span>
-            <span class="info-value">{{ $data['coverage'] ?? 0 }} daun/m²</span>
-        </div>
+      
     </div>
 
     <!-- OPSI TAMBAHAN (jika ada) -->
@@ -622,6 +611,18 @@
         <div class="info-item">
             <span class="info-label">Produk Atap Utama</span>
             <span class="info-value">{{ $data['produk_atap'] ?? '-' }}</span>
+        </div>
+          <div class="info-item">
+            <span class="info-label">Sistem Pemasangan</span>
+            <span class="info-value">{{ ucfirst($sistemPemasangan) }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Waste</span>
+            <span class="info-value">{{ $data['waste'] ?? 0 }}%</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Coverage</span>
+            <span class="info-value">{{ $data['coverage'] ?? 0 }} daun/m²</span>
         </div>
         @if($isNonExpose)
         <div class="info-item">

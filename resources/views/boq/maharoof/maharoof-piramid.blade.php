@@ -972,7 +972,7 @@
         document.getElementById('luas_atap').value = urlParams.get('luas_atap') || 0;
         document.getElementById('sudut').value = urlParams.get('sudut') || 0;
         document.getElementById('panjang_starter').value = urlParams.get('panjang_starter') || 0;
-        document.getElementById('panjang_jurai').value = urlParams.get('panjang_jurai') || 0;
+        document.getElementById('panjang_jurai').value = urlParams.get('panjang_nok_jurai') || 0;
         document.getElementById('panjang_flashing').value = urlParams.get('panjang_flashing') || 0;
         
         document.getElementById('opsi_dinding').value = urlParams.get('opsi_dinding') || 0;
